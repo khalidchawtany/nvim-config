@@ -224,3 +224,178 @@ Plug 'airblade/vim-gitgutter'
 Plug 'honza/vim-snippets'
 
 call plug#end()
+
+
+"==============================================================================
+"                                   Global Config                             =
+"==============================================================================
+
+
+set background=dark
+colorscheme molokai
+
+" Enhance command-line completion
+set wildmenu
+set wildmode=longest,list,full
+
+" Types of files to ignore when autocompleting things
+set wildignore+=*.o,*.class,*.git,*.svn
+
+" Fuzzy finder: ignore stuff that can't be opened, and generated files
+let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
+
+set grepprg=ag\ --nogroup\ --nocolor
+
+set formatoptions-=t                  "Stop autowrapping my code
+
+" set ambiwidth=double                " DON'T THIS FUCKS airline
+
+"don't autoselect first item in omnicomplete,show if only one item(for preview)
+set completeopt=longest,menuone,preview
+
+set complete=.,w,b,u,t                " Completion precedence
+set pumheight=15                      " limit completion menu height
+
+" When completing by tag, show the whole tag, not just the function name
+set showfulltag
+
+"**** DO NOT USE ****  RUINS arrow keys & all esc based keys
+" Allow cursor keys in insert mode
+"set esckeys
+
+set backspace=indent,eol,start        " Allow backspace in insert mode
+set gdefault                          " make g default for search
+set magic                             " Magic matching
+set encoding=utf-8 nobomb
+set termencoding=utf-8
+scriptencoding utf-8
+set nolazyredraw
+
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.nvim/.cache/backups
+
+"How should I decide to take abackup
+set backupcopy=auto
+
+set directory=~/.nvim/.cache/swaps
+set viewdir=~/.nvim/.cache/views
+
+if exists("&undodir")
+set undodir=~/.nvim/.cache/undo
+endif
+
+set undofile                          " Save undo's after file closes
+"set undodir=$HOME/.vim/.cache/undo   " where to save undo histories
+set undolevels=1000                   " How many undos
+set undoreload=10000                  " number of lines to save for undo
+
+" if available, store temporary files in shared memory
+if isdirectory('/run/shm')
+let $TMPDIR = '/run/shm'
+elseif isdirectory('/dev/shm')
+let $TMPDIR = '/dev/shm'
+endif
+
+set tags=./tags,tags;$HOME            " Help vim find my tags
+set backupskip=/tmp/*,/private/tmp/*  " don't back up these
+set autoread                          " read files on change
+
+set binary
+set noeol                              " Don’t add empty newlines at the end of files
+
+"set noswapfile
+"Dont warn me about swap files existence
+"set shortmess+=A
+
+" Respect modeline in files
+set modeline
+set modelines=4
+
+" Enable per-directory .vimrc files and disable unsafe commands in them
+set exrc
+set secure
+
+set number
+set relativenumber
+
+set autoindent
+set smartindent
+set tabstop=2
+set expandtab
+set nosmarttab
+set shiftwidth=2
+set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
+
+set guifont=Sauce\ Code\ Powerline\ Light:h18
+set textwidth=80
+set wrap                              " Wrap long lines
+set breakindent                       " proper indenting for long lines
+
+set printoptions=header:0,duplex:long,paper:letter
+
+let &showbreak = '↳ '                 "add linebreak sign
+set cpo=n                             "Draw color for lines that has number only
+set wrapscan                          " set the search scan to wrap lines
+
+"Allow these to move to next/prev line when at the last/first char
+set whichwrap+=h,l,<,>,[,]
+
+
+" Show “invisible” characters
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
+set list
+
+"Set the fillchar of the inactive window to something I can see
+set fillchars=stlnc:\-
+
+" Add ignorance of whitespace to diff
+set diffopt+=iwhite
+syntax on
+set cursorline
+set hlsearch
+set ignorecase
+set smartcase
+set matchtime=2                       " time in decisecons to jump back from matching bracket 
+set incsearch                         " Highlight dynamically as pattern is typed
+set history=1000
+set foldmethod=marker
+
+" These commands open folds
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+set timeout
+set timeoutlen=750
+"NeoVim handles ESC keys as alt+key set this to solve the problem
+set ttimeoutlen=0
+
+" Show the filename in the window titlebar
+set title "titlestring=
+
+syntax on
+set virtualedit=all
+set mouse=a
+set hidden
+set laststatus=2                      " force status line display
+set noerrorbells visualbell t_vb=     " Disable error bells
+set nostartofline                     " Don’t reset cursor to start of line when moving around
+set ruler                             " Show the cursor position
+set shortmess=atI                     " Don’t show the intro message when starting Vim
+set showmode                          " Show the current mode
+set scrolloff=3                       " Keep cursor in screen by value
+set cpoptions+=ces$                   " CW wrap W with $ instead of delete
+set showmode                          " Show the current mode
+set showcmd                           " Show commands as typed in right botoom
+set noshowcmd                         " Makes OS X slow, if lazy redraw set
+set mousehide                         " Hide mouse while typing
+set synmaxcol=200                     " max syntax highlight chars
+set splitbelow                        " put horizontal splits below
+set splitright                        " put vertical splits to the right
+let g:netrw_liststyle=3               "Make netrw look like NerdTree
+
+highlight ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
+call matchadd('ColorColumn', '\%81v', 100)
+
+
+
+"==============================================================================
+"                                   HotKeys                                   =
+"==============================================================================
