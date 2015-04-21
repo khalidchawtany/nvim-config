@@ -32,7 +32,12 @@ call plug#begin('~/.nvim/plugged')
 "}}}
 
 "{{{ NerdTree
-Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+  "Disable Netrw
+  let g:loaded_netrw       = 1
+  let g:loaded_netrwPlugin = 1
+
+  Plug 'scrooloose/nerdtree' ", { 'on':  'NERDTreeToggle' }
+
   let g:nerdtree_tabs_open_on_gui_startup = 0
 
   Plug 'jistr/vim-nerdtree-tabs'
@@ -52,7 +57,11 @@ Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 
 "}}} _NerdTree
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+"{{{  fzf
+
+  Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'}
+
+"}}} _fzf
 
 "{{{ CtrlP
 
