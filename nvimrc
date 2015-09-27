@@ -33,6 +33,12 @@ call plug#begin('~/.nvim/plugged')
   "Plug '~/my-prototype-plugin'
 "}}}
 
+"{{{ vim-devicons 
+
+  Plug 'ryanoasis/vim-devicons'
+
+"}}}} _vim-devicons 
+
 "{{{  seoul256.vim
 
     Plug 'junegunn/seoul256.vim'
@@ -742,9 +748,11 @@ source ~/.nvim/problem.vim
   "{{{  lightline.vim
 
   Plug 'itchyny/lightline.vim'
-
+  Plug 'shinchu/lightline-gruvbox.vim'
+        " \ 'colorscheme': 'powerline',
+        " \ 'colorscheme': 'wombat',
+        " \ 'colorscheme': 'jellybeans',
   let g:lightline = {
-        \ 'colorscheme': 'powerline',
         \ 'active': {
         \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
         \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
@@ -767,6 +775,7 @@ source ~/.nvim/problem.vim
         \ 'subseparator': { 'left': '|', 'right': '|' }
         \ }
 
+  let g:lightline.colorscheme = 'gruvbox'
   function! LightLineModified()
     return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
   endfunction
@@ -1575,6 +1584,21 @@ Plug 'tomasr/molokai'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'altercation/vim-colors-solarized'
 Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'chriskempson/tomorrow-theme'
+Plug 'vim-scripts/buttercream.vim'
+Plug 'vim-scripts/simpleandfriendly.vim'
+Plug 'vim-scripts/nuvola.vim'
+Plug 'vim-scripts/ironman.vim'
+Plug 'vim-scripts/AutumnLeaf'
+Plug 'vim-scripts/summerfruit256.vim'
+Plug 'vim-scripts/eclipse.vim'
+Plug 'vim-scripts/pyte'
+Plug 'morhetz/gruvbox'
+
+Plug 'flazz/vim-colorschemes'
+
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-colorscheme-switcher'
 call plug#end()
 
 "}}} _PlugIns
@@ -2109,8 +2133,20 @@ endfunction
 
 "{{{ Global Config
 
-set background=dark
-colorscheme molokai
+" set background=dark
+" colorscheme molokai
+
+set background=light
+
+let g:gruvbox_contrast_dark='medium'
+" let g:gruvbox_contrast_dark='hard'
+" let g:gruvbox_contrast_dark='soft'
+
+let g:gruvbox_contrast_light='medium'
+" let g:gruvbox_contrast_light='hard'
+" let g:gruvbox_contrast_light='soft'
+
+colorscheme gruvbox
 
 " Enhance command-line completion
 set wildmenu
@@ -2792,4 +2828,3 @@ call matchadd('ColorColumn', '\%81v', 100)
   call BindMultieditKeys()
 
 "}}} _Binding Overrides
-
