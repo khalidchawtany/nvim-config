@@ -1056,14 +1056,9 @@ Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 "{{{ Ultisnips
   Plug 'SirVer/ultisnips'
   " better key bindings for UltiSnipsExpandTrigger
-  " let g:UltiSnipsExpandTrigger = "<tab>"
-  " let g:UltiSnipsJumpForwardTrigger = "<tab>"
-  " let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
   let g:UltiSnipsEnableSnipMate = 0
 
-  "let g:UltiSnipsExpandTrigger = "<C-CR>"
-  "let g:UltiSnipsJumpForwardTrigger = "<C-CR>"
   let g:UltiSnipsExpandTrigger = "‰"            "press ctrl+enter
   let g:UltiSnipsJumpForwardTrigger = "‰"       "press ctrl+enter
   let g:UltiSnipsJumpBackwardTrigger = "<m-cr>" "press alt+enter
