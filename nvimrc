@@ -1,6 +1,5 @@
 let g:python_host_prog='/usr/local/bin/python'
 
-" echo $NVIM_LISTEN_ADDRESS
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
@@ -134,23 +133,29 @@ call plug#begin('~/.nvim/plugged')
 
   "Provides the following commands:
   "================================
-  "Files [PATH]    | Files (similar to  :FZF )
-  "Buffers         | Open buffers
-  "Colors          | Color schemes
-  "Ag [PATTERN]    | {ag}{5} search result (CTRL-A to select all, CTRL-D to deselect all)
-  "Lines           | Lines in loaded buffers
-  "BLines          | Lines in the current buffer
-  "Tags            | Tags in the project ( ctags -R )
-  "BTags           | Tags in the current buffer
-  "Marks           | Marks
-  "Windows         | Windows
-  "Locate PATTERN  | locate  command output
-  "History         | v:oldfiles  and open buffers
-  "History:        | Command history
-  "History/        | Search history
-  "Snippets        | Snippets ({UltiSnips}{6})
-  "Commands        | Commands
-  "Helptags        | Help tags
+ " -----------------+----------------------------------------------------------------
+ " Command          | List                                                          ~
+ " -----------------+----------------------------------------------------------------
+  " `Files [PATH]`    | Files (similar to  `:FZF` )
+  " `Buffers`         | Open buffers
+  " `Colors`          | Color schemes
+  " `Ag [PATTERN]`    | {ag}{5} search result (CTRL-A to select all, CTRL-D to deselect all)
+  " `Lines`           | Lines in loaded buffers
+  " `BLines`          | Lines in the current buffer
+  " `Tags`            | Tags in the project ( `ctags -R` )
+  " `BTags`           | Tags in the current buffer
+  " `Marks`           | Marks
+  " `Windows`         | Windows
+  " `Locate PATTERN`  |  `locate`  command output
+  " `History`         |  `v:oldfiles`  and open buffers
+  " `History:`        | Command history
+  " `History/`        | Search history
+  " `Snippets`        | Snippets ({UltiSnips}{6})
+  " `Commits`         | Git commits (requires {fugitive.vim}{7})
+  " `BCommits`        | Git commits for the current buffer
+  " `Commands`        | Commands
+  " `Helptags`        | Help tags [1]
+ " -----------------+---------------------------------------------------------------------
 
 
 function! Map_FZF(cmd, key)
@@ -176,10 +181,13 @@ call Map_FZF("History", "h")
 call Map_FZF("History/", "/")
 call Map_FZF("History:", "Ú")             "<cr>
 call Map_FZF("Commands", "‰")             ":
+call Map_FZF("BCommits", "g")
 call Map_FZF("Snippets", "s")
 call Map_FZF("Marks", "◊")                "'
 call Map_FZF("Windows", "w")
 call Map_FZF("Helptags", "k")
+
+tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
 
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
@@ -1027,21 +1035,21 @@ Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 
 "{{{  deoplete.nvim
 
-  " Plug 'Shougo/deoplete.nvim'
-  " " Use deoplete.
-  " let g:deoplete#enable_at_startup = 1
+  Plug 'Shougo/deoplete.nvim'
+  " Use deoplete.
+  let g:deoplete#enable_at_startup = 1
 
-  " let g:deoplete#auto_completion_start_length = 1
+  let g:deoplete#auto_completion_start_length = 1
 
 "}}} _deoplete.nvim
 
 "{{{ YouCompleteMe
 
-  Plug 'Valloric/YouCompleteMe'
-  " make YCM compatible with UltiSnips (using supertab)
-  let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-  let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-  let g:SuperTabDefaultCompletionType = '<C-n>'
+  " Plug 'Valloric/YouCompleteMe'
+  " " make YCM compatible with UltiSnips (using supertab)
+  " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+  " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+  " let g:SuperTabDefaultCompletionType = '<C-n>'
 
 "}}} _YouCompleteMe
 
@@ -1340,8 +1348,7 @@ endfunction
 
 "{{{  vimproc.vim
 
-  command! VimProcEnable :echo "vimproc enabled"<cr>
-  Plug 'Shougo/vimproc.vim', {'on': 'VimProcEnable'}
+  Plug 'Shougo/vimproc.vim'
 
 "}}} _vimproc.vim
 
@@ -2111,6 +2118,12 @@ endfunction
     autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   endif
 
+
+  "Enter insert mode on switch to term and on leave leave insert mode
+   autocmd BufWinEnter,WinEnter term://* startinsert
+   autocmd BufLeave term://* stopinsert
+   " autocmd BufEnter term://* startinsert
+
   "}}} _Autocommands
 
 
@@ -2138,13 +2151,13 @@ endfunction
 
 set background=light
 
-let g:gruvbox_contrast_dark='medium'
+" let g:gruvbox_contrast_dark='medium'
 " let g:gruvbox_contrast_dark='hard'
-" let g:gruvbox_contrast_dark='soft'
+let g:gruvbox_contrast_dark='soft'
 
-let g:gruvbox_contrast_light='medium'
+" let g:gruvbox_contrast_light='medium'
 " let g:gruvbox_contrast_light='hard'
-" let g:gruvbox_contrast_light='soft'
+let g:gruvbox_contrast_light='soft'
 
 colorscheme gruvbox
 
@@ -2597,9 +2610,9 @@ call matchadd('ColorColumn', '\%81v', 100)
   nnoremap gb `[v`]
   nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-  " Highlight merge conflict markers
-  match Todo '\v^(\<|\=|\>){7}([^=].+)?$'
-  match TODO '\v^(\<|\=|\>){7}([^=].+)?$'
+  " Highlight TODO markers
+  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
 
   " Jump to next/previous merge conflict marker
   " nnoremap <silent> ]m /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
@@ -2828,3 +2841,12 @@ call matchadd('ColorColumn', '\%81v', 100)
   call BindMultieditKeys()
 
 "}}} _Binding Overrides
+
+
+function! SetProjectPath()
+  lcd ~/Development/Projects/Dwarozh/App/public/
+  cd ~/Development/Projects/Dwarozh/App/public/
+  echo "~/Development/Projects/Dwarozh/App/public/"
+endfunction
+
+nnoremap <silent> <c-w>\\ :call SetProjectPath()<cr>
