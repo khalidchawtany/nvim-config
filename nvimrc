@@ -2861,7 +2861,7 @@ call matchadd('ColorColumn', '\%81v', 100)
 function! SetProjectPath()
   lcd ~/Development/Projects/Dwarozh/App/public/
   cd ~/Development/Projects/Dwarozh/App/public/
-  echo "~/Development/Projects/Dwarozh/App/public/"
+  pwd
 endfunction
 
 nnoremap <silent> <c-p><c-\\> :call SetProjectPath()<cr>
