@@ -189,6 +189,10 @@ call Map_FZF("Helptags", "k")
 
 tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
 
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
 imap <c-x><c-k> <plug>(fzf-complete-word)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-a> <plug>(fzf-complete-file-ag)
@@ -1557,17 +1561,30 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-capslock'
-Plug 'tpope/vim-ragtag'
+
 Plug 'tpope/vim-projectionist'
 " Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-markdown'
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-vinegar'            " {-} file browser
 Plug 'tpope/vim-characterize'
-Plug 'tpope/vim-classpath'
+" Plug 'tpope/vim-classpath'
 Plug 'tpope/vim-afterimage'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-scriptease'
+" Plug 'tpope/vim-flagship'
+Plug 'tpope/vim-dotenv'
+Plug 'tpope/vim-speeddating'
+
+Plug 'tpope/vim-ragtag'
+let g:ragtag_global_maps = 1
+
 " Errors out a lot disable till fixed
 Plug 'airblade/vim-gitgutter'
 
+
+Plug 'jceb/vim-orgmode'
+Plug 'Yggdroot/indentLine'
 
 Plug 'honza/vim-snippets'
 
@@ -2805,6 +2822,9 @@ call matchadd('ColorColumn', '\%81v', 100)
   let g:terminal_color_14 = '#00f5e9'
   let g:terminal_color_15 = '#eeeeec'
 
+  "Make the bright gray font black in terminal
+  let g:terminal_color_7  = '#555042'
+
 
   "Multiedit highlight colors
   "This makes it faster too!
@@ -2844,4 +2864,4 @@ function! SetProjectPath()
   echo "~/Development/Projects/Dwarozh/App/public/"
 endfunction
 
-nnoremap <silent> <c-w>\\ :call SetProjectPath()<cr>
+nnoremap <silent> <c-p><c-\\> :call SetProjectPath()<cr>
