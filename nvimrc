@@ -568,8 +568,7 @@ source ~/.nvim/problem.vim
   Plug 'glts/vim-textobj-indblock'              "io, ao, iO, aO  for indented blocks
 
   Plug 'hchbaw/textobj-motionmotion.vim'        "imMotionMotion  for two motion range
-  Plug 'vimtaku/vim-textobj-doublecolon'        "i:, a:          for ::
-  Plug 'akiyan/vim-textobj-xml-attribute'       "ixa, axa        for XML attributes
+  Plug 'Úvimtaku/vim-textobj-doublecolon'        "i:, a:          for ::
   Plug 'haya14busa/vim-textobj-number'          "in, an          for numbers
   Plug 'kana/vim-textobj-fold'                  "iz, az          for folds
   " Plug 'kana/vim-textobj-function'
@@ -588,23 +587,45 @@ source ~/.nvim/problem.vim
 
   Plug 'mattn/vim-textobj-url'                  "iu, au          for URL
 
+  " Plug 'kana/vim-niceblock'
 
   "vim-textobj-line does this too :)
   " Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
   Plug 'saaguero/vim-textobj-pastedtext'        "gb              for pasted text
 
   Plug 'vimtaku/vim-textobj-doublecolon'
+
+  "{{{ keyvalue         => k, v
   " Plug 'vimtaku/vim-textobj-keyvalue'
+  " let g:textobj_key_no_default_key_mappings=1
+  " ak  <Plug>(textobj-key-a)
+  " ik  <Plug>(textobj-key-i)
+  " av  <Plug>(textobj-value-a)
+  " iv  <Plug>(textobj-value-i)
+  " }}}}
 
+  "{{{ sentence         => s
   Plug 'reedes/vim-textobj-sentence'            "is, as, ), (,   For real english sentences
-                                                " also adds g) and g( for sentence navigation
+                                                " also adds g) and g( for
+                                                " sentence navigation
+  "}}}
 
+  "{{{ quotes           => q, Q
   let g:textobj#quote#educate = 0               " 0=disable, 1=enable (def) autoconvert to curely
   Plug 'reedes/vim-textobj-quote'               "iq, aq, iQ, aQ  for Curely quotes
+  "}}}
 
+  "{{{ xmlattribute     => x
+  let g:textobj_xmlattribute_no_default_key_mappings=1
+  Plug 'akiyan/vim-textobj-xml-attribute'       "ixa, axa        for XML attributes
+  vmap ax <Plug>(textobj-xmlattribute-xmlattribute)
+  vmap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
+  omap ax <Plug>(textobj-xmlattribute-xmlattribute)
+  omap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
+  "}}}
 
-
-  let g:textobj_datetime_no_default_key_mappings =1
+  "{{{ datetime         => gda, gdf, gdd, gdz
+  let g:textobj_datetime_no_default_key_mappings=1
   Plug 'kana/vim-textobj-datetime'              "igda, agda,      or dates auto
                                                 " igdd, igdf, igdt, igdz  means
                                                 " date, full, time, timerzone
@@ -632,22 +653,27 @@ source ~/.nvim/problem.vim
   omap igdf <Plug>(textobj-datetime-full)
   omap igdt <Plug>(textobj-datetime-time)
   omap igdz <Plug>(textobj-datetime-tz)
+  "}}}
 
+  "{{{ entire           => G
   let g:textobj_entire_no_default_key_mappings =1
-  Plug 'kana/vim-textobj-entire'                "ie, ae          for entire document
+  Plug 'kana/vim-textobj-entire'                "iG, aG          for entire document
   vmap aG  <Plug>(textobj-entire-a)
   vmap iG  <Plug>(textobj-entire-i)
   omap aG  <Plug>(textobj-entire-a)
   omap iG  <Plug>(textobj-entire-i)
+  "}}}
 
-
+  "{{{ Space            => <Space>
   let g:textobj_space_no_default_key_mappings =1
   Plug 'saihoooooooo/vim-textobj-space'         "iS, aS i<Space> for contineous spaces
   vmap a<Space>  <Plug>(textobj-space-a)
   vmap i<Space>  <Plug>(textobj-space-i)
   omap a<Space>  <Plug>(textobj-space-a)
   omap i<Space>  <Plug>(textobj-space-i)
+  "}}}
 
+  "{{{ path             => |, \
   let g:textobj_path_no_default_key_mappings =1
   Plug 'paulhybryant/vim-textobj-path'          "i|, a|, i\, a\          for Path
   vmap a\  <Plug>(textobj-path-next_path-a)
@@ -659,29 +685,36 @@ source ~/.nvim/problem.vim
   vmap i\|  <Plug>(textobj-path-prev_path-i)
   omap a\|  <Plug>(textobj-path-prev_path-a)
   omap i\|  <Plug>(textobj-path-prev_path-i)
+  "}}}
 
+  "{{{ inserted         => t
   let g:textobj_lastinserted_no_default_key_mappings =1
   Plug 'rhysd/vim-textobj-lastinserted'         "it, at          for last inserted
   vmap at  <Plug>(textobj-lastinserted-a)
   vmap it  <Plug>(textobj-lastinserted-i)
   omap at  <Plug>(textobj-lastinserted-a)
   omap it  <Plug>(textobj-lastinserted-i)
+  "}}}
 
-
+  "{{{ php              => <
   let g:textobj_php_no_default_key_mappings =1
   Plug 'akiyan/vim-textobj-php'                 "i<, a<        for <?php ?>
   vmap a<  <Plug>(textobj-php-a)
   vmap i<  <Plug>(textobj-php-i)
   omap a<  <Plug>(textobj-php-a)
   omap i<  <Plug>(textobj-php-i)
+  "}}}
 
+  "{{{between          => bX
   let g:textobj_between_no_default_key_mappings =1
   Plug 'thinca/vim-textobj-between'             "ibX, abX          for between two chars
   vmap ab  <Plug>(textobj-between-a)
   vmap ib  <Plug>(textobj-between-i)
   omap ab  <Plug>(textobj-between-a)
   omap ib  <Plug>(textobj-between-i)
+  "}}}
 
+  "{{{ any              => a
   let g:textobj_anyblock_no_default_key_mappings =1
   " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
   Plug 'rhysd/vim-textobj-anyblock'             "ia, aa          for (, {, [, ', ", <
@@ -690,17 +723,18 @@ source ~/.nvim/problem.vim
   vmap ia  <Plug>(textobj-anyblock-i)
   omap aa  <Plug>(textobj-anyblock-a)
   omap ia  <Plug>(textobj-anyblock-i)
+  "}}}}
 
+  "{{{ postexpr         => ge
   let g:textobj_postexpr_no_default_key_mappings =1
   Plug 'syngan/vim-textobj-postexpr'            "ige, age        for post expression
   vmap ige <Plug>(textobj-postexpr-i)
   vmap age <Plug>(textobj-postexpr-a)
   omap ige <Plug>(textobj-postexpr-i)
   omap age <Plug>(textobj-postexpr-a)
+  "}}}
 
-
-  " Plug 'kana/vim-niceblock'
-
+  "{{{ multi            =>  mt
   Plug 'osyo-manga/vim-textobj-multitextobj'
   let g:textobj_multitextobj_textobjects_i = [
         \   "\<Plug>(textobj-url-i)",
@@ -713,7 +747,7 @@ source ~/.nvim/problem.vim
   omap imt <Plug>(textobj-multitextobj-i)
   vmap amt <Plug>(textobj-multitextobj-a)
   vmap imt <Plug>(textobj-multitextobj-i)
-
+  "}}}
 
 "}}} _vim-textobj-user
 
@@ -1003,9 +1037,9 @@ Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
   Plug 'Shougo/neosnippet'
   Plug 'Shougo/neosnippet-snippets'
   " Plugin key-mappings.
-  imap <c-e>     <Plug>(neosnippet_expand_or_jump)
-  smap <c-e>     <Plug>(neosnippet_expand_or_jump)
-  xmap <c-e>     <Plug>(neosnippet_expand_target)
+  imap <c-\>     <Plug>(neosnippet_expand_or_jump)
+  smap <c-\>     <Plug>(neosnippet_expand_or_jump)
+  xmap <c-\>     <Plug>(neosnippet_expand_target)
   " For snippet_complete marker.
   if has('conceal')
     set conceallevel=2 concealcursor=niv
@@ -1584,7 +1618,17 @@ Plug 'airblade/vim-gitgutter'
 
 
 Plug 'jceb/vim-orgmode'
-Plug 'Yggdroot/indentLine'
+
+
+
+" let g:indentLine_char = '┊'
+" " let g:indentLine_color_term=""
+" " let g:indentLine_color_gui=""
+" let g:indentLine_fileType=[] "Means all filetypes
+" let g:indentLine_fileTypeExclude=[]
+" let g:indentLine_bufNameExclude=[]
+
+" Plug 'Yggdroot/indentLine'
 
 Plug 'honza/vim-snippets'
 
@@ -2864,4 +2908,4 @@ function! SetProjectPath()
   pwd
 endfunction
 
-nnoremap <silent> <c-p><c-\\> :call SetProjectPath()<cr>
+nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>
