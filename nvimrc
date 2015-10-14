@@ -62,6 +62,13 @@ call plug#begin('~/.nvim/plugged')
 
 "}}} _vim-exchange
 
+"{{{ rainbow_parentheses.vim
+
+  Plug 'junegunn/rainbow_parentheses.vim'
+  nnoremap <leader>xp :RainbowParentheses!!<CR>
+
+"}}}} _rainbow_parentheses.vim
+
 "{{{  vim-easy-align
 
   Plug 'junegunn/vim-easy-align'
@@ -69,7 +76,8 @@ call plug#begin('~/.nvim/plugged')
   vmap <Enter> <Plug>(EasyAlign)
 
   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-  nmap ga <Plug>(EasyAlign)
+  nmap g<cr> <Plug>(EasyAlign)
+  let g:easy_align_ignore_comment = 0 " align comments
 
 "}}} _vim-easy-align
 
@@ -97,6 +105,13 @@ call plug#begin('~/.nvim/plugged')
 
   let NERDTreeShowHidden=1
   let NERDTreeShowBookmarks=1
+
+  "          NERDTree commands
+  "========================================
+  " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
+  nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
+  nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
+  nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
 
 "}}} _NerdTree
 
@@ -164,6 +179,8 @@ function! Map_FZF(cmd, key)
   exe "nnoremap Ú<c-f>" . a:key . " :" . a:cmd . "!<cr>"
   exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . "!<cr>"
   exe "nnoremap <c-p>" . a:key . " :" . a:cmd . "!<cr>"
+  exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . "!<cr>"
+" tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
 endfunction
 
   nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
@@ -187,7 +204,6 @@ call Map_FZF("Marks", "◊")                "'
 call Map_FZF("Windows", "w")
 call Map_FZF("Helptags", "k")
 
-tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -404,6 +420,77 @@ let g:ctrlp_use_caching = 1
   let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
   " Plug 'nixprime/cpsm'
   " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+
+  nnoremap <c-p>j :CtrlPtjump<cr>
+  vnoremap <c-p>j :CtrlPtjumpVisual<cr>
+  nnoremap <c-p>b :CtrlPBuffer<cr>
+  nnoremap <c-p>cd :CtrlPDir .<cr>
+  nnoremap <c-p>d :CtrlPDir<cr>
+  nnoremap <c-p><c-[> :CtrlPFunky<Cr>
+  nnoremap <c-p><c-]> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+  nnoremap <c-p>f :execute ":CtrlP " . expand('%:p:h')<cr>
+  "nnoremap <c-p>m :CtrlPMixed<cr>
+  nnoremap <c-p>q :CtrlPQuickfix<cr>
+  nnoremap <c-p>y :CtrlPYankring<cr>
+  "nnoremap <c-p>r :CtrlPRoot<cr>
+  nnoremap <c-p>w :CtrlPCurWD<cr>
+
+  nnoremap <c-p>t :CtrlPTag<cr>
+  nnoremap <c-p>[ :CtrlPBufTag<cr>
+  nnoremap <c-p>] :CtrlPBufTagAll<cr>
+  nnoremap <c-p>u :CtrlPUndo<cr>
+  " nnoremap <c-p>\\ :CtrlPRTS<cr>
+  ""nnoremap <c-p><CR> :CtrlPCmdline<cr>
+  nnoremap <c-p>; :CtrlPCmdPalette<cr>
+  nnoremap <c-p><CR> :CtrlPCommandLine<cr>
+  nnoremap <c-p><BS> :CtrlPClearCache<cr>
+  nnoremap <c-p><Space> :CtrlPClearAllCache<cr>
+  nnoremap <c-p>p :CtrlPLastMode<cr>
+  nnoremap <c-p>i :CtrlPChange<cr>
+  nnoremap <c-p><c-i> :CtrlPChangeAll<cr>
+  nnoremap <c-p>l :CtrlPLine<cr>
+  nnoremap <c-p>` :CtrlPBookmarkDir<cr>
+  nnoremap <c-p>@ :CtrlPBookmarkDirAdd<cr>
+  nnoremap <c-p>o :CtrlPMRU<cr>
+
+
+  let g:ctrlp_prompt_mappings = {
+    \ 'PrtBS()':              ['<bs>', '<c-]>'],
+    \ 'PrtDelete()':          ['<del>'],
+    \ 'PrtDeleteWord()':      ['<c-w>'],
+    \ 'PrtClear()':           ['<c-u>'],
+    \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
+    \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
+    \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
+    \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
+    \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
+    \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
+    \ 'PrtHistory(-1)':       ['<c-n>'],
+    \ 'PrtHistory(1)':        ['<c-p>'],
+    \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
+    \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
+    \ 'AcceptSelection("t")': ['<c-t>'],
+    \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
+    \ 'ToggleFocus()':        ['<s-tab>'],
+    \ 'ToggleRegex()':        ['<c-r>'],
+    \ 'ToggleByFname()':      ['<c-d>'],
+    \ 'ToggleType(1)':        ['<c-f>'],
+    \ 'ToggleType(-1)':       ['<c-b>'],
+    \ 'PrtExpandDir()':       ['<tab>'],
+    \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
+    \ 'PrtInsert()':          ['<c-\>'],
+    \ 'PrtCurStart()':        ['<c-a>'],
+    \ 'PrtCurEnd()':          ['<c-e>'],
+    \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
+    \ 'PrtCurRight()':        ['<c-l>', '<right>'],
+    \ 'PrtClearCache()':      ['<F5>', 'ÚÚ'],
+    \ 'PrtDeleteEnt()':       ['<F7>'],
+    \ 'CreateNewFile()':      ['<c-y>'],
+    \ 'MarkToOpen()':         ['<c-z>'],
+    \ 'OpenMulti()':          ['<c-o>'],
+    \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
+    \ }
+
 "}}} _CtrlP
 
   "{{{ yankmatches.vim
@@ -475,6 +562,30 @@ Plug 'AndrewRadev/sideways.vim',
   nnoremap c;h :SidewaysLeft<cr>
 "}}} _sideways.vim
 
+Plug 'junegunn/vim-after-object'
+autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
+" ]= and [= instead of a= and aa=
+" autocmd VimEnter * call after_object#enable([']', '['], '=', ':')
+
+"{{{ Argumentative
+
+"Move and manipultae arguments of a function
+
+  Plug 'PeterRincker/vim-argumentative'
+
+  nmap [; <Plug>Argumentative_Prev
+  nmap ]; <Plug>Argumentative_Next
+  xmap [; <Plug>Argumentative_XPrev
+  xmap ]; <Plug>Argumentative_XNext
+  nmap <; <Plug>Argumentative_MoveLeft
+  nmap >; <Plug>Argumentative_MoveRight
+  xmap i; <Plug>Argumentative_InnerTextObject
+  xmap a; <Plug>Argumentative_OuterTextObject
+  omap i; <Plug>Argumentative_OpPendingInnerTextObject
+  omap a; <Plug>Argumentative_OpPendingOuterTextObject
+
+"}}} _Argumentative
+
 "{{{  vim-operator-user
 
   Plug 'kana/vim-operator-user'
@@ -513,48 +624,6 @@ Plug 'AndrewRadev/sideways.vim',
 
 "}}} _vim-operator-user
 
-source ~/.nvim/problem.vim
-
-"{{{ YankRing.vim
-
-  Plug 'vim-scripts/YankRing.vim'
-  let g:yankring_min_element_length = 2
-  let g:yankring_max_element_length = 548576 " 4M
-  let g:yankring_dot_repeat_yank = 1
-  " let g:yankring_window_use_horiz = 0  " Use vertical split
-  " let g:yankring_window_height = 8
-  " let g:yankring_window_width = 30
-  " let g:yankring_window_increment = 50   "In vertical press space to toggle width
-  " let g:yankring_ignore_operator = 'g~ gu gU ! = gq g? > < zf g@'
-  let g:yankring_history_dir = '~/.nvim/.cache/yankring'
-  " let g:yankring_clipboard_monitor = 0   "Detect when copying from outside
-  " :YRToggle    " Toggles it
-  " :YRToggle 1  " Enables it
-  " :YRToggle 0  " Disables it
-  nnoremap sd :YRToggle
-
-  nnoremap <silent> <F11> :YRShow<CR>
-"}}} _YankRing.vim
-
-"{{{ Argumentative
-
-"Move and manipultae arguments of a function
-
-  Plug 'PeterRincker/vim-argumentative'
-
-  nmap [; <Plug>Argumentative_Prev
-  nmap ]; <Plug>Argumentative_Next
-  xmap [; <Plug>Argumentative_XPrev
-  xmap ]; <Plug>Argumentative_XNext
-  nmap <; <Plug>Argumentative_MoveLeft
-  nmap >; <Plug>Argumentative_MoveRight
-  xmap i; <Plug>Argumentative_InnerTextObject
-  xmap a; <Plug>Argumentative_OuterTextObject
-  omap i; <Plug>Argumentative_OpPendingInnerTextObject
-  omap a; <Plug>Argumentative_OpPendingOuterTextObject
-
-"}}} _Argumentative
-
 "{{{  vim-textobj-user
 
   Plug 'kana/vim-textobj-user'
@@ -564,28 +633,32 @@ source ~/.nvim/problem.vim
 
   Plug 'Julian/vim-textobj-brace'               "ij, aj          for all kinds of brces
   Plug 'RyanMcG/vim-textobj-dash'               "i-, a-          for dashes
-  Plug 'glts/vim-textobj-comment'               "ic, ac, iC, aC  for comment
-  Plug 'glts/vim-textobj-indblock'              "io, ao, iO, aO  for indented blocks
-
-  Plug 'hchbaw/textobj-motionmotion.vim'        "imMotionMotion  for two motion range
-  Plug 'Úvimtaku/vim-textobj-doublecolon'        "i:, a:          for ::
-  Plug 'haya14busa/vim-textobj-number'          "in, an          for numbers
-  Plug 'kana/vim-textobj-fold'                  "iz, az          for folds
-  " Plug 'kana/vim-textobj-function'
-  Plug 'kana/vim-textobj-indent'                "ii, ai, iI, aI  for Indent
-  Plug 'kana/vim-textobj-lastpat'               "i/, a/, i?, a/  for Searched pattern
-  Plug 'kana/vim-textobj-line'                  "il, al          for line
-  Plug 'kana/vim-textobj-syntax'                "iy, ay          for Syntax
   Plug 'kana/vim-textobj-underscore'            "i_, a_          for underscore
+  Plug 'Úvimtaku/vim-textobj-doublecolon'        "i:, a:          for ::
+  Plug 'vimtaku/vim-textobj-doublecolon'
 
   Plug 'machakann/vim-textobj-delimited'        "id, ad, iD, aD  for Delimiters takes numbers d2id
                                                 " the delimters are /,\,#,-,_,CamelCase
+
+  Plug 'glts/vim-textobj-comment'               "ic, ac, iC, aC  for comment
+  Plug 'kana/vim-textobj-fold'                  "iz, az          for folds
+  Plug 'glts/vim-textobj-indblock'              "io, ao, iO, aO  for indented blocks
+  Plug 'kana/vim-textobj-indent'                "ii, ai, iI, aI  for Indent
+  Plug 'mattn/vim-textobj-url'                  "iu, au          for URL
+  Plug 'kana/vim-textobj-line'                  "il, al          for line
+  Plug 'haya14busa/vim-textobj-number'          "in, an          for numbers
+
+
+  Plug 'hchbaw/textobj-motionmotion.vim'        "imMotionMotion  for two motion range
+  " Plug 'kana/vim-textobj-function'
+  Plug 'kana/vim-textobj-lastpat'               "i/, a/, i?, a/  for Searched pattern
+  Plug 'kana/vim-textobj-syntax'                "iy, ay          for Syntax
+
 
   Plug 'machakann/vim-textobj-functioncall'     "if, af
   Plug 'sgur/vim-textobj-parameter'             "i,, a,          for parameter
   Plug 'Julian/vim-textobj-variable-segment'    "iv, av          for variable segment goO|rCome
 
-  Plug 'mattn/vim-textobj-url'                  "iu, au          for URL
 
   " Plug 'kana/vim-niceblock'
 
@@ -593,7 +666,6 @@ source ~/.nvim/problem.vim
   " Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
   Plug 'saaguero/vim-textobj-pastedtext'        "gb              for pasted text
 
-  Plug 'vimtaku/vim-textobj-doublecolon'
 
   "{{{ keyvalue         => k, v
   " Plug 'vimtaku/vim-textobj-keyvalue'
@@ -751,6 +823,33 @@ source ~/.nvim/problem.vim
 
 "}}} _vim-textobj-user
 
+"{{{ YankRing.vim
+
+  " Plug 'vim-scripts/YankRing.vim'
+  " let g:yankring_min_element_length = 2
+  " let g:yankring_max_element_length = 548576 " 4M
+  " let g:yankring_dot_repeat_yank = 1
+  " " let g:yankring_window_use_horiz = 0  " Use vertical split
+  " " let g:yankring_window_height = 8
+  " " let g:yankring_window_width = 30
+  " " let g:yankring_window_increment = 50   "In vertical press space to toggle width
+  " " let g:yankring_ignore_operator = 'g~ gu gU ! = gq g? > < zf g@'
+  " let g:yankring_history_dir = '~/.nvim/.cache/yankring'
+  " " let g:yankring_clipboard_monitor = 0   "Detect when copying from outside
+  " " :YRToggle    " Toggles it
+  " " :YRToggle 1  " Enables it
+  " " :YRToggle 0  " Disables it
+  " nnoremap sd :YRToggle
+
+  " nnoremap <silent> <F11> :YRShow<CR>
+"}}} _YankRing.vim
+
+"{{{ vim-yankstack
+
+  Plug 'maxbrunsfeld/vim-yankstack'
+
+  "}}}} _vim-yankstack
+
 "{{{  zoomwintab.vim
 
   let g:zoomwintab_remap = 0
@@ -761,6 +860,65 @@ source ~/.nvim/problem.vim
   vnoremap <silent> <a-o> <c-\><c-n>:ZoomWinTabToggle<cr>gv
 
 "}}} _zoomwintab.vim
+
+"{{{ vim-nunu
+
+  "Disable relative numbers on cursor move
+  " Plug 'seletskiy/vim-nunu'
+
+"}}}} _vim-nunu
+
+"{{{ junkfile.vim
+
+  Plug 'Shougo/junkfile.vim'
+
+  nnoremap <leader>jo :JunkfileOpen 
+  let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
+
+"}}}} _junkfile.vim
+
+"{{{ vim-peekaboo
+
+  Plug 'junegunn/vim-peekaboo'
+
+  " Default peekaboo window
+  let g:peekaboo_window = 'vertical botright 30new'
+
+  " Delay opening of peekaboo window (in ms. default: 0)
+  let g:peekaboo_delay = 250
+
+  " Compact display; do not display the names of the register groups
+  let g:peekaboo_compact = 1
+
+"}}}} _vim-peekaboo
+
+"{{{ calendar.vim
+
+  Plug 'itchyny/calendar.vim'
+  let g:calendar_date_month_name = 1
+
+"}}}} _calendar.vim
+
+"{{{ vim-hardtime
+
+  Plug 'takac/vim-hardtime'
+
+  let g:hardtime_timeout = 1000
+
+  let g:hardtime_allow_different_key = 1
+  let g:hardtime_maxcount = 1
+  let g:hardtime_default_on = 0
+  let g:hardtime_showmsg = 1
+
+  let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+  let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+  let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+
+
+  "Disable in certain buffers default []
+  " let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
+
+"}}}} _vim-hardtime
 
 "{{{  vim-submode
 
@@ -941,6 +1099,7 @@ source ~/.nvim/problem.vim
     let g:ctrlspace_glob_command = 'ag -l --nocolor -g ""'
   endif
 
+  nnoremap <C-Space> :CtrlSpace<cr>
   autocmd filetype ctrlspace call s:ctrlspace_settings()
   function! s:ctrlspace_settings()
     " enable navigation with control-j and control-k in insert mode
@@ -963,11 +1122,18 @@ source ~/.nvim/problem.vim
 
   "}}} _emmet-vim
 
+  "{{{ vim-skipit
+
+    Plug 'habamax/vim-skipit'
+    "use <c-l>l to skip ahead forward in insert mode
+
+  "}}} _vim-skipit
+
   "{{{ vim-easymotion
 
-  map s <Plug>(easymotion-prefix)
-
   Plug 'Lokaltog/vim-easymotion'
+
+  map s <Plug>(easymotion-prefix)
 
   map sl          <Plug>(easymotion-lineforward)
   map sh          <Plug>(easymotion-linebackward)
@@ -1025,13 +1191,44 @@ Plug 'bronson/vim-trailing-whitespace'
 "}}} _vim-trailing-whitespace
 
 "{{{ vim-over
+  "vim-fnr instead
 
-Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
-  nmap <leader>/ :OverCommandLine<cr>
-  nnoremap g;s :<c-u>OverCommandLine<cr>%s/
-  xnoremap g;s :<c-u>OverCommandLine<cr>%s/\%V
+  " Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
+  " nmap <leader>/ :OverCommandLine<cr>
+  " nnoremap g;s :<c-u>OverCommandLine<cr>%s/
+  " xnoremap g;s :<c-u>OverCommandLine<cr>%s/\%V
 
 "}}} _vim-over
+
+"{{{ vim-fnr
+
+  Plug 'junegunn/vim-pseudocl'
+
+  Plug 'junegunn/vim-fnr'
+
+  " Defaults
+  let g:fnr_flags   = 'gc'
+  let g:fnr_hl_from = 'Todo'
+  let g:fnr_hl_to   = 'IncSearch'
+
+  "custom mapping
+  nmap g;S <Plug>(FNR)
+  xmap g;S <Plug>(FNR)
+  nmap g;s <Plug>(FNR%)
+  xmap g;s <Plug>(FNR%)
+
+  " Special keys
+
+  " Tab
+      " i - case-insensitive match
+      " w - word-boundary match (\<STRING\>)
+      " g - substitute all occurrences
+      " c - confirm each substitution
+      " Tab or Enter to return
+  " CTRL-N or CTRL-P
+      " Auto-completion
+
+"}}}} _vim-fnr
 
 " neosnippet {{{
   Plug 'Shougo/neosnippet'
@@ -1083,7 +1280,7 @@ Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 
 "{{{ YouCompleteMe
 
-  " Plug 'Valloric/YouCompleteMe'
+  " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer --omnisharp-completer' }
   " " make YCM compatible with UltiSnips (using supertab)
   " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
   " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -1395,6 +1592,11 @@ endfunction
 
   Plug 'benekastah/neomake'
 
+  " autocmd! BufWritePost * Neomake
+  " let g:neomake_airline = 0
+  let g:neomake_error_sign = { 'text': '✘', 'texthl': 'ErrorSign' }
+  let g:neomake_warning_sign = { 'text': ':(', 'texthl': 'WarningSign' }
+
 "}}} _neomake
 
 "{{{  vim-accio
@@ -1552,17 +1754,18 @@ endfunction
   nnoremap <silent> <f9> :call neoterm#repl#line()<cr>
   vnoremap <silent> <f9> :call neoterm#repl#selection()<cr>
 
-  " run set test lib
-  nnoremap <silent> <leader>rt :call neoterm#test#run('all')<cr>
-  nnoremap <silent> <leader>rf :call neoterm#test#run('file')<cr>
-  nnoremap <silent> <leader>rn :call neoterm#test#run('current')<cr>
-  nnoremap <silent> <leader>rr :call neoterm#test#rerun()<cr>
+  " " TODO fix these mappings were disabled find alternatives
+  " " run set test lib
+  " nnoremap <silent> <leader>rt :call neoterm#test#run('all')<cr>
+  " nnoremap <silent> <leader>rf :call neoterm#test#run('file')<cr>
+  " nnoremap <silent> <leader>rn :call neoterm#test#run('current')<cr>
+  " nnoremap <silent> <leader>rr :call neoterm#test#rerun()<cr>
 
-  " Useful maps
-  " closes the all terminal buffers
-  nnoremap <silent> <leader>tc :call neoterm#close_all()<cr>
-  " clear terminal
-  nnoremap <silent> <leader>tl :call neoterm#clear()<cr>
+  " " Useful maps
+  " " closes the all terminal buffers
+  " nnoremap <silent> <leader>tc :call neoterm#close_all()<cr>
+  " " clear terminal
+  " nnoremap <silent> <leader>tl :call neoterm#clear()<cr>
 "}}} _neoterm
 
 "{{{  vim-endwise
@@ -1577,6 +1780,34 @@ endfunction
 
 "}}} _delimitMate
 
+"{{{ vim-bufsurf
+
+  Plug 'ton/vim-bufsurf'
+
+"}}}} _vim-bufsurf
+
+"{{{ capture.vim
+
+  "Capture EX-commad in a buffer
+  Plug 'tyru/capture.vim'
+
+"}}}} _capture.vim
+
+"{{{ phpcomplete-extended
+
+  " Plug 'm2mdas/phpcomplete-extended'
+  " let g:phpcomplete_index_composer_command = "composer"
+  " " autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
+
+  " Plug 'm2mdas/phpcomplete-extended-laravel'
+
+"}}}} _phpcomplete-extended
+
+"{{{ vim-blade
+
+  Plug 'xsbeats/vim-blade'
+
+"}}}} _vim-blade
 
 "{{{ vim-fugitive
 
@@ -1668,11 +1899,11 @@ call plug#end()
 
 
 "{{{ Functions
-  function! CreateFoldableCommentFunction()
+  function! CreateFoldableCommentFunction()"{{{
     normal 0f/lyt'02[ 2] 2ki"{{{ lp2j0>>2ji"}}}} _p04kf}x4jzaj
-  endfunction
+  endfunction"}}}
 
-  function! HighlightAllOfWord(onoff)
+  function! HighlightAllOfWord(onoff)"{{{
     if a:onoff == 1
       :augroup highlight_all
       :au!
@@ -1682,12 +1913,9 @@ call plug#end()
       :au! highlight_all
       match none /\<%s\>/
     endif
-  endfunction
+  endfunction"}}}
 
-  nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
-  nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
-
-  function! ToggleMouseFunction()
+  function! ToggleMouseFunction()"{{{
     if  &mouse=='a'
       set mouse=
       echo "Shell has it"
@@ -1695,18 +1923,17 @@ call plug#end()
       set mouse=a
       echo "Vim has it"
     endif
-  endfunction
+  endfunction"}}}
 
-  " Strip trailing whitespace (,ss)
-  function! StripWhitespace()
+  function! StripWhitespace()"{{{
     let save_cursor = getpos(".")
     let old_query = getreg('/')
     :%s/\s\+$//e
     call setpos('.', save_cursor)
     call setreg('/', old_query)
-  endfunction
+  endfunction"}}}
 
-  function! FindGitDirOrRoot()
+  function! FindGitDirOrRoot()"{{{
     let curdir = expand('%:p:h')
     let gitdir = finddir('.git', curdir . ';')
     if gitdir != ''
@@ -1714,20 +1941,20 @@ call plug#end()
     else
       return '/'
     endif
-  endfunction
+  endfunction"}}}
 
-  function! IndentToNextBraceInLineAbove()
+  function! IndentToNextBraceInLineAbove()"{{{
     :normal 0wk
     :normal "vyf(
     let @v = substitute(@v, '.', ' ', 'g')
     :normal j"vPl
-  endfunction
+  endfunction"}}}
+
+  function! List(command, selection, start_at_cursor, ...)"{{{
 
   " This is an updated, more powerful, version of the function discussed here:
   " http://www.reddit.com/r/vim/comments/1rzvsm/do_any_of_you_redirect_results_of_i_to_the/
   " that shows ]I, [I, ]D, [D, :ilist and :dlist results in the quickfix window, even spanning multiple files.
-
-  function! List(command, selection, start_at_cursor, ...)
     " derive the commands used below from the first argument
     let excmd   = a:command . "list"
     let normcmd = toupper(a:command)
@@ -1776,26 +2003,9 @@ call plug#end()
 
     " open the quickfix window if there is something to show
     cwindow
-  endfunction
+  endfunction"}}}
 
-  nnoremap <silent> [I :call List("i", 0, 0)<CR>
-  nnoremap <silent> ]I :call List("i", 0, 1)<CR>
-  xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
-  xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
-
-  command! -nargs=1 Ilist call List("i", 1, 0, <f-args>)
-
-  nnoremap <silent> [D :call List("d", 0, 0)<CR>
-  nnoremap <silent> ]D :call List("d", 0, 1)<CR>
-  xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
-  xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
-
-  command! -nargs=1 Dlist call List("d", 1, 0, <f-args>)
-
-  " Restore cursor position, window position, and last search after running a
-  " command.
-  " from: http://stackoverflow.com/questions/12374200/using-uncrustify-with-vim
-  function! Preserve(command)
+  function! Preserve(command)"{{{
     " Save the last search.
     let search = @/
 
@@ -1819,28 +2029,26 @@ call plug#end()
 
     " Restore the previous cursor position.
     call setpos('.', cursor_position)
-  endfunction
+  endfunction"}}}
 
-  " Specify path to your Uncrustify configuration file.
-  let g:uncrustify_cfg_file_path =
-        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
+  function! Uncrustify(language) "{{{
 
   " Don't forget to add Uncrustify executable to $PATH (on Unix) or
   " %PATH% (on Windows) for this command to work.
-  function! Uncrustify(language)
+
     call Preserve(':silent %!uncrustify'
           \ . ' -q '
           \ . ' -l ' . a:language
           \ . ' -c ' . g:uncrustify_cfg_file_path)
-  endfunction
+  endfunction"}}}
 
-  function! OpenHelpInCurrentWindow(topic)
+  function! OpenHelpInCurrentWindow(topic) "{{{
     view $VIMRUNTIME/doc/help.txt
     setl filetype=help
     setl buftype=help
     setl nomodifiable
     exe 'keepjumps help ' . a:topic
-  endfunction
+  endfunction "}}}
 
   " ScratchPad {{{
   augroup scratchpad
@@ -1848,20 +2056,20 @@ call plug#end()
     au BufNewFile,BufRead .scratchpads/scratchpad.* call ScratchPadLoad()
   augroup END
 
-  function! ScratchPadSave()
+  function! ScratchPadSave() "{{{
     let ftype = matchstr(expand('%'), 'scratchpad\.\zs\(.\+\)$')
     if ftype == ''
       return
     endif
     write
-  endfunction
+  endfunction "}}}
 
-  function! ScratchPadLoad()
+  function! ScratchPadLoad() "{{{
     nnoremap <silent> <buffer> q :w<cr>:close<cr>
     setlocal bufhidden=hide buflisted noswapfile
-  endfunction
+  endfunction "}}}
 
-  function! OpenScratchPad(ftype)
+  function! OpenScratchPad(ftype) "{{{
     if a:0 > 0
       let ftype = a:ftype
     else
@@ -1902,35 +2110,19 @@ call plug#end()
         exe "split +buffer" . scr_bufnum
       endif
     endif
-  endfunction
+  endfunction "}}}
 " }}}
 
-  function! GetVisualSelection()
+  function! GetVisualSelection() "{{{
     let [lnum1, col1] = getpos("'<")[1:2]
     let [lnum2, col2] = getpos("'>")[1:2]
     let lines = getline(lnum1, lnum2)
     let lines[-1] = lines[-1][: col2 - 2]
     let lines[0] = lines[0][col1 - 1:]
     return join(lines, "\n")
-  endfunction
+  endfunction "}}}
 
-  " Merge a tab into a split in the previous window
-  function! MergeTabs()
-    if tabpagenr() == 1
-      return
-    endif
-    let bufferName = bufname("%")
-    if tabpagenr("$") == tabpagenr()
-      close!
-    else
-      close!
-      tabprev
-    endif
-    split
-    execute "buffer " . bufferName
-  endfunction
-
-  function! RenameFile()
+  function! RenameFile() "{{{
     let old_name = expand('%')
     let new_name = input('New file name: ', expand('%'), 'file')
     if new_name != '' && new_name != old_name
@@ -1938,27 +2130,21 @@ call plug#end()
       exec ':silent !rm ' . old_name
       redraw!
     endif
-  endfunction
+  endfunction "}}}
 
+  function! SearchForCallSitesCursor() "{{{
   "Find references of this function (function calls)
-  function! SearchForCallSitesCursor()
     let searchTerm = expand("<cword>")
     call SearchForCallSites(searchTerm)
-  endfunction
+  endfunction "}}}
 
+  function! SearchForCallSites(term) "{{{
   " Search for call sites for term (excluding its definition) and
   " load into the quickfix list.
-  function! SearchForCallSites(term)
     cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
-  endfunction
+  endfunction "}}}
 
-
-  augroup ensure_directory_exists
-    autocmd!
-    autocmd BufNewFile * call s:EnsureDirectoryExists()
-  augroup END
-
-  function! s:EnsureDirectoryExists()
+  function! s:EnsureDirectoryExists() "{{{
     let required_dir = expand("%:h")
 
     if !isdirectory(required_dir)
@@ -1973,14 +2159,10 @@ call plug#end()
         echoerr "Can't create '" . required_dir . "'"
       endtry
     endif
-  endfunction
+  endfunction "}}}
 
-
-  " Press F4 to toggle the diff of currently open buffers/splits.
-  "noremap <F4> :call DiffMe()<CR>
-  command! DiffSplits :call DiffMe()<cr>
-  let $diff_me=0
-  function! DiffMe()
+  function! DiffMe() "{{{
+  " Toggle the diff of currently open buffers/splits.
     windo diffthis
     if $diff_me>0
       let $diff_me=0
@@ -1988,10 +2170,10 @@ call plug#end()
       windo diffoff
       let $diff_me=1
     endif
-  endfunction
+  endfunction "}}}
 
+  fu! RelativePathString(file) "{{{
   "Get relative path to this file
-  fu! RelativePathString(file)
     if strlen(a:file) == 0
       retu "[No Name]"
     en
@@ -2007,10 +2189,10 @@ call plug#end()
     elsei !empty(forward)
       retu forward[1:]
     en
-  endf
+  endf "}}}
 
+  function! Reg() "{{{
   ":Reg Shows and prompts to select from a reg
-  function! Reg()
     reg
     echo "Register: "
     let char = nr2char(getchar())
@@ -2018,9 +2200,7 @@ call plug#end()
       execute "normal! \"".char."p"
     endif
     redraw
-  endfunction
-
-  command! -nargs=0 Reg call Reg()
+  endfunction "}}}
 
 "{{{ CreateLaravelGeneratorFunction
 
@@ -2067,19 +2247,13 @@ call plug#end()
 
 "}}} _CreateLaravelGeneratorFunction
 
+  function! ExecuteLaravelGeneratorCMD()"{{{
+    let cmd = CreateLaravelGeneratorFunction()
+    call VimuxRunCommand(cmd)
+    call VimuxZoomRunner()
+  endfunction"}}}
 
-" BufOnly.vim  -  Delete all the buffers except the current/named buffer.
-" Copyright November 2003 by Christian J. Robinson <infynity@onewest.net>
-" Distributed under the terms of the Vim license.  See ":help license".
-" Usage:
-" :Bonly / :BOnly / :Bufonly / :BufOnly [buffer]
-" Without any arguments the current buffer is kept.  With an argument the
-" buffer name/number supplied is kept.
-
-command! -nargs=? -complete=buffer -bang BufOnly
-    \ :call BufOnly('<args>', '<bang>')
-nnoremap Ú<c-o> :BufOnly<cr>
-function! BufOnly(buffer, bang)
+function! BufOnly(buffer, bang) "{{{
   if a:buffer == ''
     " No buffer provided, use the current buffer.
     let buffer = bufnr('%')
@@ -2125,12 +2299,50 @@ function! BufOnly(buffer, bang)
     echomsg delete_count "buffers deleted"
   endif
 
-endfunction
-  "}}} _Functions
+endfunction "}}}
+
+function! ToggleFoldMethod() "{{{
+  if &foldenable==0
+    set foldenable
+    set foldmethod=marker
+    echomsg "FoldMethod = Marker"
+  elseif  &foldmethod=='marker'
+    set foldmethod=indent
+    echomsg "FoldMethod = Indent"
+  elseif &foldmethod=='indent'
+    set foldmethod=syntax
+    echomsg "FoldMethod = Syntax"
+  elseif &foldmethod=='syntax'
+    set nofoldenable
+    echomsg "Fold Disabled"
+  endif
+endfunction "}}}
+
+function! ToggleFoldMarker() "{{{
+  set foldlevel=0
+  if &filetype == "neosnippet"
+    setlocal foldmethod=marker
+    setlocal foldmarker=snippet,endsnippet
+  elseif &filetype == "cs"
+    " set foldtext=foldtext()
+    if &foldmarker != '#region,#endregion'
+      setlocal foldmarker=#region,#endregion
+    else
+      setlocal foldmarker={,}
+      setlocal foldlevel=2
+    endif
+  endif
+endfunction "}}}
+
+"}}} _Functions
 
 
   "{{{ AutoCommands
 
+  augroup ensure_directory_exists
+    autocmd!
+    autocmd BufNewFile * call s:EnsureDirectoryExists()
+  augroup END
 
   augroup global_settings
     au!
@@ -2176,14 +2388,26 @@ endfunction
 
 
   "Enter insert mode on switch to term and on leave leave insert mode
-   autocmd BufWinEnter,WinEnter term://* startinsert
-   autocmd BufLeave term://* stopinsert
+   " autocmd! BufWinEnter,WinEnter term://* startinsert
    " autocmd BufEnter term://* startinsert
-
+   " autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
+   " autocmd! BufLeave term://* stopinsert
+   " autocmd BufWinEnter term://* startinsert
   "}}} _Autocommands
 
 
   "{{{ Commands
+
+  command! -nargs=1 Ilist call List("i", 1, 0, <f-args>)
+  command! -nargs=1 Dlist call List("d", 1, 0, <f-args>)
+
+
+  command! DiffSplits :call DiffMe()<cr> 
+
+  command! -nargs=0 Reg call Reg()
+
+  command! -nargs=? -complete=buffer -bang BufOnly
+      \ :call BufOnly('<args>', '<bang>')
 
   " Convenient command to see the difference between the current buffer and the
   " file it was loaded from, thus the changes you made.  Only define it when not
@@ -2197,10 +2421,19 @@ endfunction
 
   command! Cclear cclose <Bar> call setqflist([])
   nnoremap co<bs> :Cclear<cr>
-  "}}} _Commands
+
+"}}} _Commands
 
 
 "{{{ Global Config
+
+  "Keep diffme function state
+  let $diff_me=0
+
+  " Specify path to your Uncrustify configuration file.
+  let g:uncrustify_cfg_file_path =
+        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
+
 
 " set background=dark
 " colorscheme molokai
@@ -2366,7 +2599,9 @@ set whichwrap+=h,l,<,>,[,]
 
 
 " Show “invisible” characters
-set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:×
+" set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
+" set listchars=tab:•·,trail:·,extends:❯,precedes:❮,nbsp:×
 set list
 
 "Set the fillchar of the inactive window to something I can see
@@ -2388,9 +2623,10 @@ set foldmethod=marker
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
 
+set nowrap
 
 set timeout
-set timeoutlen=750
+set timeoutlen=500
 "NeoVim handles ESC keys as alt+key set this to solve the problem
 set ttimeout
 set ttimeoutlen=0
@@ -2436,56 +2672,56 @@ let g:netrw_liststyle=3               "Make netrw look like NerdTree
 highlight ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
 call matchadd('ColorColumn', '\%81v', 100)
 
+" Use a blinking upright bar cursor in Insert mode, a solid block in normal
+" and a blinking underline in replace mode
+  let &t_SI = "\<Esc>[5 q"
+  let &t_SR = "\<Esc>[3 q"
+  let &t_EI = "\<Esc>[2 q"
 
 "}}} _Global Config
 
 
 "{{{ Key Binding
 
+tnoremap <c-o> <c-\><c-n>
+
+nnoremap <silent> [I :call List("i", 0, 0)<CR>
+nnoremap <silent> ]I :call List("i", 0, 1)<CR>
+xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
+xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
+nnoremap <silent> [D :call List("d", 0, 0)<CR>
+nnoremap <silent> ]D :call List("d", 0, 1)<CR>
+xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
+xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
+
+  "noremap <F4> :call DiffMe()<CR>
+
+  nnoremap Ú<c-o> :BufOnly<cr>
+
+  nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
+  nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
+
+
   nnoremap com :call ToggleFoldMarker()<cr>
 
   autocmd Filetype neosnippet,cs call ToggleFoldMarker()
 
-  function! ToggleFoldMarker()
-    set foldlevel=0
-    if &filetype == "neosnippet"
-      setlocal foldmethod=marker
-      setlocal foldmarker=snippet,endsnippet
-    elseif &filetype == "cs"
-      " set foldtext=foldtext()
-      if &foldmarker != '#region,#endregion'
-        setlocal foldmarker=#region,#endregion
-      else
-        setlocal foldmarker={,}
-        setlocal foldlevel=2
-      endif
-    endif
-  endfunction
 
   nnoremap cof :call ToggleFoldMethod()<cr>
 
-  function! ToggleFoldMethod()
-    if &foldenable==0
-      set foldenable
-      set foldmethod=marker
-      echomsg "FoldMethod = Marker"
-    elseif  &foldmethod=='marker'
-      set foldmethod=indent
-      echomsg "FoldMethod = Indent"
-    elseif &foldmethod=='indent'
-      set foldmethod=syntax
-      echomsg "FoldMethod = Syntax"
-    elseif &foldmethod=='syntax'
-      set nofoldenable
-      echomsg "Fold Disabled"
-    endif
-  endfunction
 
 
-  " Underline the current line with '='
+  " underline the current line with '='
   nnoremap <leader>u= :t.\|s/./=<cr>:nohls<cr>
   nnoremap <leader>u- :t.\|s/./-<cr>:nohls<cr>
   nnoremap <leader>u~ :t.\|s/./\\~<cr>:nohls<cr>
+
+  " Underline current line "{{{
+  " nnoremap <leader>- "zyy"zp<c-v>$r-
+  " nnoremap <leader>= "zyy"zp<c-v>$r=
+  " nnoremap <leader><leader>- o<home><ESC>120i-<ESC>
+  " nnoremap <leader><leader>= o<home><ESC>120i=<ESC>
+  "}}}
 
   nnoremap gf<C-M> :e! ++ff=dos<cr>
 
@@ -2508,11 +2744,18 @@ call matchadd('ColorColumn', '\%81v', 100)
 
   " Edit the vimrc file
   nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+
+  " run selected vimscript
+  vnoremap <Leader>sv "vy:@v<CR>
+
+  " run vimscript line
+  nnoremap <Leader>sl "vyy:@v<CR>
+
+  " run .vimrc
   nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 
   "Discard changes
-  nnoremap <leader>e<bs> :e!<cr>:echo '...'<cr>
-  nnoremap <leader><bs> :e! \| echo '...'<cr>
+  nnoremap <leader>e<bs> :e! \| echo 'changes discarded'<cr>
 
   "Retab file
   nnoremap <leader>er :retab<cr>
@@ -2525,22 +2768,13 @@ call matchadd('ColorColumn', '\%81v', 100)
 
   nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
 
-  "nnoremap <silent> <BS> :AirlineRefresh<cr>:redraw!<cr>:nohlsearch<cr>:sleep 250m<cr>:echo""<cr>
-  "nnoremap <silent> <BS> :AirlineRefresh<cr>:nohlsearch<cr>:redraw<cr>:echo ""<cr>
-  nnoremap <silent> <BS> :nohlsearch \| redraw! \| echo ""<cr>
-
-  " Use <C-L> to clear the highlighting of :set hlsearch.
-  if maparg('<C-L>', 'n') ==# ''
-    nnoremap <silent> <C-L> :nohlsearch<CR><C-L>
-  endif
+  nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
 
   noremap <leader>ss :call StripWhitespace()<CR>
 
   nnoremap <Leader>rn :call RenameFile()<cr>
 
-  nmap <C-W>u :call MergeTabs()<CR>
-
-  " Save a file as root (,W)
+  "save as root
   noremap <leader>W :w !sudo tee % > /dev/null<CR>
   "cnoremap sw! w !sudo tee % >/dev/null
 
@@ -2553,18 +2787,16 @@ call matchadd('ColorColumn', '\%81v', 100)
   nmap <silent> j gj
   nmap <silent> k gk
 
-
   "Make completion more comfortable
   inoremap <c-j> <c-n>
   inoremap <c-k> <c-p>
 
-
   inoremap <C-U> <C-G>u<C-U>
 
+  "TODO: conflicts with script-ease
   command! SplitLine :normal i<CR><ESC>,ss<cr>
   nnoremap K :call Preserve('SplitLine')<cr>
 
-  "nnoremap K i<CR><Esc>^mwgk:silent! s/\v +$//<CR>:noh<CR>
 
   " { and } skip over closed folds
   nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
@@ -2573,30 +2805,11 @@ call matchadd('ColorColumn', '\%81v', 100)
   vmap > >gv
   vmap < <gv
 
-
-  ".nvimrcUse 5j instead of jjjjj
-  "nnoremap jjj :<C-u>echo 'Motion objects are there for a reaon'
-  "nnoremap kkk :<C-u>echo 'Motion objects are there for a reaon'
-
   nnoremap ; :
   nnoremap : ;
 
   vnoremap ; :
   vnoremap : ;
-
-  if !exists('$TMUX')
-    nnoremap <silent> <c-h> <c-w><c-h>
-    nnoremap <silent> <c-j> <c-w><c-j>
-    nnoremap <silent> <c-k> <c-w><c-k>
-    nnoremap <silent> <c-l> <c-w><c-l>
-  endif
-
-  " Disable in favor of searchindex
-  " Keep search matches in the middle of the window.
-  "nnoremap n nzzzv
-  "nnoremap N Nzzzv
-  "nnoremap / /\\v
-  "vnoremap / /\\v
 
   noremap H ^
   noremap L $
@@ -2605,8 +2818,12 @@ call matchadd('ColorColumn', '\%81v', 100)
   onoremap H ^
   onoremap L $
 
-  " make it do . in visual mode
-  " vnoremap . :norm.<CR>
+  if !exists('$TMUX')
+    nnoremap <silent> <c-h> <c-w><c-h>
+    nnoremap <silent> <c-j> <c-w><c-j>
+    nnoremap <silent> <c-k> <c-w><c-k>
+    nnoremap <silent> <c-l> <c-w><c-l>
+  endif
 
   " select last matched item
   nnoremap <leader>/ //e<Enter>v??<Enter>
@@ -2614,48 +2831,28 @@ call matchadd('ColorColumn', '\%81v', 100)
   " <Leader>``: Force quit all
   nnoremap <Leader>`` :qa!<cr>
 
-  function! ExecuteLaravelGeneratorCMD()
-    let cmd = CreateLaravelGeneratorFunction()
-    call VimuxRunCommand(cmd)
-    call VimuxZoomRunner()
-  endfunction
+  " Edit todo list for project
+  nmap ,todo :e todo.txt<cr>
 
-  nnoremap ; :call ExecuteLaravelGeneratorCMD()<cr>
+  " Laravel framework commons
+  nnoremap Úlv :e ./resources/views/<cr>
+  nnoremap Úlc :e ./resources/views/partials/<cr>
+  nnoremap Úlp :e ./public/<cr>
 
-  "nnoremap ;  :<C-R>=CreateLaravelGeneratorFunction()<CR>
-  "nnoremap ; :call VimuxSlime('"' . CreateLaravelGeneratorFunction() '"')<cr>
-  "nnoremap ; :call VimuxRunCommand(CreateLaravelGeneratorFunction())<cr>
 
-  " bind K to grep word under cursor
-  "nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
-
-  " Uppercase word mapping.
-  "
-  " This mapping allows you to press <c-u> in insert mode to convert the current
-  " word to uppercase.  It's handy when you're writing names of constants and
-  " don't want to use Capslock.
-  "
-  " To use it you type the name of the constant in lowercase.  While your
-  " cursor is at the end of the word, press <c-u> to uppercase it, and then
-  " continue happily on your way:
+  "uppercase from insert mode while you are at the end of a word
   inoremap <C-u> <esc>mzgUiw`za
 
+  "center screen cursor
   nnoremap z<Space> zMzv
-
-  "Create commented fold marker
-  nnoremap <silent> <leader>cfc :CreateFoldableComment<cr>
 
   " <Leader>sm: Maximize current split
   nnoremap <Leader>sm <C-w>_<C-w><Bar>
 
-  " <Leader>,: Switch to previous split
-  nnoremap <Leader>. <C-w>p
-  nnoremap <Leader>sp <C-w>p
 
   "Clear the search highlight except when I move
-  "autocmd! cursorhold * set nohlsearch
-  "autocmd! cursormoved * set hlsearch
-
+  autocmd! cursorhold * set nohlsearch
+  autocmd! cursormoved * set hlsearch
 
 
   " Move visual block
@@ -2666,6 +2863,9 @@ call matchadd('ColorColumn', '\%81v', 100)
   nnoremap gb `[v`]
   nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
 
+  "Reselect the text you just entered
+  nnoremap gV `[v`]
+
   " Highlight TODO markers
   match todo '\v^(\<|\=|\>){7}([^=].+)?$'
   match todo '\v^(\<|\=|\>){7}([^=].+)?$'
@@ -2673,83 +2873,6 @@ call matchadd('ColorColumn', '\%81v', 100)
   " Jump to next/previous merge conflict marker
   " nnoremap <silent> ]m /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
   " nnoremap <silent> [m ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
-
-
-
-  nnoremap <c-p>j :CtrlPtjump<cr>
-  vnoremap <c-p>j :CtrlPtjumpVisual<cr>
-  nnoremap <c-p>b :CtrlPBuffer<cr>
-  nnoremap <c-p>cd :CtrlPDir .<cr>
-  nnoremap <c-p>d :CtrlPDir<cr>
-  nnoremap <c-p><c-[> :CtrlPFunky<Cr>
-  nnoremap <c-p><c-]> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
-  nnoremap <c-p>f :execute ":CtrlP " . expand('%:p:h')<cr>
-  "nnoremap <c-p>m :CtrlPMixed<cr>
-  nnoremap <c-p>q :CtrlPQuickfix<cr>
-  nnoremap <c-p>y :CtrlPYankring<cr>
-  "nnoremap <c-p>r :CtrlPRoot<cr>
-  nnoremap <c-p>w :CtrlPCurWD<cr>
-
-  nnoremap <c-p>t :CtrlPTag<cr>
-  nnoremap <c-p>[ :CtrlPBufTag<cr>
-  nnoremap <c-p>] :CtrlPBufTagAll<cr>
-  nnoremap <c-p>u :CtrlPUndo<cr>
-  nnoremap <c-p>\\ :CtrlPRTS<cr>
-  ""nnoremap <c-p><CR> :CtrlPCmdline<cr>
-  nnoremap <c-p>; :CtrlPCmdPalette<cr>
-  nnoremap <c-p><CR> :CtrlPCommandLine<cr>
-  nnoremap <c-p><BS> :CtrlPClearCache<cr>
-  nnoremap <c-p><Space> :CtrlPClearAllCache<cr>
-  nnoremap <c-p>p :CtrlPLastMode<cr>
-  nnoremap <c-p>i :CtrlPChange<cr>
-  nnoremap <c-p><c-i> :CtrlPChangeAll<cr>
-  nnoremap <c-p>l :CtrlPLine<cr>
-  nnoremap <c-p>` :CtrlPBookmarkDir<cr>
-  nnoremap <c-p>@ :CtrlPBookmarkDirAdd<cr>
-  nnoremap <c-p>o :CtrlPMRU<cr>
-
-
-  let g:ctrlp_prompt_mappings = {
-    \ 'PrtBS()':              ['<bs>', '<c-]>'],
-    \ 'PrtDelete()':          ['<del>'],
-    \ 'PrtDeleteWord()':      ['<c-w>'],
-    \ 'PrtClear()':           ['<c-u>'],
-    \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
-    \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
-    \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
-    \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
-    \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
-    \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
-    \ 'PrtHistory(-1)':       ['<c-n>'],
-    \ 'PrtHistory(1)':        ['<c-p>'],
-    \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
-    \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
-    \ 'AcceptSelection("t")': ['<c-t>'],
-    \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
-    \ 'ToggleFocus()':        ['<s-tab>'],
-    \ 'ToggleRegex()':        ['<c-r>'],
-    \ 'ToggleByFname()':      ['<c-d>'],
-    \ 'ToggleType(1)':        ['<c-f>'],
-    \ 'ToggleType(-1)':       ['<c-b>'],
-    \ 'PrtExpandDir()':       ['<tab>'],
-    \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
-    \ 'PrtInsert()':          ['<c-\>'],
-    \ 'PrtCurStart()':        ['<c-a>'],
-    \ 'PrtCurEnd()':          ['<c-e>'],
-    \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
-    \ 'PrtCurRight()':        ['<c-l>', '<right>'],
-    \ 'PrtClearCache()':      ['<F5>', 'ÚÚ'],
-    \ 'PrtDeleteEnt()':       ['<F7>'],
-    \ 'CreateNewFile()':      ['<c-y>'],
-    \ 'MarkToOpen()':         ['<c-z>'],
-    \ 'OpenMulti()':          ['<c-o>'],
-    \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
-    \ }
-
-
-
-  "Reselect the text you just entered
-  nnoremap gV `[v`]
 
   "Put an empty line before and after this line : depends on PLUGIN
   nnoremap \\<Space> :normal [ ] <cr>
@@ -2759,18 +2882,6 @@ call matchadd('ColorColumn', '\%81v', 100)
 
   "Go to alternate file
   nnoremap go <C-^>
-
-  "NERDTree commands
-  "=======================
-  " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
-  nnoremap Ú<c-l> :NERDTreeToggle<cr>
-  nnoremap Úl :NERDTreeFind<cr>
-
-  "Open notes text file
-  "=======================
-  "First add a ctrlp extensionto do this
-  "nnoremap <silent> Ún  :e ~/.vim/notes
-
 
   "Open/Close commands
   "======================
@@ -2903,8 +3014,8 @@ call matchadd('ColorColumn', '\%81v', 100)
 
 
 function! SetProjectPath()
-  lcd ~/Development/Projects/Dwarozh/App/public/
-  cd ~/Development/Projects/Dwarozh/App/public/
+  lcd ~/Development/Projects/Dwarozh/App/
+  cd ~/Development/Projects/Dwarozh/App/
   pwd
 endfunction
 
