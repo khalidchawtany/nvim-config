@@ -35,601 +35,39 @@ call plug#begin('~/.nvim/plugged')
   "Plug '~/my-prototype-plugin'
 "}}}
 
-"{{{ vim-devicons
-
-  Plug 'ryanoasis/vim-devicons'
-
-"}}}} _vim-devicons
-
-"{{{  seoul256.vim
-
-    Plug 'junegunn/seoul256.vim'
-
-"}}} _seoul256.vim
-
-"{{{  applescript.vim
-
-  Plug 'vim-scripts/applescript.vim'
-
-"}}} _applescript.vim
-
-"{{{  switch.vim
-
-  Plug 'AndrewRadev/switch.vim'
-
-"}}} _switch.vim
-
-"{{{  vim-exchange
-
-  Plug 'tommcdo/vim-exchange'
-
-"}}} _vim-exchange
-
-"{{{ rainbow_parentheses.vim
-
-  Plug 'junegunn/rainbow_parentheses.vim'
-  nnoremap <leader>xp :RainbowParentheses!!<CR>
-
-"}}}} _rainbow_parentheses.vim
-
-"{{{  vim-easy-align
-
-  Plug 'junegunn/vim-easy-align'
-  " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-  vmap <Enter> <Plug>(EasyAlign)
-
-  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-  nmap g<cr> <Plug>(EasyAlign)
-  let g:easy_align_ignore_comment = 0 " align comments
-
-"}}} _vim-easy-align
-
-"{{{ NerdTree
-  "Disable Netrw
-  let g:loaded_netrw       = 1
-  let g:loaded_netrwPlugin = 1
-
-  Plug 'scrooloose/nerdtree' ", { 'on':  'NERDTreeToggle' }
-
-  "let g:nerdtree_tabs_open_on_gui_startup = 0
-  let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
-
-  " Plug 'jistr/vim-nerdtree-tabs'
-
-  let NERDTreeQuitOnOpen=1
-  let NERDTreeWinSize = 23
-
-  " Don't display these kinds of files
-  let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-        \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-        \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-        \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-        \ '^.gitignore$', '^.idea$' , '^tags$']
-
-  let NERDTreeShowHidden=1
-  let NERDTreeShowBookmarks=1
-
-  "          NERDTree commands
-  "========================================
-  " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
-  nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
-  nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
-  nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
-
-"}}} _NerdTree
-
-"{{{  vim-eunuch
-
-  Plug 'tpope/vim-eunuch'
-
-"}}} _vim-eunuch
-
-"{{{  vim-grepper
-
-  Plug 'mhinz/vim-grepper'
-
-  nmap <leader>g <plug>(Grepper)
-  xmap <leader>g <plug>(Grepper)
-  cmap <leader>g <plug>(GrepperNext)
-  nmap gs        <plug>(GrepperMotion)
-  xmap gs        <plug>(GrepperMotion)
-
-  let g:grepper              = {}
-  let g:grepper.programs     = ['ag', 'git', 'grep']
-  let g:grepper.use_quickfix = 1
-  let g:grepper.do_open      = 1
-  let g:grepper.do_switch    = 1
-  let g:grepper.do_jump      = 0
-"}}} _vim-grepper
-
-"{{{  fzf
-  let $FZF_DEFAULT_COMMAND='ag -l -g ""'
-  set rtp+=/usr/local/Cellar/fzf/HEAD
-  " Plug 'junegunn/fzf', {'do' : 'yes \| brew reinstall --HEAD fzf'}
-  Plug 'junegunn/fzf'
-  Plug 'junegunn/fzf.vim'
-
-  "Provides the following commands:
-  "================================
- " -----------------+----------------------------------------------------------------
- " Command          | List                                                          ~
- " -----------------+----------------------------------------------------------------
-  " `Files [PATH]`    | Files (similar to  `:FZF` )
-  " `Buffers`         | Open buffers
-  " `Colors`          | Color schemes
-  " `Ag [PATTERN]`    | {ag}{5} search result (CTRL-A to select all, CTRL-D to deselect all)
-  " `Lines`           | Lines in loaded buffers
-  " `BLines`          | Lines in the current buffer
-  " `Tags`            | Tags in the project ( `ctags -R` )
-  " `BTags`           | Tags in the current buffer
-  " `Marks`           | Marks
-  " `Windows`         | Windows
-  " `Locate PATTERN`  |  `locate`  command output
-  " `History`         |  `v:oldfiles`  and open buffers
-  " `History:`        | Command history
-  " `History/`        | Search history
-  " `Snippets`        | Snippets ({UltiSnips}{6})
-  " `Commits`         | Git commits (requires {fugitive.vim}{7})
-  " `BCommits`        | Git commits for the current buffer
-  " `Commands`        | Commands
-  " `Helptags`        | Help tags [1]
- " -----------------+---------------------------------------------------------------------
-
-
-function! Map_FZF(cmd, key)
-  exe "nnoremap Úf" . a:key . " :" . a:cmd . "<cr>"
-  exe "nnoremap Ú<c-f><c-" . a:key . "> :" . a:cmd . "!<cr>"
-  exe "nnoremap Ú<c-f>" . a:key . " :" . a:cmd . "!<cr>"
-  exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . "!<cr>"
-  exe "nnoremap <c-p>" . a:key . " :" . a:cmd . "!<cr>"
-  exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . "!<cr>"
-" tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
-endfunction
-
-  nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
-  nnoremap Ú<c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
-
-call Map_FZF("FZF", "f")
-call Map_FZF("Buffers", "b")
-call Map_FZF("Colors", "c")
-call Map_FZF("Ag", "a")
-call Map_FZF("Lines", "l")
-call Map_FZF("BTags", "t")
-call Map_FZF("Tags", "]")
-" call Map_FZF("Locate", "p")
-call Map_FZF("History", "h")
-call Map_FZF("History/", "/")
-call Map_FZF("History:", "Ú")             "<cr>
-call Map_FZF("Commands", "‰")             ":
-call Map_FZF("BCommits", "g")
-call Map_FZF("Snippets", "s")
-call Map_FZF("Marks", "◊")                "'
-call Map_FZF("Windows", "w")
-call Map_FZF("Helptags", "k")
-
-
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
-
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-a> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-imap <c-x><c-i> <plug>(fzf-complete-buffer-line)
-imap <c-x><c-\> <plug>(fzf-complete-file)
-
-" Replace the default dictionary completion with fzf-based fuzzy completion
-" inoremap <expr> <c-x><c-k> fzf#complete('cat /usr/share/dict/words')
-
-  function! PrintPathFunction(myParam)
-    execute ":normal i".a:myParam
-  endfunction
-
-  function! PrintPathInNextLineFunction(myParam)
-    put=a:myParam
-  endfunction
-  command! -nargs=1 PrintPathInNextLine call PrintPathInNextLineFunction(<f-args>)
-  command! -nargs=1 PrintPath call PrintPathFunction(<f-args>)
-
-  let g:fzf_action = {
-    \ 'ctrl-m': 'e',
-    \ 'ctrl-t': 'tabedit',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-o': 'PrintPathInNextLine',
-    \ 'ctrl-i': 'PrintPath',
-    \ 'ctrl-v': 'vsplit' }
-
-"}}} _fzf
-
-  "{{{ Unite
-
-  Plug 'Shougo/unite.vim'
-  let g:unite_data_directory=$HOME.'/.vim/.cache/unite'
-
-
-  Plug 'tsukkee/unite-help'
-  " Execute help.
-  nnoremap ÚÚh  :<C-u>Unite -start-insert help<CR>
-  " Execute help by cursor keyword.
-  nnoremap <silent> ÚÚ<C-h>  :<C-u>UniteWithCursorWord help<CR>
-
-  Plug 'tsukkee/unite-tag'
-  Plug 'h1mesuke/unite-outline'
-  Plug 'Shougo/unite-outline'
-  Plug 'ujihisa/unite-colorscheme'
-  Plug 'ujihisa/unite-font'
-  Plug 'ujihisa/unite-locate'
-  Plug 'sgur/unite-everything'
-  Plug 'tacroe/unite-mark'
-  Plug 'tacroe/unite-alias'
-  Plug 'hakobe/unite-script'
-  Plug 'soh335/unite-qflist'
-  Plug 'thinca/vim-unite-history'
-  Plug 'sgur/unite-qf'
-  Plug 'oppara/vim-unite-cake'
-  Plug 't9md/vim-unite-ack'
-  Plug 'Sixeight/unite-grep'
-  Plug 'kannokanno/unite-todo'
-  Plug 'Shougo/unite-build'
-  Plug 'osyo-manga/unite-fold'
-  "call unite#custom#source('buffer,file,file_rec',
-  "\ 'sorters', 'sorter_length')
-
-  let g:unite_force_overwrite_statusline = 0
-  let g:unite_winheight = 10
-  let g:unite_data_directory='~/.vim/.cache/unite'
-  let g:unite_enable_start_insert=1
-  let g:unite_source_history_yank_enable=1
-  let g:unite_prompt='» '
-  let g:unite_split_rule = 'botright'
-
-  if executable('ag')
-    let g:unite_source_grep_command='ag'
-    let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
-    let g:unite_source_grep_recursive_opt=''
-    let g:unite_source_rec_async_command='ag --nocolor --nogroup --ignore ".hg" --ignore ".svn" --ignore ".git" --ignore ".bzr" --hidden -g ""'
-  endif
-
-  " Custom mappings for the unite buffer
-  autocmd FileType unite call s:unite_settings()
-  function! s:unite_settings()
-    " Play nice with supertab
-    let b:SuperTabDisabled=1
-    " Enable navigation with control-j and control-k in insert mode
-    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-  endfunction
-
-  function! Open_current_file_dir(args)
-    let [args, options] = unite#helper#parse_options_args(a:args)
-    let path = expand('%:h')
-    let options.path = path
-    call unite#start(args, options)
-  endfunction
-
-  nnoremap ÚÚcd :call Open_current_file_dir('-no-split file')<cr>
-  nmap <buffer> <bs> <Plug>(unite_delete_backward_path)
-  nmap <silent><buffer><esc> <Plug>(unite_all_exit) " Close Unite view
-
-  "CtrlP & NerdTree combined
-  nnoremap <silent> ÚÚF :Unite -auto-resize file/async  file_rec/async<cr>
-  nnoremap <silent> ÚÚf :Unite -auto-resize file_rec/async<cr>
-  nnoremap <silent> ÚÚ<c-f> :Unite -auto-resize file_rec/async<cr>
-
-  nnoremap <silent> ÚÚd :Unite -auto-resize directory_rec/async<cr>
-  nnoremap <silent> ÚÚo :Unite -auto-resize file_mru<cr>
-
-  nnoremap <silent> ÚÚl :Unite -auto-resize outline<cr>
-
-  "Grep commands
-  nnoremap <silent> ÚÚg :Unite -auto-resize grep:.<cr>
-  nnoremap <silent> ÚÚ<c-g> :Unite -auto-resize grep:/<cr>
-  "Content search like Ag anc Ack
-  nnoremap ÚÚ/ :Unite grep:.<cr>
-
-  "Hostory & YankRing
-  let g:unite_source_history_yank_enable = 1
-  nnoremap ÚÚy :Unite history/yank<cr>
-  nnoremap ÚÚ: :Unite history/command<cr>
-  nnoremap ÚÚ/ :Unite history/search<cr>
-
-  nnoremap ÚÚ? :Unite mapping<cr>
-
-  "LustyJuggler
-  nnoremap ÚÚb :Unite -quick-match buffer<cr>
-  nnoremap ÚÚ<c-b> :Unite buffer<cr>
-
-
-  "LustyJuggler
-  nnoremap ÚÚt :Unite -quick-match tab<cr>
-  nnoremap ÚÚ<c-t> :Unite tab<cr>
-
-  "Line Search
-  nnoremap ÚÚl :Unite line<cr>
-  nnoremap ÚÚL :Unite -quick-match line<cr>
-
-  "}}} _Unite
-
-"{{{ CtrlP
-
-  " Plug 'kien/ctrlp.vim'
-  Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'sgur/ctrlp-extensions.vim'
-  Plug 'fisadev/vim-ctrlp-cmdpalette'
-
-  Plug 'ivalkeen/vim-ctrlp-tjump'
-
-  Plug 'suy/vim-ctrlp-commandline'
-  command! CtrlPCommandLine call ctrlp#init(ctrlp#commandline#id())
-  cnoremap <silent> <C-p> <C-c>:call ctrlp#init(ctrlp#commandline#id())<CR>
-
-  Plug 'tacahiroy/ctrlp-funky'
-
-  "Locate my notes
-  Plug '/Volumes/Home/.nvim/plugged/ctrlp-my-notes'
-
-  "My dash helper plugin
-  Plug '/Volumes/Home/.nvim/plugged/ctrlp-dash-helper'
-
- "'vim-ctrlp-tjump',
- let g:ctrlp_extensions = [
-       \ 'tag', 'buffertag', 'quickfix', 'dir', 'rtscript', 'dashhelper',
-       \ 'vimnotes', 'undo', 'line', 'changes', 'mixed', 'bookmarkdir',
-       \ 'funky', 'commandline'
-       \ ]
-
-
-"Open window in NERDTree if available
-let g:ctrlp_reuse_window = 'netrw\|help\|NERD\|startify'
-
-" Make Ctrl+P indexing faster by using ag silver searcher
-let g:ctrlp_lazy_update = 350
-
-"Enable caching to make it fast
-let g:ctrlp_use_caching = 1
-
-  "Don't clean cache on exit else it will take alot to regenerate RTP
-  let g:ctrlp_clear_cache_on_exit = 0
-
-  let g:ctrlp_cache_dir = $HOME.'/.nvim/.cache/ctrlp'
-
-  let g:ctrlp_max_files = 0
-  if executable("ag")
-    set grepprg=ag\ --nogroup\ --nocolor
-    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-          \ --ignore .git
-          \ --ignore .svn
-          \ --ignore .hg
-          \ --ignore .DS_Store
-          \ --ignore "**/*.pyc"
-          \ --ignore vendor
-          \ --ignore node_modules
-          \ -g ""'
-
-  endif
-
-  let g:ctrlp_switch_buffer = 'e'
-
-  "When I press C-P run CtrlP from root of my project regardless of the current
-  "files path
-  let g:ctrlp_cmd='CtrlPRoot'
-  let g:ctrlp_map = '<c-p><c-p>'
-
-  " Make Ctrl+P matching faster by using pymatcher
-  " Plug 'FelikZ/ctrlp-py-matcher'
-  " let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-  Plug 'JazzCore/ctrlp-cmatcher'
-  let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
-  " Plug 'nixprime/cpsm'
-  " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
-
-  nnoremap <c-p>j :CtrlPtjump<cr>
-  vnoremap <c-p>j :CtrlPtjumpVisual<cr>
-  nnoremap <c-p>b :CtrlPBuffer<cr>
-  nnoremap <c-p>cd :CtrlPDir .<cr>
-  nnoremap <c-p>d :CtrlPDir<cr>
-  nnoremap <c-p><c-[> :CtrlPFunky<Cr>
-  nnoremap <c-p><c-]> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
-  nnoremap <c-p>f :execute ":CtrlP " . expand('%:p:h')<cr>
-  "nnoremap <c-p>m :CtrlPMixed<cr>
-  nnoremap <c-p>q :CtrlPQuickfix<cr>
-  nnoremap <c-p>y :CtrlPYankring<cr>
-  "nnoremap <c-p>r :CtrlPRoot<cr>
-  nnoremap <c-p>w :CtrlPCurWD<cr>
-
-  nnoremap <c-p>t :CtrlPTag<cr>
-  nnoremap <c-p>[ :CtrlPBufTag<cr>
-  nnoremap <c-p>] :CtrlPBufTagAll<cr>
-  nnoremap <c-p>u :CtrlPUndo<cr>
-  " nnoremap <c-p>\\ :CtrlPRTS<cr>
-  ""nnoremap <c-p><CR> :CtrlPCmdline<cr>
-  nnoremap <c-p>; :CtrlPCmdPalette<cr>
-  nnoremap <c-p><CR> :CtrlPCommandLine<cr>
-  nnoremap <c-p><BS> :CtrlPClearCache<cr>
-  nnoremap <c-p><Space> :CtrlPClearAllCache<cr>
-  nnoremap <c-p>p :CtrlPLastMode<cr>
-  nnoremap <c-p>i :CtrlPChange<cr>
-  nnoremap <c-p><c-i> :CtrlPChangeAll<cr>
-  nnoremap <c-p>l :CtrlPLine<cr>
-  nnoremap <c-p>` :CtrlPBookmarkDir<cr>
-  nnoremap <c-p>@ :CtrlPBookmarkDirAdd<cr>
-  nnoremap <c-p>o :CtrlPMRU<cr>
-
-
-  let g:ctrlp_prompt_mappings = {
-    \ 'PrtBS()':              ['<bs>', '<c-]>'],
-    \ 'PrtDelete()':          ['<del>'],
-    \ 'PrtDeleteWord()':      ['<c-w>'],
-    \ 'PrtClear()':           ['<c-u>'],
-    \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
-    \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
-    \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
-    \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
-    \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
-    \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
-    \ 'PrtHistory(-1)':       ['<c-n>'],
-    \ 'PrtHistory(1)':        ['<c-p>'],
-    \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
-    \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
-    \ 'AcceptSelection("t")': ['<c-t>'],
-    \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
-    \ 'ToggleFocus()':        ['<s-tab>'],
-    \ 'ToggleRegex()':        ['<c-r>'],
-    \ 'ToggleByFname()':      ['<c-d>'],
-    \ 'ToggleType(1)':        ['<c-f>'],
-    \ 'ToggleType(-1)':       ['<c-b>'],
-    \ 'PrtExpandDir()':       ['<tab>'],
-    \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
-    \ 'PrtInsert()':          ['<c-\>'],
-    \ 'PrtCurStart()':        ['<c-a>'],
-    \ 'PrtCurEnd()':          ['<c-e>'],
-    \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
-    \ 'PrtCurRight()':        ['<c-l>', '<right>'],
-    \ 'PrtClearCache()':      ['<F5>', 'ÚÚ'],
-    \ 'PrtDeleteEnt()':       ['<F7>'],
-    \ 'CreateNewFile()':      ['<c-y>'],
-    \ 'MarkToOpen()':         ['<c-z>'],
-    \ 'OpenMulti()':          ['<c-o>'],
-    \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
-    \ }
-
-"}}} _CtrlP
-
-  "{{{ yankmatches.vim
-
-  Plug '~/.vim/bundle/yankmatches.vim'
-
-  nnoremap <silent>  dm :     call ForAllMatches('delete', {})<CR>
-  nnoremap <silent>  DM :     call ForAllMatches('delete', {'inverse':1})<CR>
-  nnoremap <silent>  ym :     call ForAllMatches('yank',   {})<cr>
-  nnoremap <silent>  YM :     call ForAllMatches('yank',   {'inverse':1})<CR>
-  vnoremap <silent>  dm :<C-U>call ForAllMatches('delete', {'visual':1})<CR>
-  vnoremap <silent>  DM :<C-U>call ForAllMatches('delete', {'visual':1, 'inverse':1})<CR>
-  vnoremap <silent>  ym :<C-U>call ForAllMatches('yank',   {'visual':1})<CR>
-  vnoremap <silent>  YM :<C-U>call ForAllMatches('yank',   {'visual':1, 'inverse':1})<CR>
-
-  "}}} _yankmatches.vim
-
-"{{{ tagbar
-
-  Plug 'majutsushi/tagbar', {
-        \ 'on' : [
-        \     'Tagbar',
-        \     'TagbarToggle',
-        \   ]
-        \ }
-
-  nnoremap <silent> <leader>tb :TagbarToggle<CR>
-
-"}}} _tagbar
-
-"{{{ tasklist
-
-  " TaskList populate all tasks from all files into one place
-  Plug 'vim-scripts/TaskList.vim'
-
-"}}} _tasklist
-
-"{{{ ambi-cmd
-
-  Plug 'thinca/vim-ambicmd'
-  if !exists("g:vim_ambicmd_mapped")
-    let g:vim_ambicmd_mapped = 1
-    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-    cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
-  endif
-"}}} _ambi-cmd
-
-"{{{  clever-f.vim
-
-  Plug 'rhysd/clever-f.vim'
-  nmap f<BS> <Plug>(clever-f-reset)
-  vmap f<BS> <Plug>(clever-f-reset)
-
-"}}} _clever-f.vim
-
-"{{{ sideways.vim
-
+Plug 'ryanoasis/vim-devicons'
+Plug 'junegunn/seoul256.vim'
+Plug 'vim-scripts/applescript.vim'
+Plug 'AndrewRadev/switch.vim'
+Plug 'tommcdo/vim-exchange'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'scrooloose/nerdtree' ", { 'on':  'NERDTreeToggle' }
+" Plug 'jistr/vim-nerdtree-tabs'
+Plug 'tpope/vim-eunuch'
+Plug 'mhinz/vim-grepper'
+Plug '~/.vim/bundle/yankmatches.vim'
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', {'do' : 'yes \| brew reinstall --HEAD fzf'}
+Plug 'majutsushi/tagbar', { 'on' : [ 'Tagbar', 'TagbarToggle', ] }
+Plug 'vim-scripts/TaskList.vim'
+Plug 'rhysd/clever-f.vim'
 Plug 'AndrewRadev/sideways.vim',
       \ {'on': ['SidewaysLeft', 'SidewaysRight',
       \ 'SidewaysJumapLeft', 'SidewaysJumapRight']}
-  nnoremap s;k :SidewaysJumapRight<cr>
-  nnoremap s;j :SidewaysJumapLeft<cr>
-  nnoremap s;l :SidewaysJumapRight<cr>
-  nnoremap s;h :SidewaysJumapLeft<cr>
 
-  nnoremap c;k :SidewaysRight<cr>
-  nnoremap c;j :SidewaysLeft<cr>
-  nnoremap c;l :SidewaysRight<cr>
-  nnoremap c;h :SidewaysLeft<cr>
-"}}} _sideways.vim
+Plug 'junegunn/vim-after-object'
+Plug 'PeterRincker/vim-argumentative'
 
-"{{{ vim-after-object
-
-  Plug 'junegunn/vim-after-object'
-  " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
-  " ]= and [= instead of a= and aa=
-  autocmd VimEnter * call after_object#enable([']', '['], '=', ':', '-', '#', ' ', '>', '<')
-
-"}}}} _vim-after-object
-
-"{{{ Argumentative
-
-"Move and manipultae arguments of a function
-
-  Plug 'PeterRincker/vim-argumentative'
-
-  nmap [; <Plug>Argumentative_Prev
-  nmap ]; <Plug>Argumentative_Next
-  xmap [; <Plug>Argumentative_XPrev
-  xmap ]; <Plug>Argumentative_XNext
-  nmap <; <Plug>Argumentative_MoveLeft
-  nmap >; <Plug>Argumentative_MoveRight
-  xmap i; <Plug>Argumentative_InnerTextObject
-  xmap a; <Plug>Argumentative_OuterTextObject
-  omap i; <Plug>Argumentative_OpPendingInnerTextObject
-  omap a; <Plug>Argumentative_OpPendingOuterTextObject
-
-"}}} _Argumentative
-
-"{{{  vim-operator-user
-
-  Plug 'kana/vim-operator-user'
-
-  Plug 'tyru/operator-camelize.vim'
-  nmap <Space>u <Plug>(operator-camelize)
-  nmap <Space>U <Plug>(operator-decamelize)
-
-  Plug 'mwgkgk/vim-operator-insert'             "insert after textobj
-  nmap <Space>i <Plug>(operator-insert)
-
-  Plug 'mwgkgk/vim-operator-append'             "append after textobj
-  nmap <Space>a <Plug>(operator-append)
-
-  Plug 'emonkak/vim-operator-comment'
-  nmap <Space>cc <Plug>(operator-comment)
-  nmap <Space>cu <Plug>(operator-uncomment)
-
-  Plug 'osyo-manga/vim-operator-blockwise'
-  nmap <Space>Y <Plug>(operator-blockwise-yank-head)
-  nmap <Space>D <Plug>(operator-blockwise-delete-head)
-  nmap <Space>C <Plug>(operator-blockwise-change-head)
-
-  Plug 'machakann/vim-operator-jerk'
-  nmap <Space>>  <Plug>(operator-jerk-forward)
-  nmap <Space>>> <Plug>(operator-jerk-forward-partial)
-  nmap <Space><  <Plug>(operator-jerk-backward)
-  nmap <Space><< <Plug>(operator-jerk-backward-partial)
-
-  Plug 'emonkak/vim-operator-sort'
-  nmap <Space>s <Plug>(operator-sort)
+Plug 'thinca/vim-ambicmd'
+Plug 'junegunn/vim-pseudocl'
+Plug 'junegunn/vim-fnr'
 
   nmap <Space>al  <Plug>(operator-align-left)
   nmap <Space>ar  <Plug>(operator-align-right)
   nmap <Space>ac  <Plug>(operator-align-center)
 
-"}}} _vim-operator-user
 
 "{{{  vim-textobj-user
 
@@ -1209,31 +647,7 @@ Plug 'bronson/vim-trailing-whitespace'
 
 "{{{ vim-fnr
 
-  Plug 'junegunn/vim-pseudocl'
 
-  Plug 'junegunn/vim-fnr'
-
-  " Defaults
-  let g:fnr_flags   = 'gc'
-  let g:fnr_hl_from = 'Todo'
-  let g:fnr_hl_to   = 'IncSearch'
-
-  "custom mapping
-  nmap g;S <Plug>(FNR)
-  xmap g;S <Plug>(FNR)
-  nmap g;s <Plug>(FNR%)
-  xmap g;s <Plug>(FNR%)
-
-  " Special keys
-
-  " Tab
-      " i - case-insensitive match
-      " w - word-boundary match (\<STRING\>)
-      " g - substitute all occurrences
-      " c - confirm each substitution
-      " Tab or Enter to return
-  " CTRL-N or CTRL-P
-      " Auto-completion
 
 "}}}} _vim-fnr
 
@@ -1925,6 +1339,60 @@ Plug 'flazz/vim-colorschemes'
 
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
+
+
+"Operator
+Plug 'kana/vim-operator-user'
+Plug 'tyru/operator-camelize.vim'
+Plug 'mwgkgk/vim-operator-insert'             "insert after textobj
+Plug 'mwgkgk/vim-operator-append'             "append after textobj
+Plug 'emonkak/vim-operator-comment'
+Plug 'osyo-manga/vim-operator-blockwise'
+Plug 'machakann/vim-operator-jerk'
+Plug 'emonkak/vim-operator-sort'
+
+
+"Unite
+Plug 'Shougo/unite.vim'
+Plug 'tsukkee/unite-tag'
+Plug 'h1mesuke/unite-outline'
+Plug 'Shougo/unite-outline'
+Plug 'ujihisa/unite-colorscheme'
+Plug 'ujihisa/unite-font'
+Plug 'ujihisa/unite-locate'
+Plug 'sgur/unite-everything'
+Plug 'tacroe/unite-mark'
+Plug 'tacroe/unite-alias'
+Plug 'hakobe/unite-script'
+Plug 'soh335/unite-qflist'
+Plug 'thinca/vim-unite-history'
+Plug 'sgur/unite-qf'
+Plug 'oppara/vim-unite-cake'
+Plug 't9md/vim-unite-ack'
+Plug 'Sixeight/unite-grep'
+Plug 'kannokanno/unite-todo'
+Plug 'Shougo/unite-build'
+Plug 'osyo-manga/unite-fold'
+Plug 'tsukkee/unite-help'
+
+
+" CTRL-P
+" Plug 'kien/ctrlp.vim'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'sgur/ctrlp-extensions.vim'
+Plug 'fisadev/vim-ctrlp-cmdpalette'
+Plug 'ivalkeen/vim-ctrlp-tjump'
+Plug 'suy/vim-ctrlp-commandline'
+Plug 'tacahiroy/ctrlp-funky'
+Plug '/Volumes/Home/.nvim/plugged/ctrlp-my-notes'    "Locate my notes
+Plug '/Volumes/Home/.nvim/plugged/ctrlp-dash-helper' "dash helper
+Plug 'JazzCore/ctrlp-cmatcher'                       "ctrl-p matcher
+" Plug 'FelikZ/ctrlp-py-matcher'                     "ctrl-p matcher
+" Plug 'nixprime/cpsm'                               "ctrl-p matcher
+
+
+
+
 call plug#end()
 
 " }}}
@@ -2926,13 +2394,549 @@ endfunction "}}}
 " ============================================================================
 
 " ----------------------------------------------------------------------------
-" gof | open finder, terminal
+" gof | open finder, terminal {{{
 " ----------------------------------------------------------------------------
-let g:gtfo#terminals = { 'mac' : 'iterm' }
+  let g:gtfo#terminals = { 'mac' : 'iterm' }
 
+
+"}}}
+" ----------------------------------------------------------------------------
+" ,XP | rainbow parentheses {{{
+" ----------------------------------------------------------------------------
+  nnoremap <leader>xp :RainbowParentheses!!<CR>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" g<CR> | Easy align {{{
+" ----------------------------------------------------------------------------
+  " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+  vmap <Enter> <Plug>(EasyAlign)
+  " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+  nmap g<cr> <Plug>(EasyAlign)
+  let g:easy_align_ignore_comment = 0 " align comments
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" Ú<c-l>| NERDTree {{{
+" ----------------------------------------------------------------------------
+  let g:loaded_netrw       = 1 "Disable Netrw
+  let g:loaded_netrwPlugin = 1 "Disable Netrw
+
+  "let g:nerdtree_tabs_open_on_gui_startup = 0
+  let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
+
+
+  let NERDTreeQuitOnOpen=1
+  let NERDTreeWinSize = 23
+
+  " Don't display these kinds of files
+  let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+        \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+        \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+        \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+        \ '^.gitignore$', '^.idea$' , '^tags$']
+
+  let NERDTreeShowHidden=1
+  let NERDTreeShowBookmarks=1
+
+  " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
+  nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
+  nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
+  nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" ,g | Vim-grepper {{{
+" ----------------------------------------------------------------------------
+  nmap <leader>g <plug>(Grepper)
+  xmap <leader>g <plug>(Grepper)
+  cmap <leader>g <plug>(GrepperNext)
+  nmap gs        <plug>(GrepperMotion)
+  xmap gs        <plug>(GrepperMotion)
+
+  let g:grepper              = {}
+  let g:grepper.programs     = ['ag', 'git', 'grep']
+  let g:grepper.use_quickfix = 1
+  let g:grepper.do_open      = 1
+  let g:grepper.do_switch    = 1
+  let g:grepper.do_jump      = 0
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" FZF {{{
+" ----------------------------------------------------------------------------
+  let $FZF_DEFAULT_COMMAND='ag -l -g ""'
+  set rtp+=/usr/local/Cellar/fzf/HEAD
+
+  " `Files [PATH]`    | Files (similar to  `:FZF` )
+  " `Buffers`         | Open buffers
+  " `Colors`          | Color schemes
+  " `Ag [PATTERN]`    | {ag}{5} search result (CTRL-A to select all, CTRL-D to deselect all)
+  " `Lines`           | Lines in loaded buffers
+  " `BLines`          | Lines in the current buffer
+  " `Tags`            | Tags in the project ( `ctags -R` )
+  " `BTags`           | Tags in the current buffer
+  " `Marks`           | Marks
+  " `Windows`         | Windows
+  " `Locate PATTERN`  |  `locate`  command output
+  " `History`         |  `v:oldfiles`  and open buffers
+  " `History:`        | Command history
+  " `History/`        | Search history
+  " `Snippets`        | Snippets ({UltiSnips}{6})
+  " `Commits`         | Git commits (requires {fugitive.vim}{7})
+  " `BCommits`        | Git commits for the current buffer
+  " `Commands`        | Commands
+  " `Helptags`        | Help tags [1]
+
+
+  function! Map_FZF(cmd, key)
+    exe "nnoremap Úf" . a:key . " :" . a:cmd . "<cr>"
+    exe "nnoremap Ú<c-f><c-" . a:key . "> :" . a:cmd . "!<cr>"
+    exe "nnoremap Ú<c-f>" . a:key . " :" . a:cmd . "!<cr>"
+    exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . "!<cr>"
+    exe "nnoremap <c-p>" . a:key . " :" . a:cmd . "!<cr>"
+    exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . "!<cr>"
+    " tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
+  endfunction
+
+  nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
+  nnoremap Ú<c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
+
+  call Map_FZF("FZF", "f")
+  call Map_FZF("Buffers", "b")
+  call Map_FZF("Colors", "c")
+  call Map_FZF("Ag", "a")
+  call Map_FZF("Lines", "l")
+  call Map_FZF("BTags", "t")
+  call Map_FZF("Tags", "]")
+  " call Map_FZF("Locate", "p")
+  call Map_FZF("History", "h")
+  call Map_FZF("History/", "/")
+  call Map_FZF("History:", "Ú")             "<cr>
+  call Map_FZF("Commands", "‰")             ":
+  call Map_FZF("BCommits", "g")
+  call Map_FZF("Snippets", "s")
+  call Map_FZF("Marks", "◊")                "'
+  call Map_FZF("Windows", "w")
+  call Map_FZF("Helptags", "k")
+
+  nmap <leader><tab> <plug>(fzf-maps-n)
+  xmap <leader><tab> <plug>(fzf-maps-x)
+  omap <leader><tab> <plug>(fzf-maps-o)
+
+  imap <c-x><c-k> <plug>(fzf-complete-word)
+  imap <c-x><c-f> <plug>(fzf-complete-path)
+  imap <c-x><c-a> <plug>(fzf-complete-file-ag)
+  imap <c-x><c-l> <plug>(fzf-complete-line)
+  imap <c-x><c-i> <plug>(fzf-complete-buffer-line)
+  imap <c-x><c-\> <plug>(fzf-complete-file)
+
+  " Replace the default dictionary completion with fzf-based fuzzy completion
+  " inoremap <expr> <c-x><c-k> fzf#complete('cat /usr/share/dict/words')
+
+  function! PrintPathFunction(myParam)
+    execute ":normal i".a:myParam
+  endfunction
+
+  function! PrintPathInNextLineFunction(myParam)
+    put=a:myParam
+  endfunction
+  command! -nargs=1 PrintPathInNextLine call PrintPathInNextLineFunction(<f-args>)
+  command! -nargs=1 PrintPath call PrintPathFunction(<f-args>)
+
+  let g:fzf_action = {
+        \ 'ctrl-m': 'e',
+        \ 'ctrl-t': 'tabedit',
+        \ 'ctrl-x': 'split',
+        \ 'ctrl-o': 'PrintPathInNextLine',
+        \ 'ctrl-i': 'PrintPath',
+        \ 'ctrl-v': 'vsplit' }
 
 
 " }}}
+" ----------------------------------------------------------------------------
+" Unite {{{
+" ----------------------------------------------------------------------------
+  let g:unite_data_directory=$HOME.'/.nvim/.cache/unite'
+
+  " Execute help.
+  nnoremap ÚÚh  :<C-u>Unite -start-insert help<CR>
+  " Execute help by cursor keyword.
+  nnoremap <silent> ÚÚ<C-h>  :<C-u>UniteWithCursorWord help<CR>
+
+  "call unite#custom#source('buffer,file,file_rec',
+  "\ 'sorters', 'sorter_length')
+
+  let g:unite_force_overwrite_statusline = 0
+  let g:unite_winheight = 10
+  let g:unite_data_directory='~/.vim/.cache/unite'
+  let g:unite_enable_start_insert=1
+  let g:unite_source_history_yank_enable=1
+  let g:unite_prompt='» '
+  let g:unite_split_rule = 'botright'
+
+  if executable('ag')
+    let g:unite_source_grep_command='ag'
+    let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
+    let g:unite_source_grep_recursive_opt=''
+    let g:unite_source_rec_async_command='ag --nocolor --nogroup --ignore ".hg" --ignore ".svn" --ignore ".git" --ignore ".bzr" --hidden -g ""'
+  endif
+
+  " Custom mappings for the unite buffer
+  autocmd FileType unite call s:unite_settings()
+  function! s:unite_settings()
+    " Play nice with supertab
+    let b:SuperTabDisabled=1
+    " Enable navigation with control-j and control-k in insert mode
+    imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+    imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  endfunction
+
+  function! Open_current_file_dir(args)
+    let [args, options] = unite#helper#parse_options_args(a:args)
+    let path = expand('%:h')
+    let options.path = path
+    call unite#start(args, options)
+  endfunction
+
+  nnoremap ÚÚcd :call Open_current_file_dir('-no-split file')<cr>
+  nmap <buffer> <bs> <Plug>(unite_delete_backward_path)
+  nmap <silent><buffer><esc> <Plug>(unite_all_exit) " Close Unite view
+
+  "CtrlP & NerdTree combined
+  nnoremap <silent> ÚÚF :Unite -auto-resize file/async  file_rec/async<cr>
+  nnoremap <silent> ÚÚf :Unite -auto-resize file_rec/async<cr>
+  nnoremap <silent> ÚÚ<c-f> :Unite -auto-resize file_rec/async<cr>
+
+  nnoremap <silent> ÚÚd :Unite -auto-resize directory_rec/async<cr>
+  nnoremap <silent> ÚÚo :Unite -auto-resize file_mru<cr>
+
+  nnoremap <silent> ÚÚl :Unite -auto-resize outline<cr>
+
+  "Grep commands
+  nnoremap <silent> ÚÚg :Unite -auto-resize grep:.<cr>
+  nnoremap <silent> ÚÚ<c-g> :Unite -auto-resize grep:/<cr>
+  "Content search like Ag anc Ack
+  nnoremap ÚÚ/ :Unite grep:.<cr>
+
+  "Hostory & YankRing
+  let g:unite_source_history_yank_enable = 1
+  nnoremap ÚÚy :Unite history/yank<cr>
+  nnoremap ÚÚ: :Unite history/command<cr>
+  nnoremap ÚÚ/ :Unite history/search<cr>
+
+  nnoremap ÚÚ? :Unite mapping<cr>
+
+  "LustyJuggler
+  nnoremap ÚÚb :Unite -quick-match buffer<cr>
+  nnoremap ÚÚ<c-b> :Unite buffer<cr>
+
+  "LustyJuggler
+  nnoremap ÚÚt :Unite -quick-match tab<cr>
+  nnoremap ÚÚ<c-t> :Unite tab<cr>
+
+  "Line Search
+  nnoremap ÚÚl :Unite line<cr>
+  nnoremap ÚÚL :Unite -quick-match line<cr>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" Ctrl-P {{{
+" ----------------------------------------------------------------------------
+  command! CtrlPCommandLine call ctrlp#init(ctrlp#commandline#id())
+  cnoremap <silent> <C-p> <C-c>:call ctrlp#init(ctrlp#commandline#id())<CR>
+
+  "'vim-ctrlp-tjump',
+  let g:ctrlp_extensions = [
+        \ 'tag', 'buffertag', 'quickfix', 'dir', 'rtscript', 'dashhelper',
+        \ 'vimnotes', 'undo', 'line', 'changes', 'mixed', 'bookmarkdir',
+        \ 'funky', 'commandline'
+        \ ]
+
+  "Open window in NERDTree if available
+  let g:ctrlp_reuse_window = 'netrw\|help\|NERD\|startify'
+
+  " Make Ctrl+P indexing faster by using ag silver searcher
+  let g:ctrlp_lazy_update = 350
+
+  "Enable caching to make it fast
+  let g:ctrlp_use_caching = 1
+
+  "Don't clean cache on exit else it will take alot to regenerate RTP
+  let g:ctrlp_clear_cache_on_exit = 0
+
+  let g:ctrlp_cache_dir = $HOME.'/.nvim/.cache/ctrlp'
+
+  let g:ctrlp_max_files = 0
+  if executable("ag")
+    set grepprg=ag\ --nogroup\ --nocolor
+    let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+          \ --ignore .git
+          \ --ignore .svn
+          \ --ignore .hg
+          \ --ignore .DS_Store
+          \ --ignore "**/*.pyc"
+          \ --ignore vendor
+          \ --ignore node_modules
+          \ -g ""'
+
+  endif
+
+  let g:ctrlp_switch_buffer = 'e'
+
+  "When I press C-P run CtrlP from root of my project regardless of the current
+  "files path
+  let g:ctrlp_cmd='CtrlPRoot'
+  let g:ctrlp_map = '<c-p><c-p>'
+
+  " Make Ctrl+P matching faster by using pymatcher
+  " let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+  let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+  " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+
+  nnoremap <c-p>j :CtrlPtjump<cr>
+  vnoremap <c-p>j :CtrlPtjumpVisual<cr>
+  nnoremap <c-p>b :CtrlPBuffer<cr>
+  nnoremap <c-p>cd :CtrlPDir .<cr>
+  nnoremap <c-p>d :CtrlPDir<cr>
+  nnoremap <c-p><c-[> :CtrlPFunky<Cr>
+  nnoremap <c-p><c-]> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+  nnoremap <c-p>f :execute ":CtrlP " . expand('%:p:h')<cr>
+  "nnoremap <c-p>m :CtrlPMixed<cr>
+  nnoremap <c-p>q :CtrlPQuickfix<cr>
+  nnoremap <c-p>y :CtrlPYankring<cr>
+  "nnoremap <c-p>r :CtrlPRoot<cr>
+  nnoremap <c-p>w :CtrlPCurWD<cr>
+
+  nnoremap <c-p>t :CtrlPTag<cr>
+  nnoremap <c-p>[ :CtrlPBufTag<cr>
+  nnoremap <c-p>] :CtrlPBufTagAll<cr>
+  nnoremap <c-p>u :CtrlPUndo<cr>
+  " nnoremap <c-p>\\ :CtrlPRTS<cr>
+  ""nnoremap <c-p><CR> :CtrlPCmdline<cr>
+  nnoremap <c-p>; :CtrlPCmdPalette<cr>
+  nnoremap <c-p><CR> :CtrlPCommandLine<cr>
+  nnoremap <c-p><BS> :CtrlPClearCache<cr>
+  nnoremap <c-p><Space> :CtrlPClearAllCache<cr>
+  nnoremap <c-p>p :CtrlPLastMode<cr>
+  nnoremap <c-p>i :CtrlPChange<cr>
+  nnoremap <c-p><c-i> :CtrlPChangeAll<cr>
+  nnoremap <c-p>l :CtrlPLine<cr>
+  nnoremap <c-p>` :CtrlPBookmarkDir<cr>
+  nnoremap <c-p>@ :CtrlPBookmarkDirAdd<cr>
+  nnoremap <c-p>o :CtrlPMRU<cr>
+
+  let g:ctrlp_prompt_mappings = {
+        \ 'PrtBS()':              ['<bs>', '<c-]>'],
+        \ 'PrtDelete()':          ['<del>'],
+        \ 'PrtDeleteWord()':      ['<c-w>'],
+        \ 'PrtClear()':           ['<c-u>'],
+        \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
+        \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
+        \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
+        \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
+        \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
+        \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
+        \ 'PrtHistory(-1)':       ['<c-n>'],
+        \ 'PrtHistory(1)':        ['<c-p>'],
+        \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
+        \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
+        \ 'AcceptSelection("t")': ['<c-t>'],
+        \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
+        \ 'ToggleFocus()':        ['<s-tab>'],
+        \ 'ToggleRegex()':        ['<c-r>'],
+        \ 'ToggleByFname()':      ['<c-d>'],
+        \ 'ToggleType(1)':        ['<c-f>'],
+        \ 'ToggleType(-1)':       ['<c-b>'],
+        \ 'PrtExpandDir()':       ['<tab>'],
+        \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
+        \ 'PrtInsert()':          ['<c-\>'],
+        \ 'PrtCurStart()':        ['<c-a>'],
+        \ 'PrtCurEnd()':          ['<c-e>'],
+        \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
+        \ 'PrtCurRight()':        ['<c-l>', '<right>'],
+        \ 'PrtClearCache()':      ['<F5>', 'ÚÚ'],
+        \ 'PrtDeleteEnt()':       ['<F7>'],
+        \ 'CreateNewFile()':      ['<c-y>'],
+        \ 'MarkToOpen()':         ['<c-z>'],
+        \ 'OpenMulti()':          ['<c-o>'],
+        \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
+        \ }
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" Tagbar {{{
+" ----------------------------------------------------------------------------
+  nnoremap <silent> <leader>tb :TagbarToggle<CR>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" YankMatches {{{
+" ----------------------------------------------------------------------------
+  nnoremap <silent>  dm :     call ForAllMatches('delete', {})<CR>
+  nnoremap <silent>  DM :     call ForAllMatches('delete', {'inverse':1})<CR>
+  nnoremap <silent>  ym :     call ForAllMatches('yank',   {})<cr>
+  nnoremap <silent>  YM :     call ForAllMatches('yank',   {'inverse':1})<CR>
+  vnoremap <silent>  dm :<C-U>call ForAllMatches('delete', {'visual':1})<CR>
+  vnoremap <silent>  DM :<C-U>call ForAllMatches('delete', {'visual':1, 'inverse':1})<CR>
+  vnoremap <silent>  ym :<C-U>call ForAllMatches('yank',   {'visual':1})<CR>
+  vnoremap <silent>  YM :<C-U>call ForAllMatches('yank',   {'visual':1, 'inverse':1})<CR>
+
+
+" }}}
+" ----------------------------------------------------------------------------
+" ambicmd {{{
+" ----------------------------------------------------------------------------
+  if !exists("g:vim_ambicmd_mapped")
+    " let g:vim_ambicmd_mapped = 1
+    " cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+    " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+  endif
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-fnr {{{
+" ----------------------------------------------------------------------------
+  " Defaults
+  let g:fnr_flags   = 'gc'
+  let g:fnr_hl_from = 'Todo'
+  let g:fnr_hl_to   = 'IncSearch'
+
+  "custom mapping
+  nmap g;S <Plug>(FNR)
+  xmap g;S <Plug>(FNR)
+  nmap g;s <Plug>(FNR%)
+  xmap g;s <Plug>(FNR%)
+
+  " Special keys
+
+  " Tab
+      " i - case-insensitive match
+      " w - word-boundary match (\<STRING\>)
+      " g - substitute all occurrences
+      " c - confirm each substitution
+      " Tab or Enter to return
+  " CTRL-N or CTRL-P
+      " Auto-completion
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" Clever-f {{{
+" ----------------------------------------------------------------------------
+  nmap f<BS> <Plug>(clever-f-reset)
+  vmap f<BS> <Plug>(clever-f-reset)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" sideways {{{
+" ----------------------------------------------------------------------------
+  nnoremap s;k :SidewaysJumapRight<cr>
+  nnoremap s;j :SidewaysJumapLeft<cr>
+  nnoremap s;l :SidewaysJumapRight<cr>
+  nnoremap s;h :SidewaysJumapLeft<cr>
+
+  nnoremap c;k :SidewaysRight<cr>
+  nnoremap c;j :SidewaysLeft<cr>
+  nnoremap c;l :SidewaysRight<cr>
+  nnoremap c;h :SidewaysLeft<cr>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" after-textobj {{{
+" ----------------------------------------------------------------------------
+  " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
+  " ]= and [= instead of a= and aa=
+  autocmd VimEnter * call after_object#enable([']', '['], '=', ':', '-', '#', ' ', '>', '<')
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" argumentative {{{
+" ----------------------------------------------------------------------------
+  "Move and manipultae arguments of a function
+  nmap [; <Plug>Argumentative_Prev
+  nmap ]; <Plug>Argumentative_Next
+  xmap [; <Plug>Argumentative_XPrev
+  xmap ]; <Plug>Argumentative_XNext
+  nmap <; <Plug>Argumentative_MoveLeft
+  nmap >; <Plug>Argumentative_MoveRight
+  xmap i; <Plug>Argumentative_InnerTextObject
+  xmap a; <Plug>Argumentative_OuterTextObject
+  omap i; <Plug>Argumentative_OpPendingInnerTextObject
+  omap a; <Plug>Argumentative_OpPendingOuterTextObject
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-camelize {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>u <Plug>(operator-camelize)
+  nmap <Space>U <Plug>(operator-decamelize)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-insert {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>i <Plug>(operator-insert)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-append {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>a <Plug>(operator-append)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-comment {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>cc <Plug>(operator-comment)
+  nmap <Space>cu <Plug>(operator-uncomment)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-blockwise {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>Y <Plug>(operator-blockwise-yank-head)
+  nmap <Space>D <Plug>(operator-blockwise-delete-head)
+  nmap <Space>C <Plug>(operator-blockwise-change-head)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-jerk {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>>  <Plug>(operator-jerk-forward)
+  nmap <Space>>> <Plug>(operator-jerk-forward-partial)
+  nmap <Space><  <Plug>(operator-jerk-backward)
+  nmap <Space><< <Plug>(operator-jerk-backward-partial)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" operator-sort {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>s <Plug>(operator-sort)
+
+
+"}}}
+
+
+"}}}
 " ============================================================================
 " AUTOCMD {{{
 " ============================================================================
