@@ -57,512 +57,52 @@ Plug 'AndrewRadev/sideways.vim',
       \ {'on': ['SidewaysLeft', 'SidewaysRight',
       \ 'SidewaysJumapLeft', 'SidewaysJumapRight']}
 
-Plug 'junegunn/vim-after-object'
-Plug 'PeterRincker/vim-argumentative'
-
 Plug 'thinca/vim-ambicmd'
 Plug 'junegunn/vim-pseudocl'
 Plug 'junegunn/vim-fnr'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-unimpaired'
+" Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-capslock'
+Plug 'tpope/vim-projectionist'
+" Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-markdown'
+" Plug 'tpope/vim-vinegar'            " {-} file browser
+Plug 'tpope/vim-characterize'
+" Plug 'tpope/vim-classpath'
+Plug 'tpope/vim-afterimage'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-scriptease'
+" Plug 'tpope/vim-flagship'
+Plug 'tpope/vim-dotenv'
+Plug 'tpope/vim-speeddating'
+Plug 'jceb/vim-orgmode'
+Plug 'junegunn/vim-journal'
+Plug 'scrooloose/nerdcommenter'       ",cc ,cs
+" Plug 'tomtom/tcomment_vim'
+" Plug 'Yggdroot/indentLine'
+Plug 'justinmk/vim-gtfo'
+Plug 'honza/vim-snippets'
+" Plug 'vim-scripts/YankRing.vim'
+Plug 'maxbrunsfeld/vim-yankstack'
+Plug 'troydm/zoomwintab.vim'
+" Plug 'seletskiy/vim-nunu'           "Disable relative numbers on cursor move 
+Plug 'Shougo/junkfile.vim'
+Plug 'junegunn/vim-peekaboo'
+Plug 'itchyny/calendar.vim'
+Plug 'takac/vim-hardtime'
+Plug 'kana/vim-submode'
+Plug 'itchyny/lightline.vim'
+Plug 'shinchu/lightline-gruvbox.vim'
+"Plug 'ap/vim-buftabline'
+Plug 'szw/vim-ctrlspace'
+Plug 'mattn/emmet-vim' ", {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}
 
-  nmap <Space>al  <Plug>(operator-align-left)
-  nmap <Space>ar  <Plug>(operator-align-right)
-  nmap <Space>ac  <Plug>(operator-align-center)
 
 
-"{{{  vim-textobj-user
 
-  Plug 'kana/vim-textobj-user'
 
-  " let g:textobj_blockwise_enable_default_key_mapping =0
-  Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
-
-  Plug 'Julian/vim-textobj-brace'               "ij, aj          for all kinds of brces
-  Plug 'RyanMcG/vim-textobj-dash'               "i-, a-          for dashes
-  Plug 'kana/vim-textobj-underscore'            "i_, a_          for underscore
-  Plug 'Úvimtaku/vim-textobj-doublecolon'        "i:, a:          for ::
-  Plug 'vimtaku/vim-textobj-doublecolon'
-
-  Plug 'machakann/vim-textobj-delimited'        "id, ad, iD, aD  for Delimiters takes numbers d2id
-                                                " the delimters are /,\,#,-,_,CamelCase
-
-  Plug 'glts/vim-textobj-comment'               "ic, ac, iC, aC  for comment
-  Plug 'kana/vim-textobj-fold'                  "iz, az          for folds
-  Plug 'glts/vim-textobj-indblock'              "io, ao, iO, aO  for indented blocks
-  Plug 'kana/vim-textobj-indent'                "ii, ai, iI, aI  for Indent
-  Plug 'mattn/vim-textobj-url'                  "iu, au          for URL
-  Plug 'kana/vim-textobj-line'                  "il, al          for line
-  Plug 'haya14busa/vim-textobj-number'          "in, an          for numbers
-
-
-  Plug 'hchbaw/textobj-motionmotion.vim'        "imMotionMotion  for two motion range
-  " Plug 'kana/vim-textobj-function'
-  Plug 'kana/vim-textobj-lastpat'               "i/, a/, i?, a/  for Searched pattern
-  Plug 'kana/vim-textobj-syntax'                "iy, ay          for Syntax
-
-
-  Plug 'machakann/vim-textobj-functioncall'     "if, af
-  Plug 'sgur/vim-textobj-parameter'             "i,, a,          for parameter
-  Plug 'Julian/vim-textobj-variable-segment'    "iv, av          for variable segment goO|rCome
-
-
-  " Plug 'kana/vim-niceblock'
-
-  "vim-textobj-line does this too :)
-  " Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
-  Plug 'saaguero/vim-textobj-pastedtext'        "gb              for pasted text
-
-
-  "{{{ keyvalue         => k, v
-  " Plug 'vimtaku/vim-textobj-keyvalue'
-  " let g:textobj_key_no_default_key_mappings=1
-  " ak  <Plug>(textobj-key-a)
-  " ik  <Plug>(textobj-key-i)
-  " av  <Plug>(textobj-value-a)
-  " iv  <Plug>(textobj-value-i)
-  " }}}}
-
-  "{{{ sentence         => s
-  Plug 'reedes/vim-textobj-sentence'            "is, as, ), (,   For real english sentences
-                                                " also adds g) and g( for
-                                                " sentence navigation
-  "}}}
-
-  "{{{ quotes           => q, Q
-  let g:textobj#quote#educate = 0               " 0=disable, 1=enable (def) autoconvert to curely
-  Plug 'reedes/vim-textobj-quote'               "iq, aq, iQ, aQ  for Curely quotes
-  "}}}
-
-  "{{{ xmlattribute     => x
-  let g:textobj_xmlattribute_no_default_key_mappings=1
-  Plug 'akiyan/vim-textobj-xml-attribute'       "ixa, axa        for XML attributes
-  vmap ax <Plug>(textobj-xmlattribute-xmlattribute)
-  vmap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
-  omap ax <Plug>(textobj-xmlattribute-xmlattribute)
-  omap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
-  "}}}
-
-  "{{{ datetime         => gda, gdf, gdd, gdz
-  let g:textobj_datetime_no_default_key_mappings=1
-  Plug 'kana/vim-textobj-datetime'              "igda, agda,      or dates auto
-                                                " igdd, igdf, igdt, igdz  means
-                                                " date, full, time, timerzone
-  vmap agda <Plug>(textobj-datetime-auto)
-  vmap agdd <Plug>(textobj-datetime-date)
-  vmap agdf <Plug>(textobj-datetime-full)
-  vmap agdt <Plug>(textobj-datetime-time)
-  vmap agdz <Plug>(textobj-datetime-tz)
-
-  vmap igda <Plug>(textobj-datetime-auto)
-  vmap igdd <Plug>(textobj-datetime-date)
-  vmap igdf <Plug>(textobj-datetime-full)
-  vmap igdt <Plug>(textobj-datetime-time)
-  vmap igdz <Plug>(textobj-datetime-tz)
-
-
-  omap agda <Plug>(textobj-datetime-auto)
-  omap agdd <Plug>(textobj-datetime-date)
-  omap agdf <Plug>(textobj-datetime-full)
-  omap agdt <Plug>(textobj-datetime-time)
-  omap agdz <Plug>(textobj-datetime-tz)
-
-  omap igda <Plug>(textobj-datetime-auto)
-  omap igdd <Plug>(textobj-datetime-date)
-  omap igdf <Plug>(textobj-datetime-full)
-  omap igdt <Plug>(textobj-datetime-time)
-  omap igdz <Plug>(textobj-datetime-tz)
-  "}}}
-
-  "{{{ entire           => G
-  let g:textobj_entire_no_default_key_mappings =1
-  Plug 'kana/vim-textobj-entire'                "iG, aG          for entire document
-  vmap aG  <Plug>(textobj-entire-a)
-  vmap iG  <Plug>(textobj-entire-i)
-  omap aG  <Plug>(textobj-entire-a)
-  omap iG  <Plug>(textobj-entire-i)
-  "}}}
-
-  "{{{ Space            => <Space>
-  let g:textobj_space_no_default_key_mappings =1
-  Plug 'saihoooooooo/vim-textobj-space'         "iS, aS i<Space> for contineous spaces
-  vmap a<Space>  <Plug>(textobj-space-a)
-  vmap i<Space>  <Plug>(textobj-space-i)
-  omap a<Space>  <Plug>(textobj-space-a)
-  omap i<Space>  <Plug>(textobj-space-i)
-  "}}}
-
-  "{{{ path             => |, \
-  let g:textobj_path_no_default_key_mappings =1
-  Plug 'paulhybryant/vim-textobj-path'          "i|, a|, i\, a\          for Path
-  vmap a\  <Plug>(textobj-path-next_path-a)
-  vmap i\  <Plug>(textobj-path-next_path-i)
-  omap a\  <Plug>(textobj-path-next_path-a)
-  omap i\  <Plug>(textobj-path-next_path-i)
-
-  vmap a\|  <Plug>(textobj-path-prev_path-a)
-  vmap i\|  <Plug>(textobj-path-prev_path-i)
-  omap a\|  <Plug>(textobj-path-prev_path-a)
-  omap i\|  <Plug>(textobj-path-prev_path-i)
-  "}}}
-
-  "{{{ inserted         => t
-  let g:textobj_lastinserted_no_default_key_mappings =1
-  Plug 'rhysd/vim-textobj-lastinserted'         "it, at          for last inserted
-  vmap at  <Plug>(textobj-lastinserted-a)
-  vmap it  <Plug>(textobj-lastinserted-i)
-  omap at  <Plug>(textobj-lastinserted-a)
-  omap it  <Plug>(textobj-lastinserted-i)
-  "}}}
-
-  "{{{ php              => <
-  let g:textobj_php_no_default_key_mappings =1
-  Plug 'akiyan/vim-textobj-php'                 "i<, a<        for <?php ?>
-  vmap a<  <Plug>(textobj-php-a)
-  vmap i<  <Plug>(textobj-php-i)
-  omap a<  <Plug>(textobj-php-a)
-  omap i<  <Plug>(textobj-php-i)
-  "}}}
-
-  "{{{between          => bX
-  let g:textobj_between_no_default_key_mappings =1
-  Plug 'thinca/vim-textobj-between'             "ibX, abX          for between two chars
-  vmap ab  <Plug>(textobj-between-a)
-  vmap ib  <Plug>(textobj-between-i)
-  omap ab  <Plug>(textobj-between-a)
-  omap ib  <Plug>(textobj-between-i)
-  "}}}
-
-  "{{{ any              => a
-  let g:textobj_anyblock_no_default_key_mappings =1
-  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
-  Plug 'rhysd/vim-textobj-anyblock'             "ia, aa          for (, {, [, ', ", <
-
-  vmap aa  <Plug>(textobj-anyblock-a)
-  vmap ia  <Plug>(textobj-anyblock-i)
-  omap aa  <Plug>(textobj-anyblock-a)
-  omap ia  <Plug>(textobj-anyblock-i)
-  "}}}}
-
-  "{{{ postexpr         => ge
-  let g:textobj_postexpr_no_default_key_mappings =1
-  Plug 'syngan/vim-textobj-postexpr'            "ige, age        for post expression
-  vmap ige <Plug>(textobj-postexpr-i)
-  vmap age <Plug>(textobj-postexpr-a)
-  omap ige <Plug>(textobj-postexpr-i)
-  omap age <Plug>(textobj-postexpr-a)
-  "}}}
-
-  "{{{ multi            =>  mt
-  Plug 'osyo-manga/vim-textobj-multitextobj'
-  let g:textobj_multitextobj_textobjects_i = [
-        \   "\<Plug>(textobj-url-i)",
-        \   "\<Plug>(textobj-multiblock-i)",
-        \   "\<Plug>(textobj-function-i)",
-        \   "\<Plug>(textobj-entire-i)",
-        \]
-
-  omap amt <Plug>(textobj-multitextobj-a)
-  omap imt <Plug>(textobj-multitextobj-i)
-  vmap amt <Plug>(textobj-multitextobj-a)
-  vmap imt <Plug>(textobj-multitextobj-i)
-  "}}}
-
-"}}} _vim-textobj-user
-
-"{{{ YankRing.vim
-
-  " Plug 'vim-scripts/YankRing.vim'
-  " let g:yankring_min_element_length = 2
-  " let g:yankring_max_element_length = 548576 " 4M
-  " let g:yankring_dot_repeat_yank = 1
-  " " let g:yankring_window_use_horiz = 0  " Use vertical split
-  " " let g:yankring_window_height = 8
-  " " let g:yankring_window_width = 30
-  " " let g:yankring_window_increment = 50   "In vertical press space to toggle width
-  " " let g:yankring_ignore_operator = 'g~ gu gU ! = gq g? > < zf g@'
-  " let g:yankring_history_dir = '~/.nvim/.cache/yankring'
-  " " let g:yankring_clipboard_monitor = 0   "Detect when copying from outside
-  " " :YRToggle    " Toggles it
-  " " :YRToggle 1  " Enables it
-  " " :YRToggle 0  " Disables it
-  " nnoremap sd :YRToggle
-
-  " nnoremap <silent> <F11> :YRShow<CR>
-"}}} _YankRing.vim
-
-"{{{ vim-yankstack
-
-  Plug 'maxbrunsfeld/vim-yankstack'
-
-  "}}}} _vim-yankstack
-
-"{{{  zoomwintab.vim
-
-  let g:zoomwintab_remap = 0
-  Plug 'troydm/zoomwintab.vim'
-  " zoom with <META-O> in any mode
-  nnoremap <silent> <a-o> :ZoomWinTabToggle<cr>
-  inoremap <silent> <a-o> <c-\><c-n>:ZoomWinTabToggle<cr>a
-  vnoremap <silent> <a-o> <c-\><c-n>:ZoomWinTabToggle<cr>gv
-
-"}}} _zoomwintab.vim
-
-"{{{ vim-nunu
-
-  "Disable relative numbers on cursor move
-  " Plug 'seletskiy/vim-nunu'
-
-"}}}} _vim-nunu
-
-"{{{ junkfile.vim
-
-  Plug 'Shougo/junkfile.vim'
-
-  nnoremap <leader>jo :JunkfileOpen
-  let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
-
-"}}}} _junkfile.vim
-
-"{{{ vim-peekaboo
-
-  Plug 'junegunn/vim-peekaboo'
-
-  " Default peekaboo window
-  let g:peekaboo_window = 'vertical botright 30new'
-
-  " Delay opening of peekaboo window (in ms. default: 0)
-  let g:peekaboo_delay = 250
-
-  " Compact display; do not display the names of the register groups
-  let g:peekaboo_compact = 1
-
-"}}}} _vim-peekaboo
-
-"{{{ calendar.vim
-
-  Plug 'itchyny/calendar.vim'
-  let g:calendar_date_month_name = 1
-
-"}}}} _calendar.vim
-
-"{{{ vim-hardtime
-
-  Plug 'takac/vim-hardtime'
-
-  let g:hardtime_timeout = 1000
-
-  let g:hardtime_allow_different_key = 1
-  let g:hardtime_maxcount = 1
-  let g:hardtime_default_on = 0
-  let g:hardtime_showmsg = 1
-
-  let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-  let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-  let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
-
-
-  "Disable in certain buffers default []
-  " let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
-
-"}}}} _vim-hardtime
-
-"{{{  vim-submode
-
-  Plug 'kana/vim-submode'
-
-  source ~/.nvim/plugged/vim-submode/autoload/submode.vim
-  " easy resize
-  call submode#enter_with('h/l', 'n', '', '<C-w>h', '<C-w><')
-  call submode#enter_with('h/l', 'n', '', '<C-w>l', '<C-w>>')
-  call submode#map('h/l', 'n', '', 'h', '<C-w><')
-  call submode#map('h/l', 'n', '', 'l', '<C-w>>')
-  call submode#enter_with('j/k', 'n', '', '<C-w>j', '<C-w>-')
-  call submode#enter_with('j/k', 'n', '', '<C-w>k', '<C-w>+')
-  call submode#map('j/k', 'n', '', 'j', '<C-w>-')
-  call submode#map('j/k', 'n', '', 'k', '<C-w>+')
-
-  "Easy section navigation
-  call submode#enter_with('section-nav', 'n', '', ']]', ']]zt')
-  call submode#enter_with('section-nav', 'n', '', '[[', '[[zt')
-  call submode#map('section-nav', 'n', '', ']', ']]zt')
-  call submode#map('section-nav', 'n', '', '[', '[[zt')
-
-  "Easy undo/redo
-  call submode#enter_with('undo/redo', 'n', '', 'g-', 'g-')
-  call submode#enter_with('undo/redo', 'n', '', 'g+', 'g+')
-  call submode#leave_with('undo/redo', 'n', '', '<Esc>')
-  call submode#map('undo/redo', 'n', '', '-', 'g-')
-  call submode#map('undo/redo', 'n', '', '+', 'g+')
-  "}}} _vim-submode
-
-  "{{{  lightline.vim
-
-  Plug 'itchyny/lightline.vim'
-  Plug 'shinchu/lightline-gruvbox.vim'
-        " \ 'colorscheme': 'powerline',
-        " \ 'colorscheme': 'wombat',
-        " \ 'colorscheme': 'jellybeans',
-  let g:lightline = {
-        \ 'active': {
-        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-        \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-        \ },
-        \ 'component_function': {
-        \   'fugitive': 'LightLineFugitive',
-        \   'filename': 'LightLineFilename',
-        \   'fileformat': 'LightLineFileformat',
-        \   'filetype': 'LightLineFiletype',
-        \   'fileencoding': 'LightLineFileencoding',
-        \   'mode': 'LightLineMode',
-        \   'ctrlpmark': 'CtrlPMark',
-        \ },
-        \ 'component_expand': {
-        \   'syntastic': 'SyntasticStatuslineFlag',
-        \ },
-        \ 'component_type': {
-        \   'syntastic': 'error',
-        \ },
-        \ 'subseparator': { 'left': '|', 'right': '|' }
-        \ }
-
-  let g:lightline.colorscheme = 'gruvbox'
-  function! LightLineModified()
-    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-  endfunction
-
-  function! LightLineReadonly()
-    return &ft !~? 'help' && &readonly ? '⭤' : ''
-  endfunction
-
-  function! LightLineFilename()
-    let fname = expand('%:t')
-    return fname == 'ControlP' ? g:lightline.ctrlp_item :
-          \ fname == '__Tagbar__' ? g:lightline.fname :
-          \ fname =~ '__Gundo\|NERD_tree' ? '' :
-          \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-          \ &ft == 'unite' ? unite#get_status_string() :
-          \ &ft == 'vimshell' ? vimshell#get_status_string() :
-          \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-          \ ('' != fname ? fname : '[No Name]') .
-          \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
-  endfunction
-
-  function! LightLineFugitive()
-    try
-      if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-        let mark = '⭠ '  " edit here for cool mark
-        let _ = fugitive#head()
-        return strlen(_) ? mark._ : ''
-      endif
-    catch
-    endtry
-    return ''
-  endfunction
-
-  function! LightLineFileformat()
-    return winwidth(0) > 70 ? &fileformat : ''
-  endfunction
-
-  function! LightLineFiletype()
-    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-  endfunction
-
-  function! LightLineFileencoding()
-    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-  endfunction
-
-  function! LightLineMode()
-    let fname = expand('%:t')
-    return fname == '__Tagbar__' ? 'Tagbar' :
-          \ fname == 'ControlP' ? 'CtrlP' :
-          \ fname == '__Gundo__' ? 'Gundo' :
-          \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-          \ fname =~ 'NERD_tree' ? 'NERDTree' :
-          \ &ft == 'unite' ? 'Unite' :
-          \ &ft == 'vimfiler' ? 'VimFiler' :
-          \ &ft == 'vimshell' ? 'VimShell' :
-          \ winwidth(0) > 60 ? lightline#mode() : ''
-  endfunction
-
-  function! CtrlPMark()
-    if expand('%:t') =~ 'ControlP'
-      call lightline#link('iR'[g:lightline.ctrlp_regex])
-      return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-            \ , g:lightline.ctrlp_next], 0)
-    else
-      return ''
-    endif
-  endfunction
-
-  let g:ctrlp_status_func = {
-        \ 'main': 'CtrlPStatusFunc_1',
-        \ 'prog': 'CtrlPStatusFunc_2',
-        \ }
-
-  function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-    let g:lightline.ctrlp_regex = a:regex
-    let g:lightline.ctrlp_prev = a:prev
-    let g:lightline.ctrlp_item = a:item
-    let g:lightline.ctrlp_next = a:next
-    return lightline#statusline(0)
-  endfunction
-
-  function! CtrlPStatusFunc_2(str)
-    return lightline#statusline(0)
-  endfunction
-
-  let g:tagbar_status_func = 'TagbarStatusFunc'
-
-  function! TagbarStatusFunc(current, sort, fname, ...) abort
-    let g:lightline.fname = a:fname
-    return lightline#statusline(0)
-  endfunction
-
-  augroup AutoSyntastic
-    autocmd!
-    autocmd BufWritePost *.c,*.cpp call s:syntastic()
-  augroup END
-  function! s:syntastic()
-    SyntasticCheck
-    call lightline#update()
-  endfunction
-
-  let g:unite_force_overwrite_statusline = 0
-  let g:vimfiler_force_overwrite_statusline = 0
-  let g:vimshell_force_overwrite_statusline = 0
-  "}}} _lightline.vim
-
-"{{{  vim-buftabline
-
-  "Plug 'ap/vim-buftabline'
-
-"}}} _vim-buftabline
-
-  "{{{ vim-ctrlspace
-
-  Plug 'szw/vim-ctrlspace'
-  if executable("ag")
-    let g:ctrlspace_glob_command = 'ag -l --nocolor -g ""'
-  endif
-
-  nnoremap <C-Space> :CtrlSpace<cr>
-  autocmd filetype ctrlspace call s:ctrlspace_settings()
-  function! s:ctrlspace_settings()
-    " enable navigation with control-j and control-k in insert mode
-    imap <buffer> <c-j>   :call <sid>move_selection_bar("down")
-    imap <buffer> <c-k>   :call <sid>move_selection_bar("up")
-  endfunction
-
-  "let g:ctrlspace_use_tabline = 0
-
-
-  "}}} _vim-ctrlspace
-
-  "{{{ emmet-vim
-
-  Plug 'mattn/emmet-vim' ", {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}
-  let g:user_emmet_mode='a'         "enable all function in all mode.
-  " let g:user_emmet_mode='i'         "enable all function in all mode.
-  let g:user_emmet_leader_key='◊Ú'
 
 
   "}}} _emmet-vim
@@ -978,7 +518,6 @@ endfunction
 
 "}}} _SplitJoin.vim
 
-Plug 'justinmk/vim-gtfo'
 
 "{{{  vim-tmux-navigator
   if exists('$TMUX')
@@ -1258,34 +797,11 @@ set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 "}}}} _vim-fugitive
 
 "Single Line Plugs
-Plug 'tpope/vim-unimpaired'
-" Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-capslock'
-
-Plug 'tpope/vim-projectionist'
-" Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-markdown'
-" Plug 'tpope/vim-vinegar'            " {-} file browser
-Plug 'tpope/vim-characterize'
-" Plug 'tpope/vim-classpath'
-Plug 'tpope/vim-afterimage'
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-scriptease'
-" Plug 'tpope/vim-flagship'
-Plug 'tpope/vim-dotenv'
-Plug 'tpope/vim-speeddating'
 
 Plug 'tpope/vim-ragtag'
 let g:ragtag_global_maps = 1
 
 " Errors out a lot disable till fixed
-Plug 'airblade/vim-gitgutter'
-
-
-Plug 'jceb/vim-orgmode'
-
-Plug 'junegunn/vim-journal'
 
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
 
@@ -1298,26 +814,11 @@ autocmd! User GoyoLeave Limelight!
 
 
 
-" let g:indentLine_char = '┊'
-" " let g:indentLine_color_term=""
-" " let g:indentLine_color_gui=""
-" let g:indentLine_fileType=[] "Means all filetypes
-" let g:indentLine_fileTypeExclude=[]
-" let g:indentLine_bufNameExclude=[]
 
-" Plug 'Yggdroot/indentLine'
 
-Plug 'honza/vim-snippets'
 
-"{{{  nerdcommenter
 
-  Plug 'scrooloose/nerdcommenter'       ",cc ,cs
-  "Add a space around the comment
-  let g:NERDSpaceDelims=1
 
-"}}} _nerdcommenter
-
-"Plug 'tomtom/tcomment_vim'
 
 "ColorScheme
 Plug 'tomasr/molokai'
@@ -1334,11 +835,14 @@ Plug 'vim-scripts/summerfruit256.vim'
 Plug 'vim-scripts/eclipse.vim'
 Plug 'vim-scripts/pyte'
 Plug 'morhetz/gruvbox'
-
+let g:gruvbox_contrast_dark='soft'          "soft, medium, hard"
+let g:gruvbox_contrast_light='soft'         "soft, medium, hard"
 Plug 'flazz/vim-colorschemes'
 
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
+
+
 
 
 "Operator
@@ -1350,6 +854,59 @@ Plug 'emonkak/vim-operator-comment'
 Plug 'osyo-manga/vim-operator-blockwise'
 Plug 'machakann/vim-operator-jerk'
 Plug 'emonkak/vim-operator-sort'
+
+
+
+"textobj
+Plug 'kana/vim-textobj-user'
+" let g:textobj_blockwise_enable_default_key_mapping =0
+Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
+Plug 'Julian/vim-textobj-brace'               "ij, aj          for all kinds of brces
+Plug 'RyanMcG/vim-textobj-dash'               "i-, a-          for dashes
+Plug 'kana/vim-textobj-underscore'            "i_, a_          for underscore
+Plug 'Úvimtaku/vim-textobj-doublecolon'        "i:, a:          for ::
+Plug 'vimtaku/vim-textobj-doublecolon'
+Plug 'machakann/vim-textobj-delimited'        "id, ad, iD, aD  for Delimiters takes numbers d2id
+Plug 'glts/vim-textobj-comment'               "ic, ac, iC, aC  for comment
+Plug 'kana/vim-textobj-fold'                  "iz, az          for folds
+Plug 'glts/vim-textobj-indblock'              "io, ao, iO, aO  for indented blocks
+Plug 'kana/vim-textobj-indent'                "ii, ai, iI, aI  for Indent
+Plug 'mattn/vim-textobj-url'                  "iu, au          for URL
+Plug 'kana/vim-textobj-line'                  "il, al          for line
+Plug 'haya14busa/vim-textobj-number'          "in, an          for numbers
+Plug 'hchbaw/textobj-motionmotion.vim'        "imMotionMotion  for two motion range
+" Plug 'kana/vim-textobj-function'
+Plug 'kana/vim-textobj-lastpat'               "i/, a/, i?, a/  for Searched pattern
+Plug 'kana/vim-textobj-syntax'                "iy, ay          for Syntax
+Plug 'machakann/vim-textobj-functioncall'     "if, af
+Plug 'sgur/vim-textobj-parameter'             "i,, a,          for parameter
+Plug 'Julian/vim-textobj-variable-segment'    "iv, av          for variable segment goO|rCome
+" Plug 'kana/vim-niceblock'
+" vim-textobj-line does this too :)
+" Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
+Plug 'saaguero/vim-textobj-pastedtext'        "gb              for pasted text
+Plug 'reedes/vim-textobj-sentence'            "is, as, ), (,   For real english sentences
+                                              " also adds g) and g( for
+                                              " sentence navigation
+Plug 'reedes/vim-textobj-quote'               "iq, aq, iQ, aQ  for Curely quotes
+Plug 'akiyan/vim-textobj-xml-attribute'       "ixa, axa        for XML attributes
+Plug 'kana/vim-textobj-datetime'              "igda, agda,      or dates auto
+                                              " igdd, igdf, igdt, igdz  means
+                                              " date, full, time, timerzone
+Plug 'kana/vim-textobj-entire'                "iG, aG          for entire document
+Plug 'saihoooooooo/vim-textobj-space'         "iS, aS i<Space> for contineous spaces
+Plug 'paulhybryant/vim-textobj-path'          "i|, a|, i\, a\          for Path
+Plug 'rhysd/vim-textobj-lastinserted'         "it, at          for last inserted
+Plug 'akiyan/vim-textobj-php'                 "i<, a<        for <?php ?>
+Plug 'thinca/vim-textobj-between'             "ibX, abX          for between two chars
+Plug 'rhysd/vim-textobj-anyblock'             "ia, aa          for (, {, [, ', ", <
+Plug 'syngan/vim-textobj-postexpr'            "ige, age        for post expression
+Plug 'osyo-manga/vim-textobj-multitextobj'
+" Plug 'vimtaku/vim-textobj-keyvalue'
+
+Plug 'junegunn/vim-after-object'
+Plug 'PeterRincker/vim-argumentative'
+
 
 
 "Unite
@@ -1376,6 +933,7 @@ Plug 'osyo-manga/unite-fold'
 Plug 'tsukkee/unite-help'
 
 
+
 " CTRL-P
 " Plug 'kien/ctrlp.vim'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -1389,8 +947,6 @@ Plug '/Volumes/Home/.nvim/plugged/ctrlp-dash-helper' "dash helper
 Plug 'JazzCore/ctrlp-cmatcher'                       "ctrl-p matcher
 " Plug 'FelikZ/ctrlp-py-matcher'                     "ctrl-p matcher
 " Plug 'nixprime/cpsm'                               "ctrl-p matcher
-
-
 
 
 call plug#end()
@@ -1413,13 +969,6 @@ call plug#end()
 
 set background=light
 
-" let g:gruvbox_contrast_dark='medium'
-" let g:gruvbox_contrast_dark='hard'
-let g:gruvbox_contrast_dark='soft'
-
-" let g:gruvbox_contrast_light='medium'
-" let g:gruvbox_contrast_light='hard'
-let g:gruvbox_contrast_light='soft'
 
 colorscheme gruvbox
 
@@ -2879,6 +2428,15 @@ endfunction "}}}
 
 "}}}
 " ----------------------------------------------------------------------------
+" operator-usr {{{
+" ----------------------------------------------------------------------------
+  nmap <Space>al  <Plug>(operator-align-left)
+  nmap <Space>ar  <Plug>(operator-align-right)
+  nmap <Space>ac  <Plug>(operator-align-center)
+
+
+"}}}
+" ----------------------------------------------------------------------------
 " operator-camelize {{{
 " ----------------------------------------------------------------------------
   nmap <Space>u <Plug>(operator-camelize)
@@ -2932,6 +2490,473 @@ endfunction "}}}
 " ----------------------------------------------------------------------------
   nmap <Space>s <Plug>(operator-sort)
 
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-quote {{{
+" ----------------------------------------------------------------------------
+  let g:textobj#quote#educate = 0               " 0=disable, 1=enable (def) autoconvert to curely
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-xml {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_xmlattribute_no_default_key_mappings=1
+  vmap ax <Plug>(textobj-xmlattribute-xmlattribute)
+  vmap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
+  omap ax <Plug>(textobj-xmlattribute-xmlattribute)
+  omap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-datetime {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_datetime_no_default_key_mappings=1
+  vmap agda <Plug>(textobj-datetime-auto)
+  vmap agdd <Plug>(textobj-datetime-date)
+  vmap agdf <Plug>(textobj-datetime-full)
+  vmap agdt <Plug>(textobj-datetime-time)
+  vmap agdz <Plug>(textobj-datetime-tz)
+
+  vmap igda <Plug>(textobj-datetime-auto)
+  vmap igdd <Plug>(textobj-datetime-date)
+  vmap igdf <Plug>(textobj-datetime-full)
+  vmap igdt <Plug>(textobj-datetime-time)
+  vmap igdz <Plug>(textobj-datetime-tz)
+
+
+  omap agda <Plug>(textobj-datetime-auto)
+  omap agdd <Plug>(textobj-datetime-date)
+  omap agdf <Plug>(textobj-datetime-full)
+  omap agdt <Plug>(textobj-datetime-time)
+  omap agdz <Plug>(textobj-datetime-tz)
+
+  omap igda <Plug>(textobj-datetime-auto)
+  omap igdd <Plug>(textobj-datetime-date)
+  omap igdf <Plug>(textobj-datetime-full)
+  omap igdt <Plug>(textobj-datetime-time)
+  omap igdz <Plug>(textobj-datetime-tz)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-entire {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_entire_no_default_key_mappings =1
+  vmap aG  <Plug>(textobj-entire-a)
+  vmap iG  <Plug>(textobj-entire-i)
+  omap aG  <Plug>(textobj-entire-a)
+  omap iG  <Plug>(textobj-entire-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-space {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_space_no_default_key_mappings =1
+  vmap a<Space>  <Plug>(textobj-space-a)
+  vmap i<Space>  <Plug>(textobj-space-i)
+  omap a<Space>  <Plug>(textobj-space-a)
+  omap i<Space>  <Plug>(textobj-space-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-path {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_path_no_default_key_mappings =1
+  vmap a\  <Plug>(textobj-path-next_path-a)
+  vmap i\  <Plug>(textobj-path-next_path-i)
+  omap a\  <Plug>(textobj-path-next_path-a)
+  omap i\  <Plug>(textobj-path-next_path-i)
+
+  vmap a\|  <Plug>(textobj-path-prev_path-a)
+  vmap i\|  <Plug>(textobj-path-prev_path-i)
+  omap a\|  <Plug>(textobj-path-prev_path-a)
+  omap i\|  <Plug>(textobj-path-prev_path-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-inserted {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_lastinserted_no_default_key_mappings =1
+  vmap at  <Plug>(textobj-lastinserted-a)
+  vmap it  <Plug>(textobj-lastinserted-i)
+  omap at  <Plug>(textobj-lastinserted-a)
+  omap it  <Plug>(textobj-lastinserted-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-php {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_php_no_default_key_mappings =1
+  vmap a<  <Plug>(textobj-php-a)
+  vmap i<  <Plug>(textobj-php-i)
+  omap a<  <Plug>(textobj-php-a)
+  omap i<  <Plug>(textobj-php-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-between {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_between_no_default_key_mappings =1
+  vmap ab  <Plug>(textobj-between-a)
+  vmap ib  <Plug>(textobj-between-i)
+  omap ab  <Plug>(textobj-between-a)
+  omap ib  <Plug>(textobj-between-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-any {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_anyblock_no_default_key_mappings =1
+  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
+  vmap aa  <Plug>(textobj-anyblock-a)
+  vmap ia  <Plug>(textobj-anyblock-i)
+  omap aa  <Plug>(textobj-anyblock-a)
+  omap ia  <Plug>(textobj-anyblock-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-postexpr {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_postexpr_no_default_key_mappings =1
+  vmap ige <Plug>(textobj-postexpr-i)
+  vmap age <Plug>(textobj-postexpr-a)
+  omap ige <Plug>(textobj-postexpr-i)
+  omap age <Plug>(textobj-postexpr-a)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-multi {{{
+" ----------------------------------------------------------------------------
+  let g:textobj_multitextobj_textobjects_i = [
+        \   "\<Plug>(textobj-url-i)",
+        \   "\<Plug>(textobj-multiblock-i)",
+        \   "\<Plug>(textobj-function-i)",
+        \   "\<Plug>(textobj-entire-i)",
+        \]
+
+  omap amt <Plug>(textobj-multitextobj-a)
+  omap imt <Plug>(textobj-multitextobj-i)
+  vmap amt <Plug>(textobj-multitextobj-a)
+  vmap imt <Plug>(textobj-multitextobj-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" textobj-keyvalue {{{
+" ----------------------------------------------------------------------------
+  " let g:textobj_key_no_default_key_mappings=1
+  " ak  <Plug>(textobj-key-a)
+  " ik  <Plug>(textobj-key-i)
+  " av  <Plug>(textobj-value-a)
+  " iv  <Plug>(textobj-value-i)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" nerdcommenter {{{
+" ----------------------------------------------------------------------------
+  "Add a space around the comment
+  let g:NERDSpaceDelims=1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-indentLine {{{
+" ----------------------------------------------------------------------------
+  let g:indentLine_char = '┊'
+  " let g:indentLine_color_term=""
+  " let g:indentLine_color_gui=""
+  let g:indentLine_fileType=[] "Means all filetypes
+  let g:indentLine_fileTypeExclude=[]
+  let g:indentLine_bufNameExclude=[]
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" YankRing {{{
+" ----------------------------------------------------------------------------
+  " let g:yankring_min_element_length = 2
+  " let g:yankring_max_element_length = 548576 " 4M
+  " let g:yankring_dot_repeat_yank = 1
+  " " let g:yankring_window_use_horiz = 0  " Use vertical split
+  " " let g:yankring_window_height = 8
+  " " let g:yankring_window_width = 30
+  " " let g:yankring_window_increment = 50   "In vertical press space to toggle width
+  " " let g:yankring_ignore_operator = 'g~ gu gU ! = gq g? > < zf g@'
+  " let g:yankring_history_dir = '~/.nvim/.cache/yankring'
+  " " let g:yankring_clipboard_monitor = 0   "Detect when copying from outside
+  " " :YRToggle    " Toggles it
+  " " :YRToggle 1  " Enables it
+  " " :YRToggle 0  " Disables it
+  " nnoremap sd :YRToggle
+
+  " nnoremap <silent> <F11> :YRShow<CR>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" zoomwintab {{{
+" ----------------------------------------------------------------------------
+  let g:zoomwintab_remap = 0
+  " zoom with <META-O> in any mode
+  nnoremap <silent> <a-o> :ZoomWinTabToggle<cr>
+  inoremap <silent> <a-o> <c-\><c-n>:ZoomWinTabToggle<cr>a
+  vnoremap <silent> <a-o> <c-\><c-n>:ZoomWinTabToggle<cr>gv
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" junkfile {{{
+" ----------------------------------------------------------------------------
+  nnoremap <leader>jo :JunkfileOpen
+  let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-peekaboo {{{
+" ----------------------------------------------------------------------------
+  " Default peekaboo window
+  let g:peekaboo_window = 'vertical botright 30new'
+
+  " Delay opening of peekaboo window (in ms. default: 0)
+  let g:peekaboo_delay = 250
+
+  " Compact display; do not display the names of the register groups
+  let g:peekaboo_compact = 1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" calendar {{{
+" ----------------------------------------------------------------------------
+  let g:calendar_date_month_name = 1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-hardtime {{{
+" ----------------------------------------------------------------------------
+  let g:hardtime_timeout = 1000
+
+  let g:hardtime_allow_different_key = 1
+  let g:hardtime_maxcount = 1
+  let g:hardtime_default_on = 0
+  let g:hardtime_showmsg = 1
+
+  let g:list_of_normal_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+  let g:list_of_visual_keys = ["h", "j", "k", "l", "-", "+", "<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+  let g:list_of_insert_keys = ["<UP>", "<DOWN>", "<LEFT>", "<RIGHT>"]
+
+
+  "Disable in certain buffers default []
+  " let g:hardtime_ignore_buffer_patterns = [ "CustomPatt[ae]rn", "NERD.*" ]
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-submode {{{
+" ----------------------------------------------------------------------------
+  source ~/.nvim/plugged/vim-submode/autoload/submode.vim
+  " easy resize
+  call submode#enter_with('h/l', 'n', '', '<C-w>h', '<C-w><')
+  call submode#enter_with('h/l', 'n', '', '<C-w>l', '<C-w>>')
+  call submode#map('h/l', 'n', '', 'h', '<C-w><')
+  call submode#map('h/l', 'n', '', 'l', '<C-w>>')
+  call submode#enter_with('j/k', 'n', '', '<C-w>j', '<C-w>-')
+  call submode#enter_with('j/k', 'n', '', '<C-w>k', '<C-w>+')
+  call submode#map('j/k', 'n', '', 'j', '<C-w>-')
+  call submode#map('j/k', 'n', '', 'k', '<C-w>+')
+
+  "Easy section navigation
+  call submode#enter_with('section-nav', 'n', '', ']]', ']]zt')
+  call submode#enter_with('section-nav', 'n', '', '[[', '[[zt')
+  call submode#map('section-nav', 'n', '', ']', ']]zt')
+  call submode#map('section-nav', 'n', '', '[', '[[zt')
+
+  "Easy undo/redo
+  call submode#enter_with('undo/redo', 'n', '', 'g-', 'g-')
+  call submode#enter_with('undo/redo', 'n', '', 'g+', 'g+')
+  call submode#leave_with('undo/redo', 'n', '', '<Esc>')
+  call submode#map('undo/redo', 'n', '', '-', 'g-')
+  call submode#map('undo/redo', 'n', '', '+', 'g+')
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" lightline {{{
+" ----------------------------------------------------------------------------
+        " \ 'colorscheme': 'powerline',
+        " \ 'colorscheme': 'wombat',
+        " \ 'colorscheme': 'jellybeans',
+  let g:lightline = {
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+        \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+        \ },
+        \ 'component_function': {
+        \   'fugitive': 'LightLineFugitive',
+        \   'filename': 'LightLineFilename',
+        \   'fileformat': 'LightLineFileformat',
+        \   'filetype': 'LightLineFiletype',
+        \   'fileencoding': 'LightLineFileencoding',
+        \   'mode': 'LightLineMode',
+        \   'ctrlpmark': 'CtrlPMark',
+        \ },
+        \ 'component_expand': {
+        \   'syntastic': 'SyntasticStatuslineFlag',
+        \ },
+        \ 'component_type': {
+        \   'syntastic': 'error',
+        \ },
+        \ 'subseparator': { 'left': '|', 'right': '|' }
+        \ }
+
+  let g:lightline.colorscheme = 'gruvbox'
+  function! LightLineModified()
+    return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+  endfunction
+
+  function! LightLineReadonly()
+    return &ft !~? 'help' && &readonly ? '⭤' : ''
+  endfunction
+
+  function! LightLineFilename()
+    let fname = expand('%:t')
+    return fname == 'ControlP' ? g:lightline.ctrlp_item :
+          \ fname == '__Tagbar__' ? g:lightline.fname :
+          \ fname =~ '__Gundo\|NERD_tree' ? '' :
+          \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+          \ &ft == 'unite' ? unite#get_status_string() :
+          \ &ft == 'vimshell' ? vimshell#get_status_string() :
+          \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+          \ ('' != fname ? fname : '[No Name]') .
+          \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+  endfunction
+
+  function! LightLineFugitive()
+    try
+      if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+        let mark = '⭠ '  " edit here for cool mark
+        let _ = fugitive#head()
+        return strlen(_) ? mark._ : ''
+      endif
+    catch
+    endtry
+    return ''
+  endfunction
+
+  function! LightLineFileformat()
+    return winwidth(0) > 70 ? &fileformat : ''
+  endfunction
+
+  function! LightLineFiletype()
+    return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+  endfunction
+
+  function! LightLineFileencoding()
+    return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+  endfunction
+
+  function! LightLineMode()
+    let fname = expand('%:t')
+    return fname == '__Tagbar__' ? 'Tagbar' :
+          \ fname == 'ControlP' ? 'CtrlP' :
+          \ fname == '__Gundo__' ? 'Gundo' :
+          \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+          \ fname =~ 'NERD_tree' ? 'NERDTree' :
+          \ &ft == 'unite' ? 'Unite' :
+          \ &ft == 'vimfiler' ? 'VimFiler' :
+          \ &ft == 'vimshell' ? 'VimShell' :
+          \ winwidth(0) > 60 ? lightline#mode() : ''
+  endfunction
+
+  function! CtrlPMark()
+    if expand('%:t') =~ 'ControlP'
+      call lightline#link('iR'[g:lightline.ctrlp_regex])
+      return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
+            \ , g:lightline.ctrlp_next], 0)
+    else
+      return ''
+    endif
+  endfunction
+
+  let g:ctrlp_status_func = {
+        \ 'main': 'CtrlPStatusFunc_1',
+        \ 'prog': 'CtrlPStatusFunc_2',
+        \ }
+
+  function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
+    let g:lightline.ctrlp_regex = a:regex
+    let g:lightline.ctrlp_prev = a:prev
+    let g:lightline.ctrlp_item = a:item
+    let g:lightline.ctrlp_next = a:next
+    return lightline#statusline(0)
+  endfunction
+
+  function! CtrlPStatusFunc_2(str)
+    return lightline#statusline(0)
+  endfunction
+
+  let g:tagbar_status_func = 'TagbarStatusFunc'
+
+  function! TagbarStatusFunc(current, sort, fname, ...) abort
+    let g:lightline.fname = a:fname
+    return lightline#statusline(0)
+  endfunction
+
+  augroup AutoSyntastic
+    autocmd!
+    autocmd BufWritePost *.c,*.cpp call s:syntastic()
+  augroup END
+  function! s:syntastic()
+    SyntasticCheck
+    call lightline#update()
+  endfunction
+
+  let g:unite_force_overwrite_statusline = 0
+  let g:vimfiler_force_overwrite_statusline = 0
+  let g:vimshell_force_overwrite_statusline = 0
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-ctrlspace {{{
+" ----------------------------------------------------------------------------
+  if executable("ag")
+    let g:ctrlspace_glob_command = 'ag -l --nocolor -g ""'
+  endif
+
+  nnoremap <C-Space> :CtrlSpace<cr>
+  autocmd filetype ctrlspace call s:ctrlspace_settings()
+  function! s:ctrlspace_settings()
+    " enable navigation with control-j and control-k in insert mode
+    imap <buffer> <c-j>   :call <sid>move_selection_bar("down")
+    imap <buffer> <c-k>   :call <sid>move_selection_bar("up")
+  endfunction
+
+  "let g:ctrlspace_use_tabline = 0
+
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-emmet {{{
+" ----------------------------------------------------------------------------
+  let g:user_emmet_mode='a'         "enable all function in all mode.
+  " let g:user_emmet_mode='i'         "enable all function in all mode.
+  let g:user_emmet_leader_key='◊Ú'
 
 "}}}
 
