@@ -54,12 +54,13 @@ Plug 'majutsushi/tagbar', { 'on' : [ 'Tagbar', 'TagbarToggle', ] }
 Plug 'vim-scripts/TaskList.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'AndrewRadev/sideways.vim',
-      \ {'on': ['SidewaysLeft', 'SidewaysRight',
-      \ 'SidewaysJumapLeft', 'SidewaysJumapRight']}
+                          \ {'on': ['SidewaysLeft', 'SidewaysRight',
+                          \ 'SidewaysJumapLeft', 'SidewaysJumapRight']}
 
 Plug 'thinca/vim-ambicmd'
 Plug 'junegunn/vim-pseudocl'
 Plug 'junegunn/vim-fnr'
+" Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-repeat'
@@ -98,726 +99,90 @@ Plug 'shinchu/lightline-gruvbox.vim'
 "Plug 'ap/vim-buftabline'
 Plug 'szw/vim-ctrlspace'
 Plug 'mattn/emmet-vim' ", {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}
-
-
-
-
-
-
-
-  "}}} _emmet-vim
-
-  "{{{ vim-skipit
-
-    Plug 'habamax/vim-skipit'
-    "use <c-l>l to skip ahead forward in insert mode
-
-  "}}} _vim-skipit
-
-  "{{{ vim-easymotion
-
-  Plug 'Lokaltog/vim-easymotion'
-
-  map s <Plug>(easymotion-prefix)
-
-  map sl          <Plug>(easymotion-lineforward)
-  map sh          <Plug>(easymotion-linebackward)
-
-  " map ◊l          <Plug>(easymotion-bd-fl)
-
-  map <c-s><c-s>         <Plug>(easymotion-s2)
-  " map ◊Ț<c-s>     <Plug>(easymotion-bd-s2)
-  map <c-s>s      <Plug>(easymotion-sn)
-  " map ◊<c-s>      <Plug>(easymotion-bd-fn)
-
-  map <c-s>f <Plug>(easymotion-bd-f)
-  map ssf    <Plug>(easymotion-bd-f)
-  map <c-s>t <Plug>(easymotion-bd-t)
-  map sst    <Plug>(easymotion-bd-t)
-  map <c-s>w <Plug>(easymotion-bd-w)
-  map ssw    <Plug>(easymotion-bd-w)
-  "map ◊<c-s-w>    <Plug>(easymotion-bd-W)
-  map <c-s>e <Plug>(easymotion-bd-e)
-  map sse    <Plug>(easymotion-bd-e)
-  "map ◊<c-s-e>    <Plug>(easymotion-bd-E)
-  map <c-s>n <Plug>(easymotion-bd-n)
-  map ssn    <Plug>(easymotion-bd-n)
-
-  map <c-s>j      <Plug>(easymotion-bd-jk)
-  map ssj      <Plug>(easymotion-bd-jk)
-  map <c-s>k      <Plug>(easymotion-bd-jk)
-  map ssk      <Plug>(easymotion-bd-jk)
-
-  map <c-s>l      <Plug>(easymotion-eol-bd-jk)
-  map <c-s>h      <Plug>(easymotion-sol-bd-jk)
-
-
-    " <Plug>(easymotion-sn) <Plug>(easymotion-fn) <Plug>(easymotion-Fn)
-    " <Plug>(easymotion-tn) <Plug>(easymotion-Tn) <Plug>(easymotion-bd-tn)
-    " <Plug>(easymotion-sln) <Plug>(easymotion-fln) <Plug>(easymotion-Fln)
-    " <Plug>(easymotion-tln) <Plug>(easymotion-Tln) <Plug>(easymotion-bd-tln)
-
-
-    " <Plug>(easymotion-s2) <Plug>(easymotion-f2) <Plug>(easymotion-F2)
-    " <Plug>(easymotion-t2) <Plug>(easymotion-T2) <Plug>(easymotion-bd-t2)
-    " <Plug>(easymotion-sl2) <Plug>(easymotion-fl2) <Plug>(easymotion-Fl2)
-    " <Plug>(easymotion-tl2) <Plug>(easymotion-Tl2) <Plug>(easymotion-bd-tl2)
-
-  " keep cursor colum when JK motion
-  let g:EasyMotion_startofline = 0
-  let g:EasyMotion_force_csapprox = 1
-"}}} _vim-easymotion
-
-"{{{ vim-trailing-whitespace
-
+Plug 'habamax/vim-skipit'              "use <c-l>l to skip ahead forward in insert mode
+Plug 'Lokaltog/vim-easymotion'
 Plug 'bronson/vim-trailing-whitespace'
-  let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
+Plug 'junegunn/vim-oblique'
+Plug 'khalidchawtany/IndexedSearch', {'autoload': {'mappings':['<Plug>(ShowSearchIndex_']}}
 
-"}}} _vim-trailing-whitespace
-
-"{{{ vim-over
-  "vim-fnr instead
-
-  " Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
-  " nmap <leader>/ :OverCommandLine<cr>
-  " nnoremap g;s :<c-u>OverCommandLine<cr>%s/
-  " xnoremap g;s :<c-u>OverCommandLine<cr>%s/\%V
-
-"}}} _vim-over
-
-"{{{ vim-fnr
-
-
-
-"}}}} _vim-fnr
-
-"{{{ vim-oblique
-
-  Plug 'junegunn/vim-oblique'
-
-  autocmd! User Oblique       ShowSearchIndex
-  autocmd! User ObliqueStar   ShowSearchIndex
-  autocmd! User ObliqueRepeat ShowSearchIndex
-  let g:oblique#enable_cmap=0
-
-"}}}} _vim-oblique
-
-"{{{ indexedsearch
-
-  "Show the seach match index  eg: showing 1st mach out of 10
-
-  Plug 'khalidchawtany/IndexedSearch', {'autoload': {'mappings':['<Plug>(ShowSearchIndex_']}}
-
-
-  let g:IndexedSearch_SaneRegEx = 1
-  let g:IndexedSearch_AutoCenter = 1
-  let g:IndexedSearch_No_Default_Mappings = 1
-
-  nmap <silent>n <Plug>(ShowSearchIndex_n)zv
-  nmap <silent>N <Plug>(ShowSearchIndex_N)zv
-  nmap <silent>* <Plug>(ShowSearchIndex_Star)zv
-  nmap <silent># <Plug>(ShowSearchIndex_Pound)zv
-
-  nmap / <Plug>(ShowSearchIndex_Forward)
-  nmap ? <Plug>(ShowSearchIndex_Backward)
-
-"}}} _indexedsearch
-
-" neosnippet {{{
-  Plug 'Shougo/neosnippet'
-  Plug 'Shougo/neosnippet-snippets'
-  " Plugin key-mappings.
-  imap <c-\>     <Plug>(neosnippet_expand_or_jump)
-  smap <c-\>     <Plug>(neosnippet_expand_or_jump)
-  xmap <c-\>     <Plug>(neosnippet_expand_target)
-  " For snippet_complete marker.
-  if has('conceal')
-    set conceallevel=2 concealcursor=niv
-
-  endif
-"}}} _neosnippet
-
-"{{{  neoinclude.vim
-
-  Plug 'Shougo/neoinclude.vim'
-
-"}}} _neoinclude.vim
-
-"{{{  neco-syntax
-
-  Plug 'Shougo/neco-syntax'
-
-"}}} _neco-syntax
-
-"{{{  neco-vim
-
-  Plug 'Shougo/neco-vim'
-
-"}}} _neco-vim
-
-"{{{  echodoc.vim
-
-  Plug 'Shougo/echodoc.vim'
-
-"}}} _echodoc.vim
-
-"{{{  deoplete.nvim
-
-  Plug 'Shougo/deoplete.nvim'
-  " Use deoplete.
-  let g:deoplete#enable_at_startup = 1
-
-  let g:deoplete#auto_completion_start_length = 1
-
-"}}} _deoplete.nvim
-
-"{{{ YouCompleteMe
-
-  " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer --omnisharp-completer' }
-  " " make YCM compatible with UltiSnips (using supertab)
-  " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-  " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-  " let g:SuperTabDefaultCompletionType = '<C-n>'
-
-"}}} _YouCompleteMe
-
-"{{{ Ultisnips
-  Plug 'SirVer/ultisnips'
-  " better key bindings for UltiSnipsExpandTrigger
-
-  let g:UltiSnipsEnableSnipMate = 0
-
-  let g:UltiSnipsExpandTrigger = "‰"            "press ctrl+enter
-  let g:UltiSnipsJumpForwardTrigger = "‰"       "press ctrl+enter
-  let g:UltiSnipsJumpBackwardTrigger = "<m-cr>" "press alt+enter
-  let g:UltiSnipsListSnippets="<s-tab>"
-
-  let g:ultisnips_java_brace_style="nl"
-  let g:Ultisnips_java_brace_style="nl"
-  let g:UltiSnipsSnippetsDir="~/.nvim/UltiSnips"
-  "let g:UltiSnipsSnippetDirectories = [ "/Volumes/Home/.nvim/plugged/vim-snippets/UltiSnips"]
-
-"}}} _Ultisnips
-
-" "{{{ xptemplate
-
-  " Plug 'drmingdrmer/xptemplate'
-  " " Add xptemplate global personal directory value
-  " if has("unix")
-    " set runtimepath+=/Volumes/Home/.nvim/xpt-personal
-  " endif
-  " "let g:xptemplate_nav_next = '<C-j>'
-  " "let g:xptemplate_nav_prev = '<C-k>'
-
-" "}}} _xptemplate
-
-"{{{ tabular
-
+"snippets
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'Shougo/neoinclude.vim'
+Plug 'Shougo/neco-syntax'
+Plug 'Shougo/neco-vim'
+Plug 'Shougo/echodoc.vim'
+Plug 'Shougo/deoplete.nvim'
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer --omnisharp-completer' }
+Plug 'SirVer/ultisnips'
+" Plug 'drmingdrmer/xptemplate'
 Plug 'godlygeek/tabular', {'on':'Tabularize'}
-nnoremap <leader>a& :Tabularize /&<CR>
-vnoremap <leader>a& :Tabularize /&<CR>
-nnoremap <leader>a= :Tabularize /=<CR>
-vnoremap <leader>a= :Tabularize /=<CR>
-nnoremap <leader>a: :Tabularize /:<CR>
-vnoremap <leader>a: :Tabularize /:<CR>
-nnoremap <leader>a:: :Tabularize /:\zs<CR>
-vnoremap <leader>a:: :Tabularize /:\zs<CR>
-nnoremap <leader>a> :Tabularize /=><CR>
-vnoremap <leader>a> :Tabularize /=><CR>
-nnoremap <leader>a, :Tabularize /,<CR>
-vnoremap <leader>a, :Tabularize /,<CR>
-nnoremap <leader>a<Bar> :Tabularize /<Bar><CR>
-vnoremap <leader>a<Bar> :Tabularize /<Bar><CR>
-nnoremap <leader>aa :Tabularize
-vnoremap <leader>aa :Tabularize
-
-"}}} _tabular
-
-"{{{  vim-surround
-
-
-
 Plug 't9md/vim-surround_custom_mapping'
 Plug 'tpope/vim-surround', {
-\   'on' :[
-\      '<Plug>Dsurround' , '<Plug>Csurround',
-\      '<Plug>Ysurround' , '<Plug>YSurround',
-\      '<Plug>Yssurround', '<Plug>YSsurround',
-\      '<Plug>YSsurround', '<Plug>VgSurround',
-\      '<Plug>VSurround' , '<Plug>ISurround'
-\ ]}
+                          \   'on' :[
+                          \      '<Plug>Dsurround' , '<Plug>Csurround',
+                          \      '<Plug>Ysurround' , '<Plug>YSurround',
+                          \      '<Plug>Yssurround', '<Plug>YSsurround',
+                          \      '<Plug>YSsurround', '<Plug>VgSurround',
+                          \      '<Plug>VSurround' , '<Plug>ISurround'
+                          \ ]}
 
-nmap ds <Plug>Dsurround
-nmap cs <Plug>Csurround
-nmap ys <Plug>Ysurround
-nmap yS <Plug>YSurround
-nmap yss <Plug>Yssurround
-nmap ySs <Plug>YSsurround
-nmap ySS <Plug>YSsurround
-xmap S <Plug>VSurround
-xmap gS <Plug>VgSurround
-
-imap <C-G>s <Plug>Isurround
-imap <C-G>S <Plug>ISurround
-imap <C-S> <Plug>Isurround
-
-
-"}}} _vim-surround
-
-
-"{{{ searchfold.vim foldsearch vim-foldfocus foldsearches.vim
-
-  " Search and THEN Fold the search term containig lines using <leader>z
-  " or the the inverse using <leader>iz or restore original fold using <leader>Z
-
-  Plug 'khalidchawtany/searchfold.vim' , {'autoload': {'mappings': ['<Plug>SearchFoldNormal']}}
-  nmap <leader>z <Plug>SearchFoldNormal
-
-  Plug 'khalidchawtany/foldsearch',
-        \   {
-        \       'autoload':
-        \       {
-        \            'commands': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe'],
-        \            'mappings':
-        \                   [
-        \                       '<leader>fs',
-        \                       '<leader>fw',
-        \                       '<leader>fl',
-        \                       '<leader>fS',
-        \                       '<leader>fi',
-        \                       '<leader>fd',
-        \                       '<leader>fe'
-        \                   ]
-        \       }
-        \ }
-  Plug 'vasconcelloslf/vim-foldfocus'
-  Plug '/Volumes/Home/.nvim/plugged/foldsearches.vim'
-
-"}}} _searchfold.vim foldsearch vim-foldfocus foldsearches.vim
-
-"{{{ vim-css-color
-
-  Plug 'ap/vim-css-color', {'for':['css','scss','sass','less','styl']}
-
-"}}} _vim-css-color
-
-"{{{ vim-rengbang
-
-  "Use instead of increment it is much powerfull
-  " RengBang \(\d\+\) Start# Increment# Select# %03d => 001, 002
-  Plug 'deris/vim-rengbang', { 'on': [ 'RengBang', 'RengBangUsePrev' ] }
-
-
-"}}} _vim-rengbang
-
-"{{{ rectInsert
-
-  Plug 'deris/vim-rectinsert', { 'on': ['RectInsert', 'RectReplace'] }
-
-"}}} _rectInsert
-
-"{{{ vim-abolish
-
-  Plug 'tpope/vim-abolish', {'on': ['S','Subvert', 'Abolish']}
-
-"}}} _vim-abolish
-
-"{{{ enmass
-
-  " EnMass the sublime like search and edit then save back to corresponding files
-  Plug 'Wolfy87/vim-enmasse', {'on': 'EnMasse'}
-
-"}}} End of enmass
-
-"{{{  inline_edit.viw
-
-    Plug 'AndrewRadev/inline_edit.vim'
-
-"}}} _inline_edit.vim
-
-"{{{  vim-multiple-cursors
-
-    Plug 'terryma/vim-multiple-cursors'
-    let g:multi_cursor_use_default_mapping=0
-    "Use ctrl-n to select next instance
-
-"}}} _vim-multiple-cursors
-
-"{{{ multiedit
-
+Plug 'ap/vim-css-color', {'for':['css','scss','sass','less','styl']}
+Plug 'deris/vim-rengbang', { 'on': [ 'RengBang', 'RengBangUsePrev' ] }
+Plug 'deris/vim-rectinsert', { 'on': ['RectInsert', 'RectReplace'] }
+Plug 'tpope/vim-abolish', {'on': ['S','Subvert', 'Abolish']}
+Plug 'Wolfy87/vim-enmasse', {'on': 'EnMasse'}
+Plug 'AndrewRadev/inline_edit.vim'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'hlissner/vim-multiedit'
-      " \,
-      " \{
-      " \   'on':
-      " \     [
-      " \         'MultieditAddMark', 'MultieditAddRegion',
-      " \         'MultieditRestore', 'MultieditHop', 'Multiedit',
-      " \         'MultieditClear', 'MultieditReset'
-      " \     ]
-      " \}
+                          " \,
+                          " \{
+                          " \   'on':
+                          " \     [
+                          " \         'MultieditAddMark', 'MultieditAddRegion',
+                          " \         'MultieditRestore', 'MultieditHop', 'Multiedit',
+                          " \         'MultieditClear', 'MultieditReset'
+                          " \     ]
+                          " \}
+
+Plug 'AndrewRadev/splitjoin.vim', { 'autoload' : {
+                        \ 'mappings' : ['gJ', 'gS']
+                        \ }}
+
+" if exists('$TMUX') | Plug 'christoomey/vim-tmux-navigator' | endif
+
+
+
+Plug 'gioele/vim-autoswap'
+Plug 'mbbill/undotree'
+Plug 'simnalamburt/vim-mundo'
+Plug 'Shougo/vimproc.vim'
+Plug 'tpope/vim-dispatch'
+Plug 'benekastah/neomake'
+Plug 'pgdouyon/vim-accio'
+Plug 'bruno-/vim-man'
+Plug 'janko-m/vim-test'
+Plug 'OrangeT/vim-csharp'
+Plug 'scrooloose/syntastic'
+Plug 'kassio/neoterm'
+Plug 'tpope/vim-endwise'
+Plug 'Raimondi/delimitMate'
+Plug 'ton/vim-bufsurf'
+Plug 'tyru/capture.vim' "Capture EX-commad in a buffer
+" Plug 'm2mdas/phpcomplete-extended'
+" Plug 'm2mdas/phpcomplete-extended-laravel'
+Plug 'xsbeats/vim-blade'
+Plug 'tpope/vim-fugitive'
 
 
-let g:multiedit_no_mappings = 1
-let g:multiedit_auto_reset = 1
 
-nnoremap ,me :call BindMultieditKeys()<cr>
-
-function! BindMultieditKeys()
-
-  " Insert a disposable marker after the cursor
-  nnoremap <leader>ma :MultieditAddMark a<CR>
-
-  " Insert a disposable marker before the cursor
-  nnoremap <leader>mi :MultieditAddMark i<CR>
-
-  " Make a new line and insert a marker
-  nnoremap <leader>mo o<Esc>:MultieditAddMark i<CR>
-  nnoremap <leader>mO O<Esc>:MultieditAddMark i<CR>
-
-  " Insert a marker at the end/start of a line
-  nnoremap <leader>mA $:MultieditAddMark a<CR>
-  nnoremap <leader>mI ^:MultieditAddMark i<CR>
-
-  " Make the current selection/word an edit region
-  vnoremap <leader>m :MultieditAddRegion<CR>
-  nnoremap <leader>mm viw:MultieditAddRegion<CR>
-
-  " Restore the regions from a previous edit session
-  nnoremap <leader>mu :MultieditRestore<CR>
-
-  " Move cursor between regions n times
-  noremap ]gc :MultieditHop 1<CR>
-  noremap [gc :MultieditHop -1<CR>
-
-  " Start editing!
-  nnoremap <leader>ms :Multiedit<CR>
-
-  " Clear the word and start editing
-  nnoremap <leader>mc :Multiedit!<CR>
-
-  " Unset the region under the cursor
-  nnoremap <silent> <leader>md :MultieditClear<CR>
-
-  " Unset all regions
-  nnoremap <silent> <leader>mr :MultieditReset<CR>
-
-  nmap <silent> <leader>mn <leader>mm/<C-r>=expand("<cword>")<CR><CR>
-  nmap <silent> <leader>mp <leader>mm?<C-r>=expand("<cword>")<CR><CR>
-
-endfunction
-"}}} End of multiedit
-
-"{{{ SplitJoin.vim
-
-      \ Plug 'AndrewRadev/splitjoin.vim', { 'autoload' : {
-            \ 'mappings' : ['gJ', 'gS']
-            \ }}
-
-    let g:splitjoin_split_mapping = 'gS'
-    let g:splitjoin_join_mapping  = 'gJ'
-
-"}}} _SplitJoin.vim
-
-
-"{{{  vim-tmux-navigator
-  if exists('$TMUX')
-    let g:tmux_navigator_no_mappings = 1
-    Plug 'christoomey/vim-tmux-navigator'
-    nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-    nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-    nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-    nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-    nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
-  endif
-"}}} _vim-tmux-navigator
-
-"{{{  vim-autoswap
-
-    Plug 'gioele/vim-autoswap'
-
-"}}} _vim-autoswap
-
-"{{{  undotree
-
-  Plug 'mbbill/undotree'
-  let g:undotree_WindowLayout = 2
-"}}} _undotree
-
-"{{{  gundo.vim
-
-  Plug 'simnalamburt/vim-mundo'
-  let g:gundo_preview_bottom = 1
-
-"}}} _gundo.vim
-
-"{{{  vimproc.vim
-
-  Plug 'Shougo/vimproc.vim'
-
-"}}} _vimproc.vim
-
-"{{{  vim-dispatch
-
-  Plug 'tpope/vim-dispatch'
-
-"}}} _vim-dispatch
-
-"{{{  neomake
-
-  Plug 'benekastah/neomake'
-
-  " autocmd! BufWritePost * Neomake
-  " let g:neomake_airline = 0
-  let g:neomake_error_sign = { 'text': '✘', 'texthl': 'ErrorSign' }
-  let g:neomake_warning_sign = { 'text': ':(', 'texthl': 'WarningSign' }
-
-"}}} _neomake
-
-"{{{  vim-accio
-
-  Plug 'pgdouyon/vim-accio'
-
-"}}} _vim-accio
-
-"{{{  vim-man
-
-  Plug 'bruno-/vim-man'
-
-"}}} _vim-man
-
-"{{{  vim-test
-
-  Plug 'janko-m/vim-test'
-
-"}}} _vim-test
-
-"{{{  vim-csharp
-
-  Plug 'OrangeT/vim-csharp'
-
-"}}} _vim-csharp
-
-"{{{  Omnisharp
-  " let g:OmniSharp_server_type = 'roslyn'
-  let g:OmniSharp_server_path = "/Volumes/Home/.nvim/plugged/Omnisharp/server/Omnisharp/bin/Debug/OmniSharp.exe"
-  Plug 'nosami/Omnisharp'
-
-  " Plug 'khalidchawtany/omnisharp-vim', {'branch': 'nUnitQuickFix'}
-
-  let g:OmniSharp_selecter_ui = 'ctrlp'
-
-  let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
-
-  "let g:OmniSharp_server_type = 'roslyn'
-  autocmd Filetype cs,cshtml.html call SetOmniSharpOptions()
-
-  function! SetOmniSharpOptions()
-
-    if exists("g:SetOmniSharpOptionsIsSet")
-      return
-    endif
-
-    source ~/.nvim/scripts/make_cs_solution.vim
-    autocmd BufWritePost *.cs BuildCSharpSolution
-
-    nnoremap ,oo :BuildCSharpSolution<cr>
-
-    let g:SetOmniSharpOptionsIsSet = 1
-    "can set preview here also but i found it causes flicker
-    "set completeopt=longest,menuone
-
-    "makes enter work like C-y, confirming a popup selection
-    "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-    setlocal omnifunc=OmniSharp#Complete
-
-    if exists(":DeopleteEnable")
-      DeopleteEnable
-      let g:deoplete#omni_patterns.cs='.*[^=\);]'
-      let g:deoplete#sources.cs=['omni', 'buffer', 'member', 'tag', 'file']
-    endif
-
-    " Builds can also run asynchronously with vim-dispatch installed
-    nnoremap <leader>ob :wa!<cr>:OmniSharpBuildAsync<cr>
-
-    nnoremap <leader>ogd :OmniSharpGotoDefinition<cr>
-    nnoremap <leader>ofi :OmniSharpFindImplementations<cr>
-    nnoremap <leader>oft :OmniSharpFindType<cr>
-    nnoremap <leader>ofs :OmniSharpFindSymbol<cr>
-    nnoremap <leader>ofu :OmniSharpFindUsages<cr>
-
-    nnoremap <leader>ofm :OmniSharpFindMembers<cr>
-    " cursor can be anywhere on the line containing an issue
-    nnoremap <leader>ox  :OmniSharpFixIssue<cr>
-    nnoremap <leader>ofx :OmniSharpFixUsings<cr>
-    nnoremap <leader>ott :OmniSharpTypeLookup<cr>
-    nnoremap <leader>odc :OmniSharpDocumentation<cr>
-    "navigate up by method/property/field
-    nnoremap <leader>ok :OmniSharpNavigateUp<cr>
-    "navigate down by method/property/field
-    nnoremap <leader>oj :OmniSharpNavigateDown<cr>
-
-    " Contextual code actions (requires CtrlP or unite.vim)
-    nnoremap <leader>o<space> :OmniSharpGetCodeActions<cr>
-    " Run code actions with text selected in visual mode to extract method
-    vnoremap <leader>o<space> :call OmniSharp#GetCodeActions('visual')<cr>
-
-    " rename with dialog
-    nnoremap <leader>onm :OmniSharpRename<cr>
-    " rename without dialog - with cursor on the symbol to rename... ':Rename newname'
-
-    " Force OmniSharp to reload the solution. Useful when switching branches etc.
-    nnoremap <leader>ors :OmniSharpReloadSolution<cr>
-    nnoremap <leader>ocf :OmniSharpCodeFormat<cr>
-    " Load the current .cs file to the nearest project
-    nnoremap <leader>otp :OmniSharpAddToProject<cr>
-
-    " (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
-    nnoremap <leader>oss :OmniSharpStartServer<cr>
-    nnoremap <leader>osp :OmniSharpStopServer<cr>
-
-    " Add syntax highlighting for types and interfaces
-    nnoremap <leader>oth :OmniSharpHighlightTypes<cr>
-
-    nnoremap <leader>ort :OmniSharpRunTests<cr>
-    nnoremap <leader>orf :OmniSharpRunTestFixture<cr>
-    nnoremap <leader>ora :OmniSharpRunAllTests<cr>
-    nnoremap <leader>orl :OmniSharpRunLastTests<cr>
-  endfunction
-
-  augroup omnisharp_commands
-    autocmd!
-
-    command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
-
-    " automatic syntax check on events (TextChanged requires Vim 7.4)
-    autocmd BufEnter,TextChanged,InsertLeave *.cs,*.cshtml SyntasticCheck
-
-    " Automatically add new cs files to the nearest project on save
-    autocmd BufWritePost *.cs,*.cshtml call OmniSharp#AddToProject()
-
-    "show type information automatically when the cursor stops moving
-    "autocmd CursorHold *.cs,*.cshtml call OmniSharp#TypeLookupWithoutDocumentation()
-  augroup END
-
-  "set updatetime=500
-  " Remove 'Press Enter to continue' message when type information is longer than one line.
-  "set cmdheight=2
-
-
-"}}} _Omnisharp
-
-"{{{  syntastic
-
-  Plug 'scrooloose/syntastic'
-
-  let g:syntastic_scala_checkers=['']
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_check_on_open = 1
-  let g:syntastic_error_symbol = "✗"
-  let g:syntastic_warning_symbol = "⚠"
-"}}} _syntastic
-
-"{{{  neoterm
-
-  Plug 'kassio/neoterm'
-  let g:neoterm_clear_cmd = "clear; printf '=%.0s' {1..80}; clear"
-  let g:neoterm_position = 'vertical'
-  let g:neoterm_automap_keys = '<leader>tt'
-
-  nnoremap <silent> <f9> :call neoterm#repl#line()<cr>
-  vnoremap <silent> <f9> :call neoterm#repl#selection()<cr>
-
-  " " TODO fix these mappings were disabled find alternatives
-  " " run set test lib
-  " nnoremap <silent> <leader>rt :call neoterm#test#run('all')<cr>
-  " nnoremap <silent> <leader>rf :call neoterm#test#run('file')<cr>
-  " nnoremap <silent> <leader>rn :call neoterm#test#run('current')<cr>
-  " nnoremap <silent> <leader>rr :call neoterm#test#rerun()<cr>
-
-  " " Useful maps
-  " " closes the all terminal buffers
-  " nnoremap <silent> <leader>tc :call neoterm#close_all()<cr>
-  " " clear terminal
-  " nnoremap <silent> <leader>tl :call neoterm#clear()<cr>
-"}}} _neoterm
-
-"{{{  vim-endwise
-
-    Plug 'tpope/vim-endwise'
-
-"}}} _vim-endwise
-
-"{{{ delimitMate
-
-  Plug 'Raimondi/delimitMate'
-
-"}}} _delimitMate
-
-"{{{ vim-bufsurf
-
-  Plug 'ton/vim-bufsurf'
-
-"}}}} _vim-bufsurf
-
-"{{{ capture.vim
-
-  "Capture EX-commad in a buffer
-  Plug 'tyru/capture.vim'
-
-"}}}} _capture.vim
-
-"{{{ phpcomplete-extended
-
-  " Plug 'm2mdas/phpcomplete-extended'
-  " let g:phpcomplete_index_composer_command = "composer"
-  " " autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
-
-  " Plug 'm2mdas/phpcomplete-extended-laravel'
-
-"}}}} _phpcomplete-extended
-
-"{{{ vim-blade
-
-  Plug 'xsbeats/vim-blade'
-
-"}}}} _vim-blade
-
-"{{{ vim-fugitive
-
-  Plug 'tpope/vim-fugitive'
-
-autocmd User fugitive
-  \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
-  \   nnoremap <buffer> .. :edit %:h<CR> |
-  \ endif
-autocmd BufReadPost fugitive://* set bufhidden=delete
-set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-
-"}}}} _vim-fugitive
-
-"Single Line Plugs
 
 Plug 'tpope/vim-ragtag'
-let g:ragtag_global_maps = 1
 
-" Errors out a lot disable till fixed
 
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
 
 Plug 'junegunn/limelight.vim', {'on': 'Limelight'}
-
-let g:limelight_conceal_guifg="#C2B294"
-
-autocmd! User GoyoEnter Limelight
-autocmd! User GoyoLeave Limelight!
-
-
-
-
-
-
-
 
 
 "ColorScheme
@@ -835,13 +200,10 @@ Plug 'vim-scripts/summerfruit256.vim'
 Plug 'vim-scripts/eclipse.vim'
 Plug 'vim-scripts/pyte'
 Plug 'morhetz/gruvbox'
-let g:gruvbox_contrast_dark='soft'          "soft, medium, hard"
-let g:gruvbox_contrast_light='soft'         "soft, medium, hard"
 Plug 'flazz/vim-colorschemes'
 
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-colorscheme-switcher'
-
 
 
 
@@ -947,6 +309,31 @@ Plug '/Volumes/Home/.nvim/plugged/ctrlp-dash-helper' "dash helper
 Plug 'JazzCore/ctrlp-cmatcher'                       "ctrl-p matcher
 " Plug 'FelikZ/ctrlp-py-matcher'                     "ctrl-p matcher
 " Plug 'nixprime/cpsm'                               "ctrl-p matcher
+
+
+
+Plug 'vasconcelloslf/vim-foldfocus'
+Plug '/Volumes/Home/.nvim/plugged/foldsearches.vim'
+Plug 'khalidchawtany/searchfold.vim' , {'autoload': {'mappings': ['<Plug>SearchFoldNormal']}}
+Plug 'khalidchawtany/foldsearch',
+      \   {
+      \       'autoload':
+      \       {
+      \            'commands': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe'],
+      \            'mappings':
+      \                   [
+      \                       '<leader>fs',
+      \                       '<leader>fw',
+      \                       '<leader>fl',
+      \                       '<leader>fS',
+      \                       '<leader>fi',
+      \                       '<leader>fd',
+      \                       '<leader>fe'
+      \                   ]
+      \       }
+      \ }
+
+
 
 
 call plug#end()
@@ -1943,21 +1330,21 @@ endfunction "}}}
 " ============================================================================
 
 " ----------------------------------------------------------------------------
-" gof | open finder, terminal {{{
+"  open finder, terminal {{{
 " ----------------------------------------------------------------------------
   let g:gtfo#terminals = { 'mac' : 'iterm' }
 
 
 "}}}
 " ----------------------------------------------------------------------------
-" ,XP | rainbow parentheses {{{
+" rainbow parentheses {{{
 " ----------------------------------------------------------------------------
   nnoremap <leader>xp :RainbowParentheses!!<CR>
 
 
 "}}}
 " ----------------------------------------------------------------------------
-" g<CR> | Easy align {{{
+" Easy align {{{
 " ----------------------------------------------------------------------------
   " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
   vmap <Enter> <Plug>(EasyAlign)
@@ -1968,7 +1355,7 @@ endfunction "}}}
 
 "}}}
 " ----------------------------------------------------------------------------
-" Ú<c-l>| NERDTree {{{
+" NERDTree {{{
 " ----------------------------------------------------------------------------
   let g:loaded_netrw       = 1 "Disable Netrw
   let g:loaded_netrwPlugin = 1 "Disable Netrw
@@ -1998,7 +1385,7 @@ endfunction "}}}
 
 "}}}
 " ----------------------------------------------------------------------------
-" ,g | Vim-grepper {{{
+" grepper {{{
 " ----------------------------------------------------------------------------
   nmap <leader>g <plug>(Grepper)
   xmap <leader>g <plug>(Grepper)
@@ -2375,6 +1762,16 @@ endfunction "}}}
       " Tab or Enter to return
   " CTRL-N or CTRL-P
       " Auto-completion
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-over {{{
+" ----------------------------------------------------------------------------
+  "use vim-fnr instead
+  " nmap <leader>/ :OverCommandLine<cr>
+  " nnoremap g;s :<c-u>OverCommandLine<cr>%s/
+  " xnoremap g;s :<c-u>OverCommandLine<cr>%s/\%V
 
 
 "}}}
@@ -2957,6 +2354,530 @@ endfunction "}}}
   let g:user_emmet_mode='a'         "enable all function in all mode.
   " let g:user_emmet_mode='i'         "enable all function in all mode.
   let g:user_emmet_leader_key='◊Ú'
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-easymotion {{{
+" ----------------------------------------------------------------------------
+  map s <Plug>(easymotion-prefix)
+
+  map sl          <Plug>(easymotion-lineforward)
+  map sh          <Plug>(easymotion-linebackward)
+
+  " map ◊l          <Plug>(easymotion-bd-fl)
+
+  map <c-s><c-s>         <Plug>(easymotion-s2)
+  " map ◊Ț<c-s>     <Plug>(easymotion-bd-s2)
+  map <c-s>s      <Plug>(easymotion-sn)
+  " map ◊<c-s>      <Plug>(easymotion-bd-fn)
+
+  map <c-s>f <Plug>(easymotion-bd-f)
+  map ssf    <Plug>(easymotion-bd-f)
+  map <c-s>t <Plug>(easymotion-bd-t)
+  map sst    <Plug>(easymotion-bd-t)
+  map <c-s>w <Plug>(easymotion-bd-w)
+  map ssw    <Plug>(easymotion-bd-w)
+  "map ◊<c-s-w>    <Plug>(easymotion-bd-W)
+  map <c-s>e <Plug>(easymotion-bd-e)
+  map sse    <Plug>(easymotion-bd-e)
+  "map ◊<c-s-e>    <Plug>(easymotion-bd-E)
+  map <c-s>n <Plug>(easymotion-bd-n)
+  map ssn    <Plug>(easymotion-bd-n)
+
+  map <c-s>j      <Plug>(easymotion-bd-jk)
+  map ssj      <Plug>(easymotion-bd-jk)
+  map <c-s>k      <Plug>(easymotion-bd-jk)
+  map ssk      <Plug>(easymotion-bd-jk)
+
+  map <c-s>l      <Plug>(easymotion-eol-bd-jk)
+  map <c-s>h      <Plug>(easymotion-sol-bd-jk)
+
+
+    " <Plug>(easymotion-sn) <Plug>(easymotion-fn) <Plug>(easymotion-Fn)
+    " <Plug>(easymotion-tn) <Plug>(easymotion-Tn) <Plug>(easymotion-bd-tn)
+    " <Plug>(easymotion-sln) <Plug>(easymotion-fln) <Plug>(easymotion-Fln)
+    " <Plug>(easymotion-tln) <Plug>(easymotion-Tln) <Plug>(easymotion-bd-tln)
+
+
+    " <Plug>(easymotion-s2) <Plug>(easymotion-f2) <Plug>(easymotion-F2)
+    " <Plug>(easymotion-t2) <Plug>(easymotion-T2) <Plug>(easymotion-bd-t2)
+    " <Plug>(easymotion-sl2) <Plug>(easymotion-fl2) <Plug>(easymotion-Fl2)
+    " <Plug>(easymotion-tl2) <Plug>(easymotion-Tl2) <Plug>(easymotion-bd-tl2)
+
+  " keep cursor colum when JK motion
+  let g:EasyMotion_startofline = 0
+  let g:EasyMotion_force_csapprox = 1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-trailing-whitespace {{{
+" ----------------------------------------------------------------------------
+  let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-oblique {{{
+" ----------------------------------------------------------------------------
+  autocmd! User Oblique       ShowSearchIndex
+  autocmd! User ObliqueStar   ShowSearchIndex
+  autocmd! User ObliqueRepeat ShowSearchIndex
+  let g:oblique#enable_cmap=0
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-IndexedSearch {{{
+" ----------------------------------------------------------------------------
+  let g:IndexedSearch_SaneRegEx = 1
+  let g:IndexedSearch_AutoCenter = 1
+  let g:IndexedSearch_No_Default_Mappings = 1
+
+  " nmap <silent>n <Plug>(ShowSearchIndex_n)zv
+  " nmap <silent>N <Plug>(ShowSearchIndex_N)zv
+  " nmap <silent>* <Plug>(ShowSearchIndex_Star)zv
+  " nmap <silent># <Plug>(ShowSearchIndex_Pound)zv
+
+  " nmap / <Plug>(ShowSearchIndex_Forward)
+  " nmap ? <Plug>(ShowSearchIndex_Backward)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" neosnippet {{{
+" ----------------------------------------------------------------------------
+  " Plugin key-mappings.
+  imap <c-\>     <Plug>(neosnippet_expand_or_jump)
+  smap <c-\>     <Plug>(neosnippet_expand_or_jump)
+  xmap <c-\>     <Plug>(neosnippet_expand_target)
+  " For snippet_complete marker.
+  if has('conceal')
+    set conceallevel=2 concealcursor=niv
+  endif
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" deoplete {{{
+" ----------------------------------------------------------------------------
+  " Use deoplete.
+  let g:deoplete#enable_at_startup = 1
+
+  let g:deoplete#auto_completion_start_length = 1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" YouCompleteMe {{{
+" ----------------------------------------------------------------------------
+  " " make YCM compatible with UltiSnips (using supertab)
+  " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+  " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+  " let g:SuperTabDefaultCompletionType = '<C-n>'
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" UltiSnips {{{
+" ----------------------------------------------------------------------------
+  " better key bindings for UltiSnipsExpandTrigger
+
+  let g:UltiSnipsEnableSnipMate = 0
+
+  let g:UltiSnipsExpandTrigger = "‰"            "press ctrl+enter
+  let g:UltiSnipsJumpForwardTrigger = "‰"       "press ctrl+enter
+  let g:UltiSnipsJumpBackwardTrigger = "<m-cr>" "press alt+enter
+  let g:UltiSnipsListSnippets="<s-tab>"
+
+  let g:ultisnips_java_brace_style="nl"
+  let g:Ultisnips_java_brace_style="nl"
+  let g:UltiSnipsSnippetsDir="~/.nvim/UltiSnips"
+  "let g:UltiSnipsSnippetDirectories = [ "/Volumes/Home/.nvim/plugged/vim-snippets/UltiSnips"]
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" xptemplate {{{
+" ----------------------------------------------------------------------------
+  " " Add xptemplate global personal directory value
+  " if has("unix")
+    " set runtimepath+=/Volumes/Home/.nvim/xpt-personal
+  " endif
+  " "let g:xptemplate_nav_next = '<C-j>'
+  " "let g:xptemplate_nav_prev = '<C-k>'
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" tabular {{{
+" ----------------------------------------------------------------------------
+  nnoremap <leader>a& :Tabularize /&<CR>
+  vnoremap <leader>a& :Tabularize /&<CR>
+  nnoremap <leader>a= :Tabularize /=<CR>
+  vnoremap <leader>a= :Tabularize /=<CR>
+  nnoremap <leader>a: :Tabularize /:<CR>
+  vnoremap <leader>a: :Tabularize /:<CR>
+  nnoremap <leader>a:: :Tabularize /:\zs<CR>
+  vnoremap <leader>a:: :Tabularize /:\zs<CR>
+  nnoremap <leader>a> :Tabularize /=><CR>
+  vnoremap <leader>a> :Tabularize /=><CR>
+  nnoremap <leader>a, :Tabularize /,<CR>
+  vnoremap <leader>a, :Tabularize /,<CR>
+  nnoremap <leader>a<Bar> :Tabularize /<Bar><CR>
+  vnoremap <leader>a<Bar> :Tabularize /<Bar><CR>
+  nnoremap <leader>aa :Tabularize
+  vnoremap <leader>aa :Tabularize
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-surround {{{
+" ----------------------------------------------------------------------------
+  nmap ds <Plug>Dsurround
+  nmap cs <Plug>Csurround
+  nmap ys <Plug>Ysurround
+  nmap yS <Plug>YSurround
+  nmap yss <Plug>Yssurround
+  nmap ySs <Plug>YSsurround
+  nmap ySS <Plug>YSsurround
+  xmap S <Plug>VSurround
+  xmap gS <Plug>VgSurround
+
+  imap <C-G>s <Plug>Isurround
+  imap <C-G>S <Plug>ISurround
+  imap <C-S> <Plug>Isurround
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-rengbang {{{
+" ----------------------------------------------------------------------------
+  "Use instead of increment it is much powerfull
+  " RengBang \(\d\+\) Start# Increment# Select# %03d => 001, 002
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" enmasse {{{
+" ----------------------------------------------------------------------------
+  " EnMass the sublime like search and edit then save back to corresponding files
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" multiple-cursor {{{
+" ----------------------------------------------------------------------------
+  let g:multi_cursor_use_default_mapping=0
+  "Use ctrl-n to select next instance
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" multiedit {{{
+" ----------------------------------------------------------------------------
+  let g:multiedit_no_mappings = 1
+  let g:multiedit_auto_reset = 1
+
+  nnoremap ,me :call BindMultieditKeys()<cr>
+
+  function! BindMultieditKeys()
+
+    " Insert a disposable marker after the cursor
+    nnoremap <leader>ma :MultieditAddMark a<CR>
+
+    " Insert a disposable marker before the cursor
+    nnoremap <leader>mi :MultieditAddMark i<CR>
+
+    " Make a new line and insert a marker
+    nnoremap <leader>mo o<Esc>:MultieditAddMark i<CR>
+    nnoremap <leader>mO O<Esc>:MultieditAddMark i<CR>
+
+    " Insert a marker at the end/start of a line
+    nnoremap <leader>mA $:MultieditAddMark a<CR>
+    nnoremap <leader>mI ^:MultieditAddMark i<CR>
+
+    " Make the current selection/word an edit region
+    vnoremap <leader>m :MultieditAddRegion<CR>
+    nnoremap <leader>mm viw:MultieditAddRegion<CR>
+
+    " Restore the regions from a previous edit session
+    nnoremap <leader>mu :MultieditRestore<CR>
+
+    " Move cursor between regions n times
+    noremap ]gc :MultieditHop 1<CR>
+    noremap [gc :MultieditHop -1<CR>
+
+    " Start editing!
+    nnoremap <leader>ms :Multiedit<CR>
+
+    " Clear the word and start editing
+    nnoremap <leader>mc :Multiedit!<CR>
+
+    " Unset the region under the cursor
+    nnoremap <silent> <leader>md :MultieditClear<CR>
+
+    " Unset all regions
+    nnoremap <silent> <leader>mr :MultieditReset<CR>
+
+    nmap <silent> <leader>mn <leader>mm/<C-r>=expand("<cword>")<CR><CR>
+    nmap <silent> <leader>mp <leader>mm?<C-r>=expand("<cword>")<CR><CR>
+
+  endfunction
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" splitjoin {{{
+" ----------------------------------------------------------------------------
+  let g:splitjoin_split_mapping = 'gS'
+  let g:splitjoin_join_mapping  = 'gJ'
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" tmux-navigator {{{
+" ----------------------------------------------------------------------------
+  if exists('$TMUX')
+    let g:tmux_navigator_no_mappings = 1
+    nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+    nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+    nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+    nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+    nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+  endif
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" undotree {{{
+" ----------------------------------------------------------------------------
+  let g:undotree_WindowLayout = 2
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" gundo-tree {{{
+" ----------------------------------------------------------------------------
+  let g:gundo_preview_bottom = 1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" neomake {{{
+" ----------------------------------------------------------------------------
+  " autocmd! BufWritePost * Neomake
+  " let g:neomake_airline = 0
+  let g:neomake_error_sign = { 'text': '✘', 'texthl': 'ErrorSign' }
+  let g:neomake_warning_sign = { 'text': ':(', 'texthl': 'WarningSign' }
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" omnisharp {{{
+" ----------------------------------------------------------------------------
+  " let g:OmniSharp_server_type = 'roslyn'
+  let g:OmniSharp_server_path = "/Volumes/Home/.nvim/plugged/Omnisharp/server/Omnisharp/bin/Debug/OmniSharp.exe"
+  Plug 'nosami/Omnisharp'
+
+  " Plug 'khalidchawtany/omnisharp-vim', {'branch': 'nUnitQuickFix'}
+
+  let g:OmniSharp_selecter_ui = 'ctrlp'
+
+  let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
+
+  "let g:OmniSharp_server_type = 'roslyn'
+  autocmd Filetype cs,cshtml.html call SetOmniSharpOptions()
+
+  function! SetOmniSharpOptions()
+
+    if exists("g:SetOmniSharpOptionsIsSet")
+      return
+    endif
+
+    source ~/.nvim/scripts/make_cs_solution.vim
+    autocmd BufWritePost *.cs BuildCSharpSolution
+
+    nnoremap ,oo :BuildCSharpSolution<cr>
+
+    let g:SetOmniSharpOptionsIsSet = 1
+    "can set preview here also but i found it causes flicker
+    "set completeopt=longest,menuone
+
+    "makes enter work like C-y, confirming a popup selection
+    "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+    setlocal omnifunc=OmniSharp#Complete
+
+    if exists(":DeopleteEnable")
+      DeopleteEnable
+      let g:deoplete#omni_patterns.cs='.*[^=\);]'
+      let g:deoplete#sources.cs=['omni', 'buffer', 'member', 'tag', 'file']
+    endif
+
+    " Builds can also run asynchronously with vim-dispatch installed
+    nnoremap <leader>ob :wa!<cr>:OmniSharpBuildAsync<cr>
+
+    nnoremap <leader>ogd :OmniSharpGotoDefinition<cr>
+    nnoremap <leader>ofi :OmniSharpFindImplementations<cr>
+    nnoremap <leader>oft :OmniSharpFindType<cr>
+    nnoremap <leader>ofs :OmniSharpFindSymbol<cr>
+    nnoremap <leader>ofu :OmniSharpFindUsages<cr>
+
+    nnoremap <leader>ofm :OmniSharpFindMembers<cr>
+    " cursor can be anywhere on the line containing an issue
+    nnoremap <leader>ox  :OmniSharpFixIssue<cr>
+    nnoremap <leader>ofx :OmniSharpFixUsings<cr>
+    nnoremap <leader>ott :OmniSharpTypeLookup<cr>
+    nnoremap <leader>odc :OmniSharpDocumentation<cr>
+    "navigate up by method/property/field
+    nnoremap <leader>ok :OmniSharpNavigateUp<cr>
+    "navigate down by method/property/field
+    nnoremap <leader>oj :OmniSharpNavigateDown<cr>
+
+    " Contextual code actions (requires CtrlP or unite.vim)
+    nnoremap <leader>o<space> :OmniSharpGetCodeActions<cr>
+    " Run code actions with text selected in visual mode to extract method
+    vnoremap <leader>o<space> :call OmniSharp#GetCodeActions('visual')<cr>
+
+    " rename with dialog
+    nnoremap <leader>onm :OmniSharpRename<cr>
+    " rename without dialog - with cursor on the symbol to rename... ':Rename newname'
+
+    " Force OmniSharp to reload the solution. Useful when switching branches etc.
+    nnoremap <leader>ors :OmniSharpReloadSolution<cr>
+    nnoremap <leader>ocf :OmniSharpCodeFormat<cr>
+    " Load the current .cs file to the nearest project
+    nnoremap <leader>otp :OmniSharpAddToProject<cr>
+
+    " (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
+    nnoremap <leader>oss :OmniSharpStartServer<cr>
+    nnoremap <leader>osp :OmniSharpStopServer<cr>
+
+    " Add syntax highlighting for types and interfaces
+    nnoremap <leader>oth :OmniSharpHighlightTypes<cr>
+
+    nnoremap <leader>ort :OmniSharpRunTests<cr>
+    nnoremap <leader>orf :OmniSharpRunTestFixture<cr>
+    nnoremap <leader>ora :OmniSharpRunAllTests<cr>
+    nnoremap <leader>orl :OmniSharpRunLastTests<cr>
+  endfunction
+
+  augroup omnisharp_commands
+    autocmd!
+
+    command! -nargs=1 Rename :call OmniSharp#RenameTo("<args>")
+
+    " automatic syntax check on events (TextChanged requires Vim 7.4)
+    autocmd BufEnter,TextChanged,InsertLeave *.cs,*.cshtml SyntasticCheck
+
+    " Automatically add new cs files to the nearest project on save
+    autocmd BufWritePost *.cs,*.cshtml call OmniSharp#AddToProject()
+
+    "show type information automatically when the cursor stops moving
+    "autocmd CursorHold *.cs,*.cshtml call OmniSharp#TypeLookupWithoutDocumentation()
+  augroup END
+
+  "set updatetime=500
+  " Remove 'Press Enter to continue' message when type information is longer than one line.
+  "set cmdheight=2
+
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" syntastic {{{
+" ----------------------------------------------------------------------------
+  let g:syntastic_scala_checkers=['']
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_error_symbol = "✗"
+  let g:syntastic_warning_symbol = "⚠"
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" neoterm {{{
+" ----------------------------------------------------------------------------
+  let g:neoterm_clear_cmd = "clear; printf '=%.0s' {1..80}; clear"
+  let g:neoterm_position = 'vertical'
+  let g:neoterm_automap_keys = '<leader>tt'
+
+  nnoremap <silent> <f9> :call neoterm#repl#line()<cr>
+  vnoremap <silent> <f9> :call neoterm#repl#selection()<cr>
+
+  " " TODO fix these mappings were disabled find alternatives
+  " " run set test lib
+  " nnoremap <silent> <leader>rt :call neoterm#test#run('all')<cr>
+  " nnoremap <silent> <leader>rf :call neoterm#test#run('file')<cr>
+  " nnoremap <silent> <leader>rn :call neoterm#test#run('current')<cr>
+  " nnoremap <silent> <leader>rr :call neoterm#test#rerun()<cr>
+
+  " " Useful maps
+  " " closes the all terminal buffers
+  " nnoremap <silent> <leader>tc :call neoterm#close_all()<cr>
+  " " clear terminal
+  " nnoremap <silent> <leader>tl :call neoterm#clear()<cr>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" phpcomplete-extended {{{
+" ----------------------------------------------------------------------------
+  " let g:phpcomplete_index_composer_command = "composer"
+  " " autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" fugitive {{{
+" ----------------------------------------------------------------------------
+  autocmd User fugitive
+        \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
+        \   nnoremap <buffer> .. :edit %:h<CR> |
+        \ endif
+  " autocmd BufReadPost fugitive://* set bufhidden=delete
+  " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" ragtag {{{
+" ----------------------------------------------------------------------------
+  let g:ragtag_global_maps = 1
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" limelight {{{
+" ----------------------------------------------------------------------------
+  let g:limelight_conceal_guifg="#C2B294"
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" goyo {{{
+" ----------------------------------------------------------------------------
+  autocmd! User GoyoEnter Limelight
+  autocmd! User GoyoLeave Limelight!
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" gruvbox {{{
+" ----------------------------------------------------------------------------
+  let g:gruvbox_contrast_dark='soft'          "soft, medium, hard"
+  let g:gruvbox_contrast_light='soft'         "soft, medium, hard"
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" SearchFold {{{
+" ----------------------------------------------------------------------------
+  " Search and THEN Fold the search term containig lines using <leader>z
+  " or the the inverse using <leader>iz or restore original fold using <leader>Z
+  nmap <leader>z <Plug>SearchFoldNormal
+
 
 "}}}
 
