@@ -341,23 +341,23 @@ Plug 'khalidchawtany/foldsearch',
 
 
 
-" ----------------------------------------------------------------------------
-"  open finder, terminal {{{
-" ----------------------------------------------------------------------------
+
+"  gtfo {{{
+
   let g:gtfo#terminals = { 'mac' : 'iterm' }
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " rainbow parentheses {{{
-" ----------------------------------------------------------------------------
+
   nnoremap <leader>xp :RainbowParentheses!!<CR>
 
 
 "}}}
-" ----------------------------------------------------------------------------
-" Easy align {{{
-" ----------------------------------------------------------------------------
+
+" EasyAlign {{{
+
   " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
   vmap <Enter> <Plug>(EasyAlign)
   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -366,9 +366,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " NERDTree {{{
-" ----------------------------------------------------------------------------
+
   let g:loaded_netrw       = 1 "Disable Netrw
   let g:loaded_netrwPlugin = 1 "Disable Netrw
 
@@ -396,9 +396,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " grepper {{{
-" ----------------------------------------------------------------------------
+
   nmap <leader>g <plug>(Grepper)
   xmap <leader>g <plug>(Grepper)
   cmap <leader>g <plug>(GrepperNext)
@@ -414,9 +414,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " FZF {{{
-" ----------------------------------------------------------------------------
+
   let $FZF_DEFAULT_COMMAND='ag -l -g ""'
   set rtp+=/usr/local/Cellar/fzf/HEAD
 
@@ -506,9 +506,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 " }}}
-" ----------------------------------------------------------------------------
+
 " Unite {{{
-" ----------------------------------------------------------------------------
+
   let g:unite_data_directory=$HOME.'/.nvim/.cache/unite'
 
   " Execute help.
@@ -593,9 +593,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " Ctrl-P {{{
-" ----------------------------------------------------------------------------
+
   command! CtrlPCommandLine call ctrlp#init(ctrlp#commandline#id())
   cnoremap <silent> <C-p> <C-c>:call ctrlp#init(ctrlp#commandline#id())<CR>
 
@@ -718,16 +718,16 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " Tagbar {{{
-" ----------------------------------------------------------------------------
+
   nnoremap <silent> <leader>tb :TagbarToggle<CR>
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " YankMatches {{{
-" ----------------------------------------------------------------------------
+
   nnoremap <silent>  dm :     call ForAllMatches('delete', {})<CR>
   nnoremap <silent>  DM :     call ForAllMatches('delete', {'inverse':1})<CR>
   nnoremap <silent>  ym :     call ForAllMatches('yank',   {})<cr>
@@ -739,9 +739,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 " }}}
-" ----------------------------------------------------------------------------
+
 " vim-oblique {{{
-" ----------------------------------------------------------------------------
+
   autocmd! User Oblique       ShowSearchIndex
   autocmd! User ObliqueStar   ShowSearchIndex
   autocmd! User ObliqueRepeat ShowSearchIndex
@@ -749,9 +749,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-fnr {{{
-" ----------------------------------------------------------------------------
+
   " Defaults
   let g:fnr_flags   = 'gc'
   let g:fnr_hl_from = 'Todo'
@@ -776,9 +776,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " ambicmd {{{
-" ----------------------------------------------------------------------------
+
   if !exists("g:vim_ambicmd_mapped")
     let g:vim_ambicmd_mapped = 1
     cnoremap <expr> <Space> ambicmd#expand("\<Space>")
@@ -787,9 +787,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-over {{{
-" ----------------------------------------------------------------------------
+
   "use vim-fnr instead
   " nmap <leader>/ :OverCommandLine<cr>
   " nnoremap g;s :<c-u>OverCommandLine<cr>%s/
@@ -797,17 +797,17 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " Clever-f {{{
-" ----------------------------------------------------------------------------
+
   nmap f<BS> <Plug>(clever-f-reset)
   vmap f<BS> <Plug>(clever-f-reset)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " sideways {{{
-" ----------------------------------------------------------------------------
+
   nnoremap s;k :SidewaysJumapRight<cr>
   nnoremap s;j :SidewaysJumapLeft<cr>
   nnoremap s;l :SidewaysJumapRight<cr>
@@ -820,18 +820,18 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " after-textobj {{{
-" ----------------------------------------------------------------------------
+
   " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
   " ]= and [= instead of a= and aa=
   autocmd VimEnter * call after_object#enable([']', '['], '=', ':', '-', '#', ' ', '>', '<')
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " argumentative {{{
-" ----------------------------------------------------------------------------
+
   "Move and manipultae arguments of a function
   nmap [; <Plug>Argumentative_Prev
   nmap ]; <Plug>Argumentative_Next
@@ -846,65 +846,65 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " argwrap {{{
-" ----------------------------------------------------------------------------
+
   nnoremap <silent> g;w :ArgWrap<CR>
   let g:argwrap_padded_braces = '[{('
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-usr {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>al  <Plug>(operator-align-left)
   nmap <Space>ar  <Plug>(operator-align-right)
   nmap <Space>ac  <Plug>(operator-align-center)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-camelize {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>u <Plug>(operator-camelize)
   nmap <Space>U <Plug>(operator-decamelize)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-insert {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>i <Plug>(operator-insert)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-append {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>a <Plug>(operator-append)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-comment {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>cc <Plug>(operator-comment)
   nmap <Space>cu <Plug>(operator-uncomment)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-blockwise {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>Y <Plug>(operator-blockwise-yank-head)
   nmap <Space>D <Plug>(operator-blockwise-delete-head)
   nmap <Space>C <Plug>(operator-blockwise-change-head)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-jerk {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>>  <Plug>(operator-jerk-forward)
   nmap <Space>>> <Plug>(operator-jerk-forward-partial)
   nmap <Space><  <Plug>(operator-jerk-backward)
@@ -912,23 +912,23 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " operator-sort {{{
-" ----------------------------------------------------------------------------
+
   nmap <Space>s <Plug>(operator-sort)
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-quote {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj#quote#educate = 0               " 0=disable, 1=enable (def) autoconvert to curely
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-xml {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_xmlattribute_no_default_key_mappings=1
   vmap ax <Plug>(textobj-xmlattribute-xmlattribute)
   vmap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
@@ -937,9 +937,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-datetime {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_datetime_no_default_key_mappings=1
   vmap agda <Plug>(textobj-datetime-auto)
   vmap agdd <Plug>(textobj-datetime-date)
@@ -968,9 +968,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-entire {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_entire_no_default_key_mappings =1
   vmap aG  <Plug>(textobj-entire-a)
   vmap iG  <Plug>(textobj-entire-i)
@@ -979,9 +979,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-space {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_space_no_default_key_mappings =1
   vmap a<Space>  <Plug>(textobj-space-a)
   vmap i<Space>  <Plug>(textobj-space-i)
@@ -990,9 +990,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-path {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_path_no_default_key_mappings =1
   vmap a\  <Plug>(textobj-path-next_path-a)
   vmap i\  <Plug>(textobj-path-next_path-i)
@@ -1006,9 +1006,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-inserted {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_lastinserted_no_default_key_mappings =1
   vmap at  <Plug>(textobj-lastinserted-a)
   vmap it  <Plug>(textobj-lastinserted-i)
@@ -1017,9 +1017,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-php {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_php_no_default_key_mappings =1
   vmap a<  <Plug>(textobj-php-a)
   vmap i<  <Plug>(textobj-php-i)
@@ -1028,9 +1028,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-between {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_between_no_default_key_mappings =1
   vmap ab  <Plug>(textobj-between-a)
   vmap ib  <Plug>(textobj-between-i)
@@ -1039,9 +1039,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-any {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_anyblock_no_default_key_mappings =1
   " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
   vmap aa  <Plug>(textobj-anyblock-a)
@@ -1051,9 +1051,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-postexpr {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_postexpr_no_default_key_mappings =1
   vmap ige <Plug>(textobj-postexpr-i)
   vmap age <Plug>(textobj-postexpr-a)
@@ -1062,9 +1062,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-multi {{{
-" ----------------------------------------------------------------------------
+
   let g:textobj_multitextobj_textobjects_i = [
         \   "\<Plug>(textobj-url-i)",
         \   "\<Plug>(textobj-multiblock-i)",
@@ -1079,9 +1079,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " textobj-keyvalue {{{
-" ----------------------------------------------------------------------------
+
   " let g:textobj_key_no_default_key_mappings=1
   " ak  <Plug>(textobj-key-a)
   " ik  <Plug>(textobj-key-i)
@@ -1090,17 +1090,17 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " nerdcommenter {{{
-" ----------------------------------------------------------------------------
+
   "Add a space around the comment
   let g:NERDSpaceDelims=1
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " LazyList {{{
-" ----------------------------------------------------------------------------
+
   let g:lazylist_omap = 'igll'
   nnoremap glli :LazyList
   vnoremap glli :LazyList
@@ -1118,9 +1118,9 @@ Plug 'khalidchawtany/foldsearch',
   vnoremap gllt :LazyList '- [ ] '<CR>
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " simple-todo {{{
-" ----------------------------------------------------------------------------
+
   " Disable default key bindings
   let g:simple_todo_map_keys = 0
 
@@ -1146,9 +1146,9 @@ Plug 'khalidchawtany/foldsearch',
   " imap <Leader>X <Plug>(simple-todo-mark-as-undone)
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-indentLine {{{
-" ----------------------------------------------------------------------------
+
   let g:indentLine_char = '┊'
   " let g:indentLine_color_term=""
   " let g:indentLine_color_gui=""
@@ -1158,9 +1158,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " YankRing {{{
-" ----------------------------------------------------------------------------
+
   " let g:yankring_min_element_length = 2
   " let g:yankring_max_element_length = 548576 " 4M
   " let g:yankring_dot_repeat_yank = 1
@@ -1180,9 +1180,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " yankstack {{{
-" ----------------------------------------------------------------------------
+
   " let g:yankstack_map_keys = 0
   let g:yankstack_yank_keys = ['y', 'd']
   nnoremap <M-p> <Plug>yankstack_substitute_older_paste
@@ -1190,9 +1190,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " zoomwintab {{{
-" ----------------------------------------------------------------------------
+
   let g:zoomwintab_remap = 0
   " zoom with <META-O> in any mode
   nnoremap <silent> <a-o> :ZoomWinTabToggle<cr>
@@ -1201,17 +1201,17 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " junkfile {{{
-" ----------------------------------------------------------------------------
+
   nnoremap <leader>jo :JunkfileOpen
   let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-peekaboo {{{
-" ----------------------------------------------------------------------------
+
   " Default peekaboo window
   let g:peekaboo_window = 'vertical botright 30new'
 
@@ -1223,16 +1223,16 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " calendar {{{
-" ----------------------------------------------------------------------------
+
   let g:calendar_date_month_name = 1
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-hardtime {{{
-" ----------------------------------------------------------------------------
+
   let g:hardtime_timeout = 1000
 
   let g:hardtime_allow_different_key = 1
@@ -1250,9 +1250,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-submode {{{
-" ----------------------------------------------------------------------------
+
   source ~/.nvim/plugged/vim-submode/autoload/submode.vim
   " easy resize
   call submode#enter_with('h/l', 'n', '', '<C-w>h', '<C-w><')
@@ -1279,9 +1279,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " lightline {{{
-" ----------------------------------------------------------------------------
+
         " \ 'colorscheme': 'powerline',
         " \ 'colorscheme': 'wombat',
         " \ 'colorscheme': 'jellybeans',
@@ -1416,9 +1416,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-ctrlspace {{{
-" ----------------------------------------------------------------------------
+
   if executable("ag")
     let g:ctrlspace_glob_command = 'ag -l --nocolor -g ""'
   endif
@@ -1436,17 +1436,17 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-emmet {{{
-" ----------------------------------------------------------------------------
+
   let g:user_emmet_mode='a'         "enable all function in all mode.
   " let g:user_emmet_mode='i'         "enable all function in all mode.
   let g:user_emmet_leader_key='◊Ú'
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-easymotion {{{
-" ----------------------------------------------------------------------------
+
   map s <Plug>(easymotion-prefix)
 
   map sl          <Plug>(easymotion-lineforward)
@@ -1497,9 +1497,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " columnmove {{{
-" ----------------------------------------------------------------------------
+
   let g:columnmove_no_default_key_mappings = 1
 
   " <Plug>(columnmove-f)
@@ -1522,9 +1522,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " patternjump {{{
-" ----------------------------------------------------------------------------
+
  "M-h, M=l MAPPINGS
  let s:patternjump_patterns = {
       \ '_' : {
@@ -1551,23 +1551,23 @@ Plug 'khalidchawtany/foldsearch',
       \ }
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " columnmove {{{
-" ----------------------------------------------------------------------------
+
 "
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-trailing-whitespace {{{
-" ----------------------------------------------------------------------------
+
   let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-IndexedSearch {{{
-" ----------------------------------------------------------------------------
+
   let g:IndexedSearch_SaneRegEx = 1
   let g:IndexedSearch_AutoCenter = 1
   let g:IndexedSearch_No_Default_Mappings = 1
@@ -1582,16 +1582,16 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " follow-my-lead {{{
-" ----------------------------------------------------------------------------
+
   let g:fml_all_sources=1 "1 for all sources, 0(Default) for $MYVIMRC.
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " neosnippet {{{
-" ----------------------------------------------------------------------------
+
   " Plugin key-mappings.
   imap <c-\>     <Plug>(neosnippet_expand_or_jump)
   smap <c-\>     <Plug>(neosnippet_expand_or_jump)
@@ -1603,9 +1603,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " deoplete {{{
-" ----------------------------------------------------------------------------
+
   " Use deoplete.
   let g:deoplete#enable_at_startup = 1
 
@@ -1613,9 +1613,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " YouCompleteMe {{{
-" ----------------------------------------------------------------------------
+
   " " make YCM compatible with UltiSnips (using supertab)
   " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
   " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
@@ -1623,9 +1623,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " UltiSnips {{{
-" ----------------------------------------------------------------------------
+
   " better key bindings for UltiSnipsExpandTrigger
 
   let g:UltiSnipsEnableSnipMate = 0
@@ -1642,9 +1642,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " xptemplate {{{
-" ----------------------------------------------------------------------------
+
   " " Add xptemplate global personal directory value
   " if has("unix")
     " set runtimepath+=/Volumes/Home/.nvim/xpt-personal
@@ -1654,9 +1654,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " tabular {{{
-" ----------------------------------------------------------------------------
+
   nnoremap <leader>a& :Tabularize /&<CR>
   vnoremap <leader>a& :Tabularize /&<CR>
   nnoremap <leader>a= :Tabularize /=<CR>
@@ -1676,9 +1676,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-surround {{{
-" ----------------------------------------------------------------------------
+
   nmap ds <Plug>Dsurround
   nmap cs <Plug>Csurround
   nmap ys <Plug>Ysurround
@@ -1695,32 +1695,32 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " vim-rengbang {{{
-" ----------------------------------------------------------------------------
+
   "Use instead of increment it is much powerfull
   " RengBang \(\d\+\) Start# Increment# Select# %03d => 001, 002
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " enmasse {{{
-" ----------------------------------------------------------------------------
+
   " EnMass the sublime like search and edit then save back to corresponding files
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " multiple-cursor {{{
-" ----------------------------------------------------------------------------
+
   let g:multi_cursor_use_default_mapping=0
   "Use ctrl-n to select next instance
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " multiedit {{{
-" ----------------------------------------------------------------------------
+
   let g:multiedit_no_mappings = 1
   let g:multiedit_auto_reset = 1
 
@@ -1772,17 +1772,17 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " splitjoin {{{
-" ----------------------------------------------------------------------------
+
   let g:splitjoin_split_mapping = 'gS'
   let g:splitjoin_join_mapping  = 'gJ'
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " tmux-navigator {{{
-" ----------------------------------------------------------------------------
+
   if exists('$TMUX')
     let g:tmux_navigator_no_mappings = 1
     nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
@@ -1794,23 +1794,23 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " undotree {{{
-" ----------------------------------------------------------------------------
+
   let g:undotree_WindowLayout = 2
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " gundo-tree {{{
-" ----------------------------------------------------------------------------
+
   let g:gundo_preview_bottom = 1
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " neomake {{{
-" ----------------------------------------------------------------------------
+
   " autocmd! BufWritePost * Neomake
   " let g:neomake_airline = 0
   let g:neomake_error_sign = { 'text': '✘', 'texthl': 'ErrorSign' }
@@ -1818,9 +1818,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " omnisharp {{{
-" ----------------------------------------------------------------------------
+
   " let g:OmniSharp_server_type = 'roslyn'
   let g:OmniSharp_server_path = "/Volumes/Home/.nvim/plugged/Omnisharp/server/Omnisharp/bin/Debug/OmniSharp.exe"
   Plug 'nosami/Omnisharp'
@@ -1930,9 +1930,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " syntastic {{{
-" ----------------------------------------------------------------------------
+
   let g:syntastic_scala_checkers=['']
   let g:syntastic_always_populate_loc_list = 1
   let g:syntastic_check_on_open = 1
@@ -1941,9 +1941,9 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " neoterm {{{
-" ----------------------------------------------------------------------------
+
   let g:neoterm_clear_cmd = "clear; printf '=%.0s' {1..80}; clear"
   let g:neoterm_position = 'vertical'
   let g:neoterm_automap_keys = '<leader>tt'
@@ -1966,17 +1966,17 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " phpcomplete-extended {{{
-" ----------------------------------------------------------------------------
+
   " let g:phpcomplete_index_composer_command = "composer"
   " " autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " fugitive {{{
-" ----------------------------------------------------------------------------
+
   autocmd User fugitive
         \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
         \   nnoremap <buffer> .. :edit %:h<CR> |
@@ -1986,39 +1986,39 @@ Plug 'khalidchawtany/foldsearch',
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " ragtag {{{
-" ----------------------------------------------------------------------------
+
   let g:ragtag_global_maps = 1
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " limelight {{{
-" ----------------------------------------------------------------------------
+
   let g:limelight_conceal_guifg="#C2B294"
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " goyo {{{
-" ----------------------------------------------------------------------------
+
   autocmd! User GoyoEnter Limelight
   autocmd! User GoyoLeave Limelight!
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " gruvbox {{{
-" ----------------------------------------------------------------------------
+
   let g:gruvbox_contrast_dark='soft'          "soft, medium, hard"
   let g:gruvbox_contrast_light='soft'         "soft, medium, hard"
 
 
 "}}}
-" ----------------------------------------------------------------------------
+
 " SearchFold {{{
-" ----------------------------------------------------------------------------
+
   " Search and THEN Fold the search term containig lines using <leader>z
   " or the the inverse using <leader>iz or restore original fold using <leader>Z
   nmap <leader>z <Plug>SearchFoldNormal
