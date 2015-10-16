@@ -3,8 +3,8 @@
 " VIM-PLUG {{{
 " ============================================================================
 
-
 call plug#begin('~/.nvim/plugged')
+
 
 "{{{ VimPlug template
   "" Make sure you use single quotes
@@ -339,1005 +339,7 @@ Plug 'khalidchawtany/foldsearch',
 
 
 
-call plug#end()
 
-" }}}
-" ============================================================================
-" SETTINGS {{{
-" ============================================================================
-  let g:python_host_prog='/usr/local/bin/python'
-
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-  let mapleader = ","
-  let g:mapleader = ","
-
-  "Keep diffme function state
-  let $diff_me=0
-
-  " Specify path to your Uncrustify configuration file.
-  let g:uncrustify_cfg_file_path =
-        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
-
-
-" set background=dark
-" colorscheme molokai
-
-set background=light
-
-
-colorscheme gruvbox
-
-" Enhance command-line completion
-set wildmenu
-set wildmode=longest,list,full
-
-" Types of files to ignore when autocompleting things
-set wildignore+=*.o,*.class,*.git,*.svn
-
-" Fuzzy finder: ignore stuff that can't be opened, and generated files
-let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
-
-set grepprg=ag\ --nogroup\ --nocolor
-
-set formatoptions-=t                  " Stop autowrapping my code
-
-" set ambiwidth=double                " DON'T THIS FUCKS airline
-
-"don't autoselect first item in omnicomplete,show if only one item(for preview)
-"set completeopt=longest,menuone,preview
-set completeopt=noinsert,menuone,noselect
-
-set pumheight=15                      " limit completion menu height
-
-" When completing by tag, show the whole tag, not just the function name
-set showfulltag
-
-"**** DO NOT USE ****  RUINS arrow keys & all esc based keys
-" Allow cursor keys in insert mode
-"set esckeys
-
-set nrformats-=octal
-
-set backspace=indent,eol,start        " Allow backspace in insert mode
-set gdefault                          " make g default for search
-set magic                             " Magic matching
-
-" set formatoptions+=j                  " Delete comment character when joining commented lines
-
-set encoding=utf-8 nobomb
-set termencoding=utf-8
-scriptencoding utf-8
-set nolazyredraw
-
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.nvim/.cache/backups
-
-"How should I decide to take abackup
-set backupcopy=auto
-
-set directory=~/.nvim/.cache/swaps
-set viewdir=~/.nvim/.cache/views
-
-if exists("&undodir")
-set undodir=~/.nvim/.cache/undo
-endif
-
-set undofile                          " Save undo's after file closes
-"set undodir=$HOME/.vim/.cache/undo   " where to save undo histories
-set undolevels=1000                   " How many undos
-set undoreload=10000                  " number of lines to save for undo
-
-" if available, store temporary files in shared memory
-if isdirectory('/run/shm')
-let $TMPDIR = '/run/shm'
-elseif isdirectory('/dev/shm')
-let $TMPDIR = '/dev/shm'
-endif
-
-set shell=/usr/local/bin/zsh
-
-if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
-endif
-
-set tags=./tags,tags;$HOME            " Help vim find my tags
-set backupskip=/tmp/*,/private/tmp/*  " don't back up these
-set autoread                          " read files on change
-
-set fileformats+=mac
-
-set binary
-set noeol                             " Don’t add empty newlines at file end
-
-" set clipboard=unnamed,unnamedplus
-
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux'
-  set t_Co=16
-endif
-
-if &tabpagemax < 50
-  set tabpagemax=50
-endif
-
-if !empty(&viminfo)
-  set viminfo^=!
-endif
-
-set sessionoptions-=options
-
-"set noswapfile
-"Dont warn me about swap files existence
-"set shortmess+=A
-
-" set shortmess=atI                    " Don’t show the intro message when starting Vim
-
-"prevent completion message flickers
-set shortmess+=c
-
-
-" Respect modeline in files
-set modeline
-set modelines=4
-
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-
-set number
-set relativenumber
-
-
-set autoindent
-set smartindent
-set tabstop=2
-set expandtab
-"TODO: tpope sets smrttab
-set nosmarttab
-
-set shiftwidth=2
-set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
-
-set guifont=Sauce\ Code\ Powerline\ Light:h18
-set textwidth=80
-set wrap                              " Wrap long lines
-set breakindent                       " proper indenting for long lines
-
-set linebreak                         "Don't linebreak in the middle of words
-
-set printoptions=header:0,duplex:long,paper:letter
-
-let &showbreak = '↳ '                 " add linebreak sign
-set cpo=n                             " Draw color for lines that has number only
-set wrapscan                          " set the search scan to wrap lines
-
-"Allow these to move to next/prev line when at the last/first char
-set whichwrap+=h,l,<,>,[,]
-
-
-" Show “invisible” characters
-set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:×
-" set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
-" set listchars=tab:•·,trail:·,extends:❯,precedes:❮,nbsp:×
-set list
-
-"Set the fillchar of the inactive window to something I can see
-set fillchars=stlnc:\-
-
-" Add ignorance of whitespace to diff
-set diffopt+=iwhite
-syntax on
-" set cursorline "Use iTerm cursorline instead
-set hlsearch
-set ignorecase
-set smartcase
-set matchtime=2                       " time in decisecons to jump back from matching bracket
-set incsearch                         " Highlight dynamically as pattern is typed
-set history=1000
-set foldmethod=marker
-
-" These commands open folds
-set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
-
-
-set nowrap
-
-set timeout
-set timeoutlen=500
-"NeoVim handles ESC keys as alt+key set this to solve the problem
-set ttimeout
-set ttimeoutlen=0
-
-" Show the filename in the window titlebar
-set title "titlestring=
-
-syntax on
-set virtualedit=all
-set mouse=a
-set hidden
-set laststatus=2                      " force status line display
-set noerrorbells visualbell t_vb=     " Disable error bells
-set nostartofline                     " Don’t reset cursor to start of line when moving around
-set ruler                             " Show the cursor position
-set showmode                          " Show the current mode
-
-
-if !&scrolloff
-  set scrolloff=3                       " Keep cursor in screen by value
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-
-"set cpoptions+=ces$                   " CW wrap W with $ instead of delete
-set showmode                          " Show the current mode
-
-set noshowcmd                           " Makes OS X slow, if lazy redraw set
-
-set display+=lastline
-
-set mousehide                         " Hide mouse while typing
-
-set synmaxcol=200                     " max syntax highlight chars
-
-set splitbelow                        " put horizontal splits below
-
-set splitright                        " put vertical splits to the right
-
-let g:netrw_liststyle=3               "Make netrw look like NerdTree
-
-highlight ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
-call matchadd('ColorColumn', '\%81v', 100)
-
-" Use a blinking upright bar cursor in Insert mode, a solid block in normal
-" and a blinking underline in replace mode
-  let &t_SI = "\<Esc>[5 q"
-  let &t_SR = "\<Esc>[3 q"
-  let &t_EI = "\<Esc>[2 q"
-
-
-" }}}
-" ============================================================================
-" MAPPINGS {{{
-" ============================================================================
-
-
-tnoremap <c-o> <c-\><c-n>
-
-nnoremap <silent> [I :call List("i", 0, 0)<CR>
-nnoremap <silent> ]I :call List("i", 0, 1)<CR>
-xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
-xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
-nnoremap <silent> [D :call List("d", 0, 0)<CR>
-nnoremap <silent> ]D :call List("d", 0, 1)<CR>
-xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
-xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
-
-  "noremap <F4> :call DiffMe()<CR>
-
-  nnoremap Ú<c-o> :BufOnly<cr>
-
-  nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
-  nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
-
-
-  nnoremap com :call ToggleFoldMarker()<cr>
-
-  autocmd Filetype neosnippet,cs call ToggleFoldMarker()
-
-
-  nnoremap cof :call ToggleFoldMethod()<cr>
-
-
-
-  " underline the current line with '='
-  nnoremap <leader>u= :t.\|s/./=<cr>:nohls<cr>
-  nnoremap <leader>u- :t.\|s/./-<cr>:nohls<cr>
-  nnoremap <leader>u~ :t.\|s/./\\~<cr>:nohls<cr>
-
-  " Underline current line "{{{
-  " nnoremap <leader>- "zyy"zp<c-v>$r-
-  " nnoremap <leader>= "zyy"zp<c-v>$r=
-  " nnoremap <leader><leader>- o<home><ESC>120i-<ESC>
-  " nnoremap <leader><leader>= o<home><ESC>120i=<ESC>
-  "}}}
-
-  nnoremap gf<C-M> :e! ++ff=dos<cr>
-
-  " Swap two words
-  nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
-  " <Leader>cd: Switch to the directory of the open buffer
-  nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
-  nnoremap cdc :lcd <c-r>=expand("%:h")<cr>/
-
-  "cd to the directory containing the file in the buffer
-  "nnoremap <silent> <leader>cd :lcd %:h<CR>
-  nnoremap gpr :lcd <c-r>=FindGitDirOrRoot()<cr><cr>
-  nnoremap ycd :!mkdir -p %:p:h<CR>
-
-
-  " edit in the path of current file
-  nnoremap <leader>ef :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
-  nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
-
-  " Edit the vimrc file
-  nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
-
-  " run selected vimscript
-  vnoremap <Leader>sv "vy:@v<CR>
-
-  " run vimscript line
-  nnoremap <Leader>sl "vyy:@v<CR>
-
-  " run .vimrc
-  nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
-
-  "Discard changes
-  nnoremap <leader>e<bs> :e! \| echo 'changes discarded'<cr>
-
-  "Retab file
-  nnoremap <leader>er :retab<cr>
-
-  " <c-y>f Copy the full path of the current file to the clipboard
-  nnoremap <silent> <c-y>f :let @+=expand("%:p")<cr>:echo "Copied current file
-        \ path '".expand("%:p")."' to clipboard"<cr>
-
-
-
-  nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
-
-  nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
-
-  noremap <leader>ss :call StripWhitespace()<CR>
-
-  nnoremap <Leader>rn :call RenameFile()<cr>
-
-  "save as root
-  noremap <leader>W :w !sudo tee % > /dev/null<CR>
-  "cnoremap sw! w !sudo tee % >/dev/null
-
-  " Shrink the current window to fit the number of lines in the buffer.  Useful
-  " for those buffers that are only a few lines
-  nmap <silent> <leader>sw :execute ":resize " . line('$')<cr>
-
-  nnoremap <F12> :call ToggleMouseFunction()<cr>
-
-  nmap <silent> j gj
-  nmap <silent> k gk
-
-  "Make completion more comfortable
-  inoremap <c-j> <c-n>
-  inoremap <c-k> <c-p>
-
-  inoremap <C-U> <C-G>u<C-U>
-
-  "TODO: conflicts with script-ease
-  command! SplitLine :normal i<CR><ESC>,ss<cr>
-  nnoremap K :call Preserve('SplitLine')<cr>
-
-
-  " { and } skip over closed folds
-  nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
-  nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
-
-  vmap > >gv
-  vmap < <gv
-
-  nnoremap ; :
-  nnoremap : ;
-
-  vnoremap ; :
-  vnoremap : ;
-
-  noremap H ^
-  noremap L $
-  vnoremap L g_
-
-  onoremap H ^
-  onoremap L $
-
-  if !exists('$TMUX')
-    nnoremap <silent> <c-h> <c-w><c-h>
-    nnoremap <silent> <c-j> <c-w><c-j>
-    nnoremap <silent> <c-k> <c-w><c-k>
-    nnoremap <silent> <c-l> <c-w><c-l>
-  endif
-
-  " select last matched item
-  nnoremap <leader>/ //e<Enter>v??<Enter>
-
-  " <Leader>``: Force quit all
-  nnoremap <Leader>`` :qa!<cr>
-
-  " Edit todo list for project
-  nmap ,todo :e todo.txt<cr>
-
-  " Laravel framework commons
-  nnoremap Úlv :e ./resources/views/<cr>
-  nnoremap Úlc :e ./resources/views/partials/<cr>
-  nnoremap Úlp :e ./public/<cr>
-
-
-  "uppercase from insert mode while you are at the end of a word
-  inoremap <C-u> <esc>mzgUiw`za
-
-  "center screen cursor
-  nnoremap z<Space> zMzv
-
-  " <Leader>sm: Maximize current split
-  nnoremap <Leader>sm <C-w>_<C-w><Bar>
-
-
-  "Clear the search highlight except when I move
-  autocmd! cursorhold * set nohlsearch
-  autocmd! cursormoved * set hlsearch
-
-
-  " Move visual block
-  vnoremap <c-j> :m '>+1<CR>gv=gv
-  vnoremap <c-k> :m '<-2<CR>gv=gv
-
-  " Select last pasted text
-  nnoremap gb `[v`]
-  nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-  "Reselect the text you just entered
-  nnoremap gV `[v`]
-
-  " Highlight TODO markers
-  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
-  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
-
-  " Jump to next/previous merge conflict marker
-  " nnoremap <silent> ]m /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
-  " nnoremap <silent> [m ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
-
-  "Put an empty line before and after this line : depends on PLUGIN
-  nnoremap \\<Space> :normal [ ] <cr>
-
-  "Open current directory in Finder
-  nnoremap <leader><cr> :silent !open .<cr>
-
-  "Go to alternate file
-  nnoremap go <C-^>
-
-  "Open/Close commands
-  "======================
-  nnoremap  coq :QFix<cr>
-  command! QFix call QFixToggle()
-  function! QFixToggle()
-    for i in range(1, winnr('$'))
-      let bnum = winbufnr(i)
-      if getbufvar(bnum, '&buftype') == 'quickfix'
-        cclose
-        return
-      endif
-    endfor
-    copen
-  endfunction
-
-
-  "Buffer deletion commands
-  "===========================
-  nnoremap  Úwa :bufdo execute ":bw"<cr>
-  nnoremap  ÚÚwa :bufdo execute ":bw!"<cr>
-
-  nnoremap  Úww :bw<cr>
-  nnoremap  ÚÚww :bw!<cr>
-
-  "Remove ^M from a file
-  nnoremap  <leader>e^ :e ++ff=dos
-
-  "Execute java using ,j
-  nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
-
-  "===============================================================================
-  " Command-line Mode Key Mappings
-  "===============================================================================
-
-  cnoremap <c-a> <home>
-  cnoremap <c-e> <end>
-
-  cnoremap <c-j> <down>
-  cnoremap <c-k> <up>
-
-  cnoremap <c-h> <left>
-  cnoremap <c-l> <right>
-
-  cnoremap <c-g>pp <C-\>egetcwd()<CR>
-  cnoremap <c-g>pf <C-r>=expand("%")<CR>
-
-  " Ctrl-Space: Show history
-
-
-  " Ctrl-v: Paste
-  "cnoremap <c-v> <c-r>"
-
-  nnoremap z0 :set foldlevel=0<cr>
-  nnoremap z1 :set foldlevel=1<cr>
-  nnoremap z2 :set foldlevel=2<cr>
-  nnoremap z3 :set foldlevel=3<cr>
-  nnoremap z4 :set foldlevel=4<cr>
-  nnoremap z5 :set foldlevel=5<cr>
-  nnoremap z6 :set foldlevel=6<cr>
-  nnoremap z7 :set foldlevel=7<cr>
-  nnoremap z8 :set foldlevel=8<cr>
-  nnoremap z9 :set foldlevel=9<cr>
-
-
-" }}}
-" ============================================================================
-" FUNCTIONS & COMMANDS {{{
-" ============================================================================
-
-  function! CreateFoldableCommentFunction()"{{{
-    normal 0f/lyt'02[ 2] 2ki"{{{ lp2j0>>2ji"}}}} _p04kf}x4jzaj
-  endfunction"}}}
-
-  function! HighlightAllOfWord(onoff)"{{{
-    if a:onoff == 1
-      :augroup highlight_all
-      :au!
-      :au CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))
-      :augroup END
-    else
-      :au! highlight_all
-      match none /\<%s\>/
-    endif
-  endfunction"}}}
-
-  function! ToggleMouseFunction()"{{{
-    if  &mouse=='a'
-      set mouse=
-      echo "Shell has it"
-    else
-      set mouse=a
-      echo "Vim has it"
-    endif
-  endfunction"}}}
-
-  function! StripWhitespace()"{{{
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    :%s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
-  endfunction"}}}
-
-  function! FindGitDirOrRoot()"{{{
-    let curdir = expand('%:p:h')
-    let gitdir = finddir('.git', curdir . ';')
-    if gitdir != ''
-      return substitute(gitdir, '\/\.git$', '', '')
-    else
-      return '/'
-    endif
-  endfunction"}}}
-
-  function! IndentToNextBraceInLineAbove()"{{{
-    :normal 0wk
-    :normal "vyf(
-    let @v = substitute(@v, '.', ' ', 'g')
-    :normal j"vPl
-  endfunction"}}}
-
-  function! List(command, selection, start_at_cursor, ...)"{{{
-
-  " This is an updated, more powerful, version of the function discussed here:
-  " http://www.reddit.com/r/vim/comments/1rzvsm/do_any_of_you_redirect_results_of_i_to_the/
-  " that shows ]I, [I, ]D, [D, :ilist and :dlist results in the quickfix window, even spanning multiple files.
-    " derive the commands used below from the first argument
-    let excmd   = a:command . "list"
-    let normcmd = toupper(a:command)
-
-    if a:selection
-      if len(a:1) > 0
-        let search_pattern = a:1
-      else
-        let old_reg = @v
-        normal! gv"vy
-        let search_pattern = substitute(escape(@v, '\/.*$^~[]'), '\\n', '\\n', 'g')
-        let @v = old_reg
-      endif
-      redir => output
-      silent! execute (a:start_at_cursor ? '+,$' : '') . excmd . ' /' . search_pattern
-      redir END
-    else
-      redir => output
-      silent! execute 'normal! ' . (a:start_at_cursor ? ']' : '[') . normcmd
-      redir END
-    endif
-
-    " clean up the output
-    let lines = split(output, '\n')
-
-    " bail out on errors
-    if lines[0] =~ '^Error detected'
-      echomsg 'Could not find "' . (a:selection ? search_pattern : expand("<cword>")) . '".'
-      return
-    endif
-
-    " our results may span multiple files so we need to build a relatively
-    " complex list based on file names
-    let filename   = ""
-    let qf_entries = []
-    for line in lines
-      if line =~ '^\S'
-        let filename = line
-      else
-        call add(qf_entries, {"filename" : filename, "lnum" : split(line)[1], "text" : join(split(line)[2:-1])})
-      endif
-    endfor
-
-    " build the quickfix list from our results
-    call setqflist(qf_entries)
-
-    " open the quickfix window if there is something to show
-    cwindow
-  endfunction"}}}
-
-  function! Preserve(command)"{{{
-    " Save the last search.
-    let search = @/
-
-    " Save the current cursor position.
-    let cursor_position = getpos('.')
-
-    " Save the current window position.
-    normal! H
-    let window_position = getpos('.')
-    call setpos('.', cursor_position)
-
-    " Execute the command.
-    execute a:command
-
-    " Restore the last search.
-    let @/ = search
-
-    " Restore the previous window position.
-    call setpos('.', window_position)
-    normal! zt
-
-    " Restore the previous cursor position.
-    call setpos('.', cursor_position)
-  endfunction"}}}
-
-  function! Uncrustify(language) "{{{
-
-  " Don't forget to add Uncrustify executable to $PATH (on Unix) or
-  " %PATH% (on Windows) for this command to work.
-
-    call Preserve(':silent %!uncrustify'
-          \ . ' -q '
-          \ . ' -l ' . a:language
-          \ . ' -c ' . g:uncrustify_cfg_file_path)
-  endfunction"}}}
-
-  function! OpenHelpInCurrentWindow(topic) "{{{
-    view $VIMRUNTIME/doc/help.txt
-    setl filetype=help
-    setl buftype=help
-    setl nomodifiable
-    exe 'keepjumps help ' . a:topic
-  endfunction "}}}
-
-  " ScratchPad {{{
-  augroup scratchpad
-    au!
-    au BufNewFile,BufRead .scratchpads/scratchpad.* call ScratchPadLoad()
-  augroup END
-
-  function! ScratchPadSave() "{{{
-    let ftype = matchstr(expand('%'), 'scratchpad\.\zs\(.\+\)$')
-    if ftype == ''
-      return
-    endif
-    write
-  endfunction "}}}
-
-  function! ScratchPadLoad() "{{{
-    nnoremap <silent> <buffer> q :w<cr>:close<cr>
-    setlocal bufhidden=hide buflisted noswapfile
-  endfunction "}}}
-
-  function! OpenScratchPad(ftype) "{{{
-    if a:0 > 0
-      let ftype = a:ftype
-    else
-      let pads = split(globpath('.scratchpads', 'scratchpad.*'), '\n')
-      if len(pads) > 0
-        let ftype = matchstr(pads[0], 'scratchpad\.\zs\(.\+\)$')
-      else
-        let ftype = expand('%:e')
-      endif
-    endif
-
-    if ftype == ''
-      echoerr 'Scratchpad need a filetype'
-      return
-    endif
-
-    let scratchpad_name = '.scratchpads/scratchpad.' . ftype
-    let scr_bufnum = bufnr(scratchpad_name)
-
-    if scr_bufnum == -1
-      " open the scratchpad
-      exe "new " . scratchpad_name
-      let dir = expand('%:p:h')
-      if !isdirectory(dir)
-        call mkdir(dir)
-      endif
-    else
-      " Scratch buffer is already created. Check whether it is open
-      " in one of the windows
-      let scr_winnum = bufwinnr(scr_bufnum)
-      if scr_winnum != -1
-        " Jump to the window which has the scratchpad if we are not
-        " already in that window
-        if winnr() != scr_winnum
-          exe scr_winnum . "wincmd w"
-        endif
-      else
-        exe "split +buffer" . scr_bufnum
-      endif
-    endif
-  endfunction "}}}
-" }}}
-
-  function! GetVisualSelection() "{{{
-    let [lnum1, col1] = getpos("'<")[1:2]
-    let [lnum2, col2] = getpos("'>")[1:2]
-    let lines = getline(lnum1, lnum2)
-    let lines[-1] = lines[-1][: col2 - 2]
-    let lines[0] = lines[0][col1 - 1:]
-    return join(lines, "\n")
-  endfunction "}}}
-
-  function! RenameFile() "{{{
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-      exec ':saveas ' . new_name
-      exec ':silent !rm ' . old_name
-      redraw!
-    endif
-  endfunction "}}}
-
-  function! SearchForCallSitesCursor() "{{{
-  "Find references of this function (function calls)
-    let searchTerm = expand("<cword>")
-    call SearchForCallSites(searchTerm)
-  endfunction "}}}
-
-  function! SearchForCallSites(term) "{{{
-  " Search for call sites for term (excluding its definition) and
-  " load into the quickfix list.
-    cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
-  endfunction "}}}
-
-  function! s:EnsureDirectoryExists() "{{{
-    let required_dir = expand("%:h")
-
-    if !isdirectory(required_dir)
-      " Remove this if-clause if you don't need the confirmation
-      if !confirm("Directory '" . required_dir . "' doesn't exist. Create it?")
-        return
-      endif
-
-      try
-        call mkdir(required_dir, 'p')
-      catch
-        echoerr "Can't create '" . required_dir . "'"
-      endtry
-    endif
-  endfunction "}}}
-
-  function! DiffMe() "{{{
-  " Toggle the diff of currently open buffers/splits.
-    windo diffthis
-    if $diff_me>0
-      let $diff_me=0
-    else
-      windo diffoff
-      let $diff_me=1
-    endif
-  endfunction "}}}
-
-  fu! RelativePathString(file) "{{{
-  "Get relative path to this file
-    if strlen(a:file) == 0
-      retu "[No Name]"
-    en
-    let common = getcwd()
-    let result = ""
-    while substitute(a:file, common, '', '') ==# a:file
-      let common = fnamemodify(common, ':h')
-      let result = ".." . (empty(result) ? '' : '/' . result)
-    endw
-    let forward = substitute(a:file, common, '', '')
-    if !empty(result) && !empty(forward)
-      retu result . forward
-    elsei !empty(forward)
-      retu forward[1:]
-    en
-  endf "}}}
-
-  function! Reg() "{{{
-  ":Reg Shows and prompts to select from a reg
-    reg
-    echo "Register: "
-    let char = nr2char(getchar())
-    if char != "\<Esc>"
-      execute "normal! \"".char."p"
-    endif
-    redraw
-  endfunction "}}}
-
-"{{{ CreateLaravelGeneratorFunction
-
-  function! CreateLaravelGeneratorFunction()
-  "Generate laravel generator command
-
-  "alias g:m="php artisan generate:model"
-  "alias g:c="php artisan generate:controller"
-  "alias g:v="php artisan generate:view"
-  "alias g:se="php artisan generate:seed"
-  "alias g:mi="php artisan generate:migration"
-  "alias g:r="php artisan generate:resource"
-  "alias g:p="php artisan generate:pivot"
-  "alias g:s="php artisan generate:scaffold"
-
-  "php artisan generate:migration create_posts_table --fields="title:string, body:text"
-
-  let command =  input('!g:')
-
-  "if --fields is NOT already provided
-  if stridx(command, '--fields') ==? "-1"
-
-    "Get the command part
-    let cmd_shortform = strpart(command, 0,stridx(command, " "))
-    "The list of commands that require --fields
-    let cmd_require_fields = ['mi', 'r', 's' ]
-
-    "if the command is NOT one of the above
-    if index(cmd_require_fields, cmd_shortform) !=? "-1"
-      let fields = input( "!g:" . command . ' --fields= ')
-      let command = command . ' --fields="' . fields . '"'
-    endif "Command requires --fields
-
-  endif " --fields is not provided
-
-  if strlen(command) !=? "0"
-    "Prepend cmd with required stuff
-    let command = "g:" . command
-  endif
-
-  return command
-
-  endfunction
-
-"}}} _CreateLaravelGeneratorFunction
-
-  function! ExecuteLaravelGeneratorCMD()"{{{
-    let cmd = CreateLaravelGeneratorFunction()
-    call VimuxRunCommand(cmd)
-    call VimuxZoomRunner()
-  endfunction"}}}
-
-function! BufOnly(buffer, bang) "{{{
-  if a:buffer == ''
-    " No buffer provided, use the current buffer.
-    let buffer = bufnr('%')
-  elseif (a:buffer + 0) > 0
-    " A buffer number was provided.
-    let buffer = bufnr(a:buffer + 0)
-  else
-    " A buffer name was provided.
-    let buffer = bufnr(a:buffer)
-  endif
-
-  if buffer == -1
-    echohl ErrorMsg
-    echomsg "No matching buffer for" a:buffer
-    echohl None
-    return
-  endif
-
-  let last_buffer = bufnr('$')
-
-  let delete_count = 0
-  let n = 1
-  while n <= last_buffer
-    if n != buffer && buflisted(n)
-      if a:bang == '' && getbufvar(n, '&modified')
-        echohl ErrorMsg
-        echomsg 'No write since last change for buffer'
-              \ n '(add ! to override)'
-        echohl None
-      else
-        silent exe 'bdel' . a:bang . ' ' . n
-        if ! buflisted(n)
-          let delete_count = delete_count+1
-        endif
-      endif
-    endif
-    let n = n+1
-  endwhile
-
-  if delete_count == 1
-    echomsg delete_count "buffer deleted"
-  elseif delete_count > 1
-    echomsg delete_count "buffers deleted"
-  endif
-
-endfunction "}}}
-
-function! ToggleFoldMethod() "{{{
-  if &foldenable==0
-    set foldenable
-    set foldmethod=marker
-    echomsg "FoldMethod = Marker"
-  elseif  &foldmethod=='marker'
-    set foldmethod=indent
-    echomsg "FoldMethod = Indent"
-  elseif &foldmethod=='indent'
-    set foldmethod=syntax
-    echomsg "FoldMethod = Syntax"
-  elseif &foldmethod=='syntax'
-    set nofoldenable
-    echomsg "Fold Disabled"
-  endif
-endfunction "}}}
-
-function! ToggleFoldMarker() "{{{
-  set foldlevel=0
-  if &filetype == "neosnippet"
-    setlocal foldmethod=marker
-    setlocal foldmarker=snippet,endsnippet
-  elseif &filetype == "cs"
-    " set foldtext=foldtext()
-    if &foldmarker != '#region,#endregion'
-      setlocal foldmarker=#region,#endregion
-    else
-      setlocal foldmarker={,}
-      setlocal foldlevel=2
-    endif
-  endif
-endfunction "}}}
-
-
-  command! -nargs=1 Ilist call List("i", 1, 0, <f-args>)
-  command! -nargs=1 Dlist call List("d", 1, 0, <f-args>)
-
-
-  command! DiffSplits :call DiffMe()<cr>
-
-  command! -nargs=0 Reg call Reg()
-
-  command! -nargs=? -complete=buffer -bang BufOnly
-      \ :call BufOnly('<args>', '<bang>')
-
-  " Convenient command to see the difference between the current buffer and the
-  " file it was loaded from, thus the changes you made.  Only define it when not
-  " defined already.
-  command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-        \ | wincmd p | diffthis
-
-  command! -nargs=? -complete=help Help call OpenHelpInCurrentWindow(<q-args>)
-
-  command! CreateFoldableComment call CreateFoldableCommentFunction()
-
-  command! Cclear cclose <Bar> call setqflist([])
-  nnoremap co<bs> :Cclear<cr>
-
-
-" }}}
-" ============================================================================
-" PLUG-INS {{{
-" ============================================================================
 
 " ----------------------------------------------------------------------------
 "  open finder, terminal {{{
@@ -1780,7 +782,7 @@ endfunction "}}}
   if !exists("g:vim_ambicmd_mapped")
     let g:vim_ambicmd_mapped = 1
     cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-    " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+    cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
   endif
 
 
@@ -3025,7 +2027,474 @@ endfunction "}}}
 "}}}
 
 
+call plug#end()
 "}}}
+" ============================================================================
+" FUNCTIONS & COMMANDS {{{
+" ============================================================================
+
+  function! CreateFoldableCommentFunction()"{{{
+    normal 0f/lyt'02[ 2] 2ki"{{{ lp2j0>>2ji"}}}} _p04kf}x4jzaj
+  endfunction"}}}
+
+  function! HighlightAllOfWord(onoff)"{{{
+    if a:onoff == 1
+      :augroup highlight_all
+      :au!
+      :au CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))
+      :augroup END
+    else
+      :au! highlight_all
+      match none /\<%s\>/
+    endif
+  endfunction"}}}
+
+  function! ToggleMouseFunction()"{{{
+    if  &mouse=='a'
+      set mouse=
+      echo "Shell has it"
+    else
+      set mouse=a
+      echo "Vim has it"
+    endif
+  endfunction"}}}
+
+  function! StripWhitespace()"{{{
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    :%s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+  endfunction"}}}
+
+  function! FindGitDirOrRoot()"{{{
+    let curdir = expand('%:p:h')
+    let gitdir = finddir('.git', curdir . ';')
+    if gitdir != ''
+      return substitute(gitdir, '\/\.git$', '', '')
+    else
+      return '/'
+    endif
+  endfunction"}}}
+
+  function! IndentToNextBraceInLineAbove()"{{{
+    :normal 0wk
+    :normal "vyf(
+    let @v = substitute(@v, '.', ' ', 'g')
+    :normal j"vPl
+  endfunction"}}}
+
+  function! List(command, selection, start_at_cursor, ...)"{{{
+
+  " This is an updated, more powerful, version of the function discussed here:
+  " http://www.reddit.com/r/vim/comments/1rzvsm/do_any_of_you_redirect_results_of_i_to_the/
+  " that shows ]I, [I, ]D, [D, :ilist and :dlist results in the quickfix window, even spanning multiple files.
+    " derive the commands used below from the first argument
+    let excmd   = a:command . "list"
+    let normcmd = toupper(a:command)
+
+    if a:selection
+      if len(a:1) > 0
+        let search_pattern = a:1
+      else
+        let old_reg = @v
+        normal! gv"vy
+        let search_pattern = substitute(escape(@v, '\/.*$^~[]'), '\\n', '\\n', 'g')
+        let @v = old_reg
+      endif
+      redir => output
+      silent! execute (a:start_at_cursor ? '+,$' : '') . excmd . ' /' . search_pattern
+      redir END
+    else
+      redir => output
+      silent! execute 'normal! ' . (a:start_at_cursor ? ']' : '[') . normcmd
+      redir END
+    endif
+
+    " clean up the output
+    let lines = split(output, '\n')
+
+    " bail out on errors
+    if lines[0] =~ '^Error detected'
+      echomsg 'Could not find "' . (a:selection ? search_pattern : expand("<cword>")) . '".'
+      return
+    endif
+
+    " our results may span multiple files so we need to build a relatively
+    " complex list based on file names
+    let filename   = ""
+    let qf_entries = []
+    for line in lines
+      if line =~ '^\S'
+        let filename = line
+      else
+        call add(qf_entries, {"filename" : filename, "lnum" : split(line)[1], "text" : join(split(line)[2:-1])})
+      endif
+    endfor
+
+    " build the quickfix list from our results
+    call setqflist(qf_entries)
+
+    " open the quickfix window if there is something to show
+    cwindow
+  endfunction"}}}
+
+  function! Preserve(command)"{{{
+    " Save the last search.
+    let search = @/
+
+    " Save the current cursor position.
+    let cursor_position = getpos('.')
+
+    " Save the current window position.
+    normal! H
+    let window_position = getpos('.')
+    call setpos('.', cursor_position)
+
+    " Execute the command.
+    execute a:command
+
+    " Restore the last search.
+    let @/ = search
+
+    " Restore the previous window position.
+    call setpos('.', window_position)
+    normal! zt
+
+    " Restore the previous cursor position.
+    call setpos('.', cursor_position)
+  endfunction"}}}
+
+  function! Uncrustify(language) "{{{
+
+  " Don't forget to add Uncrustify executable to $PATH (on Unix) or
+  " %PATH% (on Windows) for this command to work.
+
+    call Preserve(':silent %!uncrustify'
+          \ . ' -q '
+          \ . ' -l ' . a:language
+          \ . ' -c ' . g:uncrustify_cfg_file_path)
+  endfunction"}}}
+
+  function! OpenHelpInCurrentWindow(topic) "{{{
+    view $VIMRUNTIME/doc/help.txt
+    setl filetype=help
+    setl buftype=help
+    setl nomodifiable
+    exe 'keepjumps help ' . a:topic
+  endfunction "}}}
+
+  " ScratchPad {{{
+  augroup scratchpad
+    au!
+    au BufNewFile,BufRead .scratchpads/scratchpad.* call ScratchPadLoad()
+  augroup END
+
+  function! ScratchPadSave() "{{{
+    let ftype = matchstr(expand('%'), 'scratchpad\.\zs\(.\+\)$')
+    if ftype == ''
+      return
+    endif
+    write
+  endfunction "}}}
+
+  function! ScratchPadLoad() "{{{
+    nnoremap <silent> <buffer> q :w<cr>:close<cr>
+    setlocal bufhidden=hide buflisted noswapfile
+  endfunction "}}}
+
+  function! OpenScratchPad(ftype) "{{{
+    if a:0 > 0
+      let ftype = a:ftype
+    else
+      let pads = split(globpath('.scratchpads', 'scratchpad.*'), '\n')
+      if len(pads) > 0
+        let ftype = matchstr(pads[0], 'scratchpad\.\zs\(.\+\)$')
+      else
+        let ftype = expand('%:e')
+      endif
+    endif
+
+    if ftype == ''
+      echoerr 'Scratchpad need a filetype'
+      return
+    endif
+
+    let scratchpad_name = '.scratchpads/scratchpad.' . ftype
+    let scr_bufnum = bufnr(scratchpad_name)
+
+    if scr_bufnum == -1
+      " open the scratchpad
+      exe "new " . scratchpad_name
+      let dir = expand('%:p:h')
+      if !isdirectory(dir)
+        call mkdir(dir)
+      endif
+    else
+      " Scratch buffer is already created. Check whether it is open
+      " in one of the windows
+      let scr_winnum = bufwinnr(scr_bufnum)
+      if scr_winnum != -1
+        " Jump to the window which has the scratchpad if we are not
+        " already in that window
+        if winnr() != scr_winnum
+          exe scr_winnum . "wincmd w"
+        endif
+      else
+        exe "split +buffer" . scr_bufnum
+      endif
+    endif
+  endfunction "}}}
+" }}}
+
+  function! GetVisualSelection() "{{{
+    let [lnum1, col1] = getpos("'<")[1:2]
+    let [lnum2, col2] = getpos("'>")[1:2]
+    let lines = getline(lnum1, lnum2)
+    let lines[-1] = lines[-1][: col2 - 2]
+    let lines[0] = lines[0][col1 - 1:]
+    return join(lines, "\n")
+  endfunction "}}}
+
+  function! RenameFile() "{{{
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+      exec ':saveas ' . new_name
+      exec ':silent !rm ' . old_name
+      redraw!
+    endif
+  endfunction "}}}
+
+  function! SearchForCallSitesCursor() "{{{
+  "Find references of this function (function calls)
+    let searchTerm = expand("<cword>")
+    call SearchForCallSites(searchTerm)
+  endfunction "}}}
+
+  function! SearchForCallSites(term) "{{{
+  " Search for call sites for term (excluding its definition) and
+  " load into the quickfix list.
+    cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
+  endfunction "}}}
+
+  function! s:EnsureDirectoryExists() "{{{
+    let required_dir = expand("%:h")
+
+    if !isdirectory(required_dir)
+      " Remove this if-clause if you don't need the confirmation
+      if !confirm("Directory '" . required_dir . "' doesn't exist. Create it?")
+        return
+      endif
+
+      try
+        call mkdir(required_dir, 'p')
+      catch
+        echoerr "Can't create '" . required_dir . "'"
+      endtry
+    endif
+  endfunction "}}}
+
+  function! DiffMe() "{{{
+  " Toggle the diff of currently open buffers/splits.
+    windo diffthis
+    if $diff_me>0
+      let $diff_me=0
+    else
+      windo diffoff
+      let $diff_me=1
+    endif
+  endfunction "}}}
+
+  fu! RelativePathString(file) "{{{
+  "Get relative path to this file
+    if strlen(a:file) == 0
+      retu "[No Name]"
+    en
+    let common = getcwd()
+    let result = ""
+    while substitute(a:file, common, '', '') ==# a:file
+      let common = fnamemodify(common, ':h')
+      let result = ".." . (empty(result) ? '' : '/' . result)
+    endw
+    let forward = substitute(a:file, common, '', '')
+    if !empty(result) && !empty(forward)
+      retu result . forward
+    elsei !empty(forward)
+      retu forward[1:]
+    en
+  endf "}}}
+
+  function! Reg() "{{{
+  ":Reg Shows and prompts to select from a reg
+    reg
+    echo "Register: "
+    let char = nr2char(getchar())
+    if char != "\<Esc>"
+      execute "normal! \"".char."p"
+    endif
+    redraw
+  endfunction "}}}
+
+"{{{ CreateLaravelGeneratorFunction
+
+  function! CreateLaravelGeneratorFunction()
+  "Generate laravel generator command
+
+  "alias g:m="php artisan generate:model"
+  "alias g:c="php artisan generate:controller"
+  "alias g:v="php artisan generate:view"
+  "alias g:se="php artisan generate:seed"
+  "alias g:mi="php artisan generate:migration"
+  "alias g:r="php artisan generate:resource"
+  "alias g:p="php artisan generate:pivot"
+  "alias g:s="php artisan generate:scaffold"
+
+  "php artisan generate:migration create_posts_table --fields="title:string, body:text"
+
+  let command =  input('!g:')
+
+  "if --fields is NOT already provided
+  if stridx(command, '--fields') ==? "-1"
+
+    "Get the command part
+    let cmd_shortform = strpart(command, 0,stridx(command, " "))
+    "The list of commands that require --fields
+    let cmd_require_fields = ['mi', 'r', 's' ]
+
+    "if the command is NOT one of the above
+    if index(cmd_require_fields, cmd_shortform) !=? "-1"
+      let fields = input( "!g:" . command . ' --fields= ')
+      let command = command . ' --fields="' . fields . '"'
+    endif "Command requires --fields
+
+  endif " --fields is not provided
+
+  if strlen(command) !=? "0"
+    "Prepend cmd with required stuff
+    let command = "g:" . command
+  endif
+
+  return command
+
+  endfunction
+
+"}}} _CreateLaravelGeneratorFunction
+
+  function! ExecuteLaravelGeneratorCMD()"{{{
+    let cmd = CreateLaravelGeneratorFunction()
+    call VimuxRunCommand(cmd)
+    call VimuxZoomRunner()
+  endfunction"}}}
+
+function! BufOnly(buffer, bang) "{{{
+  if a:buffer == ''
+    " No buffer provided, use the current buffer.
+    let buffer = bufnr('%')
+  elseif (a:buffer + 0) > 0
+    " A buffer number was provided.
+    let buffer = bufnr(a:buffer + 0)
+  else
+    " A buffer name was provided.
+    let buffer = bufnr(a:buffer)
+  endif
+
+  if buffer == -1
+    echohl ErrorMsg
+    echomsg "No matching buffer for" a:buffer
+    echohl None
+    return
+  endif
+
+  let last_buffer = bufnr('$')
+
+  let delete_count = 0
+  let n = 1
+  while n <= last_buffer
+    if n != buffer && buflisted(n)
+      if a:bang == '' && getbufvar(n, '&modified')
+        echohl ErrorMsg
+        echomsg 'No write since last change for buffer'
+              \ n '(add ! to override)'
+        echohl None
+      else
+        silent exe 'bdel' . a:bang . ' ' . n
+        if ! buflisted(n)
+          let delete_count = delete_count+1
+        endif
+      endif
+    endif
+    let n = n+1
+  endwhile
+
+  if delete_count == 1
+    echomsg delete_count "buffer deleted"
+  elseif delete_count > 1
+    echomsg delete_count "buffers deleted"
+  endif
+
+endfunction "}}}
+
+function! ToggleFoldMethod() "{{{
+  if &foldenable==0
+    set foldenable
+    set foldmethod=marker
+    echomsg "FoldMethod = Marker"
+  elseif  &foldmethod=='marker'
+    set foldmethod=indent
+    echomsg "FoldMethod = Indent"
+  elseif &foldmethod=='indent'
+    set foldmethod=syntax
+    echomsg "FoldMethod = Syntax"
+  elseif &foldmethod=='syntax'
+    set nofoldenable
+    echomsg "Fold Disabled"
+  endif
+endfunction "}}}
+
+function! ToggleFoldMarker() "{{{
+  set foldlevel=0
+  if &filetype == "neosnippet"
+    setlocal foldmethod=marker
+    setlocal foldmarker=snippet,endsnippet
+  elseif &filetype == "cs"
+    " set foldtext=foldtext()
+    if &foldmarker != '#region,#endregion'
+      setlocal foldmarker=#region,#endregion
+    else
+      setlocal foldmarker={,}
+      setlocal foldlevel=2
+    endif
+  endif
+endfunction "}}}
+
+
+  command! -nargs=1 Ilist call List("i", 1, 0, <f-args>)
+  command! -nargs=1 Dlist call List("d", 1, 0, <f-args>)
+
+
+  command! DiffSplits :call DiffMe()<cr>
+
+  command! -nargs=0 Reg call Reg()
+
+  command! -nargs=? -complete=buffer -bang BufOnly
+      \ :call BufOnly('<args>', '<bang>')
+
+  " Convenient command to see the difference between the current buffer and the
+  " file it was loaded from, thus the changes you made.  Only define it when not
+  " defined already.
+  command! DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+        \ | wincmd p | diffthis
+
+  command! -nargs=? -complete=help Help call OpenHelpInCurrentWindow(<q-args>)
+
+  command! CreateFoldableComment call CreateFoldableCommentFunction()
+
+  command! Cclear cclose <Bar> call setqflist([])
+  nnoremap co<bs> :Cclear<cr>
+
+
+" }}}
 " ============================================================================
 " AUTOCMD {{{
 " ============================================================================
@@ -3086,6 +2555,533 @@ endfunction "}}}
    " autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
    " autocmd! BufLeave term://* stopinsert
    " autocmd BufWinEnter term://* startinsert
+
+" }}}
+" ============================================================================
+" SETTINGS {{{
+" ============================================================================
+  let g:python_host_prog='/usr/local/bin/python'
+
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+  let mapleader = ","
+  let g:mapleader = ","
+
+  "Keep diffme function state
+  let $diff_me=0
+
+  " Specify path to your Uncrustify configuration file.
+  let g:uncrustify_cfg_file_path =
+        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
+
+
+" set background=dark
+" colorscheme molokai
+
+set background=light
+
+
+colorscheme gruvbox
+
+" Enhance command-line completion
+set wildmenu
+set wildmode=longest,list,full
+
+" Types of files to ignore when autocompleting things
+set wildignore+=*.o,*.class,*.git,*.svn
+
+" Fuzzy finder: ignore stuff that can't be opened, and generated files
+let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
+
+set grepprg=ag\ --nogroup\ --nocolor
+
+set formatoptions-=t                  " Stop autowrapping my code
+
+" set ambiwidth=double                " DON'T THIS FUCKS airline
+
+"don't autoselect first item in omnicomplete,show if only one item(for preview)
+"set completeopt=longest,menuone,preview
+set completeopt=noinsert,menuone,noselect
+
+set pumheight=15                      " limit completion menu height
+
+" When completing by tag, show the whole tag, not just the function name
+set showfulltag
+
+"**** DO NOT USE ****  RUINS arrow keys & all esc based keys
+" Allow cursor keys in insert mode
+"set esckeys
+
+set nrformats-=octal
+
+set backspace=indent,eol,start        " Allow backspace in insert mode
+set gdefault                          " make g default for search
+set magic                             " Magic matching
+
+" set formatoptions+=j                  " Delete comment character when joining commented lines
+
+set encoding=utf-8 nobomb
+set termencoding=utf-8
+scriptencoding utf-8
+set nolazyredraw
+
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.nvim/.cache/backups
+
+"How should I decide to take abackup
+set backupcopy=auto
+
+set directory=~/.nvim/.cache/swaps
+set viewdir=~/.nvim/.cache/views
+
+if exists("&undodir")
+set undodir=~/.nvim/.cache/undo
+endif
+
+set undofile                          " Save undo's after file closes
+"set undodir=$HOME/.vim/.cache/undo   " where to save undo histories
+set undolevels=1000                   " How many undos
+set undoreload=10000                  " number of lines to save for undo
+
+" if available, store temporary files in shared memory
+if isdirectory('/run/shm')
+let $TMPDIR = '/run/shm'
+elseif isdirectory('/dev/shm')
+let $TMPDIR = '/dev/shm'
+endif
+
+set shell=/usr/local/bin/zsh
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+set tags=./tags,tags;$HOME            " Help vim find my tags
+set backupskip=/tmp/*,/private/tmp/*  " don't back up these
+set autoread                          " read files on change
+
+set fileformats+=mac
+
+set binary
+set noeol                             " Don’t add empty newlines at file end
+
+" set clipboard=unnamed,unnamedplus
+
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^linux'
+  set t_Co=16
+endif
+
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
+
+if !empty(&viminfo)
+  set viminfo^=!
+endif
+
+set sessionoptions-=options
+
+"set noswapfile
+"Dont warn me about swap files existence
+"set shortmess+=A
+
+" set shortmess=atI                    " Don’t show the intro message when starting Vim
+
+"prevent completion message flickers
+set shortmess+=c
+
+
+" Respect modeline in files
+set modeline
+set modelines=4
+
+" Enable per-directory .vimrc files and disable unsafe commands in them
+set exrc
+set secure
+
+set number
+set relativenumber
+
+
+set autoindent
+set smartindent
+set tabstop=2
+set expandtab
+"TODO: tpope sets smrttab
+set nosmarttab
+
+set shiftwidth=2
+set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
+
+set guifont=Sauce\ Code\ Powerline\ Light:h18
+set textwidth=80
+set wrap                              " Wrap long lines
+set breakindent                       " proper indenting for long lines
+
+set linebreak                         "Don't linebreak in the middle of words
+
+set printoptions=header:0,duplex:long,paper:letter
+
+let &showbreak = '↳ '                 " add linebreak sign
+set cpo=n                             " Draw color for lines that has number only
+set wrapscan                          " set the search scan to wrap lines
+
+"Allow these to move to next/prev line when at the last/first char
+set whichwrap+=h,l,<,>,[,]
+
+
+" Show “invisible” characters
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:×
+" set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
+" set listchars=tab:•·,trail:·,extends:❯,precedes:❮,nbsp:×
+set list
+
+"Set the fillchar of the inactive window to something I can see
+set fillchars=stlnc:\-
+
+" Add ignorance of whitespace to diff
+set diffopt+=iwhite
+syntax on
+" set cursorline "Use iTerm cursorline instead
+set hlsearch
+set ignorecase
+set smartcase
+set matchtime=2                       " time in decisecons to jump back from matching bracket
+set incsearch                         " Highlight dynamically as pattern is typed
+set history=1000
+set foldmethod=marker
+
+" These commands open folds
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+
+
+set nowrap
+
+set timeout
+set timeoutlen=500
+"NeoVim handles ESC keys as alt+key set this to solve the problem
+set ttimeout
+set ttimeoutlen=0
+
+" Show the filename in the window titlebar
+set title "titlestring=
+
+syntax on
+set virtualedit=all
+set mouse=a
+set hidden
+set laststatus=2                      " force status line display
+set noerrorbells visualbell t_vb=     " Disable error bells
+set nostartofline                     " Don’t reset cursor to start of line when moving around
+set ruler                             " Show the cursor position
+set showmode                          " Show the current mode
+
+
+if !&scrolloff
+  set scrolloff=3                       " Keep cursor in screen by value
+endif
+if !&sidescrolloff
+  set sidescrolloff=5
+endif
+
+"set cpoptions+=ces$                   " CW wrap W with $ instead of delete
+set showmode                          " Show the current mode
+
+set noshowcmd                           " Makes OS X slow, if lazy redraw set
+
+set display+=lastline
+
+set mousehide                         " Hide mouse while typing
+
+set synmaxcol=200                     " max syntax highlight chars
+
+set splitbelow                        " put horizontal splits below
+
+set splitright                        " put vertical splits to the right
+
+let g:netrw_liststyle=3               "Make netrw look like NerdTree
+
+highlight ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
+call matchadd('ColorColumn', '\%81v', 100)
+
+" Use a blinking upright bar cursor in Insert mode, a solid block in normal
+" and a blinking underline in replace mode
+  let &t_SI = "\<Esc>[5 q"
+  let &t_SR = "\<Esc>[3 q"
+  let &t_EI = "\<Esc>[2 q"
+
+
+" }}}
+" ============================================================================
+" MAPPINGS {{{
+" ============================================================================
+
+
+tnoremap <c-o> <c-\><c-n>
+
+nnoremap <silent> [I :call List("i", 0, 0)<CR>
+nnoremap <silent> ]I :call List("i", 0, 1)<CR>
+xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
+xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
+nnoremap <silent> [D :call List("d", 0, 0)<CR>
+nnoremap <silent> ]D :call List("d", 0, 1)<CR>
+xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
+xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
+
+  "noremap <F4> :call DiffMe()<CR>
+
+  nnoremap Ú<c-o> :BufOnly<cr>
+
+  nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
+  nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
+
+
+  nnoremap com :call ToggleFoldMarker()<cr>
+
+  autocmd Filetype neosnippet,cs call ToggleFoldMarker()
+
+
+  nnoremap cof :call ToggleFoldMethod()<cr>
+
+
+
+  " underline the current line with '='
+  nnoremap <leader>u= :t.\|s/./=<cr>:nohls<cr>
+  nnoremap <leader>u- :t.\|s/./-<cr>:nohls<cr>
+  nnoremap <leader>u~ :t.\|s/./\\~<cr>:nohls<cr>
+
+  " Underline current line "{{{
+  " nnoremap <leader>- "zyy"zp<c-v>$r-
+  " nnoremap <leader>= "zyy"zp<c-v>$r=
+  " nnoremap <leader><leader>- o<home><ESC>120i-<ESC>
+  " nnoremap <leader><leader>= o<home><ESC>120i=<ESC>
+  "}}}
+
+  nnoremap gf<C-M> :e! ++ff=dos<cr>
+
+  " Swap two words
+  nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
+
+  " <Leader>cd: Switch to the directory of the open buffer
+  nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
+  nnoremap cdc :lcd <c-r>=expand("%:h")<cr>/
+
+  "cd to the directory containing the file in the buffer
+  "nnoremap <silent> <leader>cd :lcd %:h<CR>
+  nnoremap gpr :lcd <c-r>=FindGitDirOrRoot()<cr><cr>
+  nnoremap ycd :!mkdir -p %:p:h<CR>
+
+
+  " edit in the path of current file
+  nnoremap <leader>ef :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
+  nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
+
+  " Edit the vimrc file
+  nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+
+  " run selected vimscript
+  vnoremap <Leader>sv "vy:@v<CR>
+
+  " run vimscript line
+  nnoremap <Leader>sl "vyy:@v<CR>
+
+  " run .vimrc
+  nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
+
+  "Discard changes
+  nnoremap <leader>e<bs> :e! \| echo 'changes discarded'<cr>
+
+  "Retab file
+  nnoremap <leader>er :retab<cr>
+
+  " <c-y>f Copy the full path of the current file to the clipboard
+  nnoremap <silent> <c-y>f :let @+=expand("%:p")<cr>:echo "Copied current file
+        \ path '".expand("%:p")."' to clipboard"<cr>
+
+
+
+  nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
+
+  nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
+
+  noremap <leader>ss :call StripWhitespace()<CR>
+
+  nnoremap <Leader>rn :call RenameFile()<cr>
+
+  "save as root
+  noremap <leader>W :w !sudo tee % > /dev/null<CR>
+  "cnoremap sw! w !sudo tee % >/dev/null
+
+  " Shrink the current window to fit the number of lines in the buffer.  Useful
+  " for those buffers that are only a few lines
+  nmap <silent> <leader>sw :execute ":resize " . line('$')<cr>
+
+  nnoremap <F12> :call ToggleMouseFunction()<cr>
+
+  nmap <silent> j gj
+  nmap <silent> k gk
+
+  "Make completion more comfortable
+  inoremap <c-j> <c-n>
+  inoremap <c-k> <c-p>
+
+  inoremap <C-U> <C-G>u<C-U>
+
+  "TODO: conflicts with script-ease
+  command! SplitLine :normal i<CR><ESC>,ss<cr>
+  nnoremap K :call Preserve('SplitLine')<cr>
+
+
+  " { and } skip over closed folds
+  nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
+  nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
+
+  vmap > >gv
+  vmap < <gv
+
+  nnoremap ; :
+  nnoremap : ;
+
+  vnoremap ; :
+  vnoremap : ;
+
+  noremap H ^
+  noremap L $
+  vnoremap L g_
+
+  onoremap H ^
+  onoremap L $
+
+  if !exists('$TMUX')
+    nnoremap <silent> <c-h> <c-w><c-h>
+    nnoremap <silent> <c-j> <c-w><c-j>
+    nnoremap <silent> <c-k> <c-w><c-k>
+    nnoremap <silent> <c-l> <c-w><c-l>
+  endif
+
+  " select last matched item
+  nnoremap <leader>/ //e<Enter>v??<Enter>
+
+  " <Leader>``: Force quit all
+  nnoremap <Leader>`` :qa!<cr>
+
+  " Edit todo list for project
+  nmap ,todo :e todo.txt<cr>
+
+  " Laravel framework commons
+  nnoremap Úlv :e ./resources/views/<cr>
+  nnoremap Úlc :e ./resources/views/partials/<cr>
+  nnoremap Úlp :e ./public/<cr>
+
+
+  "uppercase from insert mode while you are at the end of a word
+  inoremap <C-u> <esc>mzgUiw`za
+
+  "center screen cursor
+  nnoremap z<Space> zMzv
+
+  " <Leader>sm: Maximize current split
+  nnoremap <Leader>sm <C-w>_<C-w><Bar>
+
+
+  "Clear the search highlight except when I move
+  autocmd! cursorhold * set nohlsearch
+  autocmd! cursormoved * set hlsearch
+
+
+  " Move visual block
+  vnoremap <c-j> :m '>+1<CR>gv=gv
+  vnoremap <c-k> :m '<-2<CR>gv=gv
+
+  " Select last pasted text
+  nnoremap gb `[v`]
+  nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
+
+  "Reselect the text you just entered
+  nnoremap gV `[v`]
+
+  " Highlight TODO markers
+  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+
+  " Jump to next/previous merge conflict marker
+  " nnoremap <silent> ]m /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
+  " nnoremap <silent> [m ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
+
+  "Put an empty line before and after this line : depends on PLUGIN
+  nnoremap \\<Space> :normal [ ] <cr>
+
+  "Open current directory in Finder
+  nnoremap <leader><cr> :silent !open .<cr>
+
+  "Go to alternate file
+  nnoremap go <C-^>
+
+  "Open/Close commands
+  "======================
+  nnoremap  coq :QFix<cr>
+  command! QFix call QFixToggle()
+  function! QFixToggle()
+    for i in range(1, winnr('$'))
+      let bnum = winbufnr(i)
+      if getbufvar(bnum, '&buftype') == 'quickfix'
+        cclose
+        return
+      endif
+    endfor
+    copen
+  endfunction
+
+
+  "Buffer deletion commands
+  "===========================
+  nnoremap  Úwa :bufdo execute ":bw"<cr>
+  nnoremap  ÚÚwa :bufdo execute ":bw!"<cr>
+
+  nnoremap  Úww :bw<cr>
+  nnoremap  ÚÚww :bw!<cr>
+
+  "Remove ^M from a file
+  nnoremap  <leader>e^ :e ++ff=dos
+
+  "Execute java using ,j
+  nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
+
+  "===============================================================================
+  " Command-line Mode Key Mappings
+  "===============================================================================
+
+  cnoremap <c-a> <home>
+  cnoremap <c-e> <end>
+
+  cnoremap <c-j> <down>
+  cnoremap <c-k> <up>
+
+  cnoremap <c-h> <left>
+  cnoremap <c-l> <right>
+
+  cnoremap <c-g>pp <C-\>egetcwd()<CR>
+  cnoremap <c-g>pf <C-r>=expand("%")<CR>
+
+  " Ctrl-Space: Show history
+
+
+  " Ctrl-v: Paste
+  "cnoremap <c-v> <c-r>"
+
+  nnoremap z0 :set foldlevel=0<cr>
+  nnoremap z1 :set foldlevel=1<cr>
+  nnoremap z2 :set foldlevel=2<cr>
+  nnoremap z3 :set foldlevel=3<cr>
+  nnoremap z4 :set foldlevel=4<cr>
+  nnoremap z5 :set foldlevel=5<cr>
+  nnoremap z6 :set foldlevel=6<cr>
+  nnoremap z7 :set foldlevel=7<cr>
+  nnoremap z8 :set foldlevel=8<cr>
+  nnoremap z9 :set foldlevel=9<cr>
+
 
 " }}}
 " ============================================================================
