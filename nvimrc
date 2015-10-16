@@ -1,10 +1,3 @@
-let g:python_host_prog='/usr/local/bin/python'
-
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-let mapleader = ","
-let g:mapleader = ","
 
 " ============================================================================
 " VIM-PLUG {{{
@@ -55,11 +48,12 @@ Plug 'vim-scripts/TaskList.vim'
 Plug 'rhysd/clever-f.vim'
 Plug 'AndrewRadev/sideways.vim',
                           \ {'on': ['SidewaysLeft', 'SidewaysRight',
-                          \ 'SidewaysJumapLeft', 'SidewaysJumapRight']}
+                          \ 'SidewaysJumpLeft', 'SidewaysJumpRight']}
 
-Plug 'thinca/vim-ambicmd'
-Plug 'junegunn/vim-pseudocl'
+Plug 'junegunn/vim-pseudocl'  "Required by obliquie & fnr
+Plug 'junegunn/vim-oblique'
 Plug 'junegunn/vim-fnr'
+Plug 'thinca/vim-ambicmd'
 " Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-unimpaired'
@@ -79,6 +73,9 @@ Plug 'tpope/vim-scriptease'
 Plug 'tpope/vim-dotenv'
 Plug 'tpope/vim-speeddating'
 Plug 'jceb/vim-orgmode'
+Plug 'KabbAmine/lazyList.vim', {'on': ['LazyList']}
+Plug 'vitalk/vim-simple-todo'
+Plug 'dhruvasagar/vim-table-mode'
 Plug 'junegunn/vim-journal'
 Plug 'scrooloose/nerdcommenter'       ",cc ,cs
 " Plug 'tomtom/tcomment_vim'
@@ -88,7 +85,7 @@ Plug 'honza/vim-snippets'
 " Plug 'vim-scripts/YankRing.vim'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'troydm/zoomwintab.vim'
-" Plug 'seletskiy/vim-nunu'           "Disable relative numbers on cursor move 
+" Plug 'seletskiy/vim-nunu'           "Disable relative numbers on cursor move
 Plug 'Shougo/junkfile.vim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'itchyny/calendar.vim'
@@ -101,9 +98,16 @@ Plug 'szw/vim-ctrlspace'
 Plug 'mattn/emmet-vim' ", {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}
 Plug 'habamax/vim-skipit'              "use <c-l>l to skip ahead forward in insert mode
 Plug 'Lokaltog/vim-easymotion'
+Plug 'machakann/vim-patternjump'
+Plug 'machakann/vim-columnmove'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'junegunn/vim-oblique'
 Plug 'khalidchawtany/IndexedSearch', {'autoload': {'mappings':['<Plug>(ShowSearchIndex_']}}
+Plug 'ktonga/vim-follow-my-lead'      ",fml
+Plug 'vim-scripts/undofile_warn.vim'
+Plug 'vim-scripts/DirDiff.vim'
+Plug 'mvolkmann/vim-tag-comment'
+
+
 
 "snippets
 Plug 'Shougo/neosnippet'
@@ -144,7 +148,7 @@ Plug 'hlissner/vim-multiedit'
                           " \         'MultieditClear', 'MultieditReset'
                           " \     ]
                           " \}
-
+Plug 'vim-scripts/UnconditionalPaste'
 Plug 'AndrewRadev/splitjoin.vim', { 'autoload' : {
                         \ 'mappings' : ['gJ', 'gS']
                         \ }}
@@ -171,17 +175,15 @@ Plug 'ton/vim-bufsurf'
 Plug 'tyru/capture.vim' "Capture EX-commad in a buffer
 " Plug 'm2mdas/phpcomplete-extended'
 " Plug 'm2mdas/phpcomplete-extended-laravel'
+Plug 'vim-scripts/phpfolding.vim', {'for': 'php'}
+Plug 'Konfekt/FastFold'
 Plug 'xsbeats/vim-blade'
 Plug 'tpope/vim-fugitive'
-
-
-
-
+Plug 'jreybert/vimagit'
+Plug 'calebsmith/vim-lambdify'
+Plug 'vim-scripts/confirm-quit'
 Plug 'tpope/vim-ragtag'
-
-
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
-
 Plug 'junegunn/limelight.vim', {'on': 'Limelight'}
 
 
@@ -268,6 +270,7 @@ Plug 'osyo-manga/vim-textobj-multitextobj'
 
 Plug 'junegunn/vim-after-object'
 Plug 'PeterRincker/vim-argumentative'
+Plug 'FooSoft/vim-argwrap'
 
 
 
@@ -342,6 +345,13 @@ call plug#end()
 " ============================================================================
 " SETTINGS {{{
 " ============================================================================
+  let g:python_host_prog='/usr/local/bin/python'
+
+  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+  let mapleader = ","
+  let g:mapleader = ","
 
   "Keep diffme function state
   let $diff_me=0
@@ -441,7 +451,7 @@ set fileformats+=mac
 set binary
 set noeol                             " Don’t add empty newlines at file end
 
-
+" set clipboard=unnamed,unnamedplus
 
 " Allow color schemes to do bright colors without forcing bold.
 if &t_Co == 8 && $TERM !~# '^linux'
@@ -1728,13 +1738,12 @@ endfunction "}}}
 
 " }}}
 " ----------------------------------------------------------------------------
-" ambicmd {{{
+" vim-oblique {{{
 " ----------------------------------------------------------------------------
-  if !exists("g:vim_ambicmd_mapped")
-    " let g:vim_ambicmd_mapped = 1
-    " cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-    " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
-  endif
+  autocmd! User Oblique       ShowSearchIndex
+  autocmd! User ObliqueStar   ShowSearchIndex
+  autocmd! User ObliqueRepeat ShowSearchIndex
+  let g:oblique#enable_cmap=0
 
 
 "}}}
@@ -1762,6 +1771,17 @@ endfunction "}}}
       " Tab or Enter to return
   " CTRL-N or CTRL-P
       " Auto-completion
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" ambicmd {{{
+" ----------------------------------------------------------------------------
+  if !exists("g:vim_ambicmd_mapped")
+    let g:vim_ambicmd_mapped = 1
+    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+    " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+  endif
 
 
 "}}}
@@ -1821,6 +1841,14 @@ endfunction "}}}
   xmap a; <Plug>Argumentative_OuterTextObject
   omap i; <Plug>Argumentative_OpPendingInnerTextObject
   omap a; <Plug>Argumentative_OpPendingOuterTextObject
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" argwrap {{{
+" ----------------------------------------------------------------------------
+  nnoremap <silent> g;w :ArgWrap<CR>
+  let g:argwrap_padded_braces = '[{('
 
 
 "}}}
@@ -2069,6 +2097,54 @@ endfunction "}}}
 
 "}}}
 " ----------------------------------------------------------------------------
+" LazyList {{{
+" ----------------------------------------------------------------------------
+  let g:lazylist_omap = 'igll'
+  nnoremap glli :LazyList
+  vnoremap glli :LazyList
+  nnoremap glli :LazyList<CR>
+  vnoremap glli :LazyList<CR>
+  nnoremap gll- :LazyList '- '<CR>
+  vnoremap gll- :LazyList '- '<CR>
+  nnoremap gll. :LazyList '%1%. '<CR>
+  vnoremap gll. :LazyList '%1%. '<CR>
+
+  nnoremap gll* :LazyList '* '<CR>
+  vnoremap gll* :LazyList '* '<CR>
+
+  nnoremap gllt :LazyList '- [ ] '<CR>
+  vnoremap gllt :LazyList '- [ ] '<CR>
+
+"}}}
+" ----------------------------------------------------------------------------
+" simple-todo {{{
+" ----------------------------------------------------------------------------
+  " Disable default key bindings
+  let g:simple_todo_map_keys = 0
+
+  nmap glti <Plug>(simple-todo-new)
+  " imap glti <Plug>(simple-todo-new)
+
+  let g:simple_todo_tick_symbol = 'y'
+
+  " nmap <Leader>i <Plug>(simple-todo-new)
+  " imap <Leader>i <Plug>(simple-todo-new)
+  " imap <Leader>I <Plug>(simple-todo-new-start-of-line)
+  " nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
+  " vmap <Leader>I <Plug>(simple-todo-new-start-of-line)
+  " nmap <Leader>o <Plug>(simple-todo-below)
+  " imap <Leader>o <Plug>(simple-todo-below)
+  " nmap <Leader>O <Plug>(simple-todo-above)
+  " imap <Leader>O <Plug>(simple-todo-above)
+  " nmap <Leader>x <Plug>(simple-todo-mark-as-done)
+  " vmap <Leader>x <Plug>(simple-todo-mark-as-done)
+  " imap <Leader>x <Plug>(simple-todo-mark-as-done)
+  " nmap <Leader>X <Plug>(simple-todo-mark-as-undone)
+  " vmap <Leader>X <Plug>(simple-todo-mark-as-undone)
+  " imap <Leader>X <Plug>(simple-todo-mark-as-undone)
+
+"}}}
+" ----------------------------------------------------------------------------
 " vim-indentLine {{{
 " ----------------------------------------------------------------------------
   let g:indentLine_char = '┊'
@@ -2099,6 +2175,16 @@ endfunction "}}}
   " nnoremap sd :YRToggle
 
   " nnoremap <silent> <F11> :YRShow<CR>
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" yankstack {{{
+" ----------------------------------------------------------------------------
+  " let g:yankstack_map_keys = 0
+  let g:yankstack_yank_keys = ['y', 'd']
+  nnoremap <M-p> <Plug>yankstack_substitute_older_paste
+  nnoremap <M-S-p> <Plug>yankstack_substitute_newer_paste
 
 
 "}}}
@@ -2393,16 +2479,15 @@ endfunction "}}}
   map <c-s>h      <Plug>(easymotion-sol-bd-jk)
 
 
-    " <Plug>(easymotion-sn) <Plug>(easymotion-fn) <Plug>(easymotion-Fn)
-    " <Plug>(easymotion-tn) <Plug>(easymotion-Tn) <Plug>(easymotion-bd-tn)
-    " <Plug>(easymotion-sln) <Plug>(easymotion-fln) <Plug>(easymotion-Fln)
-    " <Plug>(easymotion-tln) <Plug>(easymotion-Tln) <Plug>(easymotion-bd-tln)
+  " <Plug>(easymotion-sn) <Plug>(easymotion-fn) <Plug>(easymotion-Fn)
+  " <Plug>(easymotion-tn) <Plug>(easymotion-Tn) <Plug>(easymotion-bd-tn)
+  " <Plug>(easymotion-sln) <Plug>(easymotion-fln) <Plug>(easymotion-Fln)
+  " <Plug>(easymotion-tln) <Plug>(easymotion-Tln) <Plug>(easymotion-bd-tln)
 
-
-    " <Plug>(easymotion-s2) <Plug>(easymotion-f2) <Plug>(easymotion-F2)
-    " <Plug>(easymotion-t2) <Plug>(easymotion-T2) <Plug>(easymotion-bd-t2)
-    " <Plug>(easymotion-sl2) <Plug>(easymotion-fl2) <Plug>(easymotion-Fl2)
-    " <Plug>(easymotion-tl2) <Plug>(easymotion-Tl2) <Plug>(easymotion-bd-tl2)
+  " <Plug>(easymotion-s2) <Plug>(easymotion-f2) <Plug>(easymotion-F2)
+  " <Plug>(easymotion-t2) <Plug>(easymotion-T2) <Plug>(easymotion-bd-t2)
+  " <Plug>(easymotion-sl2) <Plug>(easymotion-fl2) <Plug>(easymotion-Fl2)
+  " <Plug>(easymotion-tl2) <Plug>(easymotion-Tl2) <Plug>(easymotion-bd-tl2)
 
   " keep cursor colum when JK motion
   let g:EasyMotion_startofline = 0
@@ -2411,19 +2496,70 @@ endfunction "}}}
 
 "}}}
 " ----------------------------------------------------------------------------
-" vim-trailing-whitespace {{{
+" columnmove {{{
 " ----------------------------------------------------------------------------
-  let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
+  let g:columnmove_no_default_key_mappings = 1
+
+  " <Plug>(columnmove-f)
+  " <Plug>(columnmove-t)
+  " <Plug>(columnmove-F)
+  " <Plug>(columnmove-T)
+  " <Plug>(columnmove-;)
+  " <Plug>(columnmove-,)
+
+  " <Plug>(columnmove-w)
+  " <Plug>(columnmove-b)
+  " <Plug>(columnmove-e)
+  " <Plug>(columnmove-ge)
+
+  " <Plug>(columnmove-W)
+  " <Plug>(columnmove-B)
+  " <Plug>(columnmove-E)
+  " <Plug>(columnmove-gE)
+
 
 
 "}}}
 " ----------------------------------------------------------------------------
-" vim-oblique {{{
+" patternjump {{{
 " ----------------------------------------------------------------------------
-  autocmd! User Oblique       ShowSearchIndex
-  autocmd! User ObliqueStar   ShowSearchIndex
-  autocmd! User ObliqueRepeat ShowSearchIndex
-  let g:oblique#enable_cmap=0
+ "M-h, M=l MAPPINGS
+ let s:patternjump_patterns = {
+      \ '_' : {
+      \   'i' : {
+      \     'head' : ['^\s*\zs\S', ',', ')', ']', '}'],
+      \     'tail' : ['\<\h\k*\>', '.$'],
+      \     },
+      \   'n' : {
+      \     'head' : ['^\s*\zs\S', '\<\h\k*\>', '.$'],
+      \     },
+      \   'x' : {
+      \     'tail' : ['^\s*\zs\S', '\<\h\k*\>', '.$'],
+      \     },
+      \   'o' : {
+      \     'forward'  : {'tail_inclusive' : ['\<\h\k*\>']},
+      \     'backward' : {'head_inclusive' : ['\<\h\k*\>']},
+      \     },
+      \   },
+      \ '*' : {
+      \   'c' : {
+      \     'head' : ['^', ' ', '/', '[A-Z]', ',', ')', ']', '}', '$'],
+      \     },
+      \   },
+      \ }
+
+"}}}
+" ----------------------------------------------------------------------------
+" columnmove {{{
+" ----------------------------------------------------------------------------
+"
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-trailing-whitespace {{{
+" ----------------------------------------------------------------------------
+  let g:extra_whitespace_ignored_filetypes = ['unite', 'mkd']
 
 
 "}}}
@@ -2441,6 +2577,13 @@ endfunction "}}}
 
   " nmap / <Plug>(ShowSearchIndex_Forward)
   " nmap ? <Plug>(ShowSearchIndex_Backward)
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" follow-my-lead {{{
+" ----------------------------------------------------------------------------
+  let g:fml_all_sources=1 "1 for all sources, 0(Default) for $MYVIMRC.
 
 
 "}}}
