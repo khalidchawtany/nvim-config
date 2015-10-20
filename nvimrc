@@ -1,3 +1,10 @@
+let g:python_host_prog='/usr/local/bin/python'
+
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+
+let mapleader = ","
+let g:mapleader = ","
 
 " ============================================================================
 " VIM-PLUG {{{
@@ -28,23 +35,21 @@ call plug#begin('~/.nvim/plugged')
   "Plug '~/my-prototype-plugin'
 "}}}
 
-Plug 'ryanoasis/vim-devicons'
-Plug 'junegunn/seoul256.vim'
-Plug 'vim-scripts/applescript.vim'
-Plug 'AndrewRadev/switch.vim'
-Plug 'tommcdo/vim-exchange'
-Plug 'junegunn/rainbow_parentheses.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'scrooloose/nerdtree' ", { 'on':  'NERDTreeToggle' }
+Plug 'kopischke/vim-fetch'               "Fix how vim handles FN(LN:CN)
+" Plug 'ryanoasis/vim-devicons'
+" Plug 'junegunn/seoul256.vim'
+Plug 'vim-scripts/applescript.vim' ,     {'for': ['applescript']}
+Plug 'AndrewRadev/switch.vim',           {'on':  ['Switch']}
+Plug 'tommcdo/vim-exchange',             {'on':  ['ExchangeClear', '<Plug>(Exchange)', '<Plug>(ExchangeLine)', '<Plug>(ExchangeClear)']}
+Plug 'junegunn/rainbow_parentheses.vim', {'on':  ['RainbowParentheses']}
+Plug 'junegunn/vim-easy-align',          {'on':  ['EasyAlign', '<Plug>(EasyAlign)']}
+Plug 'scrooloose/nerdtree' ",            {'on':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind'] }
 " Plug 'jistr/vim-nerdtree-tabs'
 Plug 'tpope/vim-eunuch'
-Plug 'mhinz/vim-grepper'
+Plug 'mhinz/vim-grepper',                {'on': 'Grepper'}
 Plug '~/.vim/bundle/yankmatches.vim'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-" Plug 'junegunn/fzf', {'do' : 'yes \| brew reinstall --HEAD fzf'}
-Plug 'majutsushi/tagbar', { 'on' : [ 'Tagbar', 'TagbarToggle', ] }
-Plug 'vim-scripts/TaskList.vim'
+Plug 'majutsushi/tagbar',                {'on':  [ 'Tagbar', 'TagbarToggle', ] }
+Plug 'vim-scripts/TaskList.vim',         {'on':  ['TaskList']}
 Plug 'rhysd/clever-f.vim'
 Plug 'AndrewRadev/sideways.vim',
                           \ {'on': ['SidewaysLeft', 'SidewaysRight',
@@ -53,55 +58,100 @@ Plug 'AndrewRadev/sideways.vim',
 Plug 'junegunn/vim-pseudocl'  "Required by obliquie & fnr
 Plug 'junegunn/vim-oblique'
 Plug 'junegunn/vim-fnr'
-Plug 'thinca/vim-ambicmd'
+
+" ambicmd {{{
+  Plug 'thinca/vim-ambicmd'
+  if !exists("g:vim_ambicmd_mapped")
+    let g:vim_ambicmd_mapped = 1
+    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+    cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+  endif
+
+"}}}
+
 " Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-unimpaired'
 " Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-capslock'
+Plug 'tpope/vim-capslock',            {'on':['<Plug>CapsLockToggle', '<Plug>(CapsLockEnable)', '<Plug>(CapsLockDisable)']}
 Plug 'tpope/vim-projectionist'
 " Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-markdown',             {'for':['markdown']}
 " Plug 'tpope/vim-vinegar'            " {-} file browser
-Plug 'tpope/vim-characterize'
+Plug 'tpope/vim-characterize', {'on':['<Plug>(characterize)']}
+" ----------------------------------------------------------------------------
+" unicode {{{
+" ----------------------------------------------------------------------------
+  Plug 'chrisbra/unicode.vim', {'on':['Diagraphs', 'SearchUnicode', 'UnicodeName', 'UnicodeTable']}
+
+  " :Digraphs        - Search for specific digraph char
+  " :SearchUnicode   - Search for specific unicode char
+  " :UnicodeName     - Identify character under cursor (like ga command)
+  " :UnicodeTable    - Print Unicode Table in new window
+  " :DownloadUnicode - Download (or update) Unicode data
+  " <C-X><C-G>  - Complete Digraph char
+  " <C-X><C-Z>  - Complete Unicode char
+  " <F4>        - Combine characters into digraphs
+
+"}}}
 " Plug 'tpope/vim-classpath'
-Plug 'tpope/vim-afterimage'
+" Plug 'tpope/vim-afterimage'   "Image viewer
 Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-obsession', {'on':['obsession']}
 Plug 'tpope/vim-scriptease'
 " Plug 'tpope/vim-flagship'
-Plug 'tpope/vim-dotenv'
-Plug 'tpope/vim-speeddating'
-Plug 'jceb/vim-orgmode'
+Plug 'tpope/vim-dotenv', {'on':['Dotenv']}
+Plug 'tpope/vim-speeddating', {'on': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']}
+Plug 'jceb/vim-orgmode', {'for': 'org'}
 Plug 'KabbAmine/lazyList.vim', {'on': ['LazyList']}
-Plug 'vitalk/vim-simple-todo'
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'junegunn/vim-journal'
-Plug 'scrooloose/nerdcommenter'       ",cc ,cs
+Plug 'vitalk/vim-simple-todo', {'on':
+      \ ['<Plug>(simple-todo-new)',
+      \ '<Plug>(simple-todo-new-start-of-line)',
+      \ '<Plug>(simple-todo-below)',
+      \ '<Plug>(simple-todo-above)',
+      \ '<Plug>(simple-todo-mark-as-done)',
+      \ '<Plug>(simple-todo-mark-as-undone)']
+      \ }
+
+Plug 'dhruvasagar/vim-table-mode', {'on': ['TabelModeEnable', 'TableModeToggle', 'Tableize']}
+Plug 'junegunn/vim-journal', {'for': ['journal']}
+"Plug 'scrooloose/nerdcommenter', {'on':
+"      \ ['<Plug>NERDCommenterComment',
+"      \ '<Plug>NERDCommenterUnComment',
+"      \ '<Plug>NERDCommenterInvert']
+"      \ }
+Plug 'scrooloose/nerdcommenter'
+
 " Plug 'tomtom/tcomment_vim'
 " Plug 'Yggdroot/indentLine'
 Plug 'justinmk/vim-gtfo'
 Plug 'honza/vim-snippets'
 " Plug 'vim-scripts/YankRing.vim'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'troydm/zoomwintab.vim'
+Plug 'troydm/zoomwintab.vim', {'on': ['ZoomWinTabToggle']}
 " Plug 'seletskiy/vim-nunu'           "Disable relative numbers on cursor move
-Plug 'Shougo/junkfile.vim'
+" ----------------------------------------------------------------------------
+" junkfile.vim {{{
+" ----------------------------------------------------------------------------
+  Plug 'Shougo/junkfile.vim', {'on': ['JunkfileOpen']}
+  let g:junkfile#directory="~/.nvim/.cache/junkfile"
+
+"}}}
 Plug 'junegunn/vim-peekaboo'
-Plug 'itchyny/calendar.vim'
+Plug 'itchyny/calendar.vim', {'on': ['Calendar']}
 Plug 'takac/vim-hardtime'
 Plug 'kana/vim-submode'
 Plug 'itchyny/lightline.vim'
 Plug 'shinchu/lightline-gruvbox.vim'
 "Plug 'ap/vim-buftabline'
-Plug 'szw/vim-ctrlspace'
-Plug 'mattn/emmet-vim' ", {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache']}
+Plug 'szw/vim-ctrlspace' "TODO: load on demand
+
 Plug 'habamax/vim-skipit'              "use <c-l>l to skip ahead forward in insert mode
 Plug 'Lokaltog/vim-easymotion'
 Plug 'machakann/vim-patternjump'
 Plug 'machakann/vim-columnmove'
 Plug 'bronson/vim-trailing-whitespace'
-Plug 'khalidchawtany/IndexedSearch', {'autoload': {'mappings':['<Plug>(ShowSearchIndex_']}}
+Plug 'khalidchawtany/IndexedSearch', {'on':['<Plug>(ShowSearchIndex_', 'ShowSearchIndex']}
 Plug 'ktonga/vim-follow-my-lead'      ",fml
 Plug 'vim-scripts/undofile_warn.vim'
 Plug 'vim-scripts/DirDiff.vim'
@@ -121,6 +171,10 @@ Plug 'Shougo/deoplete.nvim'
 Plug 'SirVer/ultisnips'
 " Plug 'drmingdrmer/xptemplate'
 Plug 'godlygeek/tabular', {'on':'Tabularize'}
+
+" ----------------------------------------------------------------------------
+" vim-surround {{{
+" ----------------------------------------------------------------------------
 Plug 't9md/vim-surround_custom_mapping'
 Plug 'tpope/vim-surround', {
                           \   'on' :[
@@ -128,15 +182,18 @@ Plug 'tpope/vim-surround', {
                           \      '<Plug>Ysurround' , '<Plug>YSurround',
                           \      '<Plug>Yssurround', '<Plug>YSsurround',
                           \      '<Plug>YSsurround', '<Plug>VgSurround',
-                          \      '<Plug>VSurround' , '<Plug>ISurround'
+                          \      '<Plug>VSurround' , '<Plug>ISurround',
+                          \      '<Plug>Isurround'
                           \ ]}
 
-Plug 'ap/vim-css-color', {'for':['css','scss','sass','less','styl']}
-Plug 'deris/vim-rengbang', { 'on': [ 'RengBang', 'RengBangUsePrev' ] }
-Plug 'deris/vim-rectinsert', { 'on': ['RectInsert', 'RectReplace'] }
-Plug 'tpope/vim-abolish', {'on': ['S','Subvert', 'Abolish']}
-Plug 'Wolfy87/vim-enmasse', {'on': 'EnMasse'}
-Plug 'AndrewRadev/inline_edit.vim'
+"}}}
+
+Plug 'ap/vim-css-color',            { 'for':['css','scss','sass','less','styl']}
+Plug 'deris/vim-rengbang',          { 'on': [ 'RengBang', 'RengBangUsePrev' ] }
+Plug 'deris/vim-rectinsert',        { 'on': ['RectInsert', 'RectReplace'] }
+Plug 'tpope/vim-abolish',           { 'on': ['S','Subvert', 'Abolish']}
+Plug 'Wolfy87/vim-enmasse',         { 'on': 'EnMasse'}
+Plug 'AndrewRadev/inline_edit.vim', { 'on': ['InlineEdit']}
 Plug 'terryma/vim-multiple-cursors'
 Plug 'hlissner/vim-multiedit'
                           " \,
@@ -148,10 +205,10 @@ Plug 'hlissner/vim-multiedit'
                           " \         'MultieditClear', 'MultieditReset'
                           " \     ]
                           " \}
+
 Plug 'vim-scripts/UnconditionalPaste'
-Plug 'AndrewRadev/splitjoin.vim', { 'autoload' : {
-                        \ 'mappings' : ['gJ', 'gS']
-                        \ }}
+
+Plug 'AndrewRadev/splitjoin.vim', {'on': ['<plug>SplitjoinSplit', '<plug>SplitjoinJoin']}
 
 " if exists('$TMUX') | Plug 'christoomey/vim-tmux-navigator' | endif
 
@@ -170,12 +227,19 @@ Plug 'OrangeT/vim-csharp'
 Plug 'scrooloose/syntastic'
 Plug 'kassio/neoterm'
 Plug 'tpope/vim-endwise'
-Plug 'Raimondi/delimitMate'
+
+" ----------------------------------------------------------------------------
+" delimitmate {{{
+" ----------------------------------------------------------------------------
+  Plug 'Raimondi/delimitMate'
+  " au FileType blade let b:delimitMate_autoclose = 0
+
+"}}}
 Plug 'ton/vim-bufsurf'
 Plug 'tyru/capture.vim' "Capture EX-commad in a buffer
 " Plug 'm2mdas/phpcomplete-extended'
 " Plug 'm2mdas/phpcomplete-extended-laravel'
-Plug 'vim-scripts/phpfolding.vim', {'for': 'php'}
+" Plug 'vim-scripts/phpfolding.vim', {'for': 'php'}
 Plug 'Konfekt/FastFold'
 Plug 'xsbeats/vim-blade'
 Plug 'tpope/vim-fugitive'
@@ -186,6 +250,82 @@ Plug 'tpope/vim-ragtag'
 Plug 'junegunn/goyo.vim', {'on': 'Goyo'}
 Plug 'junegunn/limelight.vim', {'on': 'Limelight'}
 
+" ----------------------------------------------------------------------------
+" breeze.vim {{{
+" ----------------------------------------------------------------------------
+  Plug 'gcmt/breeze.vim', {'on':
+      \   [
+      \       '<Plug>(breeze-jump-tag-forward)',
+      \       '<Plug>(breeze-jump-tag-backward)',
+      \       '<Plug>(breeze-jump-attribute-forward)',
+      \       '<Plug>(breeze-jump-attribute-backward)',
+      \       '<Plug>(breeze-next-tag)',
+      \       '<Plug>(breeze-prev-tag)',
+      \       '<Plug>(breeze-next-attribute)',
+      \       '<Plug>(breeze-prev-attribute)'
+      \       ]
+      \   }
+
+
+  au FileType html,blade,php,xml,xhtml call MapBreezeKeys()
+
+  function MapBreezeKeys()
+    nmap <buffer> <leader>ssj <Plug>(breeze-jump-tag-forward)
+    nmap <buffer> <leader>ssk <Plug>(breeze-jump-tag-backward)
+    nmap <buffer> <leader>ssl <Plug>(breeze-jump-attribute-forward)
+    nmap <buffer> <leader>ssh <Plug>(breeze-jump-attribute-backward)
+
+    nmap <buffer> <c-s><c-j> <Plug>(breeze-next-tag)
+    nmap <buffer> <c-s><c-k> <Plug>(breeze-prev-tag)
+    nmap <buffer> <c-s><c-l> <Plug>(breeze-next-attribute)
+    nmap <buffer> <c-s><c-h> <Plug>(breeze-prev-attribute)
+    " <Plug>(breeze-next-tag-hl)
+    " <Plug>(breeze-prev-tag-hl)
+    " <Plug>(breeze-next-attribute-hl)
+    " <Plug>(breeze-prev-attribute-hl)
+
+  endfunction
+
+"}}}
+" ----------------------------------------------------------------------------
+" emmet {{{
+" ----------------------------------------------------------------------------
+  Plug 'mattn/emmet-vim' , {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']}
+
+"}}}
+" ----------------------------------------------------------------------------
+" vim-closetag {{{
+" ----------------------------------------------------------------------------
+  " "This plugin uses > of the clos tag to work in insert mode
+  " "<table|   => press > to have <table>|<table>
+  " "press > again to have <table>|<table>
+  " Plug 'alvan/vim-closetag', {'for': ['html', 'xml', 'blade', 'php']}
+  " " # filenames like *.xml, *.html, *.xhtml, ...
+  " let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.blade.php,*.php"
+
+
+"}}}
+" ----------------------------------------------------------------------------
+" closetag {{{
+" ----------------------------------------------------------------------------
+  "Ctrl+_ to close next unimpared tag
+  Plug 'vim-scripts/closetag.vim', {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']}
+
+"}}}
+" ----------------------------------------------------------------------------
+" MatchTagAlways {{{
+" ----------------------------------------------------------------------------
+  Plug 'Valloric/MatchTagAlways' , {'for':['html','xml','blade']}
+  let g:mta_filetypes = {
+      \ 'html' : 1,
+      \ 'xhtml' : 1,
+      \ 'xml' : 1,
+      \ 'jinja' : 1,
+      \ 'blade' : 1,
+      \}
+  nnoremap <leader>% :MtaJumpToOtherTag<cr>
+
+"}}}"Always match html tag
 
 "ColorScheme
 Plug 'tomasr/molokai'
@@ -417,6 +557,9 @@ Plug 'khalidchawtany/foldsearch',
 
 " FZF {{{
 
+  Plug 'junegunn/fzf'
+  Plug 'junegunn/fzf.vim'
+  " Plug 'junegunn/fzf', {'do' : 'yes \| brew reinstall --HEAD fzf'}
   let $FZF_DEFAULT_COMMAND='ag -l -g ""'
   set rtp+=/usr/local/Cellar/fzf/HEAD
 
@@ -441,36 +584,38 @@ Plug 'khalidchawtany/foldsearch',
   " `Helptags`        | Help tags [1]
 
 
-  function! Map_FZF(cmd, key)
-    exe "nnoremap Úf" . a:key . " :" . a:cmd . "<cr>"
-    exe "nnoremap Ú<c-f><c-" . a:key . "> :" . a:cmd . "!<cr>"
-    exe "nnoremap Ú<c-f>" . a:key . " :" . a:cmd . "!<cr>"
-    exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . "!<cr>"
-    exe "nnoremap <c-p>" . a:key . " :" . a:cmd . "!<cr>"
-    exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . "!<cr>"
+  function! Map_FZF(cmd, key, options)
+    exe "nnoremap Úf" . a:key . " :" . a:cmd . " " . a:options . "<cr>"
+    exe "nnoremap Ú<c-f><c-" . a:key . "> :" . a:cmd . "! ". a:options . "<cr>"
+    exe "nnoremap Ú<c-f>" . a:key . " :" . a:cmd . "! " . a:options . "<cr>"
+    exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . "! " . a:options . "<cr>"
+    exe "nnoremap <c-p>" . a:key . " :" . a:cmd . "! " . a:options . "<cr>"
+    exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . "! " . a:options "<cr>"
     " tnoremap <c-p><c-b> <c-\><c-n>:Buffers!<cr>
   endfunction
+
+  " autocmd VimEnter * command! Colors call fzf#vim#colors({'left': '30%', 'options': '--reverse --margin 30%,0'})
 
   nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
   nnoremap Ú<c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
 
-  call Map_FZF("FZF", "f")
-  call Map_FZF("Buffers", "b")
-  call Map_FZF("Colors", "c")
-  call Map_FZF("Ag", "a")
-  call Map_FZF("Lines", "l")
-  call Map_FZF("BTags", "t")
-  call Map_FZF("Tags", "]")
-  " call Map_FZF("Locate", "p")
-  call Map_FZF("History", "h")
-  call Map_FZF("History/", "/")
-  call Map_FZF("History:", "Ú")             "<cr>
-  call Map_FZF("Commands", "‰")             ":
-  call Map_FZF("BCommits", "g")
-  call Map_FZF("Snippets", "s")
-  call Map_FZF("Marks", "◊")                "'
-  call Map_FZF("Windows", "w")
-  call Map_FZF("Helptags", "k")
+  call Map_FZF("FZF", "f", "--reverse")
+  call Map_FZF("Buffers", "b", "")
+  call Map_FZF("Colors", "c", "")
+  call Map_FZF("Ag", "a", "")
+  call Map_FZF("Lines", "l", "")
+  call Map_FZF("BTags", "t", "")
+  call Map_FZF("Tags", "]", "")
+  " call Map_FZF("Locate", "p", "--reverse")
+  call Map_FZF("History", "h", "")
+  call Map_FZF("History/", "/", "")
+  call Map_FZF("History:", "Ú", "")             "<cr>
+  call Map_FZF("Commands", "‰", "")             ":
+  call Map_FZF("BCommits", "g", "")
+  call Map_FZF("Snippets", "s", "")
+  call Map_FZF("Marks", "◊", "")                "'
+  call Map_FZF("Windows", "w", "")
+  call Map_FZF("Helptags", "k", "")
 
   nmap <leader><tab> <plug>(fzf-maps-n)
   xmap <leader><tab> <plug>(fzf-maps-x)
@@ -777,16 +922,6 @@ Plug 'khalidchawtany/foldsearch',
 
 "}}}
 
-" ambicmd {{{
-
-  if !exists("g:vim_ambicmd_mapped")
-    let g:vim_ambicmd_mapped = 1
-    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-    cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
-  endif
-
-
-"}}}
 
 " vim-over {{{
 
@@ -1010,10 +1145,10 @@ Plug 'khalidchawtany/foldsearch',
 " textobj-inserted {{{
 
   let g:textobj_lastinserted_no_default_key_mappings =1
-  vmap at  <Plug>(textobj-lastinserted-a)
-  vmap it  <Plug>(textobj-lastinserted-i)
-  omap at  <Plug>(textobj-lastinserted-a)
-  omap it  <Plug>(textobj-lastinserted-i)
+  vmap a<cr>  <Plug>(textobj-lastinserted-a)
+  vmap i<cr>  <Plug>(textobj-lastinserted-i)
+  omap a<cr>  <Plug>(textobj-lastinserted-a)
+  omap i<cr>  <Plug>(textobj-lastinserted-i)
 
 
 "}}}
@@ -1773,14 +1908,6 @@ Plug 'khalidchawtany/foldsearch',
 
 "}}}
 
-" splitjoin {{{
-
-  let g:splitjoin_split_mapping = 'gS'
-  let g:splitjoin_join_mapping  = 'gJ'
-
-
-"}}}
-
 " tmux-navigator {{{
 
   if exists('$TMUX')
@@ -2011,8 +2138,8 @@ Plug 'khalidchawtany/foldsearch',
 
 " gruvbox {{{
 
-  let g:gruvbox_contrast_dark='soft'          "soft, medium, hard"
-  let g:gruvbox_contrast_light='soft'         "soft, medium, hard"
+  let g:gruvbox_contrast_dark='medium'          "soft, medium, hard"
+  let g:gruvbox_contrast_light='medium'         "soft, medium, hard"
 
 
 "}}}
@@ -2518,12 +2645,13 @@ endfunction "}}}
   augroup END
 
 
-  "Restore cursor, fold, and options on re-open.
-  au BufWinLeave *.* mkview
-  au VimEnter *.* silent loadview
+  " "Restore cursor, fold, and options on re-open.
+  " au BufWinLeave *.* mkview
+  " au VimEnter *.* silent loadview
 
   "Only restore folds and cursor position
   set viewoptions="folds,cursor"
+
   au FileType qf call AdjustWindowHeight(3, 10)
   function! AdjustWindowHeight(minheight, maxheight)
     let l = 1
@@ -2560,13 +2688,6 @@ endfunction "}}}
 " ============================================================================
 " SETTINGS {{{
 " ============================================================================
-  let g:python_host_prog='/usr/local/bin/python'
-
-  let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
-  let mapleader = ","
-  let g:mapleader = ","
 
   "Keep diffme function state
   let $diff_me=0
@@ -2760,7 +2881,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 set nowrap
 
 set timeout
-set timeoutlen=500
+set timeoutlen=750
 "NeoVim handles ESC keys as alt+key set this to solve the problem
 set ttimeout
 set ttimeoutlen=0
@@ -2819,7 +2940,20 @@ call matchadd('ColorColumn', '\%81v', 100)
 " ============================================================================
 
 
-tnoremap <c-o> <c-\><c-n>
+" ----------------------------------------------------------------------------
+" HTML {{{
+" ----------------------------------------------------------------------------
+  au FileType html,blade inoremap <buffer> >>     ></<C-X><C-O><Esc>%i
+  au FileType html,blade inoremap <buffer> >><CR> ></<C-X><C-O><Esc>%i<CR><ESC>O
+
+"}}}
+
+" ----------------------------------------------------------------------------
+" term {{{
+" ----------------------------------------------------------------------------
+  tnoremap <c-o> <c-\><c-n>
+
+"}}}
 
 nnoremap <silent> [I :call List("i", 0, 0)<CR>
 nnoremap <silent> ]I :call List("i", 0, 1)<CR>
@@ -2885,7 +3019,7 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
   vnoremap <Leader>sv "vy:@v<CR>
 
   " run vimscript line
-  nnoremap <Leader>sl "vyy:@v<CR>
+  nnoremap <Leader>s; "vyy:@v<CR>
 
   " run .vimrc
   nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
@@ -2968,7 +3102,7 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
   nnoremap <Leader>`` :qa!<cr>
 
   " Edit todo list for project
-  nmap ,todo :e todo.txt<cr>
+  nnoremap ,to :e todo.org<cr>
 
   " Laravel framework commons
   nnoremap Úlv :e ./resources/views/<cr>
