@@ -2241,9 +2241,15 @@ call plug#begin('~/.config/nvim/plugged')
 "{{{ vimfiler.vim
 
    Plug 'Shougo/vimfiler.vim'
-   " Disable netrw.vim
-   let g:loaded_netrwPlugin = 1
+   let g:loaded_netrw       = 1 "Disable Netrw
+   let g:loaded_netrwPlugin = 1 "Disable Netrw
    let g:vimfiler_as_default_explorer=1
+
+   let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+         \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+         \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+         \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+         \ '^.gitignore$', '^.idea$' , '^tags$']
 
    "Force vimfiler Enter to toggle expand/collapse
    autocmd! FileType vimfiler call s:my_vimfiler_settings() 
