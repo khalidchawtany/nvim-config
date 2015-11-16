@@ -873,7 +873,7 @@ call plug#begin('~/.config/nvim/plugged')
 
    au FileType html,blade,php,xml,xhtml call MapBreezeKeys()
 
-   function MapBreezeKeys()
+   function! MapBreezeKeys()
      nmap <buffer> <leader>sj <Plug>(breeze-jump-tag-forward)
      nmap <buffer> <leader>sk <Plug>(breeze-jump-tag-backward)
      nmap <buffer> <leader>sl <Plug>(breeze-jump-attribute-forward)
@@ -1130,21 +1130,22 @@ call plug#begin('~/.config/nvim/plugged')
  " Command line
  " ambicmd {{{
 
- " Plug 'thinca/vim-ambicmd'
- " "Prevent ambicmd original mapping
- " let g:vim_ambicmd_mapped = 1
- " au VimEnter * call MapAmbiCMD()
- " function! MapAmbiCMD()
-     " cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-     " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
- " endfunction
+ Plug 'thinca/vim-ambicmd'
+ "Prevent ambicmd original mapping
+ let g:vim_ambicmd_mapped = 1
+ cnoremap <expr> ‰    ambicmd#expand("")
+    " au VimEnter * call MapAmbiCMD()
+    " function! MapAmbiCMD()
+        " cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+        " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+    " endfunction
 
-   " " autocmd CmdwinEnter * call MapAmbiCMD_2()
-   " " function! MapAmbiCMD_2()
-     " " inoremap <buffer> <expr> <space> ambicmd#expand("\<space>")
-     " " inoremap <buffer> <expr> <cr>    ambicmd#expand("\<cr>")
-     " " startinsert!
-   " " endfunction
+    " autocmd CmdwinEnter * call MapAmbiCMD_2()
+    " function! MapAmbiCMD_2()
+      " inoremap <buffer> <expr> <space> ambicmd#expand("\<space>")
+      " inoremap <buffer> <expr> <cr>    ambicmd#expand("\<cr>")
+      " startinsert!
+    " endfunction
 
 "}}}
 
@@ -1474,7 +1475,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  " argumentative {{{
 
-   Plug 'PeterRincker/vim-argumentative'
+   Plug 'PeterRincker/vim-argumentative', {'on': ['<Plug>Argumentative_']}
 
    "Move and manipultae arguments of a function
    nmap [; <Plug>Argumentative_Prev
@@ -1491,7 +1492,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}
  " argwrap {{{
-   Plug 'FooSoft/vim-argwrap'
+   Plug 'FooSoft/vim-argwrap', {'on': ['ArgWrap']}
 
    nnoremap <silent> g;w :ArgWrap<CR>
    let g:argwrap_padded_braces = '[{('
@@ -1525,7 +1526,6 @@ call plug#begin('~/.config/nvim/plugged')
    " Plug 'kana/vim-niceblock'
    " vim-textobj-line does this too :)
    " Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
-   Plug 'saaguero/vim-textobj-pastedtext'        "gb              for pasted text
    Plug 'reedes/vim-textobj-sentence'            "is, as, ), (,   For real english sentences
                                                  " also adds g) and g( for
                                                  " sentence navigation
@@ -1543,6 +1543,21 @@ call plug#begin('~/.config/nvim/plugged')
  endfunction
 
    Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
+ " textobj-any {{{
+  "ia, aa          for (, {, [, ', ", <
+  call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
+  let g:textobj_anyblock_no_default_key_mappings =1
+
+  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
+
+ "}}}
+"{{{ vim-textobj-pastedtext
+
+   "gb              for pasted text
+   Plug 'saaguero/vim-textobj-pastedtext', {'on': ['<Plug>(textobj-pastedtext-text)']}
+   call VOMap('gb', '<Plug>(textobj-pastedtext-text)')
+
+"}}} _vim-textobj-pastedtext
 "{{{ vim-textobj-syntax
 
    "iy, ay          for Syntax
@@ -1585,23 +1600,19 @@ call plug#begin('~/.config/nvim/plugged')
 
 "}}} _vim-textobj-comment
 "{{{ vim-textobj-indblock
+
   "io, ao, iO, aO  for indented blocks
   call PlugTextObj( 'glts/vim-textobj-indblock', 'o' )
-
-  vmap iO <Plug>(textobj-indblock-i)
-  vmap iO <plug>(textobj-indblock-i)
-  omap aO <Plug>(textobj-indblock-a)
-  omap aO <plug>(textobj-indblock-a)
+  call VOMap("iO", "<Plug>(textobj-indblock-i)")
+  call VOMap("aO", "<Plug>(textobj-indblock-a)")
 
 "}}} _vim-textobj-indblock
 "{{{ vim-textobj-indent
-  "ii, ai, iI, aI  for Indent
-   call PlugTextObj( 'kana/vim-textobj-indent', 'i' )
 
-  vmap iI <Plug>(textobj-indent-same-i)
-  vmap iI <plug>(textobj-indent-same-i)
-  omap aI <Plug>(textobj-indent-same-a)
-  omap aI <plug>(textobj-indent-same-a)
+  "ii, ai, iI, aI  for Indent
+  call PlugTextObj( 'kana/vim-textobj-indent', 'i' )
+  call VOMap('iI', "<Plug>(textobj-indent-same-i)")
+  call VOMap('aI', "<plug>(textobj-indent-same-a)")
 
 "}}} _vim-textobj-indent
 "{{{ vim-textobj-dash
@@ -1638,10 +1649,8 @@ call plug#begin('~/.config/nvim/plugged')
   "i/, a/, i?, a?  for Searched pattern
   Plug 'kana/vim-textobj-lastpat'
   \, {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']}
-  vmap i/ <Plug>(textobj-lastpat-n)
-  vmap i? <plug>(textobj-lastpat-N)
-  omap a/ <Plug>(textobj-lastpat-n)
-  omap a? <plug>(textobj-lastpat-N)
+  call VOMap('i/', "<Plug>(textobj-lastpat-n)")
+  call VOMap('i?', "<Plug>(textobj-lastpat-N)")
 
 "}}} _vim-textobj-lastpat
  " textobj-quote {{{
@@ -1654,13 +1663,12 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  " textobj-xml {{{
 
-   Plug 'akiyan/vim-textobj-xml-attribute'       "ixa, axa        for XML attributes
+   "ixa, axa        for XML attributes
+   Plug 'akiyan/vim-textobj-xml-attribute', {'on': ['<Plug>(textobj-xmlattribute-']}
 
    let g:textobj_xmlattribute_no_default_key_mappings=1
-   vmap ax <Plug>(textobj-xmlattribute-xmlattribute)
-   vmap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
-   omap ax <Plug>(textobj-xmlattribute-xmlattribute)
-   omap ix <Plug>(textobj-xmlattribute-xmlattributenospace)
+   call VOMap('ax', '<Plug>(textobj-xmlattribute-xmlattribute)')
+   call VOMap('ix', '<Plug>(textobj-xmlattribute-xmlattributenospace)')
 
 
  "}}}
@@ -1672,31 +1680,17 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'kana/vim-textobj-datetime', {'on': ['<Plug>(textobj-datetime-']}
 
    let g:textobj_datetime_no_default_key_mappings=1
-   vmap agda <Plug>(textobj-datetime-auto)
-   vmap agdd <Plug>(textobj-datetime-date)
-   vmap agdf <Plug>(textobj-datetime-full)
-   vmap agdt <Plug>(textobj-datetime-time)
-   vmap agdz <Plug>(textobj-datetime-tz)
+   call VOMap('agda', '<Plug>(textobj-datetime-auto)')
+   call VOMap('agdd', '<Plug>(textobj-datetime-date)')
+   call VOMap('agdf', '<Plug>(textobj-datetime-full)')
+   call VOMap('agdt', '<Plug>(textobj-datetime-time)')
+   call VOMap('agdz', '<Plug>(textobj-datetime-tz)')
 
-   vmap igda <Plug>(textobj-datetime-auto)
-   vmap igdd <Plug>(textobj-datetime-date)
-   vmap igdf <Plug>(textobj-datetime-full)
-   vmap igdt <Plug>(textobj-datetime-time)
-   vmap igdz <Plug>(textobj-datetime-tz)
-
-
-   omap agda <Plug>(textobj-datetime-auto)
-   omap agdd <Plug>(textobj-datetime-date)
-   omap agdf <Plug>(textobj-datetime-full)
-   omap agdt <Plug>(textobj-datetime-time)
-   omap agdz <Plug>(textobj-datetime-tz)
-
-   omap igda <Plug>(textobj-datetime-auto)
-   omap igdd <Plug>(textobj-datetime-date)
-   omap igdf <Plug>(textobj-datetime-full)
-   omap igdt <Plug>(textobj-datetime-time)
-   omap igdz <Plug>(textobj-datetime-tz)
-
+   call VOMap('igda', '<Plug>(textobj-datetime-auto)')
+   call VOMap('igdd', '<Plug>(textobj-datetime-date)')
+   call VOMap('igdf', '<Plug>(textobj-datetime-full)')
+   call VOMap('igdt', '<Plug>(textobj-datetime-time)')
+   call VOMap('igdz', '<Plug>(textobj-datetime-tz)')
 
  "}}}
  " textobj-entire {{{
@@ -1718,16 +1712,11 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']}
 
    let g:textobj_path_no_default_key_mappings =1
-   vmap a\  <Plug>(textobj-path-next_path-a)
-   vmap i\  <Plug>(textobj-path-next_path-i)
-   omap a\  <Plug>(textobj-path-next_path-a)
-   omap i\  <Plug>(textobj-path-next_path-i)
 
-   vmap a\|  <Plug>(textobj-path-prev_path-a)
-   vmap i\|  <Plug>(textobj-path-prev_path-i)
-   omap a\|  <Plug>(textobj-path-prev_path-a)
-   omap i\|  <Plug>(textobj-path-prev_path-i)
-
+   call VOMap('a\', '<Plug>(textobj-path-next_path-a)')
+   call VOMap('i\', '<Plug>(textobj-path-next_path-i)')
+   call VOMap('a\|', '<Plug>(textobj-path-prev_path-a)')
+   call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
 
  "}}}
  " textobj-inserted {{{
@@ -1787,14 +1776,6 @@ call plug#begin('~/.config/nvim/plugged')
    " av  <Plug>(textobj-value-a)
    " iv  <Plug>(textobj-value-i)
 
-
- "}}}
- " textobj-any {{{
-  "ia, aa          for (, {, [, ', ", <
-  call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
-  let g:textobj_anyblock_no_default_key_mappings =1
-
-  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
 
  "}}}
  " after-textobj {{{
@@ -1977,138 +1958,138 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _unite.vim
  "{{{ ctrlp.vim
 
-   " Plug 'kien/ctrlp.vim'
-   Plug 'ctrlpvim/ctrlp.vim', {'on': ['CtrlP']}
-   Plug 'sgur/ctrlp-extensions.vim'
-   Plug 'fisadev/vim-ctrlp-cmdpalette'
-   Plug 'ivalkeen/vim-ctrlp-tjump'
-   Plug 'suy/vim-ctrlp-commandline'
-   Plug 'tacahiroy/ctrlp-funky'
-   Plug '/Volumes/Home/.config/nvim/plugged/ctrlp-my-notes'    "Locate my notes
-   Plug '/Volumes/Home/.config/nvim/plugged/ctrlp-dash-helper' "dash helper
-   Plug 'JazzCore/ctrlp-cmatcher'                       "ctrl-p matcher
-   " Plug 'FelikZ/ctrlp-py-matcher'                     "ctrl-p matcher
-   " Plug 'nixprime/cpsm'                               "ctrl-p matcher
+   " " Plug 'kien/ctrlp.vim'
+   " Plug 'ctrlpvim/ctrlp.vim', {'on': ['CtrlP']}
+   " Plug 'sgur/ctrlp-extensions.vim'
+   " Plug 'fisadev/vim-ctrlp-cmdpalette'
+   " Plug 'ivalkeen/vim-ctrlp-tjump'
+   " Plug 'suy/vim-ctrlp-commandline'
+   " Plug 'tacahiroy/ctrlp-funky'
+   " Plug '/Volumes/Home/.config/nvim/plugged/ctrlp-my-notes'    "Locate my notes
+   " Plug '/Volumes/Home/.config/nvim/plugged/ctrlp-dash-helper' "dash helper
+   " Plug 'JazzCore/ctrlp-cmatcher'                       "ctrl-p matcher
+   " " Plug 'FelikZ/ctrlp-py-matcher'                     "ctrl-p matcher
+   " " Plug 'nixprime/cpsm'                               "ctrl-p matcher
 
-   command! CtrlPCommandLine call ctrlp#init(ctrlp#commandline#id())
-   cnoremap <silent> <C-p> <C-c>:call ctrlp#init(ctrlp#commandline#id())<CR>
+   " command! CtrlPCommandLine call ctrlp#init(ctrlp#commandline#id())
+   " cnoremap <silent> <C-p> <C-c>:call ctrlp#init(ctrlp#commandline#id())<CR>
 
-   "'vim-ctrlp-tjump',
-   let g:ctrlp_extensions = [
-         \ 'tag', 'buffertag', 'quickfix', 'dir', 'rtscript', 'dashhelper',
-         \ 'vimnotes', 'undo', 'line', 'changes', 'mixed', 'bookmarkdir',
-         \ 'funky', 'commandline'
-         \ ]
+   " "'vim-ctrlp-tjump',
+   " let g:ctrlp_extensions = [
+         " \ 'tag', 'buffertag', 'quickfix', 'dir', 'rtscript', 'dashhelper',
+         " \ 'vimnotes', 'undo', 'line', 'changes', 'mixed', 'bookmarkdir',
+         " \ 'funky', 'commandline'
+         " \ ]
 
-   "Open window in NERDTree if available
-   let g:ctrlp_reuse_window = 'netrw\|help\|NERD\|startify'
+   " "Open window in NERDTree if available
+   " let g:ctrlp_reuse_window = 'netrw\|help\|NERD\|startify'
 
-   " Make Ctrl+P indexing faster by using ag silver searcher
-   let g:ctrlp_lazy_update = 350
+   " " Make Ctrl+P indexing faster by using ag silver searcher
+   " let g:ctrlp_lazy_update = 350
 
-   "Enable caching to make it fast
-   let g:ctrlp_use_caching = 1
+   " "Enable caching to make it fast
+   " let g:ctrlp_use_caching = 1
 
-   "Don't clean cache on exit else it will take alot to regenerate RTP
-   let g:ctrlp_clear_cache_on_exit = 0
+   " "Don't clean cache on exit else it will take alot to regenerate RTP
+   " let g:ctrlp_clear_cache_on_exit = 0
 
-   let g:ctrlp_cache_dir = $HOME.'/.config/nvim/.cache/ctrlp'
+   " let g:ctrlp_cache_dir = $HOME.'/.config/nvim/.cache/ctrlp'
 
-   let g:ctrlp_max_files = 0
-   if executable("ag")
-     set grepprg=ag\ --nogroup\ --nocolor
-     let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
-           \ --ignore .git
-           \ --ignore .svn
-           \ --ignore .hg
-           \ --ignore .DS_Store
-           \ --ignore "**/*.pyc"
-           \ --ignore vendor
-           \ --ignore node_modules
-           \ -g ""'
+   " let g:ctrlp_max_files = 0
+   " if executable("ag")
+     " set grepprg=ag\ --nogroup\ --nocolor
+     " let g:ctrlp_user_command = 'ag %s -i --nocolor --nogroup --hidden
+           " \ --ignore .git
+           " \ --ignore .svn
+           " \ --ignore .hg
+           " \ --ignore .DS_Store
+           " \ --ignore "**/*.pyc"
+           " \ --ignore vendor
+           " \ --ignore node_modules
+           " \ -g ""'
 
-   endif
+   " endif
 
-   let g:ctrlp_switch_buffer = 'e'
+   " let g:ctrlp_switch_buffer = 'e'
 
-   "When I press C-P run CtrlP from root of my project regardless of the current
-   "files path
-   let g:ctrlp_cmd='CtrlPRoot'
-   let g:ctrlp_map = '<c-p><c-p>'
+   " "When I press C-P run CtrlP from root of my project regardless of the current
+   " "files path
+   " let g:ctrlp_cmd='CtrlPRoot'
+   " let g:ctrlp_map = '<c-p><c-p>'
 
-   " Make Ctrl+P matching faster by using pymatcher
-   " let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
-   let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
-   " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
+   " " Make Ctrl+P matching faster by using pymatcher
+   " " let g:ctrlp_match_func = { 'match': 'pymatcher#PyMatch' }
+   " let g:ctrlp_match_func = {'match' : 'matcher#cmatch' }
+   " " let g:ctrlp_match_func = {'match': 'cpsm#CtrlPMatch'}
 
-   nnoremap <c-p>j :CtrlPtjump<cr>
-   vnoremap <c-p>j :CtrlPtjumpVisual<cr>
-   nnoremap <c-p>b :CtrlPBuffer<cr>
-   nnoremap <c-p>cd :CtrlPDir .<cr>
-   nnoremap <c-p>d :CtrlPDir<cr>
-   nnoremap <c-p><c-[> :CtrlPFunky<Cr>
-   nnoremap <c-p><c-]> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
-   nnoremap <c-p>f :execute ":CtrlP " . expand('%:p:h')<cr>
-   "nnoremap <c-p>m :CtrlPMixed<cr>
-   nnoremap <c-p>q :CtrlPQuickfix<cr>
-   nnoremap <c-p>y :CtrlPYankring<cr>
-   "nnoremap <c-p>r :CtrlPRoot<cr>
-   nnoremap <c-p>w :CtrlPCurWD<cr>
+   " nnoremap <c-p>j :CtrlPtjump<cr>
+   " vnoremap <c-p>j :CtrlPtjumpVisual<cr>
+   " nnoremap <c-p>b :CtrlPBuffer<cr>
+   " nnoremap <c-p>cd :CtrlPDir .<cr>
+   " nnoremap <c-p>d :CtrlPDir<cr>
+   " nnoremap <c-p><c-[> :CtrlPFunky<Cr>
+   " nnoremap <c-p><c-]> :execute 'CtrlPFunky ' . expand('<cword>')<Cr>
+   " nnoremap <c-p>f :execute ":CtrlP " . expand('%:p:h')<cr>
+   " "nnoremap <c-p>m :CtrlPMixed<cr>
+   " nnoremap <c-p>q :CtrlPQuickfix<cr>
+   " nnoremap <c-p>y :CtrlPYankring<cr>
+   " "nnoremap <c-p>r :CtrlPRoot<cr>
+   " nnoremap <c-p>w :CtrlPCurWD<cr>
 
-   nnoremap <c-p>t :CtrlPTag<cr>
-   nnoremap <c-p>[ :CtrlPBufTag<cr>
-   nnoremap <c-p>] :CtrlPBufTagAll<cr>
-   nnoremap <c-p>u :CtrlPUndo<cr>
-   " nnoremap <c-p>\\ :CtrlPRTS<cr>
-   ""nnoremap <c-p><CR> :CtrlPCmdline<cr>
-   nnoremap <c-p>; :CtrlPCmdPalette<cr>
-   nnoremap <c-p><CR> :CtrlPCommandLine<cr>
-   nnoremap <c-p><BS> :CtrlPClearCache<cr>
-   nnoremap <c-p><Space> :CtrlPClearAllCache<cr>
-   nnoremap <c-p>p :CtrlPLastMode<cr>
-   nnoremap <c-p>i :CtrlPChange<cr>
-   nnoremap <c-p><c-i> :CtrlPChangeAll<cr>
-   nnoremap <c-p>l :CtrlPLine<cr>
-   nnoremap <c-p>` :CtrlPBookmarkDir<cr>
-   nnoremap <c-p>@ :CtrlPBookmarkDirAdd<cr>
-   nnoremap <c-p>o :CtrlPMRU<cr>
+   " nnoremap <c-p>t :CtrlPTag<cr>
+   " nnoremap <c-p>[ :CtrlPBufTag<cr>
+   " nnoremap <c-p>] :CtrlPBufTagAll<cr>
+   " nnoremap <c-p>u :CtrlPUndo<cr>
+   " " nnoremap <c-p>\\ :CtrlPRTS<cr>
+   " ""nnoremap <c-p><CR> :CtrlPCmdline<cr>
+   " nnoremap <c-p>; :CtrlPCmdPalette<cr>
+   " nnoremap <c-p><CR> :CtrlPCommandLine<cr>
+   " nnoremap <c-p><BS> :CtrlPClearCache<cr>
+   " nnoremap <c-p><Space> :CtrlPClearAllCache<cr>
+   " nnoremap <c-p>p :CtrlPLastMode<cr>
+   " nnoremap <c-p>i :CtrlPChange<cr>
+   " nnoremap <c-p><c-i> :CtrlPChangeAll<cr>
+   " nnoremap <c-p>l :CtrlPLine<cr>
+   " nnoremap <c-p>` :CtrlPBookmarkDir<cr>
+   " nnoremap <c-p>@ :CtrlPBookmarkDirAdd<cr>
+   " nnoremap <c-p>o :CtrlPMRU<cr>
 
-   let g:ctrlp_prompt_mappings = {
-         \ 'PrtBS()':              ['<bs>', '<c-]>'],
-         \ 'PrtDelete()':          ['<del>'],
-         \ 'PrtDeleteWord()':      ['<c-w>'],
-         \ 'PrtClear()':           ['<c-u>'],
-         \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
-         \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
-         \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
-         \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
-         \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
-         \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
-         \ 'PrtHistory(-1)':       ['<c-n>'],
-         \ 'PrtHistory(1)':        ['<c-p>'],
-         \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
-         \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
-         \ 'AcceptSelection("t")': ['<c-t>'],
-         \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
-         \ 'ToggleFocus()':        ['<s-tab>'],
-         \ 'ToggleRegex()':        ['<c-r>'],
-         \ 'ToggleByFname()':      ['<c-d>'],
-         \ 'ToggleType(1)':        ['<c-f>'],
-         \ 'ToggleType(-1)':       ['<c-b>'],
-         \ 'PrtExpandDir()':       ['<tab>'],
-         \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
-         \ 'PrtInsert()':          ['<c-\>'],
-         \ 'PrtCurStart()':        ['<c-a>'],
-         \ 'PrtCurEnd()':          ['<c-e>'],
-         \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
-         \ 'PrtCurRight()':        ['<c-l>', '<right>'],
-         \ 'PrtClearCache()':      ['<F5>', 'ÚÚ'],
-         \ 'PrtDeleteEnt()':       ['<F7>'],
-         \ 'CreateNewFile()':      ['<c-y>'],
-         \ 'MarkToOpen()':         ['<c-z>'],
-         \ 'OpenMulti()':          ['<c-o>'],
-         \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
-         \ }
+   " let g:ctrlp_prompt_mappings = {
+         " \ 'PrtBS()':              ['<bs>', '<c-]>'],
+         " \ 'PrtDelete()':          ['<del>'],
+         " \ 'PrtDeleteWord()':      ['<c-w>'],
+         " \ 'PrtClear()':           ['<c-u>'],
+         " \ 'PrtSelectMove("j")':   ['<c-j>', '<down>'],
+         " \ 'PrtSelectMove("k")':   ['<c-k>', '<up>'],
+         " \ 'PrtSelectMove("t")':   ['<Home>', '<kHome>'],
+         " \ 'PrtSelectMove("b")':   ['<End>', '<kEnd>'],
+         " \ 'PrtSelectMove("u")':   ['<PageUp>', '<kPageUp>'],
+         " \ 'PrtSelectMove("d")':   ['<PageDown>', '<kPageDown>'],
+         " \ 'PrtHistory(-1)':       ['<c-n>'],
+         " \ 'PrtHistory(1)':        ['<c-p>'],
+         " \ 'AcceptSelection("e")': ['<cr>', '<2-LeftMouse>'],
+         " \ 'AcceptSelection("h")': ['<c-x>', '<c-cr>', '<c-s>'],
+         " \ 'AcceptSelection("t")': ['<c-t>'],
+         " \ 'AcceptSelection("v")': ['<c-v>', '<RightMouse>'],
+         " \ 'ToggleFocus()':        ['<s-tab>'],
+         " \ 'ToggleRegex()':        ['<c-r>'],
+         " \ 'ToggleByFname()':      ['<c-d>'],
+         " \ 'ToggleType(1)':        ['<c-f>'],
+         " \ 'ToggleType(-1)':       ['<c-b>'],
+         " \ 'PrtExpandDir()':       ['<tab>'],
+         " \ 'PrtInsert("c")':       ['<MiddleMouse>', '<insert>'],
+         " \ 'PrtInsert()':          ['<c-\>'],
+         " \ 'PrtCurStart()':        ['<c-a>'],
+         " \ 'PrtCurEnd()':          ['<c-e>'],
+         " \ 'PrtCurLeft()':         ['<c-h>', '<left>', '<c-^>'],
+         " \ 'PrtCurRight()':        ['<c-l>', '<right>'],
+         " \ 'PrtClearCache()':      ['<F5>', 'ÚÚ'],
+         " \ 'PrtDeleteEnt()':       ['<F7>'],
+         " \ 'CreateNewFile()':      ['<c-y>'],
+         " \ 'MarkToOpen()':         ['<c-z>'],
+         " \ 'OpenMulti()':          ['<c-o>'],
+         " \ 'PrtExit()':            ['<esc>', '<c-c>', '<c-g>'],
+         " \ }
 
  "}}} _ctrlp.vim
  " FZF {{{
@@ -2266,7 +2247,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  "{{{ vim-projectionist
 
- Plug 'tpope/vim-projectionist'
+ " Plug 'tpope/vim-projectionist'
 
  "}}} _vim-projectionist
  "{{{ vim-dotenv
@@ -2447,7 +2428,7 @@ call plug#begin('~/.config/nvim/plugged')
  " History
  "{{{ undotree
 
-   Plug 'mbbill/undotree', {'on': ['']}
+   Plug 'mbbill/undotree'
 
    let g:undotree_WindowLayout = 2
 
@@ -3768,5 +3749,4 @@ nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>
 
 " hi normal guibg=#092833
 " hi Folded guibg=#1A556B guifg=yellow
-
 
