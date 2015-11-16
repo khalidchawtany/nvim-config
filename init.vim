@@ -1750,19 +1750,6 @@ call plug#begin('~/.config/nvim/plugged')
   let g:textobj_between_no_default_key_mappings =1
 
  "}}}
- " textobj-any {{{
-  "ia, aa          for (, {, [, ', ", <
-  " call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
-  Plug 'rhysd/vim-textobj-anyblock'
-  vmap ia <Plug>(textobj-anyblock-i)
-  vmap aa <Plug>(textobj-anyblock-a)
-  omap ia <Plug>(textobj-anyblock-i)
-  omap aa <Plug>(textobj-anyblock-a)
-  let g:textobj_anyblock_no_default_key_mappings =1
-
-  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
-
- "}}}
  " textobj-postexpr {{{
   "ige, age        for post expression
   call PlugTextObj( 'syngan/vim-textobj-postexpr', 'ge' )
@@ -1771,13 +1758,15 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
 "{{{ textobj-motionmotion.vim
 
-   "imMotionMotion  for two motion range
-   call PlugTextObj( 'hchbaw/textobj-motionmotion.vim', 'm')
+   "i'MotionMotion  for two motion range
+   Plug 'hchbaw/textobj-motionmotion.vim', {'on':['<Plug>(textobj-motionmotion-']}
+   call VOMap( "i'", '<Plug>(textobj-motionmotion-i)')
+   call VOMap( "a'", '<Plug>(textobj-motionmotion-a)')
 
 "}}} _textobj-motionmotion.vim
  " textobj-multi {{{
 
-   call PlugTextObj( 'osyo-manga/vim-textobj-multitextobj', 'mt' )
+   call PlugTextObj( 'osyo-manga/vim-textobj-multitextobj', 'm' )
 
    let g:textobj_multitextobj_textobjects_i = [
          \   "\<Plug>(textobj-url-i)",
@@ -1798,6 +1787,14 @@ call plug#begin('~/.config/nvim/plugged')
    " av  <Plug>(textobj-value-a)
    " iv  <Plug>(textobj-value-i)
 
+
+ "}}}
+ " textobj-any {{{
+  "ia, aa          for (, {, [, ', ", <
+  call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
+  let g:textobj_anyblock_no_default_key_mappings =1
+
+  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
 
  "}}}
  " after-textobj {{{
@@ -2256,8 +2253,8 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
    nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
-   nnoremap <silent> Ú<c-l><c-f> :VimBufferDir -simple -split -winwidth=33 -force-hide<cr>
-   nnoremap <silent> Ú<c-l><c-d> :VimCurrentDir -simple -split -winwidth=33 -force-hide<cr>
+   nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
+   nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
 
 "}}} _vimfiler.vim
 
