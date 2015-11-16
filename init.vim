@@ -2314,7 +2314,9 @@ call plug#begin('~/.config/nvim/plugged')
 "}}} _vim-anzu
  "{{{ vim-fuzzysearch
 
-   Plug 'ggVGc/vim-fuzzysearch'
+   Plug 'ggVGc/vim-fuzzysearch', {'on': ['FuzzySearch']}
+   nnoremap g;; :FuzzySearch<cr>
+
 
  "}}} _vim-fuzzysearch
  " grepper {{{
@@ -2439,7 +2441,7 @@ call plug#begin('~/.config/nvim/plugged')
  " History
  "{{{ undotree
 
-   Plug 'mbbill/undotree'
+   Plug 'mbbill/undotree', {'on': ['']}
 
    let g:undotree_WindowLayout = 2
 
