@@ -58,14 +58,14 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-gitgutter
  "{{{ vimagit
 
-   Plug 'jreybert/vimagit'
+   Plug 'jreybert/vimagit', {'on': ['Magit']}
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
  "}}} _vimagit
 
  "{{{ DirDiff.vim
 
-   Plug 'vim-scripts/DirDiff.vim'
+   Plug 'vim-scripts/DirDiff.vim', {'on': ['DirDiff']}
 
  "}}} _DirDiff.vim
 
@@ -171,7 +171,7 @@ call plug#begin('~/.config/nvim/plugged')
  " Multi-edits
  " vim-fnr {{{
 
-   Plug 'junegunn/vim-fnr'
+   Plug 'junegunn/vim-fnr', {'on': ['<Plug>FNR']}
 
    " Defaults
    let g:fnr_flags   = 'gc'
@@ -215,7 +215,13 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-enmasse
  "{{{ vim-swoop
 
-   Plug 'pelodelfuego/vim-swoop'
+   Plug 'pelodelfuego/vim-swoop', {'on': ['Swoop']}
+   let g:swoopUseDefaultKeyMap = 0
+
+   " nmap <Leader>ml :call SwoopMulti()<CR>
+   " vmap <Leader>ml :call SwoopMultiSelection()<CR>
+   " nmap <Leader>l :call Swoop()<CR>
+   " vmap <Leader>l :call SwoopSelection()<CR>
 
    function! Multiple_cursors_before()
      if exists('*SwoopFreezeContext') != 0
@@ -230,7 +236,11 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
  "}}} _vim-swoop
-   Plug 'gabesoft/vim-ags'
+"{{{ vim-ags
+
+   Plug 'gabesoft/vim-ags', {'on': ['Ags']}
+
+"}}} _vim-ags
  "{{{ inline_edit.vim
 
    Plug 'AndrewRadev/inline_edit.vim', { 'on': ['InlineEdit']}
@@ -244,6 +254,22 @@ call plug#begin('~/.config/nvim/plugged')
    "Use ctrl-n to select next instance
 
  "}}} _vim-multiple-cursors
+"{{{ vim-markmultiple
+
+ Plug 'adinapoli/vim-markmultiple'
+ let g:mark_multiple_trigger = "<C-n>"
+
+ "if effect remains on scree clear with "call MarkMultipleClean()"
+ nnoremap <c-n><BS> call MarkMutlipleClean()
+
+"}}} _vim-markmultiple
+"{{{ multichange.vim
+
+  Plug 'AndrewRadev/multichange.vim'
+  let g:multichange_mapping        = 'sm'
+  let g:multichange_motion_mapping = 'm'
+
+"}}} _multichange.vim
  "{{{ vim-multiedit
 
  Plug 'hlissner/vim-multiedit'
@@ -358,10 +384,10 @@ call plug#begin('~/.config/nvim/plugged')
 
    Plug 'maxbrunsfeld/vim-yankstack'
 
-   " let g:yankstack_map_keys = 0
-   let g:yankstack_yank_keys = ['y', 'd']
-   nnoremap <M-p> <Plug>yankstack_substitute_older_paste
-   nnoremap <M-S-p> <Plug>yankstack_substitute_newer_paste
+   let g:yankstack_map_keys = 0
+   " let g:yankstack_yank_keys = ['y', 'd']
+   nmap <leader>p <Plug>yankstack_substitute_older_paste
+   nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
  "}}} _vim-yankstack
  " YankMatches {{{
@@ -411,35 +437,9 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'tommcdo/vim-exchange', {'on':  ['ExchangeClear', '<Plug>(Exchange)', '<Plug>(ExchangeLine)', '<Plug>(ExchangeClear)']}
 
  "}}} _vim-exchange
- " columnmove {{{
-
-   Plug 'machakann/vim-columnmove'
-
-   let g:columnmove_no_default_key_mappings = 1
-
-   " <Plug>(columnmove-f)
-   " <Plug>(columnmove-t)
-   " <Plug>(columnmove-F)
-   " <Plug>(columnmove-T)
-   " <Plug>(columnmove-;)
-   " <Plug>(columnmove-,)
-
-   " <Plug>(columnmove-w)
-   " <Plug>(columnmove-b)
-   " <Plug>(columnmove-e)
-   " <Plug>(columnmove-ge)
-
-   " <Plug>(columnmove-W)
-   " <Plug>(columnmove-B)
-   " <Plug>(columnmove-E)
-   " <Plug>(columnmove-gE)
-
-
-
- "}}}
  "{{{ vim-tag-comment
-
-   Plug 'mvolkmann/vim-tag-comment'
+   " Comment out HTML properly
+   Plug 'mvolkmann/vim-tag-comment', {'on': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']}
 
  "}}} _vim-tag-comment
  " EasyAlign {{{
@@ -516,8 +516,8 @@ call plug#begin('~/.config/nvim/plugged')
  "{{{ nerdcommenter
 
   Plug 'scrooloose/nerdcommenter'
-   "Add a space around the comment
-   let g:NERDSpaceDelims=1
+  "Add a space around the comment
+  let g:NERDSpaceDelims=1
 
  "}}} _nerdcommenter
    " Plug 'tpope/vim-commentary'
@@ -594,8 +594,8 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-man
  "{{{ vim-follow-my-lead
 
-   Plug 'ktonga/vim-follow-my-lead'      ",fml
-
+   ",fml
+   Plug 'ktonga/vim-follow-my-lead'
    let g:fml_all_sources=1 "1 for all sources, 0(Default) for $MYVIMRC.
 
  "}}} _vim-follow-my-lead
@@ -606,7 +606,8 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-rsi
  "{{{ capture.vim
 
-   Plug 'tyru/capture.vim' "Capture EX-commad in a buffer
+   "Capture EX-commad in a buffer
+   Plug 'tyru/capture.vim', {'on': 'Capture'}
 
  "}}} _capture.vim
  "{{{ vim-eunuch
@@ -616,7 +617,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-eunuch
  "{{{ vim-capslock
 
-   Plug 'tpope/vim-capslock',            {'on':['<Plug>CapsLockToggle', '<Plug>(CapsLockEnable)', '<Plug>(CapsLockDisable)']}
+   Plug 'tpope/vim-capslock' ",{'on':['<Plug>CapsLockToggle', '<Plug>(CapsLockEnable)', '<Plug>(CapsLockDisable)']}
 
  "}}} _vim-capslock
 
@@ -665,7 +666,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-scriptease
  "{{{ vim-hardtime
 
-   Plug 'takac/vim-hardtime'
+   Plug 'takac/vim-hardtime', {'on': ['HardTimeOn', 'HardTimeToggle']}
 
    let g:hardtime_timeout = 1000
 
@@ -691,7 +692,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-autoswap
  "{{{ vim-pseudocl
 
-   Plug 'junegunn/vim-pseudocl'  "Required by obliquie & fnr
+   Plug 'junegunn/vim-pseudocl'  "Required by oblique & fnr
 
  "}}} _vim-pseudocl
 
@@ -817,7 +818,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  "{{{ vim-csharp
 
-   Plug 'OrangeT/vim-csharp'
+   Plug 'OrangeT/vim-csharp', {'for': ['cs']}
 
  "}}} _vim-csharp
 
@@ -895,7 +896,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  " emmet {{{
 
-   Plug 'mattn/emmet-vim', {'on': ['<Plug>(emmet-']} ", {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']}
+   Plug 'mattn/emmet-vim', {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']}
 
    let g:user_emmet_mode='a'         "enable all function in all mode.
    " let g:user_emmet_mode='i'         "enable all function in all mode.
@@ -916,14 +917,15 @@ call plug#begin('~/.config/nvim/plugged')
  " closetag {{{
 
    "Ctrl+_ to close next unimpared tag
-   Plug 'vim-scripts/closetag.vim' ", {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']}
+   Plug 'vim-scripts/closetag.vim' , {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']}
 
  "}}}
  " MatchTagAlways {{{
 
-   Plug 'Valloric/MatchTagAlways' ", {'for':['html','xml','blade']}
+   Plug 'Valloric/MatchTagAlways' , {'for':['html', 'php','xhtml','xml','blade']}
    let g:mta_filetypes = {
        \ 'html' : 1,
+       \ 'php' : 1,
        \ 'xhtml' : 1,
        \ 'xml' : 1,
        \ 'jinja' : 1,
@@ -935,9 +937,8 @@ call plug#begin('~/.config/nvim/plugged')
 
  "{{{ vim-ragtag
 
-   Plug 'tpope/vim-ragtag'
-
-   let g:ragtag_global_maps = 1
+  Plug 'tpope/vim-ragtag', {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']}
+  let g:ragtag_global_maps = 1
 
  "}}} _vim-ragtag
 
@@ -970,7 +971,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-accio
  "{{{ syntastic
 
-   Plug 'scrooloose/syntastic'
+ Plug 'scrooloose/syntastic', {'on': ['SyntasticCheck']}
 
    let g:syntastic_scala_checkers=['']
    let g:syntastic_always_populate_loc_list = 1
@@ -1021,7 +1022,15 @@ call plug#begin('~/.config/nvim/plugged')
 
  " UltiSnips {{{
 
-   Plug 'SirVer/ultisnips'
+   Plug 'SirVer/ultisnips', { 'on': [] }
+
+   "Lazy load ultisnips
+   augroup load_ultisnips
+     autocmd!
+     autocmd InsertEnter * call plug#load('ultisnips') | autocmd! load_ultisnips
+   augroup END
+
+
    "Temporarily disable autotrigger
    " autocmd! UltiSnips_AutoTrigger
    " better key bindings for UltiSnipsExpandTrigger
@@ -1505,10 +1514,10 @@ call plug#begin('~/.config/nvim/plugged')
                            \ {'on': ['SidewaysLeft', 'SidewaysRight',
                            \ 'SidewaysJumpLeft', 'SidewaysJumpRight']}
 
-   nnoremap s;k :SidewaysJumapRight<cr>
-   nnoremap s;j :SidewaysJumapLeft<cr>
-   nnoremap s;l :SidewaysJumapRight<cr>
-   nnoremap s;h :SidewaysJumapLeft<cr>
+   nnoremap s;k :SidewaysJumpRight<cr>
+   nnoremap s;j :SidewaysJumpLeft<cr>
+   nnoremap s;l :SidewaysJumpRight<cr>
+   nnoremap s;h :SidewaysJumpLeft<cr>
 
    nnoremap c;k :SidewaysRight<cr>
    nnoremap c;j :SidewaysLeft<cr>
@@ -1517,6 +1526,18 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
+"{{{ targets.vim
+
+  Plug 'wellle/targets.vim'
+  "Some samples:
+  " cin)   Change inside next parens
+  " cil)   Change inside last parens
+  " da,    Delete about comma seperated stuff
+  " not only "," as above these can be used:
+  " , . ; : + - = ~ _ * # / | \ & $
+  " v2i)   Select between |'s (|a(b)c|) 
+
+"}}} _targets.vim
 
    Plug 'kana/vim-textobj-user'
    " let g:textobj_blockwise_enable_default_key_mapping =0
@@ -1543,7 +1564,7 @@ call plug#begin('~/.config/nvim/plugged')
  endfunction
 
    Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
- " textobj-any {{{
+ " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
   call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
   let g:textobj_anyblock_no_default_key_mappings =1
@@ -1653,7 +1674,7 @@ call plug#begin('~/.config/nvim/plugged')
   call VOMap('i?', "<Plug>(textobj-lastpat-N)")
 
 "}}} _vim-textobj-lastpat
- " textobj-quote {{{
+ " vim-textobj-quote {{{
   " "TODO these mappings are fake
   " "iq, aq, iQ, aQ  for Curely quotes
   " call PlugTextObj( 'reedes/vim-textobj-quote', 'q' )
@@ -1661,7 +1682,7 @@ call plug#begin('~/.config/nvim/plugged')
   " let g:textobj#quote#educate = 0               " 0=disable, 1=enable (def) autoconvert to curely
 
  "}}}
- " textobj-xml {{{
+ " vim-textobj-xml {{{
 
    "ixa, axa        for XML attributes
    Plug 'akiyan/vim-textobj-xml-attribute', {'on': ['<Plug>(textobj-xmlattribute-']}
@@ -1672,7 +1693,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- " textobj-datetime {{{
+ " vim-textobj-datetime {{{
 
    "igda, agda,      or dates auto
    " igdd, igdf, igdt, igdz  means
@@ -1693,20 +1714,20 @@ call plug#begin('~/.config/nvim/plugged')
    call VOMap('igdz', '<Plug>(textobj-datetime-tz)')
 
  "}}}
- " textobj-entire {{{
+ " vim-textobj-entire {{{
   "iG, aG          for entire document
   call PlugTextObj( 'kana/vim-textobj-entire', 'G' )
   let g:textobj_entire_no_default_key_mappings =1
 
  "}}}
- " textobj-space {{{
+ " vim-textobj-space {{{
 
   "iS, aS i<Space> for contineous spaces
   call PlugTextObj( 'saihoooooooo/vim-textobj-space', '<Space>' )
   let g:textobj_space_no_default_key_mappings =1
 
  "}}}
- " textobj-path {{{
+ " vim-textobj-path {{{
 
    "i|, a|, i\, a\          for Path
    Plug 'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']}
@@ -1719,13 +1740,13 @@ call plug#begin('~/.config/nvim/plugged')
    call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
 
  "}}}
- " textobj-inserted {{{
+ " vim-textobj-inserted {{{
   "i<cr>, a<cr>          for last inserted
   call PlugTextObj( 'rhysd/vim-textobj-lastinserted', '<cr>' )
   let g:textobj_lastinserted_no_default_key_mappings =1
 
  "}}}
- " textobj-php {{{
+ " vim-textobj-php {{{
 
   "i<, a<        for <?php ?>
    call PlugTextObj( 'akiyan/vim-textobj-php', '<' )
@@ -1733,13 +1754,13 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- " textobj-between {{{
+ " vim-textobj-between {{{
   "ibX, abX          for between two chars
   call PlugTextObj( 'thinca/vim-textobj-between', 'b' )
   let g:textobj_between_no_default_key_mappings =1
 
  "}}}
- " textobj-postexpr {{{
+ " vim-textobj-postexpr {{{
   "ige, age        for post expression
   call PlugTextObj( 'syngan/vim-textobj-postexpr', 'ge' )
   let g:textobj_postexpr_no_default_key_mappings =1
@@ -1753,7 +1774,7 @@ call plug#begin('~/.config/nvim/plugged')
    call VOMap( "a'", '<Plug>(textobj-motionmotion-a)')
 
 "}}} _textobj-motionmotion.vim
- " textobj-multi {{{
+ " vim-textobj-multi {{{
 
    call PlugTextObj( 'osyo-manga/vim-textobj-multitextobj', 'm' )
 
@@ -1766,7 +1787,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- " textobj-keyvalue {{{
+ " vim-textobj-keyvalue {{{
 
    " Plug 'vimtaku/vim-textobj-keyvalue'
 
@@ -1778,7 +1799,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- " after-textobj {{{
+ " vim-after-textobj {{{
 
    Plug 'junegunn/vim-after-object'
    " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
@@ -2233,7 +2254,7 @@ call plug#begin('~/.config/nvim/plugged')
          \ '^.gitignore$', '^.idea$' , '^tags$']
 
    "Force vimfiler Enter to toggle expand/collapse
-   autocmd! FileType vimfiler call s:my_vimfiler_settings() 
+   autocmd! FileType vimfiler call s:my_vimfiler_settings()
    function! s:my_vimfiler_settings()
      nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
      nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
@@ -2265,6 +2286,12 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
+"{{{ vim-evanesco
+
+  "Plug 'pgdouyon/vim-evanesco'
+  "may replace vim-oblique
+
+"}}} _vim-evanesco
  " vim-oblique {{{
 
 
@@ -2324,14 +2351,9 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- "{{{ vim-skipit
-
-   Plug 'habamax/vim-skipit'              "use <c-l>l to skip ahead forward in insert mode
-
- "}}} _vim-skipit
  "{{{ vim-easymotion
 
-   Plug 'Lokaltog/vim-easymotion', {'on': ['<Plug>(easymotion-']}
+   Plug 'Lokaltog/vim-easymotion'
 
    map s <Plug>(easymotion-prefix)
 
@@ -2382,9 +2404,46 @@ call plug#begin('~/.config/nvim/plugged')
    let g:EasyMotion_force_csapprox = 1
 
  "}}} _vim-easymotion
+ " columnmove {{{
+
+   Plug 'machakann/vim-columnmove', {'on': ['<Plug>(columnmove-']}
+
+   let g:columnmove_no_default_key_mappings = 1
+
+   nmap Sf <Plug>(columnmove-f)
+   nmap St <Plug>(columnmove-t)
+   nmap SF <Plug>(columnmove-F)
+   nmap ST <Plug>(columnmove-T)
+   nmap S; <Plug>(columnmove-;)
+   nmap S, <Plug>(columnmove-,)
+
+   nmap Sw <Plug>(columnmove-w)
+   nmap Sb <Plug>(columnmove-b)
+   nmap Se <Plug>(columnmove-e)
+   nmap Sge <Plug>(columnmove-ge)
+
+   nmap SW <Plug>(columnmove-W)
+   nmap SB <Plug>(columnmove-B)
+   nmap SE <Plug>(columnmove-E)
+   nmap SgE <Plug>(columnmove-gE)
+
+ "}}}
+ "{{{ vim-skipit
+
+   "use <c-l>l to skip ahead forward in insert mode
+   Plug 'habamax/vim-skipit', {'on': ['<Plug>SkipIt']}
+   imap <C-l>j <Plug>SkipItForward
+   imap <C-l>l <Plug>SkipAllForward
+   imap <C-l>k <Plug>SkipItBack
+   imap <C-l>h <Plug>SkipAllBack
+
+ "}}} _vim-skipit
  " patternjump {{{
 
-   Plug 'machakann/vim-patternjump'
+   Plug 'machakann/vim-patternjump', {'on': ['<Plug>(patternjump-']}
+   let g:patternjump_no_default_key_mappings = 1
+   map <c-s>] <Plug>(patternjump-forward)
+   map <c-s>[ <Plug>(patternjump-backward)
 
   "M-h, M=l MAPPINGS
   let s:patternjump_patterns = {
@@ -2414,7 +2473,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  "{{{ TaskList.vim
 
-   Plug 'vim-scripts/TaskList.vim',         {'on':  ['TaskList']}
+   Plug 'vim-scripts/TaskList.vim', {'on':  ['TaskList']}
 
  "}}} _TaskList.vim
  " Tagbar {{{
@@ -2446,7 +2505,10 @@ call plug#begin('~/.config/nvim/plugged')
  " Buffers
  "{{{ vim-bufsurf
 
-   Plug 'ton/vim-bufsurf'
+   Plug 'ton/vim-bufsurf', {'on': ['BufSurfBack', 'BufSurfForward', 'BufSurfList']}
+   nnoremap ]B :BufSurfForward<cr>
+   nnoremap [B :BufSurfBack<cr>
+   nnoremap coB :BufSurfList<cr>
 
  "}}} _vim-bufsurf
  "{{{ vim-ctrlspace
@@ -2529,33 +2591,25 @@ call plug#begin('~/.config/nvim/plugged')
 
  "{{{ searchfold.vim
 
-   Plug 'khalidchawtany/searchfold.vim' , {'autoload': {'mappings': ['<Plug>SearchFoldNormal']}}
+   Plug 'khalidchawtany/searchfold.vim' , {'on':  ['<Plug>SearchFold']}
 
    " Search and THEN Fold the search term containig lines using <leader>z
    " or the the inverse using <leader>iz or restore original fold using <leader>Z
-   nmap <leader>z <Plug>SearchFoldNormal
+   nmap <Leader>zs   <Plug>SearchFoldNormal
+   nmap <Leader>zi   <Plug>SearchFoldInverse
+   nmap <Leader>ze   <Plug>SearchFoldRestore
+   nmap <Leader>zw   <Plug>SearchFoldCurrentWord
 
  "}}} _searchfold.vim
 
  "{{{ foldsearch
 
-   Plug 'khalidchawtany/foldsearch',
-       \   {
-       \       'autoload':
-       \       {
-       \            'commands': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe'],
-       \            'mappings':
-       \                   [
-       \                       '<leader>fs',
-       \                       '<leader>fw',
-       \                       '<leader>fl',
-       \                       '<leader>fS',
-       \                       '<leader>fi',
-       \                       '<leader>fd',
-       \                       '<leader>fe'
-       \                   ]
-       \       }
-       \ }
+  Plug 'khalidchawtany/foldsearch',
+       \ { 'on': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe']}
+         " \ [
+         " \ '<leader>fs', '<leader>fw', '<leader>fl', '<leader>fS',
+         " \ '<leader>fi', '<leader>fd', '<leader>fe'
+         " \ ]
 
  "}}} _foldsearch
 
