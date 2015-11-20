@@ -7,6 +7,486 @@ let mapleader = ","
 let g:mapleader = ","
 
 " ============================================================================
+" FUNCTIONS {{{
+" ============================================================================
+
+ function! VOMap(key, plug)"{{{
+   execute "vmap" a:key a:plug
+   execute "omap" a:key a:plug
+ endfunction"}}}
+
+ function! PlugTextObj(repo, key)"{{{
+   let name = a:repo
+   let name = substitute(name, ".*/vim-textobj-", "", "")
+   execute  "Plug '" . a:repo . "', {'on': ['<Plug>(textobj-" . name . "-']}"
+   execute "call VOMap(\"i" . a:key . "\", \"<Plug>(textobj-" . name . "-i)\")"
+   execute "call VOMap(\"a" . a:key . "\", \"<Plug>(textobj-" . name . "-a)\")"
+ endfunction"}}}
+
+  function! CreateFoldableCommentFunction() range"{{{
+
+    echo "firstline ".a:firstline." lastline ".a:lastline
+
+    for lineno in range(a:firstline, a:lastline)
+      let line = getline(lineno)
+
+      "Find the line contains the Plug as it's first word
+      if ( get(split(line, " "), 0, 'Default') !=# 'Plug')
+        continue
+      endif
+
+      let name_start = stridx(line, "/") + 1
+      let name_length = stridx(line, "'", name_start) - name_start
+
+      let name = strpart(line, name_start, name_length)
+
+      let res = append(a:firstline - 1, "\"{{{ " . name)
+      let res = append(a:firstline, "")
+
+      let res = append(a:lastline + 2, "")
+      let res = append(a:lastline + 3, "\"}}} _" . name)
+
+      " let cleanLine = substitute(lifirstlinene, '\(\s\| \)\+$', '', 'e')
+      " call setline(lineno, cleanLine)
+      break
+    endfor
+
+  endfunction"}}}
+
+  function! HighlightAllOfWord(onoff)"{{{
+    if a:onoff == 1
+      :augroup highlight_all
+      :au!
+      :au CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))
+      :augroup END
+    else
+      :au! highlight_all
+      match none /\<%s\>/
+    endif
+  endfunction"}}}
+
+  function! ToggleMouseFunction()"{{{
+    if  &mouse=='a'
+      set mouse=
+      echo "Shell has it"
+    else
+      set mouse=a
+      echo "Vim has it"
+    endif
+  endfunction"}}}
+
+  function! StripWhitespace()"{{{
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    :%s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+  endfunction"}}}
+
+  function! FindGitDirOrRoot()"{{{
+    let curdir = expand('%:p:h')
+    let gitdir = finddir('.git', curdir . ';')
+    if gitdir != ''
+      return substitute(gitdir, '\/\.git$', '', '')
+    else
+      return '/'
+    endif
+  endfunction"}}}
+
+  function! IndentToNextBraceInLineAbove()"{{{
+    :normal 0wk
+    :normal "vyf(
+    let @v = substitute(@v, '.', ' ', 'g')
+    :normal j"vPl
+  endfunction"}}}
+
+  function! List(command, selection, start_at_cursor, ...)"{{{
+
+  " This is an updated, more powerful, version of the function discussed here:
+  " http://www.reddit.com/r/vim/comments/1rzvsm/do_any_of_you_redirect_results_of_i_to_the/
+  " that shows ]I, [I, ]D, [D, :ilist and :dlist results in the quickfix window, even spanning multiple files.
+    " derive the commands used below from the first argument
+    let excmd   = a:command . "list"
+    let normcmd = toupper(a:command)
+
+    if a:selection
+      if len(a:1) > 0
+        let search_pattern = a:1
+      else
+        let old_reg = @v
+        normal! gv"vy
+        let search_pattern = substitute(escape(@v, '\/.*$^~[]'), '\\n', '\\n', 'g')
+        let @v = old_reg
+      endif
+      redir => output
+      silent! execute (a:start_at_cursor ? '+,$' : '') . excmd . ' /' . search_pattern
+      redir END
+    else
+      redir => output
+      silent! execute 'normal! ' . (a:start_at_cursor ? ']' : '[') . normcmd
+      redir END
+    endif
+
+    " clean up the output
+    let lines = split(output, '\n')
+
+    " bail out on errors
+    if lines[0] =~ '^Error detected'
+      echomsg 'Could not find "' . (a:selection ? search_pattern : expand("<cword>")) . '".'
+      return
+    endif
+
+    " our results may span multiple files so we need to build a relatively
+    " complex list based on file names
+    let filename   = ""
+    let qf_entries = []
+    for line in lines
+      if line =~ '^\S'
+        let filename = line
+      else
+        call add(qf_entries, {"filename" : filename, "lnum" : split(line)[1], "text" : join(split(line)[2:-1])})
+      endif
+    endfor
+
+    " build the quickfix list from our results
+    call setqflist(qf_entries)
+
+    " open the quickfix window if there is something to show
+    cwindow
+  endfunction"}}}
+
+  function! Preserve(command)"{{{
+    " Save the last search.
+    let search = @/
+
+    " Save the current cursor position.
+    let cursor_position = getpos('.')
+
+    " Save the current window position.
+    normal! H
+    let window_position = getpos('.')
+    call setpos('.', cursor_position)
+
+    " Execute the command.
+    execute a:command
+
+    " Restore the last search.
+    let @/ = search
+
+    " Restore the previous window position.
+    call setpos('.', window_position)
+    normal! zt
+
+    " Restore the previous cursor position.
+    call setpos('.', cursor_position)
+  endfunction"}}}
+
+  function! Uncrustify(language) "{{{
+
+  " Don't forget to add Uncrustify executable to $PATH (on Unix) or
+  " %PATH% (on Windows) for this command to work.
+
+    call Preserve(':silent %!uncrustify'
+          \ . ' -q '
+          \ . ' -l ' . a:language
+          \ . ' -c ' . g:uncrustify_cfg_file_path)
+  endfunction"}}}
+
+  function! OpenHelpInCurrentWindow(topic) "{{{
+    view $VIMRUNTIME/doc/help.txt
+    setl filetype=help
+    setl buftype=help
+    setl nomodifiable
+    exe 'keepjumps help ' . a:topic
+  endfunction "}}}
+
+  " ScratchPad {{{
+  augroup scratchpad
+    au!
+    au BufNewFile,BufRead .scratchpads/scratchpad.* call ScratchPadLoad()
+  augroup END
+
+  function! ScratchPadSave() "{{{
+    let ftype = matchstr(expand('%'), 'scratchpad\.\zs\(.\+\)$')
+    if ftype == ''
+      return
+    endif
+    write
+  endfunction "}}}
+
+  function! ScratchPadLoad() "{{{
+    nnoremap <silent> <buffer> q :w<cr>:close<cr>
+    setlocal bufhidden=hide buflisted noswapfile
+  endfunction "}}}
+
+  function! OpenScratchPad(ftype) "{{{
+    if a:0 > 0
+      let ftype = a:ftype
+    else
+      let pads = split(globpath('.scratchpads', 'scratchpad.*'), '\n')
+      if len(pads) > 0
+        let ftype = matchstr(pads[0], 'scratchpad\.\zs\(.\+\)$')
+      else
+        let ftype = expand('%:e')
+      endif
+    endif
+
+    if ftype == ''
+      echoerr 'Scratchpad need a filetype'
+      return
+    endif
+
+    let scratchpad_name = '.scratchpads/scratchpad.' . ftype
+    let scr_bufnum = bufnr(scratchpad_name)
+
+    if scr_bufnum == -1
+      " open the scratchpad
+      exe "new " . scratchpad_name
+      let dir = expand('%:p:h')
+      if !isdirectory(dir)
+        call mkdir(dir)
+      endif
+    else
+      " Scratch buffer is already created. Check whether it is open
+      " in one of the windows
+      let scr_winnum = bufwinnr(scr_bufnum)
+      if scr_winnum != -1
+        " Jump to the window which has the scratchpad if we are not
+        " already in that window
+        if winnr() != scr_winnum
+          exe scr_winnum . "wincmd w"
+        endif
+      else
+        exe "split +buffer" . scr_bufnum
+      endif
+    endif
+  endfunction "}}}
+" }}}
+
+  function! GetVisualSelection() "{{{
+  " Why is this not a built-in Vim script function?!
+    let [lnum1, col1] = getpos("'<")[1:2]
+    let [lnum2, col2] = getpos("'>")[1:2]
+    let lines = getline(lnum1, lnum2)
+    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][col1 - 1:]
+    return join(lines, "\n")
+  endfunction "}}}
+
+  function! RenameFile() "{{{
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+      exec ':saveas ' . new_name
+      exec ':silent !rm ' . old_name
+      redraw!
+    endif
+  endfunction "}}}
+
+  function! SearchForCallSitesCursor() "{{{
+  "Find references of this function (function calls)
+    let searchTerm = expand("<cword>")
+    call SearchForCallSites(searchTerm)
+  endfunction "}}}
+
+  function! SearchForCallSites(term) "{{{
+  " Search for call sites for term (excluding its definition) and
+  " load into the quickfix list.
+    cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
+  endfunction "}}}
+
+  function! s:EnsureDirectoryExists() "{{{
+    let required_dir = expand("%:h")
+
+    if !isdirectory(required_dir)
+      " Remove this if-clause if you don't need the confirmation
+      if !confirm("Directory '" . required_dir . "' doesn't exist. Create it?")
+        return
+      endif
+
+      try
+        call mkdir(required_dir, 'p')
+      catch
+        echoerr "Can't create '" . required_dir . "'"
+      endtry
+    endif
+  endfunction "}}}
+
+  function! DiffMe() "{{{
+  " Toggle the diff of currently open buffers/splits.
+    windo diffthis
+    if $diff_me>0
+      let $diff_me=0
+    else
+      windo diffoff
+      let $diff_me=1
+    endif
+  endfunction "}}}
+
+  fu! RelativePathString(file) "{{{
+  "Get relative path to this file
+    if strlen(a:file) == 0
+      retu "[No Name]"
+    en
+    let common = getcwd()
+    let result = ""
+    while substitute(a:file, common, '', '') ==# a:file
+      let common = fnamemodify(common, ':h')
+      let result = ".." . (empty(result) ? '' : '/' . result)
+    endw
+    let forward = substitute(a:file, common, '', '')
+    if !empty(result) && !empty(forward)
+      retu result . forward
+    elsei !empty(forward)
+      retu forward[1:]
+    en
+  endf "}}}
+
+  function! Reg() "{{{
+  ":Reg Shows and prompts to select from a reg
+    reg
+    echo "Register: "
+    let char = nr2char(getchar())
+    if char != "\<Esc>"
+      execute "normal! \"".char."p"
+    endif
+    redraw
+  endfunction "}}}
+
+"{{{ CreateLaravelGeneratorFunction
+
+  function! CreateLaravelGeneratorFunction()
+  "Generate laravel generator command
+
+  "alias g:m="php artisan generate:model"
+  "alias g:c="php artisan generate:controller"
+  "alias g:v="php artisan generate:view"
+  "alias g:se="php artisan generate:seed"
+  "alias g:mi="php artisan generate:migration"
+  "alias g:r="php artisan generate:resource"
+  "alias g:p="php artisan generate:pivot"
+  "alias g:s="php artisan generate:scaffold"
+
+  "php artisan generate:migration create_posts_table --fields="title:string, body:text"
+
+  let command =  input('!g:')
+
+  "if --fields is NOT already provided
+  if stridx(command, '--fields') ==? "-1"
+
+    "Get the command part
+    let cmd_shortform = strpart(command, 0,stridx(command, " "))
+    "The list of commands that require --fields
+    let cmd_require_fields = ['mi', 'r', 's' ]
+
+    "if the command is NOT one of the above
+    if index(cmd_require_fields, cmd_shortform) !=? "-1"
+      let fields = input( "!g:" . command . ' --fields= ')
+      let command = command . ' --fields="' . fields . '"'
+    endif "Command requires --fields
+
+  endif " --fields is not provided
+
+  if strlen(command) !=? "0"
+    "Prepend cmd with required stuff
+    let command = "g:" . command
+  endif
+
+  return command
+
+  endfunction
+
+"}}} _CreateLaravelGeneratorFunction
+
+  function! ExecuteLaravelGeneratorCMD()"{{{
+    let cmd = CreateLaravelGeneratorFunction()
+    call VimuxRunCommand(cmd)
+    call VimuxZoomRunner()
+  endfunction"}}}
+
+function! BufOnly(buffer, bang) "{{{
+  if a:buffer == ''
+    " No buffer provided, use the current buffer.
+    let buffer = bufnr('%')
+  elseif (a:buffer + 0) > 0
+    " A buffer number was provided.
+    let buffer = bufnr(a:buffer + 0)
+  else
+    " A buffer name was provided.
+    let buffer = bufnr(a:buffer)
+  endif
+
+  if buffer == -1
+    echohl ErrorMsg
+    echomsg "No matching buffer for" a:buffer
+    echohl None
+    return
+  endif
+
+  let last_buffer = bufnr('$')
+
+  let delete_count = 0
+  let n = 1
+  while n <= last_buffer
+    if n != buffer && buflisted(n)
+      if a:bang == '' && getbufvar(n, '&modified')
+        echohl ErrorMsg
+        echomsg 'No write since last change for buffer'
+              \ n '(add ! to override)'
+        echohl None
+      else
+        silent exe 'bdel' . a:bang . ' ' . n
+        if ! buflisted(n)
+          let delete_count = delete_count+1
+        endif
+      endif
+    endif
+    let n = n+1
+  endwhile
+
+  if delete_count == 1
+    echomsg delete_count "buffer deleted"
+  elseif delete_count > 1
+    echomsg delete_count "buffers deleted"
+  endif
+
+endfunction "}}}
+
+function! ToggleFoldMethod() "{{{
+  if &foldenable==0
+    set foldenable
+    set foldmethod=marker
+    echomsg "FoldMethod = Marker"
+  elseif  &foldmethod=='marker'
+    set foldmethod=indent
+    echomsg "FoldMethod = Indent"
+  elseif &foldmethod=='indent'
+    set foldmethod=syntax
+    echomsg "FoldMethod = Syntax"
+  elseif &foldmethod=='syntax'
+    set nofoldenable
+    echomsg "Fold Disabled"
+  endif
+endfunction "}}}
+
+function! ToggleFoldMarker() "{{{
+  set foldlevel=0
+  if &filetype == "neosnippet"
+    setlocal foldmethod=marker
+    setlocal foldmarker=snippet,endsnippet
+  elseif &filetype == "cs"
+    " set foldtext=foldtext()
+    if &foldmarker != '#region,#endregion'
+      setlocal foldmarker=#region,#endregion
+    else
+      setlocal foldmarker={,}
+      setlocal foldlevel=2
+    endif
+  endif
+endfunction "}}}
+
+" }}}
+" ============================================================================
 " VIM-PLUG {{{
 " ============================================================================
 
@@ -33,6 +513,9 @@ call plug#begin('~/.config/nvim/plugged')
 
    "" Unmanaged plugin (manually installed and updated)
    "Plug '~/my-prototype-plugin'
+
+   " On plugin Loaded
+   " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
  "}}}
 
  " ----------------------------------------------------------------------------
@@ -41,7 +524,15 @@ call plug#begin('~/.config/nvim/plugged')
 
  "{{{ vim-fugitive
 
-   Plug 'tpope/vim-fugitive'
+ Plug 'tpope/vim-fugitive', {'on': [
+       \ 'Git',      'Gcd',     'Glcd',   'Gstatus',
+       \ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
+       \ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
+       \ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
+       \ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
+       \ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
+       \ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
+       \ ]}
 
    autocmd User fugitive
          \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
@@ -382,12 +873,12 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  "{{{ vim-yankstack
 
-   Plug 'maxbrunsfeld/vim-yankstack'
+   " Plug 'maxbrunsfeld/vim-yankstack'
 
-   let g:yankstack_map_keys = 0
-   " let g:yankstack_yank_keys = ['y', 'd']
-   nmap <leader>p <Plug>yankstack_substitute_older_paste
-   nmap <leader>P <Plug>yankstack_substitute_newer_paste
+   " let g:yankstack_map_keys = 0
+   " " let g:yankstack_yank_keys = ['y', 'd']
+   " nmap <leader>p <Plug>yankstack_substitute_older_paste
+   " nmap <leader>P <Plug>yankstack_substitute_newer_paste
 
  "}}} _vim-yankstack
  " YankMatches {{{
@@ -425,6 +916,12 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'vim-scripts/UnconditionalPaste'
 
  "}}} _UnconditionalPaste
+
+"{{{ vim-copy-as-rtf
+
+  Plug 'zerowidth/vim-copy-as-rtf', {'on': ['CopyRTF']}
+
+"}}} _vim-copy-as-rtf
 
  " Single-edits
  "{{{ switch.vim
@@ -512,6 +1009,14 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}} _splitjoin.vim
 
+"{{{ vim-sort-motion
+
+  Plug 'christoomey/vim-sort-motion', {'on': ['<Plug>SortMotion', '<Plug>SortLines', '<Plug>SortMotionVisual']}
+  map  gs  <Plug>SortMotion
+  map  gss <Plug>SortLines
+  vmap gs  <Plug>SortMotionVisual
+
+"}}} _vim-sort-motion
  " Comments
  "{{{ nerdcommenter
 
@@ -542,7 +1047,6 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-submode {{{
    Plug 'kana/vim-submode'
-   source ~/.config/nvim/plugged/vim-submode/autoload/submode.vim
    let g:submode_timeout=0
 
    au VimEnter * call BindSubModes()
@@ -695,7 +1199,13 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'junegunn/vim-pseudocl'  "Required by oblique & fnr
 
  "}}} _vim-pseudocl
+"{{{ investigate.vim
 
+  Plug 'keith/investigate.vim', {'on': []}
+  let g:investigate_use_dash=1
+  nnoremap gK :call plug#load('investigate.vim') <Bar> nnoremap gK call investigate#Investigate() <Bar> call investigate#Investigate()<CR>
+
+"}}} _investigate.vim
  "}}}
  " ----------------------------------------------------------------------------
  " languages {{{
@@ -1222,140 +1732,109 @@ call plug#begin('~/.config/nvim/plugged')
 
    " Plug 'tpope/vim-flagship'
  " lightline {{{
-   " Plug 'itchyny/lightline.vim'
-   " Plug 'shinchu/lightline-gruvbox.vim'
-         " " \ 'colorscheme': 'powerline',
-         " " \ 'colorscheme': 'wombat',
-         " " \ 'colorscheme': 'jellybeans',
-   " let g:lightline = {
-         " \ 'active': {
-         " \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-         " \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-         " \ },
-         " \ 'component_function': {
-         " \   'fugitive': 'LightLineFugitive',
-         " \   'filename': 'LightLineFilename',
-         " \   'fileformat': 'LightLineFileformat',
-         " \   'filetype': 'LightLineFiletype',
-         " \   'fileencoding': 'LightLineFileencoding',
-         " \   'mode': 'LightLineMode',
-         " \   'ctrlpmark': 'CtrlPMark',
-         " \ },
-         " \ 'component_expand': {
-         " \   'syntastic': 'SyntasticStatuslineFlag',
-         " \ },
-         " \ 'component_type': {
-         " \   'syntastic': 'error',
-         " \ },
-         " \ 'subseparator': { 'left': '|', 'right': '|' }
-         " \ }
+   Plug 'itchyny/lightline.vim'
+   Plug 'shinchu/lightline-gruvbox.vim'
+         " \ 'colorscheme': 'powerline',
+         " \ 'colorscheme': 'wombat',
+         " \ 'colorscheme': 'jellybeans',
+   let g:lightline = {
+         \ 'active': {
+         \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+         \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+         \ },
+         \ 'component_function': {
+         \   'fugitive': 'LightLineFugitive',
+         \   'filename': 'LightLineFilename',
+         \   'fileformat': 'LightLineFileformat',
+         \   'filetype': 'LightLineFiletype',
+         \   'fileencoding': 'LightLineFileencoding',
+         \   'mode': 'LightLineMode',
+         \ },
+         \ 'component_expand': {
+         \   'syntastic': 'SyntasticStatuslineFlag',
+         \ },
+         \ 'component_type': {
+         \   'syntastic': 'error',
+         \ },
+         \ 'subseparator': { 'left': '|', 'right': '|' }
+         \ }
 
-   " " let g:lightline.colorscheme = 'gruvbox'
-   " let g:lightline.colorscheme = 'wombat'
-   " function! LightLineModified()
-     " return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-   " endfunction
+   " let g:lightline.colorscheme = 'gruvbox'
+   let g:lightline.colorscheme = 'wombat'
+   function! LightLineModified()
+     return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+   endfunction
 
-   " function! LightLineReadonly()
-     " return &ft !~? 'help' && &readonly ? '⭤' : ''
-   " endfunction
+   function! LightLineReadonly()
+     return &ft !~? 'help' && &readonly ? '' : ''
+   endfunction
 
-   " function! LightLineFilename()
-     " let fname = expand('%:t')
-     " return fname == 'ControlP' ? g:lightline.ctrlp_item :
-           " \ fname == '__Tagbar__' ? g:lightline.fname :
-           " \ fname =~ '__Gundo\|NERD_tree' ? '' :
-           " \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-           " \ &ft == 'unite' ? unite#get_status_string() :
-           " \ &ft == 'vimshell' ? vimshell#get_status_string() :
-           " \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-           " \ ('' != fname ? fname : '[No Name]') .
-           " \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
-   " endfunction
+   function! LightLineFilename()
+     let fname = expand('%:t')
+     return fname == '__Tagbar__' ? g:lightline.fname :
+           \ fname =~ '__Gundo\|NERD_tree' ? '' :
+           \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+           \ &ft == 'unite' ? unite#get_status_string() :
+           \ &ft == 'vimshell' ? vimshell#get_status_string() :
+           \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+           \ ('' != fname ? fname : '[No Name]') .
+           \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+   endfunction
 
-   " function! LightLineFugitive()
-     " try
-       " if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-         " let mark = '⭠ '  " edit here for cool mark
-         " let _ = fugitive#head()
-         " return strlen(_) ? mark._ : ''
-       " endif
-     " catch
-     " endtry
-     " return ''
-   " endfunction
+   function! LightLineFugitive()
+     try
+       if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+         let mark = ' '  " edit here for cool mark
+         let _ = fugitive#head()
+         return strlen(_) ? mark._ : ''
+       endif
+     catch
+     endtry
+     return ''
+   endfunction
 
-   " function! LightLineFileformat()
-     " return winwidth(0) > 70 ? &fileformat : ''
-   " endfunction
+   function! LightLineFileformat()
+     return winwidth(0) > 70 ? &fileformat : ''
+   endfunction
 
-   " function! LightLineFiletype()
-     " return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-   " endfunction
+   function! LightLineFiletype()
+     return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+   endfunction
 
-   " function! LightLineFileencoding()
-     " return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-   " endfunction
+   function! LightLineFileencoding()
+     return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+   endfunction
 
-   " function! LightLineMode()
-     " let fname = expand('%:t')
-     " return fname == '__Tagbar__' ? 'Tagbar' :
-           " \ fname == 'ControlP' ? 'CtrlP' :
-           " \ fname == '__Gundo__' ? 'Gundo' :
-           " \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-           " \ fname =~ 'NERD_tree' ? 'NERDTree' :
-           " \ &ft == 'unite' ? 'Unite' :
-           " \ &ft == 'vimfiler' ? 'VimFiler' :
-           " \ &ft == 'vimshell' ? 'VimShell' :
-           " \ winwidth(0) > 60 ? lightline#mode() : ''
-   " endfunction
+   function! LightLineMode()
+     let fname = expand('%:t')
+     return fname == '__Tagbar__' ? 'Tagbar' :
+           \ fname == '__Gundo__' ? 'Gundo' :
+           \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+           \ &ft == 'unite' ? 'Unite' :
+           \ &ft == 'vimfiler' ? 'VimFiler' :
+           \ &ft == 'vimshell' ? 'VimShell' :
+           \ winwidth(0) > 60 ? lightline#mode() : ''
+   endfunction
 
-   " function! CtrlPMark()
-     " if expand('%:t') =~ 'ControlP'
-       " call lightline#link('iR'[g:lightline.ctrlp_regex])
-       " return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-             " \ , g:lightline.ctrlp_next], 0)
-     " else
-       " return ''
-     " endif
-   " endfunction
+   let g:tagbar_status_func = 'TagbarStatusFunc'
 
-   " let g:ctrlp_status_func = {
-         " \ 'main': 'CtrlPStatusFunc_1',
-         " \ 'prog': 'CtrlPStatusFunc_2',
-         " \ }
+   function! TagbarStatusFunc(current, sort, fname, ...) abort
+     let g:lightline.fname = a:fname
+     return lightline#statusline(0)
+   endfunction
 
-   " function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-     " let g:lightline.ctrlp_regex = a:regex
-     " let g:lightline.ctrlp_prev = a:prev
-     " let g:lightline.ctrlp_item = a:item
-     " let g:lightline.ctrlp_next = a:next
-     " return lightline#statusline(0)
-   " endfunction
+   augroup AutoSyntastic
+     autocmd!
+     autocmd BufWritePost *.c,*.cpp call s:syntastic()
+   augroup END
+   function! s:syntastic()
+     SyntasticCheck
+     call lightline#update()
+   endfunction
 
-   " function! CtrlPStatusFunc_2(str)
-     " return lightline#statusline(0)
-   " endfunction
-
-   " let g:tagbar_status_func = 'TagbarStatusFunc'
-
-   " function! TagbarStatusFunc(current, sort, fname, ...) abort
-     " let g:lightline.fname = a:fname
-     " return lightline#statusline(0)
-   " endfunction
-
-   " augroup AutoSyntastic
-     " autocmd!
-     " autocmd BufWritePost *.c,*.cpp call s:syntastic()
-   " augroup END
-   " function! s:syntastic()
-     " SyntasticCheck
-     " call lightline#update()
-   " endfunction
-
-   " let g:unite_force_overwrite_statusline = 0
-   " let g:vimfiler_force_overwrite_statusline = 0
-   " let g:vimshell_force_overwrite_statusline = 0
+   let g:unite_force_overwrite_statusline = 0
+   let g:vimfiler_force_overwrite_statusline = 0
+   let g:vimshell_force_overwrite_statusline = 0
 
 
  "}}}
@@ -1493,10 +1972,12 @@ call plug#begin('~/.config/nvim/plugged')
    xmap ]; <Plug>Argumentative_XNext
    nmap <; <Plug>Argumentative_MoveLeft
    nmap >; <Plug>Argumentative_MoveRight
-   xmap i; <Plug>Argumentative_InnerTextObject
-   xmap a; <Plug>Argumentative_OuterTextObject
-   omap i; <Plug>Argumentative_OpPendingInnerTextObject
-   omap a; <Plug>Argumentative_OpPendingOuterTextObject
+   " Targets does a better job for handling args
+   "============================================
+   " xmap i; <Plug>Argumentative_InnerTextObject
+   " xmap a; <Plug>Argumentative_OuterTextObject
+   " omap i; <Plug>Argumentative_OpPendingInnerTextObject
+   " omap a; <Plug>Argumentative_OpPendingOuterTextObject
 
 
  "}}}
@@ -1526,44 +2007,81 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
+ " vim-after-textobj {{{
+
+   Plug 'junegunn/vim-after-object'
+   " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
+   " ]= and [= instead of a= and aa=
+   autocmd VimEnter * call after_object#enable([']', '['], '=', ':', '-', '#', ' ', '>', '<')
+
+
+ "}}}
 "{{{ targets.vim
 
   Plug 'wellle/targets.vim'
   "Some samples:
   " cin)   Change inside next parens
   " cil)   Change inside last parens
-  " da,    Delete about comma seperated stuff
-  " not only "," as above these can be used:
-  " , . ; : + - = ~ _ * # / | \ & $
-  " v2i)   Select between |'s (|a(b)c|) 
+  " da,    Delete about comma seperated stuff [, . ; : + - = ~ _ * # / | \ & $]
+  " v2i)   Select between |'s (|a(b)c|)
+  " cin), cIn), can), cAn), cA), cI), cAt, A-, I-, a-, i-,
+  " caa, cia => Arguments
+
+  " Options availabel for customization:
+  "=====================================
+  "g:targets_aiAI
+  "g:targets_nlNL
+  "g:targets_pairs
+  "g:targets_quotes
+  "g:targets_separators
+  "g:targets_tagTrigger
+  let g:targets_argTrigger=";"
+  "g:targets_argOpening
+  "g:targets_argClosing
+  "g:targets_argSeparator
+  "g:targets_seekRanges
 
 "}}} _targets.vim
 
-   Plug 'kana/vim-textobj-user'
-   " let g:textobj_blockwise_enable_default_key_mapping =0
-   Plug 'machakann/vim-textobj-delimited'        "id, ad, iD, aD  for Delimiters takes numbers d2id
-   " Plug 'kana/vim-textobj-function'
-   Plug 'machakann/vim-textobj-functioncall'     "if, af
-   " Plug 'kana/vim-niceblock'
-   " vim-textobj-line does this too :)
-   " Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
-   Plug 'reedes/vim-textobj-sentence'            "is, as, ), (,   For real english sentences
-                                                 " also adds g) and g( for
+
+  Plug 'kana/vim-textobj-user'
+  " let g:textobj_blockwise_enable_default_key_mapping =0
+  Plug 'machakann/vim-textobj-delimited'        "id, ad, iD, aD  for Delimiters takes numbers d2id
+  " Plug 'kana/vim-textobj-function'
+  Plug 'machakann/vim-textobj-functioncall'     "if, af
+  " Plug 'kana/vim-niceblock'
+
+  " vim-textobj-line does this too :)
+  " Plug 'rhysd/vim-textobj-continuous-line'    "iv, av          for continuous line
+  Plug 'reedes/vim-textobj-sentence'            "is, as, ), (,   For real english sentences
+                                                " also adds g) and g( for
                                                  " sentence navigation
- function! VOMap(key, plug)
-   execute "vmap" a:key a:plug
-   execute "omap" a:key a:plug
- endfunction
 
- function! PlugTextObj(repo, key)
-   let name = a:repo
-   let name = substitute(name, ".*/vim-textobj-", "", "")
-   execute  "Plug '" . a:repo . "', {'on': ['<Plug>(textobj-" . name . "-']}"
-   execute "call VOMap(\"i" . a:key . "\", \"<Plug>(textobj-" . name . "-i)\")"
-   execute "call VOMap(\"a" . a:key . "\", \"<Plug>(textobj-" . name . "-a)\")"
- endfunction
+"Doubles the following to avoid overlap with targets.vim
+"{{{ vim-textobj-parameter
+  "i,, a,  ai2,         for parameter
+  call PlugTextObj( 'sgur/vim-textobj-parameter', ',' )
+  call VOMap("i2,", "textobj-parameter-greedy-i")
 
-   Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
+"}}} _vim-textobj-parameter
+"{{{ vim-textobj-line
+
+  "il, al          for line
+  call PlugTextObj( 'kana/vim-textobj-line', 'll' )
+
+"}}} _vim-textobj-line
+"{{{ vim-textobj-number
+  "in, an          for numbers
+  call PlugTextObj( 'haya14busa/vim-textobj-number', 'n' )
+
+"}}} _vim-textobj-number
+ " vim-textobj-between {{{
+  "ibX, abX          for between two chars
+  "changed to isX, asX          for between two chars
+  call PlugTextObj( 'thinca/vim-textobj-between', 's' )
+  let g:textobj_between_no_default_key_mappings =1
+
+ "}}}
  " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
   call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
@@ -1572,6 +2090,8 @@ call plug#begin('~/.config/nvim/plugged')
   " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
 
  "}}}
+
+   Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
 "{{{ vim-textobj-pastedtext
 
    "gb              for pasted text
@@ -1585,34 +2105,17 @@ call plug#begin('~/.config/nvim/plugged')
    call PlugTextObj( 'kana/vim-textobj-syntax', 'y' )
 
 "}}} _vim-textobj-syntax
-"{{{ vim-textobj-line
-
-  "il, al          for line
-  call PlugTextObj( 'kana/vim-textobj-line', 'l' )
-
-"}}} _vim-textobj-line
 "{{{ vim-textobj-url
 
   "iu, au          for URL
   call PlugTextObj( 'mattn/vim-textobj-url', 'u')
 
 "}}} _vim-textobj-url
-"{{{ vim-textobj-number
-  "in, an          for numbers
-  call PlugTextObj( 'haya14busa/vim-textobj-number', 'n' )
-
-"}}} _vim-textobj-number
 "{{{ vim-textobj-doublecolon
   "i:, a:          for ::
   call PlugTextObj( 'vimtaku/vim-textobj-doublecolon', ':' )
 
 "}}} _vim-textobj-doublecolon
-"{{{ vim-textobj-parameter
-  "i,, a,  ai2,         for parameter
-  call PlugTextObj( 'sgur/vim-textobj-parameter', ',' )
-  call VOMap("i2,", "textobj-parameter-greedy-i")
-
-"}}} _vim-textobj-parameter
 "{{{ vim-textobj-comment
 
   "ic, ac, aC  for comment
@@ -1754,12 +2257,6 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- " vim-textobj-between {{{
-  "ibX, abX          for between two chars
-  call PlugTextObj( 'thinca/vim-textobj-between', 'b' )
-  let g:textobj_between_no_default_key_mappings =1
-
- "}}}
  " vim-textobj-postexpr {{{
   "ige, age        for post expression
   call PlugTextObj( 'syngan/vim-textobj-postexpr', 'ge' )
@@ -1796,15 +2293,6 @@ call plug#begin('~/.config/nvim/plugged')
    " ik  <Plug>(textobj-key-i)
    " av  <Plug>(textobj-value-a)
    " iv  <Plug>(textobj-value-i)
-
-
- "}}}
- " vim-after-textobj {{{
-
-   Plug 'junegunn/vim-after-object'
-   " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
-   " ]= and [= instead of a= and aa=
-   autocmd VimEnter * call after_object#enable([']', '['], '=', ':', '-', '#', ' ', '>', '<')
 
 
  "}}}
@@ -1898,6 +2386,7 @@ call plug#begin('~/.config/nvim/plugged')
 
    " Execute help.
    nnoremap ÚÚh  :<C-u>Unite -start-insert help<CR>
+   nnoremap ÚÚ‰  :<C-u>Unite -start-insert command<CR>
    " Execute help by cursor keyword.
    nnoremap <silent> ÚÚ<C-h>  :<C-u>UniteWithCursorWord help<CR>
 
@@ -1927,6 +2416,8 @@ call plug#begin('~/.config/nvim/plugged')
      " Enable navigation with control-j and control-k in insert mode
      imap <buffer> <C-j>   <Plug>(unite_select_next_line)
      imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+     nmap <buffer> <bs> <Plug>(unite_delete_backward_path)
+     nmap <silent> <buffer> <esc> <Plug>(unite_all_exit) " Close Unite view
    endfunction
 
    function! Open_current_file_dir(args)
@@ -1937,8 +2428,6 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
    nnoremap ÚÚcd :call Open_current_file_dir('-no-split file')<cr>
-   nmap <buffer> <bs> <Plug>(unite_delete_backward_path)
-   nmap <silent> <buffer> <esc> <Plug>(unite_all_exit) " Close Unite view
 
    "CtrlP & NerdTree combined
    nnoremap <silent> ÚÚF :Unite -auto-resize file/async  file_rec/async<cr>
@@ -2189,12 +2678,13 @@ call plug#begin('~/.config/nvim/plugged')
    function! PrintPathFunction(myParam)
      execute ":normal i".a:myParam
    endfunction
+   command! -nargs=1 PrintPath call PrintPathFunction(<f-args>)
 
    function! PrintPathInNextLineFunction(myParam)
      put=a:myParam
    endfunction
+
    command! -nargs=1 PrintPathInNextLine call PrintPathInNextLineFunction(<f-args>)
-   command! -nargs=1 PrintPath call PrintPathFunction(<f-args>)
 
    let g:fzf_action = {
          \ 'ctrl-m': 'e',
@@ -2285,11 +2775,17 @@ call plug#begin('~/.config/nvim/plugged')
    vmap f<BS> <Plug>(clever-f-reset)
 
 
+
  "}}}
 "{{{ vim-evanesco
 
-  "Plug 'pgdouyon/vim-evanesco'
-  "may replace vim-oblique
+  " "may replace vim-oblique one day :)
+
+  " " Plug 'pgdouyon/vim-evanesco'
+  " Plug 'khalidchawtany/vim-evanesco'
+  " autocmd! user Evanesco       AnzuUpdateSearchStatusOutput
+  " autocmd! user EvanescoStar   AnzuUpdateSearchStatusOutput
+  " autocmd! user EvanescoRepeat AnzuUpdateSearchStatusOutput
 
 "}}} _vim-evanesco
  " vim-oblique {{{
@@ -2323,7 +2819,9 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _IndexedSearch
 "{{{ vim-anzu
 
-   Plug 'osyo-manga/vim-anzu', {'on': ['AnzuUpdateSearchStatusOutput']}
+  Plug 'osyo-manga/vim-anzu', {'on': ['AnzuUpdateSearchStatusOutput']}
+  "Let anzu display numbers only. The search is already displayed by Oblique
+  let g:anzu_status_format = ' (%i/%l)'
 
 "}}} _vim-anzu
  "{{{ vim-fuzzysearch
@@ -2335,12 +2833,12 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-fuzzysearch
  " grepper {{{
 
-   Plug 'mhinz/vim-grepper',                {'on': 'Grepper'}
-   nmap <leader>g <plug>(Grepper)
-   xmap <leader>g <plug>(Grepper)
-   cmap <leader>g <plug>(GrepperNext)
-   nmap gs        <plug>(GrepperMotion)
-   xmap gs        <plug>(GrepperMotion)
+ Plug 'mhinz/vim-grepper', {'on': [ 'Grepper', '<plug>(Grepper)' ]}
+   nmap <leader>gg <plug>(Grepper)
+   xmap <leader>gg <plug>(Grepper)
+   cmap <leader>gg <plug>(GrepperNext)
+   nmap <leader>gs <plug>(GrepperMotion)
+   xmap <leader>gs <plug>(GrepperMotion)
 
    let g:grepper              = {}
    let g:grepper.programs     = ['ag', 'git', 'grep']
@@ -2353,9 +2851,15 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  "{{{ vim-easymotion
 
-   Plug 'Lokaltog/vim-easymotion'
+   Plug 'Lokaltog/vim-easymotion', {'on': ['<Plug>(easymotion-']}
 
-   map s <Plug>(easymotion-prefix)
+  "<Bar> call investigate#Investigate()<CR>
+   noremap <silent> s
+         \ :call plug#load('vim-easymotion')
+         \<Bar>map s <Plug>(easymotion-prefix)
+         \<Bar>echo "easymotion ready"
+         \<Bar>call feedkeys("\<Plug>(easymotion-prefix)")
+         \<CR>
 
    map sl          <Plug>(easymotion-lineforward)
    map sh          <Plug>(easymotion-linebackward)
@@ -2431,11 +2935,17 @@ call plug#begin('~/.config/nvim/plugged')
  "{{{ vim-skipit
 
    "use <c-l>l to skip ahead forward in insert mode
-   Plug 'habamax/vim-skipit', {'on': ['<Plug>SkipIt']}
-   imap <C-l>j <Plug>SkipItForward
-   imap <C-l>l <Plug>SkipAllForward
-   imap <C-l>k <Plug>SkipItBack
-   imap <C-l>h <Plug>SkipAllBack
+   Plug 'habamax/vim-skipit',
+         \ {'on': [
+         \ '<Plug>SkipItForward',
+         \ '<Plug>SkipAllForward',
+         \ '<Plug>SkipItBack',
+         \ '<Plug>SkipAllBack'
+         \ ]}
+   imap <C-s>j <Plug>SkipItForward
+   imap <C-s>l <Plug>SkipAllForward
+   imap <C-s>k <Plug>SkipItBack
+   imap <C-s>h <Plug>SkipAllBack
 
  "}}} _vim-skipit
  " patternjump {{{
@@ -2620,474 +3130,8 @@ call plug#begin('~/.config/nvim/plugged')
 call plug#end()
 "}}}
 " ============================================================================
-" FUNCTIONS & COMMANDS {{{
+" COMMANDS {{{
 " ============================================================================
-
-  function! CreateFoldableCommentFunction() range"{{{
-
-    echo "firstline ".a:firstline." lastline ".a:lastline
-
-    for lineno in range(a:firstline, a:lastline)
-      let line = getline(lineno)
-
-      "Find the line contains the Plug as it's first word
-      if ( get(split(line, " "), 0, 'Default') !=# 'Plug')
-        continue
-      endif
-
-      let name_start = stridx(line, "/") + 1
-      let name_length = stridx(line, "'", name_start) - name_start
-
-      let name = strpart(line, name_start, name_length)
-
-      let res = append(a:firstline - 1, "\"{{{ " . name)
-      let res = append(a:firstline, "")
-
-      let res = append(a:lastline + 2, "")
-      let res = append(a:lastline + 3, "\"}}} _" . name)
-
-      " let cleanLine = substitute(lifirstlinene, '\(\s\| \)\+$', '', 'e')
-      " call setline(lineno, cleanLine)
-      break
-    endfor
-
-  endfunction"}}}
-
-  command! -range CreateFoldableComment <line1>,<line2>call CreateFoldableCommentFunction()
-
-  function! HighlightAllOfWord(onoff)"{{{
-    if a:onoff == 1
-      :augroup highlight_all
-      :au!
-      :au CursorMoved * silent! exe printf('match Search /\<%s\>/', expand('<cword>'))
-      :augroup END
-    else
-      :au! highlight_all
-      match none /\<%s\>/
-    endif
-  endfunction"}}}
-
-  function! ToggleMouseFunction()"{{{
-    if  &mouse=='a'
-      set mouse=
-      echo "Shell has it"
-    else
-      set mouse=a
-      echo "Vim has it"
-    endif
-  endfunction"}}}
-
-  function! StripWhitespace()"{{{
-    let save_cursor = getpos(".")
-    let old_query = getreg('/')
-    :%s/\s\+$//e
-    call setpos('.', save_cursor)
-    call setreg('/', old_query)
-  endfunction"}}}
-
-  function! FindGitDirOrRoot()"{{{
-    let curdir = expand('%:p:h')
-    let gitdir = finddir('.git', curdir . ';')
-    if gitdir != ''
-      return substitute(gitdir, '\/\.git$', '', '')
-    else
-      return '/'
-    endif
-  endfunction"}}}
-
-  function! IndentToNextBraceInLineAbove()"{{{
-    :normal 0wk
-    :normal "vyf(
-    let @v = substitute(@v, '.', ' ', 'g')
-    :normal j"vPl
-  endfunction"}}}
-
-  function! List(command, selection, start_at_cursor, ...)"{{{
-
-  " This is an updated, more powerful, version of the function discussed here:
-  " http://www.reddit.com/r/vim/comments/1rzvsm/do_any_of_you_redirect_results_of_i_to_the/
-  " that shows ]I, [I, ]D, [D, :ilist and :dlist results in the quickfix window, even spanning multiple files.
-    " derive the commands used below from the first argument
-    let excmd   = a:command . "list"
-    let normcmd = toupper(a:command)
-
-    if a:selection
-      if len(a:1) > 0
-        let search_pattern = a:1
-      else
-        let old_reg = @v
-        normal! gv"vy
-        let search_pattern = substitute(escape(@v, '\/.*$^~[]'), '\\n', '\\n', 'g')
-        let @v = old_reg
-      endif
-      redir => output
-      silent! execute (a:start_at_cursor ? '+,$' : '') . excmd . ' /' . search_pattern
-      redir END
-    else
-      redir => output
-      silent! execute 'normal! ' . (a:start_at_cursor ? ']' : '[') . normcmd
-      redir END
-    endif
-
-    " clean up the output
-    let lines = split(output, '\n')
-
-    " bail out on errors
-    if lines[0] =~ '^Error detected'
-      echomsg 'Could not find "' . (a:selection ? search_pattern : expand("<cword>")) . '".'
-      return
-    endif
-
-    " our results may span multiple files so we need to build a relatively
-    " complex list based on file names
-    let filename   = ""
-    let qf_entries = []
-    for line in lines
-      if line =~ '^\S'
-        let filename = line
-      else
-        call add(qf_entries, {"filename" : filename, "lnum" : split(line)[1], "text" : join(split(line)[2:-1])})
-      endif
-    endfor
-
-    " build the quickfix list from our results
-    call setqflist(qf_entries)
-
-    " open the quickfix window if there is something to show
-    cwindow
-  endfunction"}}}
-
-  function! Preserve(command)"{{{
-    " Save the last search.
-    let search = @/
-
-    " Save the current cursor position.
-    let cursor_position = getpos('.')
-
-    " Save the current window position.
-    normal! H
-    let window_position = getpos('.')
-    call setpos('.', cursor_position)
-
-    " Execute the command.
-    execute a:command
-
-    " Restore the last search.
-    let @/ = search
-
-    " Restore the previous window position.
-    call setpos('.', window_position)
-    normal! zt
-
-    " Restore the previous cursor position.
-    call setpos('.', cursor_position)
-  endfunction"}}}
-
-  function! Uncrustify(language) "{{{
-
-  " Don't forget to add Uncrustify executable to $PATH (on Unix) or
-  " %PATH% (on Windows) for this command to work.
-
-    call Preserve(':silent %!uncrustify'
-          \ . ' -q '
-          \ . ' -l ' . a:language
-          \ . ' -c ' . g:uncrustify_cfg_file_path)
-  endfunction"}}}
-
-  function! OpenHelpInCurrentWindow(topic) "{{{
-    view $VIMRUNTIME/doc/help.txt
-    setl filetype=help
-    setl buftype=help
-    setl nomodifiable
-    exe 'keepjumps help ' . a:topic
-  endfunction "}}}
-
-  " ScratchPad {{{
-  augroup scratchpad
-    au!
-    au BufNewFile,BufRead .scratchpads/scratchpad.* call ScratchPadLoad()
-  augroup END
-
-  function! ScratchPadSave() "{{{
-    let ftype = matchstr(expand('%'), 'scratchpad\.\zs\(.\+\)$')
-    if ftype == ''
-      return
-    endif
-    write
-  endfunction "}}}
-
-  function! ScratchPadLoad() "{{{
-    nnoremap <silent> <buffer> q :w<cr>:close<cr>
-    setlocal bufhidden=hide buflisted noswapfile
-  endfunction "}}}
-
-  function! OpenScratchPad(ftype) "{{{
-    if a:0 > 0
-      let ftype = a:ftype
-    else
-      let pads = split(globpath('.scratchpads', 'scratchpad.*'), '\n')
-      if len(pads) > 0
-        let ftype = matchstr(pads[0], 'scratchpad\.\zs\(.\+\)$')
-      else
-        let ftype = expand('%:e')
-      endif
-    endif
-
-    if ftype == ''
-      echoerr 'Scratchpad need a filetype'
-      return
-    endif
-
-    let scratchpad_name = '.scratchpads/scratchpad.' . ftype
-    let scr_bufnum = bufnr(scratchpad_name)
-
-    if scr_bufnum == -1
-      " open the scratchpad
-      exe "new " . scratchpad_name
-      let dir = expand('%:p:h')
-      if !isdirectory(dir)
-        call mkdir(dir)
-      endif
-    else
-      " Scratch buffer is already created. Check whether it is open
-      " in one of the windows
-      let scr_winnum = bufwinnr(scr_bufnum)
-      if scr_winnum != -1
-        " Jump to the window which has the scratchpad if we are not
-        " already in that window
-        if winnr() != scr_winnum
-          exe scr_winnum . "wincmd w"
-        endif
-      else
-        exe "split +buffer" . scr_bufnum
-      endif
-    endif
-  endfunction "}}}
-" }}}
-
-  function! GetVisualSelection() "{{{
-  " Why is this not a built-in Vim script function?!
-    let [lnum1, col1] = getpos("'<")[1:2]
-    let [lnum2, col2] = getpos("'>")[1:2]
-    let lines = getline(lnum1, lnum2)
-    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-    let lines[0] = lines[0][col1 - 1:]
-    return join(lines, "\n")
-  endfunction "}}}
-
-  function! RenameFile() "{{{
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-      exec ':saveas ' . new_name
-      exec ':silent !rm ' . old_name
-      redraw!
-    endif
-  endfunction "}}}
-
-  function! SearchForCallSitesCursor() "{{{
-  "Find references of this function (function calls)
-    let searchTerm = expand("<cword>")
-    call SearchForCallSites(searchTerm)
-  endfunction "}}}
-
-  function! SearchForCallSites(term) "{{{
-  " Search for call sites for term (excluding its definition) and
-  " load into the quickfix list.
-    cexpr system('ag ' . shellescape(a:term) . '\| grep -v def')
-  endfunction "}}}
-
-  function! s:EnsureDirectoryExists() "{{{
-    let required_dir = expand("%:h")
-
-    if !isdirectory(required_dir)
-      " Remove this if-clause if you don't need the confirmation
-      if !confirm("Directory '" . required_dir . "' doesn't exist. Create it?")
-        return
-      endif
-
-      try
-        call mkdir(required_dir, 'p')
-      catch
-        echoerr "Can't create '" . required_dir . "'"
-      endtry
-    endif
-  endfunction "}}}
-
-  function! DiffMe() "{{{
-  " Toggle the diff of currently open buffers/splits.
-    windo diffthis
-    if $diff_me>0
-      let $diff_me=0
-    else
-      windo diffoff
-      let $diff_me=1
-    endif
-  endfunction "}}}
-
-  fu! RelativePathString(file) "{{{
-  "Get relative path to this file
-    if strlen(a:file) == 0
-      retu "[No Name]"
-    en
-    let common = getcwd()
-    let result = ""
-    while substitute(a:file, common, '', '') ==# a:file
-      let common = fnamemodify(common, ':h')
-      let result = ".." . (empty(result) ? '' : '/' . result)
-    endw
-    let forward = substitute(a:file, common, '', '')
-    if !empty(result) && !empty(forward)
-      retu result . forward
-    elsei !empty(forward)
-      retu forward[1:]
-    en
-  endf "}}}
-
-  function! Reg() "{{{
-  ":Reg Shows and prompts to select from a reg
-    reg
-    echo "Register: "
-    let char = nr2char(getchar())
-    if char != "\<Esc>"
-      execute "normal! \"".char."p"
-    endif
-    redraw
-  endfunction "}}}
-
-"{{{ CreateLaravelGeneratorFunction
-
-  function! CreateLaravelGeneratorFunction()
-  "Generate laravel generator command
-
-  "alias g:m="php artisan generate:model"
-  "alias g:c="php artisan generate:controller"
-  "alias g:v="php artisan generate:view"
-  "alias g:se="php artisan generate:seed"
-  "alias g:mi="php artisan generate:migration"
-  "alias g:r="php artisan generate:resource"
-  "alias g:p="php artisan generate:pivot"
-  "alias g:s="php artisan generate:scaffold"
-
-  "php artisan generate:migration create_posts_table --fields="title:string, body:text"
-
-  let command =  input('!g:')
-
-  "if --fields is NOT already provided
-  if stridx(command, '--fields') ==? "-1"
-
-    "Get the command part
-    let cmd_shortform = strpart(command, 0,stridx(command, " "))
-    "The list of commands that require --fields
-    let cmd_require_fields = ['mi', 'r', 's' ]
-
-    "if the command is NOT one of the above
-    if index(cmd_require_fields, cmd_shortform) !=? "-1"
-      let fields = input( "!g:" . command . ' --fields= ')
-      let command = command . ' --fields="' . fields . '"'
-    endif "Command requires --fields
-
-  endif " --fields is not provided
-
-  if strlen(command) !=? "0"
-    "Prepend cmd with required stuff
-    let command = "g:" . command
-  endif
-
-  return command
-
-  endfunction
-
-"}}} _CreateLaravelGeneratorFunction
-
-  function! ExecuteLaravelGeneratorCMD()"{{{
-    let cmd = CreateLaravelGeneratorFunction()
-    call VimuxRunCommand(cmd)
-    call VimuxZoomRunner()
-  endfunction"}}}
-
-function! BufOnly(buffer, bang) "{{{
-  if a:buffer == ''
-    " No buffer provided, use the current buffer.
-    let buffer = bufnr('%')
-  elseif (a:buffer + 0) > 0
-    " A buffer number was provided.
-    let buffer = bufnr(a:buffer + 0)
-  else
-    " A buffer name was provided.
-    let buffer = bufnr(a:buffer)
-  endif
-
-  if buffer == -1
-    echohl ErrorMsg
-    echomsg "No matching buffer for" a:buffer
-    echohl None
-    return
-  endif
-
-  let last_buffer = bufnr('$')
-
-  let delete_count = 0
-  let n = 1
-  while n <= last_buffer
-    if n != buffer && buflisted(n)
-      if a:bang == '' && getbufvar(n, '&modified')
-        echohl ErrorMsg
-        echomsg 'No write since last change for buffer'
-              \ n '(add ! to override)'
-        echohl None
-      else
-        silent exe 'bdel' . a:bang . ' ' . n
-        if ! buflisted(n)
-          let delete_count = delete_count+1
-        endif
-      endif
-    endif
-    let n = n+1
-  endwhile
-
-  if delete_count == 1
-    echomsg delete_count "buffer deleted"
-  elseif delete_count > 1
-    echomsg delete_count "buffers deleted"
-  endif
-
-endfunction "}}}
-
-function! ToggleFoldMethod() "{{{
-  if &foldenable==0
-    set foldenable
-    set foldmethod=marker
-    echomsg "FoldMethod = Marker"
-  elseif  &foldmethod=='marker'
-    set foldmethod=indent
-    echomsg "FoldMethod = Indent"
-  elseif &foldmethod=='indent'
-    set foldmethod=syntax
-    echomsg "FoldMethod = Syntax"
-  elseif &foldmethod=='syntax'
-    set nofoldenable
-    echomsg "Fold Disabled"
-  endif
-endfunction "}}}
-
-function! ToggleFoldMarker() "{{{
-  set foldlevel=0
-  if &filetype == "neosnippet"
-    setlocal foldmethod=marker
-    setlocal foldmarker=snippet,endsnippet
-  elseif &filetype == "cs"
-    " set foldtext=foldtext()
-    if &foldmarker != '#region,#endregion'
-      setlocal foldmarker=#region,#endregion
-    else
-      setlocal foldmarker={,}
-      setlocal foldlevel=2
-    endif
-  endif
-endfunction "}}}
-
-
   command! -nargs=1 Ilist call List("i", 1, 0, <f-args>)
   command! -nargs=1 Dlist call List("d", 1, 0, <f-args>)
 
@@ -3108,326 +3152,9 @@ endfunction "}}}
   command! -nargs=? -complete=help Help call OpenHelpInCurrentWindow(<q-args>)
 
   command! Cclear cclose <Bar> call setqflist([])
-
   nnoremap co<bs> :Cclear<cr>
 
-
-" }}}
-" ============================================================================
-" AUTOCMD {{{
-" ============================================================================
-
-  " au BufNewFile,BufRead *.blade.php
-  au filetype blade
-        \ let b:match_words ='<:>,<\@<=[ou]l\>[^>]*\%(>\|$\):<\@<=li\>:<\@<=/[ou]l>,<\@<=dl\>[^>]*\%(>\|$\):<\@<=d[td]\>:<\@<=/dl>,<\@<=\([^/][^ \t>]*\)[^>]*\%(>\|$\):<\@<=/\1>'
-        \ | let b:match_ignorecase = 1
-
-
-  augroup ensure_directory_exists
-    autocmd!
-    autocmd BufNewFile * call s:EnsureDirectoryExists()
-  augroup END
-
-  augroup global_settings
-    au!
-    au VimResized * :wincmd = " resize windows when vim is resized
-
-    " return to the same line when file is reopened
-    au BufReadPost *
-          \ if line("'\"") > 0 && line("'\"") <= line("$") |
-          \     execute 'normal! g`"zvzz' |
-          \ endif
-  augroup END
-
-
-  " "Restore cursor, fold, and options on re-open.
-  " au BufWinLeave *.* mkview
-  " au VimEnter *.* silent loadview
-
-  "Only restore folds and cursor position
-  set viewoptions="folds,cursor"
-
-  au FileType qf call AdjustWindowHeight(3, 10)
-  function! AdjustWindowHeight(minheight, maxheight)
-    let l = 1
-    let n_lines = 0
-    let w_width = winwidth(0)
-    while l <= line('$')
-      " number to float for division
-      let l_len = strlen(getline(l)) + 0.0
-      let line_width = l_len/w_width
-      let n_lines += float2nr(ceil(line_width))
-      let l += 1
-    endw
-    exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
-  endfunction
-
-  if has("autocmd")
-    " Enable file type detection
-    filetype on
-    " Treat .json files as .js
-    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-    " Treat .md files as Markdown
-    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-  endif
-
-
-  "Enter insert mode on switch to term and on leave leave insert mode
-   " autocmd! BufWinEnter,WinEnter term://* startinsert
-   " autocmd BufEnter term://* startinsert
-   " autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
-   " autocmd! BufLeave term://* stopinsert
-   " autocmd BufWinEnter term://* startinsert
-
-" }}}
-" ============================================================================
-" SETTINGS {{{
-" ============================================================================
-
-  "Keep diffme function state
-  let $diff_me=0
-
-  " Specify path to your Uncrustify configuration file.
-  let g:uncrustify_cfg_file_path =
-        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
-
-
-set background=dark
-colorscheme molokai
-" colorscheme solarized
-
-" set background=light
-" colorscheme gruvbox
-
-" Enhance command-line completion
-set wildmenu
-set wildmode=longest,list,full
-
-" Types of files to ignore when autocompleting things
-set wildignore+=*.o,*.class,*.git,*.svn
-
-" Fuzzy finder: ignore stuff that can't be opened, and generated files
-let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
-
-set grepprg=ag\ --nogroup\ --nocolor
-
-set formatoptions-=t                  " Stop autowrapping my code
-
-" set ambiwidth=double                " DON'T THIS FUCKS airline
-
-"don't autoselect first item in omnicomplete,show if only one item(for preview)
-"set completeopt=longest,menuone,preview
-set completeopt=noinsert,menuone,noselect
-
-set pumheight=15                      " limit completion menu height
-
-" When completing by tag, show the whole tag, not just the function name
-set showfulltag
-
-"**** DO NOT USE ****  RUINS arrow keys & all esc based keys
-" Allow cursor keys in insert mode
-"set esckeys
-
-set nrformats-=octal
-
-set backspace=indent,eol,start        " Allow backspace in insert mode
-set gdefault                          " make g default for search
-set magic                             " Magic matching
-
-" set formatoptions+=j                " Delete comment character when joining commented lines
-
-set encoding=utf-8 nobomb
-set termencoding=utf-8
-scriptencoding utf-8
-set nolazyredraw
-
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.config/nvim/.cache/backups
-
-"How should I decide to take abackup
-set backupcopy=auto
-
-set directory=~/.config/nvim/.cache/swaps
-set viewdir=~/.config/nvim/.cache/views
-
-if exists("&undodir")
-set undodir=~/.config/nvim/.cache/undo
-endif
-
-set undofile                          " Save undo's after file closes
-"set undodir=$HOME/.vim/.cache/undo   " where to save undo histories
-set undolevels=1000                   " How many undos
-set undoreload=10000                  " number of lines to save for undo
-
-" if available, store temporary files in shared memory
-if isdirectory('/run/shm')
-  let $TMPDIR = '/run/shm'
-elseif isdirectory('/dev/shm')
-  let $TMPDIR = '/dev/shm'
-endif
-
-set shell=/usr/local/bin/zsh
-
-if has('path_extra')
-  setglobal tags-=./tags tags-=./tags; tags^=./tags;
-endif
-
-set tags=./tags,tags;$HOME            " Help vim find my tags
-set backupskip=/tmp/*,/private/tmp/*  " don't back up these
-set autoread                          " read files on change
-
-set fileformats+=mac
-
-set binary
-set noeol                             " Don’t add empty newlines at file end
-
-" set clipboard=unnamed,unnamedplus
-
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^linux'
-  set t_Co=16
-endif
-
-if &tabpagemax < 50
-  set tabpagemax=50
-endif
-
-if !empty(&viminfo)
-  set viminfo^=!
-endif
-
-set sessionoptions-=options
-
-"set noswapfile
-"Dont warn me about swap files existence
-"set shortmess+=A
-
-" set shortmess=atI                    " Don’t show the intro message when starting Vim
-
-"prevent completion message flickers
-set shortmess+=c
-
-
-" Respect modeline in files
-set modeline
-set modelines=4
-
-" Enable per-directory .vimrc files and disable unsafe commands in them
-set exrc
-set secure
-
-set number
-set relativenumber
-
-
-set autoindent
-set smartindent
-set tabstop=2
-set expandtab
-"TODO: tpope sets smarttab
-set nosmarttab
-
-set shiftwidth=2
-set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
-
-set guifont=Sauce\ Code\ Powerline\ Light:h18
-set textwidth=80
-set wrap                              " Wrap long lines
-set breakindent                       " proper indenting for long lines
-
-set linebreak                         "Don't linebreak in the middle of words
-
-set printoptions=header:0,duplex:long,paper:letter
-
-let &showbreak = '↳ '                 " add linebreak sign
-set wrapscan                          " set the search scan to wrap lines
-
-"Allow these to move to next/prev line when at the last/first char
-set whichwrap+=h,l,<,>,[,]
-
-
-" Show “invisible” characters
-set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:×
-" set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
-" set listchars=tab:•·,trail:·,extends:❯,precedes:❮,nbsp:×
-set list
-
-"Set the fillchar of the inactive window to something I can see
-set fillchars=stlnc:\-
-
-" Add ignorance of whitespace to diff
-set diffopt+=iwhite
-syntax on
-" set cursorline "Use iTerm cursorline instead
-set hlsearch
-set ignorecase
-set smartcase
-set matchtime=2                       " time in decisecons to jump back from matching bracket
-set incsearch                         " Highlight dynamically as pattern is typed
-set history=1000
-set foldmethod=marker
-
-" These commands open folds
-set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
-
-
-set nowrap
-
-set timeout
-set timeoutlen=750
-"NeoVim handles ESC keys as alt+key set this to solve the problem
-set ttimeout
-set ttimeoutlen=0
-
-" Show the filename in the window titlebar
-set title "titlestring=
-
-syntax on
-set virtualedit=all
-set mouse=a
-set hidden
-set laststatus=0                      " force status line display
-set noerrorbells visualbell t_vb=     " Disable error bells
-set nostartofline                     " Don’t reset cursor to start of line when moving around
-set ruler                             " Show the cursor position
-set showmode                          " Show the current mode
-
-
-if !&scrolloff
-  set scrolloff=3                       " Keep cursor in screen by value
-endif
-if !&sidescrolloff
-  set sidescrolloff=5
-endif
-
-set cpoptions+=ces$                    " CW wrap W with $ instead of delete
-set cpo+=n                             " Draw color for lines that has number only
-
-set showmode                          " Show the current mode
-
-set noshowcmd                           " Makes OS X slow, if lazy redraw set
-
-set display+=lastline
-
-set mousehide                         " Hide mouse while typing
-
-set synmaxcol=200                     " max syntax highlight chars
-
-set splitbelow                        " put horizontal splits below
-
-set splitright                        " put vertical splits to the right
-
-let g:netrw_liststyle=3               "Make netrw look like NerdTree
-
-highlight ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
-call matchadd('ColorColumn', '\%81v', 100)
-
-" Use a blinking upright bar cursor in Insert mode, a solid block in normal
-" and a blinking underline in replace mode
-  let &t_SI = "\<Esc>[5 q"
-  let &t_SR = "\<Esc>[3 q"
-  let &t_EI = "\<Esc>[2 q"
-
+  command! -range CreateFoldableComment <line1>,<line2>call CreateFoldableCommentFunction()
 
 " }}}
 " ============================================================================
@@ -3713,6 +3440,323 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
   nnoremap z7 :set foldlevel=7<cr>
   nnoremap z8 :set foldlevel=8<cr>
   nnoremap z9 :set foldlevel=9<cr>
+
+
+" }}}
+" ============================================================================
+" AUTOCMD {{{
+" ============================================================================
+
+  " au BufNewFile,BufRead *.blade.php
+  au filetype blade
+        \ let b:match_words ='<:>,<\@<=[ou]l\>[^>]*\%(>\|$\):<\@<=li\>:<\@<=/[ou]l>,<\@<=dl\>[^>]*\%(>\|$\):<\@<=d[td]\>:<\@<=/dl>,<\@<=\([^/][^ \t>]*\)[^>]*\%(>\|$\):<\@<=/\1>'
+        \ | let b:match_ignorecase = 1
+
+
+  augroup ensure_directory_exists
+    autocmd!
+    autocmd BufNewFile * call s:EnsureDirectoryExists()
+  augroup END
+
+  augroup global_settings
+    au!
+    au VimResized * :wincmd = " resize windows when vim is resized
+
+    " return to the same line when file is reopened
+    au BufReadPost *
+          \ if line("'\"") > 0 && line("'\"") <= line("$") |
+          \     execute 'normal! g`"zvzz' |
+          \ endif
+  augroup END
+
+
+  " "Restore cursor, fold, and options on re-open.
+  " au BufWinLeave *.* mkview
+  " au VimEnter *.* silent loadview
+
+  "Only restore folds and cursor position
+  set viewoptions="folds,cursor"
+
+  au FileType qf call AdjustWindowHeight(3, 10)
+  function! AdjustWindowHeight(minheight, maxheight)
+    let l = 1
+    let n_lines = 0
+    let w_width = winwidth(0)
+    while l <= line('$')
+      " number to float for division
+      let l_len = strlen(getline(l)) + 0.0
+      let line_width = l_len/w_width
+      let n_lines += float2nr(ceil(line_width))
+      let l += 1
+    endw
+    exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
+  endfunction
+
+  if has("autocmd")
+    " Enable file type detection
+    filetype on
+    " Treat .json files as .js
+    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+    " Treat .md files as Markdown
+    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
+  endif
+
+
+  "Enter insert mode on switch to term and on leave leave insert mode
+   " autocmd! BufWinEnter,WinEnter term://* startinsert
+   " autocmd BufEnter term://* startinsert
+   " autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
+   " autocmd! BufLeave term://* stopinsert
+   " autocmd BufWinEnter term://* startinsert
+
+" }}}
+" ============================================================================
+" SETTINGS {{{
+" ============================================================================
+
+  "Keep diffme function state
+  let $diff_me=0
+
+  " Specify path to your Uncrustify configuration file.
+  let g:uncrustify_cfg_file_path =
+        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
+
+
+set background=dark
+colorscheme molokai
+" colorscheme solarized
+
+" set background=light
+" colorscheme gruvbox
+
+" Enhance command-line completion
+set wildmenu
+set wildmode=longest,list,full
+
+" Types of files to ignore when autocompleting things
+set wildignore+=*.o,*.class,*.git,*.svn
+
+" Fuzzy finder: ignore stuff that can't be opened, and generated files
+let g:fuzzy_ignore = "*.png;*.PNG;*.JPG;*.jpg;*.GIF;*.gif;vendor/**;coverage/**;tmp/**;rdoc/**"
+
+set grepprg=ag\ --nogroup\ --nocolor
+
+set formatoptions-=t                  " Stop autowrapping my code
+
+" set ambiwidth=double                " DON'T THIS FUCKS airline
+
+"don't autoselect first item in omnicomplete,show if only one item(for preview)
+"set completeopt=longest,menuone,preview
+set completeopt=noinsert,menuone,noselect
+
+set pumheight=15                      " limit completion menu height
+
+" When completing by tag, show the whole tag, not just the function name
+set showfulltag
+
+"**** DO NOT USE ****  RUINS arrow keys & all esc based keys
+" Allow cursor keys in insert mode
+"set esckeys
+
+set nrformats-=octal
+
+set backspace=indent,eol,start        " Allow backspace in insert mode
+set gdefault                          " make g default for search
+set magic                             " Magic matching
+
+" set formatoptions+=j                " Delete comment character when joining commented lines
+
+set encoding=utf-8 nobomb
+set termencoding=utf-8
+scriptencoding utf-8
+set nolazyredraw
+
+" Centralize backups, swapfiles and undo history
+set backupdir=~/.config/nvim/.cache/backups
+
+"How should I decide to take abackup
+set backupcopy=auto
+
+set directory=~/.config/nvim/.cache/swaps
+set viewdir=~/.config/nvim/.cache/views
+
+if exists("&undodir")
+set undodir=~/.config/nvim/.cache/undo
+endif
+
+set undofile                          " Save undo's after file closes
+"set undodir=$HOME/.vim/.cache/undo   " where to save undo histories
+set undolevels=1000                   " How many undos
+set undoreload=10000                  " number of lines to save for undo
+
+" if available, store temporary files in shared memory
+if isdirectory('/run/shm')
+  let $TMPDIR = '/run/shm'
+elseif isdirectory('/dev/shm')
+  let $TMPDIR = '/dev/shm'
+endif
+
+set shell=/usr/local/bin/zsh
+
+if has('path_extra')
+  setglobal tags-=./tags tags-=./tags; tags^=./tags;
+endif
+
+set tags=./tags,tags;$HOME            " Help vim find my tags
+set backupskip=/tmp/*,/private/tmp/*  " don't back up these
+set autoread                          " read files on change
+
+set fileformats+=mac
+
+set binary
+set noeol                             " Don’t add empty newlines at file end
+
+" set clipboard=unnamed,unnamedplus
+
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^linux'
+  set t_Co=16
+endif
+
+if &tabpagemax < 50
+  set tabpagemax=50
+endif
+
+if !empty(&viminfo)
+  set viminfo^=!
+endif
+
+set sessionoptions-=options
+
+"set noswapfile
+"Dont warn me about swap files existence
+"set shortmess+=A
+
+" set shortmess=atI                    " Don’t show the intro message when starting Vim
+
+"prevent completion message flickers
+set shortmess+=c
+
+
+" Respect modeline in files
+set modeline
+set modelines=4
+
+" Enable per-directory .vimrc files and disable unsafe commands in them
+set exrc
+set secure
+
+set number
+set relativenumber
+
+
+set autoindent
+set smartindent
+set tabstop=2
+set expandtab
+"TODO: tpope sets smarttab
+set nosmarttab
+
+set shiftwidth=2
+set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
+
+set guifont=Sauce\ Code\ Powerline\ Light:h18
+set textwidth=80
+set wrap                              " Wrap long lines
+set breakindent                       " proper indenting for long lines
+
+set linebreak                         "Don't linebreak in the middle of words
+
+set printoptions=header:0,duplex:long,paper:letter
+
+let &showbreak = '↳ '                 " add linebreak sign
+set wrapscan                          " set the search scan to wrap lines
+
+"Allow these to move to next/prev line when at the last/first char
+set whichwrap+=h,l,<,>,[,]
+
+
+" Show “invisible” characters
+set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:×
+" set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
+" set listchars=tab:•·,trail:·,extends:❯,precedes:❮,nbsp:×
+set list
+
+"Set the fillchar of the inactive window to something I can see
+set fillchars=stlnc:\-
+
+" Add ignorance of whitespace to diff
+set diffopt+=iwhite
+syntax on
+" set cursorline "Use iTerm cursorline instead
+set hlsearch
+set ignorecase
+set smartcase
+set matchtime=2                       " time in decisecons to jump back from matching bracket
+set incsearch                         " Highlight dynamically as pattern is typed
+set history=1000
+set foldmethod=marker
+
+" These commands open folds
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
+
+
+set nowrap
+
+set timeout
+set timeoutlen=750
+"NeoVim handles ESC keys as alt+key set this to solve the problem
+set ttimeout
+set ttimeoutlen=0
+
+" Show the filename in the window titlebar
+set title "titlestring=
+
+syntax on
+set virtualedit=all
+set mouse=a
+set hidden
+set laststatus=2                      " force status line display
+set noerrorbells visualbell t_vb=     " Disable error bells
+set nostartofline                     " Don’t reset cursor to start of line when moving around
+set ruler                             " Show the cursor position
+set showmode                          " Show the current mode
+
+
+if !&scrolloff
+  set scrolloff=3                       " Keep cursor in screen by value
+endif
+if !&sidescrolloff
+  set sidescrolloff=5
+endif
+
+set cpoptions+=ces$                    " CW wrap W with $ instead of delete
+set cpo+=n                             " Draw color for lines that has number only
+
+set showmode                          " Show the current mode
+
+set noshowcmd                           " Makes OS X slow, if lazy redraw set
+
+set display+=lastline
+
+set mousehide                         " Hide mouse while typing
+
+set synmaxcol=200                     " max syntax highlight chars
+
+set splitbelow                        " put horizontal splits below
+
+set splitright                        " put vertical splits to the right
+
+let g:netrw_liststyle=3               "Make netrw look like NerdTree
+
+highlight ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
+call matchadd('ColorColumn', '\%81v', 100)
+
+" Use a blinking upright bar cursor in Insert mode, a solid block in normal
+" and a blinking underline in replace mode
+  let &t_SI = "\<Esc>[5 q"
+  let &t_SR = "\<Esc>[3 q"
+  let &t_EI = "\<Esc>[2 q"
 
 
 " }}}
