@@ -1,0 +1,248 @@
+extends html
+
+global !p
+def insert_method_call(name):
+	vim.command('normal G')
+	snip.expand_anon(name + '($1)\n')
+endglobal
+
+post_jump "if snip.tabstop == 0: insert_method_call(snip.tabstops[1].current_text)"
+snippet dd "method declaration" b
+def $1():
+	$2
+endsnippet
+
+post_expand "snip.buffer[snip.snippet_end[0]+1:snip.snippet_end[0]+1] = ['']"
+snippet d "Description" b
+def $1():
+	$2
+endsnippet
+
+pre_expand "del snip.buffer[snip.line]; snip.cursor.set(len(snip.buffer)-1, 0)"
+snippet x
+def $1():
+	${2:${VISUAL}}
+endsnippet
+
+snippet hcv "html comment"
+<!-- ${VISUAL} -->
+endsnippet
+
+snippet php "expand p to full php"
+<?php $1 ?>
+endsnippet
+
+snippet p "expand p to full php"
+<?php
+$0
+endsnippet
+
+snippet lrg "la4 get route"
+Route::get('$1',function()
+{
+	return $0;
+});
+endsnippet
+
+snippet lvm "la4 make view"
+return View::make('${VISUAL:ViewFile}');
+endsnippet
+
+
+snippet tr "la4 translate sledction" i
+{{ trans('kur.`!p
+snip.rv = snip.v.text.lower()
+`') }}
+endsnippet
+
+snippet fv "Fold code Visualy"
+//{{{ $1
+${VISUAL:Your Code}
+//}}}_${1/(\w+).*/$1/}
+endsnippet
+
+snippet hc "HTML Comment"
+<!-- ${1:end of }$0 -->
+endsnippet
+
+snippet lrvm "la4 make view"
+return View::make('${VISUAL:ViewFile}');
+$0
+endsnippet
+
+snippet arr "Create a non-assigned array"
+array(${1:'on'=>'post'}$2)$0
+endsnippet
+
+snippet lrg "Laravel 4: Route::get()"
+Route::get(${1:$pattern}, ${2:$action});
+endsnippet
+
+snippet csrf "cross site script attacks" b
+/**
+ * Prevent cross site script attacks
+ */
+public function __construct()
+{
+  $this->beforeFilter(${1:'csrf', array(${2:'on'=>'post'})});
+}
+$0
+endsnippet
+
+snippet construct "__construct()" b
+/**
+ * @param $2mixed ${1/, /\n     * \@param mixed /g}
+ */
+public function __construct(${1:$dependencies})
+{${1/\$(\w+)(, )*/\n        $this->$1 = $$1;/g}
+$0
+}
+endsnippet
+
+snippet wow
+${1:Text}`!p snip.rv = (75-2*len(t[1]))*' '+t[1].upper()`
+endsnippet
+
+global !p
+def upper_right(inp):
+    return (75 - 2 * len(inp))*' ' + inp.upper()
+endglobal
+
+snippet wow
+${1:Text}`!p snip.rv = upper_right(t[1])`
+endsnippet
+
+snippet '\[' "Recursive rule" r
+[${1:&}] ${0}
+endsnippet
+
+snippet cond
+${1:some_text}${1/(o)|(t)|..*/(?1:ne)(?2:wo)/}
+endsnippet
+
+snippet printf
+printf("${1:%s}\n"${1/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$2${1/([^%]|%%)*(%.)?.*/(?2:\);)/}
+endsnippet
+
+
+snippet  ca
+array(${1:'on'=>'post'$2}${1/([^,])*(,)?.*/(?2: :\);)/}$3${1/([^,])*(,)?.*/(?2:\);)/}
+endsnippet
+
+
+global !p
+def ins1(t1, t2):
+  return t2 if t1 else ''
+endglobal
+
+snippet def2 "def"
+def ${1:${VISUAL:foo}}
+{${2}} `!p snip.rv=ins1(t[3], '{')`$3`!p snip.rv=ins1(t[3], '}')` `!p snip.rv=ins1(t[4], '{')`$4`!p snip.rv=ins1(t[4], '}')`
+$0
+endsnippet
+
+
+snippet bn "test Python" !b
+`!p snip.rv=snip.basename`
+endsnippet
+
+snippet wfr "Wrap form controls in a row"
+<div id="row_$1" class="row col-md-12">
+	${VISUAL}
+</div> <!-- end of row_$1 -->
+endsnippet
+
+snippet wff "Wrap form controls in a field"
+<div class="col-md-$0 rtl">
+	${VISUAL}
+</div>
+endsnippet
+
+snippet div "Wrap in a DIV"
+<div ${1:class="$2"}>
+	${VISUAL}
+</div>
+endsnippet
+
+
+snippet path "test Python" !b
+`!p snip.rv=path`
+endsnippet
+
+snippet ffv "Fold function Visually" !b
+$0`!p
+import re
+
+def get_line(str, i):
+	return str.split('\n', 1)[i]
+
+def get_php_function_name(str):
+	first_line = get_line(str, 0)
+	m = re.search(r"(\w+)\(", first_line)
+	return m.groups()[0]
+
+def get_php_function_signature(str):
+	first_line = get_line(str, 0)
+	m = re.search(r"(\w+\(.*\))", first_line)
+	return m.groups()[0]
+
+def get_indent(str):
+	first_line = get_line(str, 0)
+	m = re.search(r"^(\s+)", first_line)
+	return m.groups()[0]
+
+def wrap_with_comment(str):
+	name = get_php_function_name(str)
+	signature = get_php_function_signature(str)
+	indent = get_indent(str)
+	vim_shiftwidth = int( snip.opt( 'shiftwidth', 2 ) )
+	prepend_indent = indent[ 0 : len(indent)-vim_shiftwidth ]
+	prepend = prepend_indent + '//{{{ ' + signature + '\n'
+	#prepend = indent + '//{{{ ' + signature + '\n'
+	append = indent + '//}}} _' + name
+	str = prepend +  str + append
+	return str
+
+snip.rv = wrap_with_comment(snip.v.text)
+`
+endsnippet
+
+snippet fn "test Python" !b
+`!p snip.rv=snip.fn`
+endsnippet
+
+snippet tp0 "test Python" !b
+`!p snip.rv="Hello"`
+endsnippet
+
+snippet tp1 "test Python" !b
+`!p import uuid
+if not snip.c:
+	snip.rv = uuid.uuid4().hex`
+endsnippet
+
+
+global !p
+def complete(t, opts):
+#if text of the tabstop is not empty
+	if t:
+		opts = [ m[len(t):] for m in opts if m.startswith(t) ]
+	if len(opts)==1:
+		return opts[0]
+	return "(" + '|'.join(opts) + ")"
+endglobal
+
+snippet tp2 "test Python Status Autocomplete" b
+status $1`!p snip.rv = complete(t[1], ['Opt_First', 'Opt_Second', 'Opt_Third'])`
+endsnippet
+
+
+snippet '^ tp3' "test Python Regular Expression Trigger" r
+status $1`!p snip.rv = complete(t[1], ['Opt_First', 'Opt_Second', 'Opt_Third'])`
+endsnippet
+
+
+snippet 'tp4 (\d+) (\w+)' "test Python Interpolation With RegEx trigger" r
+`!p snip.rv=int(match.group(1))*match.group(2)`
+endsnippet
+
