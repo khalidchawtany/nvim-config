@@ -3886,7 +3886,8 @@ call matchadd('ColorColumn', '\%81v', 100)
   let g:terminal_color_15 = '#eeeeec'
 
   "Make the bright gray font black in terminal
-  let g:terminal_color_7  = '#555042'
+  "let g:terminal_color_7  = '#555042'
+  let g:terminal_color_7  = '#FFF'
 
 
   "Multiedit highlight colors
