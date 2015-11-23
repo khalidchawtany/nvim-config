@@ -10,28 +10,28 @@ let g:mapleader = ","
 " FUNCTIONS {{{
 " ============================================================================
 
- function! NXMap(key, plug)"{{{
-   execute "nmap" a:key a:plug
-   execute "xmap" a:key a:plug
- endfunction"}}}
+  function! NXMap(key, plug)"{{{
+    execute "nmap" a:key a:plug
+    execute "xmap" a:key a:plug
+  endfunction"}}}
 
- function! VXMap(key, plug)"{{{
-   execute "vmap" a:key a:plug
-   execute "xmap" a:key a:plug
- endfunction"}}}
+  function! VXMap(key, plug)"{{{
+    execute "vmap" a:key a:plug
+    execute "xmap" a:key a:plug
+  endfunction"}}}
 
- function! VOMap(key, plug)"{{{
-   execute "vmap" a:key a:plug
-   execute "omap" a:key a:plug
- endfunction"}}}
+  function! VOMap(key, plug)"{{{
+    execute "vmap" a:key a:plug
+    execute "omap" a:key a:plug
+  endfunction"}}}
 
- function! PlugTextObj(repo, key)"{{{
-   let name = a:repo
-   let name = substitute(name, ".*/vim-textobj-", "", "")
-   execute  "Plug '" . a:repo . "', {'on': ['<Plug>(textobj-" . name . "-']}"
-   execute "call VOMap(\"i" . a:key . "\", \"<Plug>(textobj-" . name . "-i)\")"
-   execute "call VOMap(\"a" . a:key . "\", \"<Plug>(textobj-" . name . "-a)\")"
- endfunction"}}}
+  function! PlugTextObj(repo, key)"{{{
+    let name = a:repo
+    let name = substitute(name, ".*/vim-textobj-", "", "")
+    execute  "Plug '" . a:repo . "', {'on': ['<Plug>(textobj-" . name . "-']}"
+    execute "call VOMap(\"i" . a:key . "\", \"<Plug>(textobj-" . name . "-i)\")"
+    execute "call VOMap(\"a" . a:key . "\", \"<Plug>(textobj-" . name . "-a)\")"
+  endfunction"}}}
 
   function! CreateFoldableCommentFunction() range"{{{
 
@@ -363,50 +363,50 @@ let g:mapleader = ","
     redraw
   endfunction "}}}
 
-"{{{ CreateLaravelGeneratorFunction
+  "{{{ CreateLaravelGeneratorFunction
 
   function! CreateLaravelGeneratorFunction()
-  "Generate laravel generator command
+    "Generate laravel generator command
 
-  "alias g:m="php artisan generate:model"
-  "alias g:c="php artisan generate:controller"
-  "alias g:v="php artisan generate:view"
-  "alias g:se="php artisan generate:seed"
-  "alias g:mi="php artisan generate:migration"
-  "alias g:r="php artisan generate:resource"
-  "alias g:p="php artisan generate:pivot"
-  "alias g:s="php artisan generate:scaffold"
+    "alias g:m="php artisan generate:model"
+    "alias g:c="php artisan generate:controller"
+    "alias g:v="php artisan generate:view"
+    "alias g:se="php artisan generate:seed"
+    "alias g:mi="php artisan generate:migration"
+    "alias g:r="php artisan generate:resource"
+    "alias g:p="php artisan generate:pivot"
+    "alias g:s="php artisan generate:scaffold"
 
-  "php artisan generate:migration create_posts_table --fields="title:string, body:text"
+    "php artisan generate:migration create_posts_table --fields="title:string, body:text"
 
-  let command =  input('!g:')
+    let command =  input('!g:')
 
-  "if --fields is NOT already provided
-  if stridx(command, '--fields') ==? "-1"
+    "if --fields is NOT already provided
+    if stridx(command, '--fields') ==? "-1"
 
-    "Get the command part
-    let cmd_shortform = strpart(command, 0,stridx(command, " "))
-    "The list of commands that require --fields
-    let cmd_require_fields = ['mi', 'r', 's' ]
+      "Get the command part
+      let cmd_shortform = strpart(command, 0,stridx(command, " "))
+      "The list of commands that require --fields
+      let cmd_require_fields = ['mi', 'r', 's' ]
 
-    "if the command is NOT one of the above
-    if index(cmd_require_fields, cmd_shortform) !=? "-1"
-      let fields = input( "!g:" . command . ' --fields= ')
-      let command = command . ' --fields="' . fields . '"'
-    endif "Command requires --fields
+      "if the command is NOT one of the above
+      if index(cmd_require_fields, cmd_shortform) !=? "-1"
+        let fields = input( "!g:" . command . ' --fields= ')
+        let command = command . ' --fields="' . fields . '"'
+      endif "Command requires --fields
 
-  endif " --fields is not provided
+    endif " --fields is not provided
 
-  if strlen(command) !=? "0"
-    "Prepend cmd with required stuff
-    let command = "g:" . command
-  endif
+    if strlen(command) !=? "0"
+      "Prepend cmd with required stuff
+      let command = "g:" . command
+    endif
 
-  return command
+    return command
 
   endfunction
 
-"}}} _CreateLaravelGeneratorFunction
+  "}}} _CreateLaravelGeneratorFunction
 
   function! ExecuteLaravelGeneratorCMD()"{{{
     let cmd = CreateLaravelGeneratorFunction()
@@ -414,86 +414,86 @@ let g:mapleader = ","
     call VimuxZoomRunner()
   endfunction"}}}
 
-function! BufOnly(buffer, bang) "{{{
-  if a:buffer == ''
-    " No buffer provided, use the current buffer.
-    let buffer = bufnr('%')
-  elseif (a:buffer + 0) > 0
-    " A buffer number was provided.
-    let buffer = bufnr(a:buffer + 0)
-  else
-    " A buffer name was provided.
-    let buffer = bufnr(a:buffer)
-  endif
+  function! BufOnly(buffer, bang) "{{{
+    if a:buffer == ''
+      " No buffer provided, use the current buffer.
+      let buffer = bufnr('%')
+    elseif (a:buffer + 0) > 0
+      " A buffer number was provided.
+      let buffer = bufnr(a:buffer + 0)
+    else
+      " A buffer name was provided.
+      let buffer = bufnr(a:buffer)
+    endif
 
-  if buffer == -1
-    echohl ErrorMsg
-    echomsg "No matching buffer for" a:buffer
-    echohl None
-    return
-  endif
+    if buffer == -1
+      echohl ErrorMsg
+      echomsg "No matching buffer for" a:buffer
+      echohl None
+      return
+    endif
 
-  let last_buffer = bufnr('$')
+    let last_buffer = bufnr('$')
 
-  let delete_count = 0
-  let n = 1
-  while n <= last_buffer
-    if n != buffer && buflisted(n)
-      if a:bang == '' && getbufvar(n, '&modified')
-        echohl ErrorMsg
-        echomsg 'No write since last change for buffer'
-              \ n '(add ! to override)'
-        echohl None
-      else
-        silent exe 'bdel' . a:bang . ' ' . n
-        if ! buflisted(n)
-          let delete_count = delete_count+1
+    let delete_count = 0
+    let n = 1
+    while n <= last_buffer
+      if n != buffer && buflisted(n)
+        if a:bang == '' && getbufvar(n, '&modified')
+          echohl ErrorMsg
+          echomsg 'No write since last change for buffer'
+                \ n '(add ! to override)'
+          echohl None
+        else
+          silent exe 'bdel' . a:bang . ' ' . n
+          if ! buflisted(n)
+            let delete_count = delete_count+1
+          endif
         endif
       endif
+      let n = n+1
+    endwhile
+
+    if delete_count == 1
+      echomsg delete_count "buffer deleted"
+    elseif delete_count > 1
+      echomsg delete_count "buffers deleted"
     endif
-    let n = n+1
-  endwhile
 
-  if delete_count == 1
-    echomsg delete_count "buffer deleted"
-  elseif delete_count > 1
-    echomsg delete_count "buffers deleted"
-  endif
+  endfunction "}}}
 
-endfunction "}}}
-
-function! ToggleFoldMethod() "{{{
-  if &foldenable==0
-    set foldenable
-    set foldmethod=marker
-    echomsg "FoldMethod = Marker"
-  elseif  &foldmethod=='marker'
-    set foldmethod=indent
-    echomsg "FoldMethod = Indent"
-  elseif &foldmethod=='indent'
-    set foldmethod=syntax
-    echomsg "FoldMethod = Syntax"
-  elseif &foldmethod=='syntax'
-    set nofoldenable
-    echomsg "Fold Disabled"
-  endif
-endfunction "}}}
-
-function! ToggleFoldMarker() "{{{
-  set foldlevel=0
-  if &filetype == "neosnippet"
-    setlocal foldmethod=marker
-    setlocal foldmarker=snippet,endsnippet
-  elseif &filetype == "cs"
-    " set foldtext=foldtext()
-    if &foldmarker != '#region,#endregion'
-      setlocal foldmarker=#region,#endregion
-    else
-      setlocal foldmarker={,}
-      setlocal foldlevel=2
+  function! ToggleFoldMethod() "{{{
+    if &foldenable==0
+      set foldenable
+      set foldmethod=marker
+      echomsg "FoldMethod = Marker"
+    elseif  &foldmethod=='marker'
+      set foldmethod=indent
+      echomsg "FoldMethod = Indent"
+    elseif &foldmethod=='indent'
+      set foldmethod=syntax
+      echomsg "FoldMethod = Syntax"
+    elseif &foldmethod=='syntax'
+      set nofoldenable
+      echomsg "Fold Disabled"
     endif
-  endif
-endfunction "}}}
+  endfunction "}}}
+
+  function! ToggleFoldMarker() "{{{
+    set foldlevel=0
+    if &filetype == "neosnippet"
+      setlocal foldmethod=marker
+      setlocal foldmarker=snippet,endsnippet
+    elseif &filetype == "cs"
+      " set foldtext=foldtext()
+      if &foldmarker != '#region,#endregion'
+        setlocal foldmarker=#region,#endregion
+      else
+        setlocal foldmarker={,}
+        setlocal foldlevel=2
+      endif
+    endif
+  endfunction "}}}
 
 " }}}
 " ============================================================================
@@ -502,37 +502,37 @@ endfunction "}}}
 
 call plug#begin('~/.config/nvim/plugged')
 
- "{{{ VimPlug template
+  " VimPlug template {{{
 
-   "" Make sure you use single quotes
-   "Plug 'junegunn/seoul256.vim'
-   "Plug 'junegunn/vim-easy-align'
+  "" Make sure you use single quotes
+  "Plug 'junegunn/seoul256.vim'
+  "Plug 'junegunn/vim-easy-align'
 
-   "" On-demand loading
-   "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-   "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+  "" On-demand loading
+  "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+  "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 
-   "" Using git URL
-   "Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+  "" Using git URL
+  "Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 
-   "" Plugin options
-   "Plug 'nsf/gocode', { 'tag': 'go.weekly.2012-03-13', 'rtp': 'vim' }
+  "" Plugin options
+  "Plug 'nsf/gocode', { 'tag': 'go.weekly.2012-03-13', 'rtp': 'vim' }
 
-   "" Plugin outside ~/.vim/plugged with post-update hook
-   "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+  "" Plugin outside ~/.vim/plugged with post-update hook
+  "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
-   "" Unmanaged plugin (manually installed and updated)
-   "Plug '~/my-prototype-plugin'
+  "" Unmanaged plugin (manually installed and updated)
+  "Plug '~/my-prototype-plugin'
 
-   " On plugin Loaded
-   " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
- "}}}
+  " On plugin Loaded
+  " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
+  "}}}  
 
  " ----------------------------------------------------------------------------
  " Version Control & Diff {{{
  " ----------------------------------------------------------------------------
 
- "{{{ vim-fugitive
+ " vim-fugitive {{{
 
  Plug 'tpope/vim-fugitive'
        "\ , {'on':
@@ -553,19 +553,19 @@ call plug#begin('~/.config/nvim/plugged')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
  "}}} _vim-fugitive
- "{{{ vim-gitgutter
+ " vim-gitgutter {{{
 
    Plug 'airblade/vim-gitgutter'
 
  "}}} _vim-gitgutter
- "{{{ vimagit
+ " vimagit {{{
 
    Plug 'jreybert/vimagit', {'on': ['Magit']}
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
  "}}} _vimagit
 
- "{{{ DirDiff.vim
+ " DirDiff.vim {{{
 
    Plug 'vim-scripts/DirDiff.vim', {'on': ['DirDiff']}
 
@@ -577,17 +577,17 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
 
  " Org
- "{{{ vim-speeddating
+ " vim-speeddating {{{
 
    Plug 'tpope/vim-speeddating', {'for': ['org'],'on': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']}
 
  "}}} _vim-speeddating
- "{{{ vim-orgmode
+ " vim-orgmode {{{
 
    Plug 'jceb/vim-orgmode', {'for': 'org'}
 
  "}}} _vim-orgmode
- "{{{ lazyList.vim
+ " lazyList.vim {{{
 
    Plug 'KabbAmine/lazyList.vim', {'on': ['LazyList']}
 
@@ -608,7 +608,7 @@ call plug#begin('~/.config/nvim/plugged')
    vnoremap gllt :LazyList '- [ ] '<CR>
 
  "}}} _lazyList.vim
- "{{{ vim-simple-todo
+ " vim-simple-todo {{{
 
    Plug 'vitalk/vim-simple-todo', {'on':
          \ ['<Plug>(simple-todo-new)',
@@ -645,18 +645,18 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}} _vim-simple-todo
- "{{{ vim-table-mode
+ " vim-table-mode {{{
 
    Plug 'dhruvasagar/vim-table-mode', {'on': ['TabelModeEnable', 'TableModeToggle', 'Tableize']}
 
  "}}} _vim-table-mode
- "{{{ calendar.vim
+ " calendar.vim {{{
 
    Plug 'itchyny/calendar.vim', {'on': ['Calendar']}
    let g:calendar_date_month_name = 1
 
  "}}} _calendar.vim
- "{{{ vim-journal
+ " vim-journal {{{
 
    Plug 'junegunn/vim-journal', {'for': ['journal']}
 
@@ -699,7 +699,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- "{{{ vim-over
+ " vim-over {{{
 
    " Plug 'osyo-manga/vim-over', {'on': ['OverCommandLine']}
 
@@ -709,13 +709,13 @@ call plug#begin('~/.config/nvim/plugged')
    " xnoremap g;s :<c-u>OverCommandLine<cr>%s/\%V
 
  "}}} _vim-over
- "{{{ vim-enmasse
+ " vim-enmasse {{{
 
    Plug 'Wolfy87/vim-enmasse',         { 'on': 'EnMasse'}
    " EnMass the sublime like search and edit then save back to corresponding files
 
  "}}} _vim-enmasse
- "{{{ vim-swoop
+ " vim-swoop {{{
 
    Plug 'pelodelfuego/vim-swoop', {'on': ['Swoop']}
    let g:swoopUseDefaultKeyMap = 0
@@ -738,17 +738,17 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
  "}}} _vim-swoop
-"{{{ vim-ags
+ " vim-ags {{{
 
-   Plug 'gabesoft/vim-ags', {'on': ['Ags']}
+ Plug 'gabesoft/vim-ags', {'on': ['Ags']}
 
-"}}} _vim-ags
- "{{{ inline_edit.vim
+ "}}} _vim-ags
+ " inline_edit.vim {{{
 
    Plug 'AndrewRadev/inline_edit.vim', { 'on': ['InlineEdit']}
 
  "}}} _inline_edit.vim
- "{{{ vim-multiple-cursors
+ " vim-multiple-cursors {{{
 
    Plug 'terryma/vim-multiple-cursors'
 
@@ -756,7 +756,7 @@ call plug#begin('~/.config/nvim/plugged')
    "Use ctrl-n to select next instance
 
  "}}} _vim-multiple-cursors
-"{{{ vim-markmultiple
+ " vim-markmultiple {{{
 
  Plug 'adinapoli/vim-markmultiple'
  let g:mark_multiple_trigger = "<C-n>"
@@ -764,15 +764,15 @@ call plug#begin('~/.config/nvim/plugged')
  "if effect remains on scree clear with "call MarkMultipleClean()"
  nnoremap <c-n><BS> call MarkMutlipleClean()
 
-"}}} _vim-markmultiple
-"{{{ multichange.vim
+ "}}} _vim-markmultiple
+ " multichange.vim {{{
 
-  Plug 'AndrewRadev/multichange.vim'
-  let g:multichange_mapping        = 'sm'
-  let g:multichange_motion_mapping = 'm'
+ Plug 'AndrewRadev/multichange.vim'
+ let g:multichange_mapping        = 'sm'
+ let g:multichange_motion_mapping = 'm'
 
-"}}} _multichange.vim
- "{{{ vim-multiedit
+ "}}} _multichange.vim
+ " vim-multiedit {{{
 
  Plug 'hlissner/vim-multiedit'
                            " \,
@@ -836,12 +836,12 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
  "}}} _vim-multiedit
- "{{{ vim-abolish
+ " vim-abolish {{{
 
    Plug 'tpope/vim-abolish',           { 'on': ['S','Subvert', 'Abolish']}
 
  "}}} _vim-abolish
- "{{{ vim-rengbang
+ " vim-rengbang {{{
 
    Plug 'deris/vim-rengbang',          { 'on': [ 'RengBang', 'RengBangUsePrev' ] }
 
@@ -849,7 +849,7 @@ call plug#begin('~/.config/nvim/plugged')
    " RengBang \(\d\+\) Start# Increment# Select# %03d => 001, 002
 
  "}}} _vim-rengbang
- "{{{ vim-rectinsert
+ " vim-rectinsert {{{
 
    Plug 'deris/vim-rectinsert',        { 'on': ['RectInsert', 'RectReplace'] }
 
@@ -882,7 +882,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- "{{{ vim-yankstack
+ " vim-yankstack {{{
 
    " Plug 'maxbrunsfeld/vim-yankstack'
 
@@ -907,7 +907,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  " }}}
- "{{{ vim-peekaboo
+ " vim-peekaboo {{{
 
    Plug 'junegunn/vim-peekaboo'
 
@@ -922,30 +922,30 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}} _vim-peekaboo
- "{{{ UnconditionalPaste
+ " UnconditionalPaste {{{
 
    Plug 'vim-scripts/UnconditionalPaste'
 
  "}}} _UnconditionalPaste
 
-"{{{ vim-copy-as-rtf
+ " vim-copy-as-rtf {{{
 
-  Plug 'zerowidth/vim-copy-as-rtf', {'on': ['CopyRTF']}
+ Plug 'zerowidth/vim-copy-as-rtf', {'on': ['CopyRTF']}
 
-"}}} _vim-copy-as-rtf
+ "}}} _vim-copy-as-rtf
 
  " Single-edits
- "{{{ switch.vim
+ " switch.vim {{{
 
    Plug 'AndrewRadev/switch.vim', {'on':  ['Switch']}
 
  "}}} _switch.vim
- "{{{ vim-exchange
+ " vim-exchange {{{
 
    Plug 'tommcdo/vim-exchange', {'on':  ['ExchangeClear', '<Plug>(Exchange)', '<Plug>(ExchangeLine)', '<Plug>(ExchangeClear)']}
 
  "}}} _vim-exchange
- "{{{ vim-tag-comment
+ " vim-tag-comment {{{
    " Comment out HTML properly
    Plug 'mvolkmann/vim-tag-comment', {'on': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']}
 
@@ -962,7 +962,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- "{{{ tabular
+ " tabular {{{
 
    Plug 'godlygeek/tabular', {'on': ['Tabularize']}
 
@@ -1013,23 +1013,23 @@ call plug#begin('~/.config/nvim/plugged')
    imap <C-S> <Plug>Isurround
 
  "}}}
- "{{{ splitjoin.vim
+ " splitjoin.vim {{{
 
    "Don't try to lazyload :(
    Plug 'AndrewRadev/splitjoin.vim'
 
  "}}} _splitjoin.vim
 
-"{{{ vim-sort-motion
+ " vim-sort-motion {{{
 
-  Plug 'christoomey/vim-sort-motion', {'on': ['<Plug>SortMotion', '<Plug>SortLines', '<Plug>SortMotionVisual']}
-  map  gs  <Plug>SortMotion
-  map  gss <Plug>SortLines
-  vmap gs  <Plug>SortMotionVisual
+ Plug 'christoomey/vim-sort-motion', {'on': ['<Plug>SortMotion', '<Plug>SortLines', '<Plug>SortMotionVisual']}
+ map  gs  <Plug>SortMotion
+ map  gss <Plug>SortLines
+ vmap gs  <Plug>SortMotionVisual
 
-"}}} _vim-sort-motion
+ "}}} _vim-sort-motion
  " Comments
- "{{{ nerdcommenter
+ " nerdcommenter {{{
 
  "Don't lazyload as doing so will fragile
   Plug 'scrooloose/nerdcommenter'
@@ -1039,7 +1039,7 @@ call plug#begin('~/.config/nvim/plugged')
    " Plug 'tomtom/tcomment_vim'
 
  " Auto-manipulators
- "{{{ vim-endwise
+ " vim-endwise {{{
 
    Plug 'tpope/vim-endwise'
 
@@ -1050,6 +1050,7 @@ call plug#begin('~/.config/nvim/plugged')
    " au FileType blade let b:delimitMate_autoclose = 0
 
  "}}}
+
  "}}}
  " ----------------------------------------------------------------------------
  " Utils {{{
@@ -1097,46 +1098,46 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
  "}}}
- "{{{ vim-unimpaired
+ " vim-unimpaired {{{
 
  Plug 'tpope/vim-unimpaired'
 
  "}}} _vim-unimpaired
- "{{{ vim-man
+ " vim-man {{{
 
    Plug 'bruno-/vim-man'
 
  "}}} _vim-man
- "{{{ vim-follow-my-lead
+ " vim-follow-my-lead {{{
 
    ",fml
    Plug 'ktonga/vim-follow-my-lead'
    let g:fml_all_sources=1 "1 for all sources, 0(Default) for $MYVIMRC.
 
  "}}} _vim-follow-my-lead
- "{{{ vim-rsi
+ " vim-rsi {{{
 
    Plug 'tpope/vim-rsi'
 
  "}}} _vim-rsi
- "{{{ capture.vim
+ " capture.vim {{{
 
    "Capture EX-commad in a buffer
    Plug 'tyru/capture.vim', {'on': 'Capture'}
 
  "}}} _capture.vim
- "{{{ vim-eunuch
+ " vim-eunuch {{{
 
    Plug 'tpope/vim-eunuch'
 
  "}}} _vim-eunuch
- "{{{ vim-capslock
+ " vim-capslock {{{
 
    Plug 'tpope/vim-capslock' ",{'on':['<Plug>CapsLockToggle', '<Plug>(CapsLockEnable)', '<Plug>(CapsLockDisable)']}
 
  "}}} _vim-capslock
 
- "{{{ vim-characterize
+ " vim-characterize {{{
 
    Plug 'tpope/vim-characterize', {'on':['<Plug>(characterize)']}
 
@@ -1157,29 +1158,29 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  " Plug 'seletskiy/vim-nunu'           "Disable relative numbers on cursor move
 
-"{{{ vim-repeat
+ " vim-repeat {{{
 
  Plug 'tpope/vim-repeat'
 
-"}}} _vim-repeat
+ "}}} _vim-repeat
  " Plug 'vim-scripts/confirm-quit'
- "{{{ undofile_warn.vim
+ " undofile_warn.vim {{{
 
    " This breaks Magit :(
    " Plug 'vim-scripts/undofile_warn.vim'
 
  "}}} _undofile_warn.vim
- "{{{ vim-obsession
+ " vim-obsession {{{
 
    Plug 'tpope/vim-obsession', {'on':['Obsess']}
 
  "}}} _vim-obsession
- "{{{ vim-scriptease
+ " vim-scriptease {{{
 
    Plug 'tpope/vim-scriptease', {'for': ['vim']}
 
  "}}} _vim-scriptease
- "{{{ vim-hardtime
+ " vim-hardtime {{{
 
    Plug 'takac/vim-hardtime', {'on': ['HardTimeOn', 'HardTimeToggle']}
 
@@ -1200,23 +1201,24 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}} _vim-hardtime
- "{{{ vim-autoswap
+ " vim-autoswap {{{
 
    Plug 'gioele/vim-autoswap'
 
  "}}} _vim-autoswap
- "{{{ vim-pseudocl
+ " vim-pseudocl {{{
 
    Plug 'junegunn/vim-pseudocl'  "Required by oblique & fnr
 
  "}}} _vim-pseudocl
-"{{{ investigate.vim
+ " investigate.vim {{{
 
-  Plug 'keith/investigate.vim', {'on': []}
-  let g:investigate_use_dash=1
-  nnoremap gK :call plug#load('investigate.vim') <Bar> nnoremap gK call investigate#Investigate() <Bar> call investigate#Investigate()<CR>
+ Plug 'keith/investigate.vim', {'on': []}
+ let g:investigate_use_dash=1
+ nnoremap gK :call plug#load('investigate.vim') <Bar> nnoremap gK call investigate#Investigate() <Bar> call investigate#Investigate()<CR>
 
-"}}} _investigate.vim
+ "}}} _investigate.vim
+
  "}}}
  " ----------------------------------------------------------------------------
  " languages {{{
@@ -1337,21 +1339,21 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- "{{{ vim-csharp
+ " vim-csharp {{{
 
    Plug 'OrangeT/vim-csharp', {'for': ['cs']}
 
  "}}} _vim-csharp
 
  " applescript
- "{{{ applescript
+ " applescript {{{
 
    Plug 'vim-scripts/applescript.vim' ,     {'for': ['applescript']}
 
  "}}} _applescript
 
  " markdown
- "{{{ vim-markdown
+ " vim-markdown {{{
 
    Plug 'tpope/vim-markdown',             {'for':['markdown']}
 
@@ -1456,7 +1458,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}"Always match html tag
 
- "{{{ vim-ragtag
+ " vim-ragtag {{{
 
   Plug 'tpope/vim-ragtag', {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']}
   let g:ragtag_global_maps = 1
@@ -1464,17 +1466,17 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-ragtag
 
  " Compilers
- "{{{ vimproc.vim
+ " vimproc.vim {{{
 
    Plug 'Shougo/vimproc.vim'
 
  "}}} _vimproc.vim
- "{{{ vim-dispatch
+ " vim-dispatch {{{
 
    Plug 'tpope/vim-dispatch'
 
  "}}} _vim-dispatch
- "{{{ neomake
+ " neomake {{{
 
    Plug 'benekastah/neomake'
 
@@ -1485,12 +1487,12 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}} _neomake
- "{{{ vim-accio
+ " vim-accio {{{
 
    Plug 'pgdouyon/vim-accio'
 
  "}}} _vim-accio
- "{{{ syntastic
+ " syntastic {{{
 
  Plug 'scrooloose/syntastic', {'on': ['SyntasticCheck']}
 
@@ -1501,7 +1503,7 @@ call plug#begin('~/.config/nvim/plugged')
    let g:syntastic_warning_symbol = "⚠"
 
  "}}} _syntastic
- "{{{ neoterm
+ " neoterm {{{
 
    Plug 'kassio/neoterm'
 
@@ -1526,13 +1528,13 @@ call plug#begin('~/.config/nvim/plugged')
    " nnoremap <silent> <leader>tl :call neoterm#clear()<cr>
 
  "}}} _neoterm
- "{{{ vim-test
+ " vim-test {{{
 
    Plug 'janko-m/vim-test'
 
  "}}} _vim-test
 
- "{{{ vim-fetch
+ " vim-fetch {{{
    Plug 'kopischke/vim-fetch'               "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
 
@@ -1571,13 +1573,13 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}
 
- "{{{ vim-snippets
+ " vim-snippets {{{
 
    Plug 'honza/vim-snippets'
 
  "}}} _vim-snippets
 
- "{{{ neosnippet
+ " neosnippet {{{
 
    Plug 'Shougo/neosnippet'
    " Plugin key-mappings.
@@ -1591,7 +1593,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}} _neosnippet
 
- "{{{ neosnippet-snippets
+ " neosnippet-snippets {{{
 
    Plug 'Shougo/neosnippet-snippets'
 
@@ -1615,7 +1617,7 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
 
  "deoplete
- "{{{ deoplete.nvim
+ " deoplete.nvim {{{
 
    Plug 'Shougo/deoplete.nvim'
 
@@ -1625,22 +1627,22 @@ call plug#begin('~/.config/nvim/plugged')
    let g:deoplete#auto_completion_start_length = 1
 
  "}}} _deoplete.nvim
- "{{{ neoinclude.vim
+ " neoinclude.vim {{{
 
    Plug 'Shougo/neoinclude.vim'
 
  "}}} _neoinclude.vim
- "{{{ neco-syntax
+ " neco-syntax {{{
 
    Plug 'Shougo/neco-syntax'
 
  "}}} _neco-syntax
- "{{{ neco-vim
+ " neco-vim {{{
 
    Plug 'Shougo/neco-vim'
 
  "}}} _neco-vim
- "{{{ echodoc.vim
+ " echodoc.vim {{{
 
    Plug 'Shougo/echodoc.vim'
 
@@ -1818,7 +1820,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
-"{{{ targets.vim
+ " targets.vim {{{
 
   Plug 'wellle/targets.vim'
   "Some samples:
@@ -1859,127 +1861,127 @@ call plug#begin('~/.config/nvim/plugged')
                                                 " also adds g) and g( for
                                                  " sentence navigation
 
-"Doubles the following to avoid overlap with targets.vim
-"{{{ vim-textobj-parameter
+  "Doubles the following to avoid overlap with targets.vim
+  " vim-textobj-parameter {{{
   "i,, a,  ai2,         for parameter
   call PlugTextObj( 'sgur/vim-textobj-parameter', ',' )
   call VOMap("i2,", "textobj-parameter-greedy-i")
 
-"}}} _vim-textobj-parameter
-"{{{ vim-textobj-line
+  "}}} _vim-textobj-parameter
+  " vim-textobj-line {{{
 
   "il, al          for line
   call PlugTextObj( 'kana/vim-textobj-line', 'll' )
 
-"}}} _vim-textobj-line
-"{{{ vim-textobj-number
+  "}}} _vim-textobj-line
+  " vim-textobj-number {{{
   "in, an          for numbers
   call PlugTextObj( 'haya14busa/vim-textobj-number', 'n' )
 
-"}}} _vim-textobj-number
- " vim-textobj-between {{{
+  "}}} _vim-textobj-number
+  " vim-textobj-between {{{
   "ibX, abX          for between two chars
   "changed to isX, asX          for between two chars
   call PlugTextObj( 'thinca/vim-textobj-between', 's' )
   let g:textobj_between_no_default_key_mappings =1
 
  "}}}
- " vim-textobj-any {{{
+  " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
   call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
   let g:textobj_anyblock_no_default_key_mappings =1
 
   " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
 
- "}}}
+  "}}}
 
-   Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
-"{{{ vim-textobj-pastedtext
+  Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
+  " vim-textobj-pastedtext {{{
 
-   "gb              for pasted text
-   Plug 'saaguero/vim-textobj-pastedtext', {'on': ['<Plug>(textobj-pastedtext-text)']}
-   call VOMap('gb', '<Plug>(textobj-pastedtext-text)')
+    "gb              for pasted text
+    Plug 'saaguero/vim-textobj-pastedtext', {'on': ['<Plug>(textobj-pastedtext-text)']}
+    call VOMap('gb', '<Plug>(textobj-pastedtext-text)')
 
-"}}} _vim-textobj-pastedtext
-"{{{ vim-textobj-syntax
+  "}}} _vim-textobj-pastedtext
+  " vim-textobj-syntax {{{
 
-   "iy, ay          for Syntax
-   call PlugTextObj( 'kana/vim-textobj-syntax', 'y' )
+    "iy, ay          for Syntax
+    call PlugTextObj( 'kana/vim-textobj-syntax', 'y' )
 
-"}}} _vim-textobj-syntax
-"{{{ vim-textobj-url
+  "}}} _vim-textobj-syntax
+  " vim-textobj-url {{{
 
-  "iu, au          for URL
-  call PlugTextObj( 'mattn/vim-textobj-url', 'u')
+    "iu, au          for URL
+    call PlugTextObj( 'mattn/vim-textobj-url', 'u')
 
-"}}} _vim-textobj-url
-"{{{ vim-textobj-doublecolon
-  "i:, a:          for ::
-  call PlugTextObj( 'vimtaku/vim-textobj-doublecolon', ':' )
+  "}}} _vim-textobj-url
+  " vim-textobj-doublecolon {{{
+    "i:, a:          for ::
+    call PlugTextObj( 'vimtaku/vim-textobj-doublecolon', ':' )
 
-"}}} _vim-textobj-doublecolon
-"{{{ vim-textobj-comment
+  "}}} _vim-textobj-doublecolon
+  " vim-textobj-comment {{{
 
-  "ic, ac, aC  for comment
-   call PlugTextObj( 'glts/vim-textobj-comment', 'c' )
-   call VOMap("aC", "textobj-comment-big-a")
+    "ic, ac, aC  for comment
+    call PlugTextObj( 'glts/vim-textobj-comment', 'c' )
+    call VOMap("aC", "textobj-comment-big-a")
 
-"}}} _vim-textobj-comment
-"{{{ vim-textobj-indblock
+  "}}} _vim-textobj-comment
+  " vim-textobj-indblock {{{
 
-  "io, ao, iO, aO  for indented blocks
-  call PlugTextObj( 'glts/vim-textobj-indblock', 'o' )
-  call VOMap("iO", "<Plug>(textobj-indblock-i)")
-  call VOMap("aO", "<Plug>(textobj-indblock-a)")
+    "io, ao, iO, aO  for indented blocks
+    call PlugTextObj( 'glts/vim-textobj-indblock', 'o' )
+    call VOMap("iO", "<Plug>(textobj-indblock-i)")
+    call VOMap("aO", "<Plug>(textobj-indblock-a)")
 
-"}}} _vim-textobj-indblock
-"{{{ vim-textobj-indent
+  "}}} _vim-textobj-indblock
+  " vim-textobj-indent {{{
 
-  "ii, ai, iI, aI  for Indent
-  call PlugTextObj( 'kana/vim-textobj-indent', 'i' )
-  call VOMap('iI', "<Plug>(textobj-indent-same-i)")
-  call VOMap('aI', "<plug>(textobj-indent-same-a)")
+    "ii, ai, iI, aI  for Indent
+    call PlugTextObj( 'kana/vim-textobj-indent', 'i' )
+    call VOMap('iI', "<Plug>(textobj-indent-same-i)")
+    call VOMap('aI', "<plug>(textobj-indent-same-a)")
 
-"}}} _vim-textobj-indent
-"{{{ vim-textobj-dash
+  "}}} _vim-textobj-indent
+  " vim-textobj-dash {{{
 
-  "i-, a-          for dashes
-  call PlugTextObj("khalidchawtany/vim-textobj-dash", "-")
+    "i-, a-          for dashes
+    call PlugTextObj("khalidchawtany/vim-textobj-dash", "-")
 
-"}}} _vim-textobj-dash
-"{{{ vim-textobj-underscore
+  "}}} _vim-textobj-dash
+  " vim-textobj-underscore {{{
 
-  "i_, a_          for underscore
-  call PlugTextObj ("lucapette/vim-textobj-underscore", "_")
+    "i_, a_          for underscore
+    call PlugTextObj ("lucapette/vim-textobj-underscore", "_")
 
-"}}} _vim-textobj-underscore
-"{{{ vim-textobj-brace
+  "}}} _vim-textobj-underscore
+  " vim-textobj-brace {{{
 
-  "ij, aj          for all kinds of brces
-  call PlugTextObj ("Julian/vim-textobj-brace", "j")
+    "ij, aj          for all kinds of brces
+    call PlugTextObj ("Julian/vim-textobj-brace", "j")
 
-"}}} _vim-textobj-brace
-"{{{ vim-textobj-fold
-  "iz, az          for folds
-  call PlugTextObj ("kana/vim-textobj-fold", "z")
+  "}}} _vim-textobj-brace
+  " vim-textobj-fold {{{
+    "iz, az          for folds
+    call PlugTextObj ("kana/vim-textobj-fold", "z")
 
-"}}} _vim-textobj-fold
-"{{{ vim-textobj-variable-segment
+  "}}} _vim-textobj-fold
+  " vim-textobj-variable-segment {{{
 
-  "iv, av          for variable segment goO|rCome
-  call PlugTextObj ("Julian/vim-textobj-variable-segment", "v")
+    "iv, av          for variable segment goO|rCome
+    call PlugTextObj ("Julian/vim-textobj-variable-segment", "v")
 
-"}}} _vim-textobj-variable-segment
-"{{{ vim-textobj-lastpat
+  "}}} _vim-textobj-variable-segment
+  " vim-textobj-lastpat {{{
 
-  "i/, a/, i?, a?  for Searched pattern
-  Plug 'kana/vim-textobj-lastpat'
-  \, {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']}
-  call VOMap('i/', "<Plug>(textobj-lastpat-n)")
-  call VOMap('i?', "<Plug>(textobj-lastpat-N)")
+    "i/, a/, i?, a?  for Searched pattern
+    Plug 'kana/vim-textobj-lastpat'
+    \, {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']}
+    call VOMap('i/', "<Plug>(textobj-lastpat-n)")
+    call VOMap('i?', "<Plug>(textobj-lastpat-N)")
 
-"}}} _vim-textobj-lastpat
- " vim-textobj-quote {{{
+  "}}} _vim-textobj-lastpat
+  " vim-textobj-quote {{{
   " "TODO these mappings are fake
   " "iq, aq, iQ, aQ  for Curely quotes
   " call PlugTextObj( 'reedes/vim-textobj-quote', 'q' )
@@ -1987,117 +1989,117 @@ call plug#begin('~/.config/nvim/plugged')
   " let g:textobj#quote#educate = 0               " 0=disable, 1=enable (def) autoconvert to curely
 
  "}}}
- " vim-textobj-xml {{{
+  " vim-textobj-xml {{{
 
-   "ixa, axa        for XML attributes
-   Plug 'akiyan/vim-textobj-xml-attribute', {'on': ['<Plug>(textobj-xmlattribute-']}
+    "ixa, axa        for XML attributes
+    Plug 'akiyan/vim-textobj-xml-attribute', {'on': ['<Plug>(textobj-xmlattribute-']}
 
-   let g:textobj_xmlattribute_no_default_key_mappings=1
-   call VOMap('ax', '<Plug>(textobj-xmlattribute-xmlattribute)')
-   call VOMap('ix', '<Plug>(textobj-xmlattribute-xmlattributenospace)')
-
-
- "}}}
- " vim-textobj-datetime {{{
-
-   "igda, agda,      or dates auto
-   " igdd, igdf, igdt, igdz  means
-   " date, full, time, timerzone
-   Plug 'kana/vim-textobj-datetime', {'on': ['<Plug>(textobj-datetime-']}
-
-   let g:textobj_datetime_no_default_key_mappings=1
-   call VOMap('agda', '<Plug>(textobj-datetime-auto)')
-   call VOMap('agdd', '<Plug>(textobj-datetime-date)')
-   call VOMap('agdf', '<Plug>(textobj-datetime-full)')
-   call VOMap('agdt', '<Plug>(textobj-datetime-time)')
-   call VOMap('agdz', '<Plug>(textobj-datetime-tz)')
-
-   call VOMap('igda', '<Plug>(textobj-datetime-auto)')
-   call VOMap('igdd', '<Plug>(textobj-datetime-date)')
-   call VOMap('igdf', '<Plug>(textobj-datetime-full)')
-   call VOMap('igdt', '<Plug>(textobj-datetime-time)')
-   call VOMap('igdz', '<Plug>(textobj-datetime-tz)')
-
- "}}}
- " vim-textobj-entire {{{
-  "iG, aG          for entire document
-  call PlugTextObj( 'kana/vim-textobj-entire', 'G' )
-  let g:textobj_entire_no_default_key_mappings =1
-
- "}}}
- " vim-textobj-space {{{
-
-  "iS, aS i<Space> for contineous spaces
-  call PlugTextObj( 'saihoooooooo/vim-textobj-space', '<Space>' )
-  let g:textobj_space_no_default_key_mappings =1
-
- "}}}
- " vim-textobj-path {{{
-
-   "i|, a|, i\, a\          for Path
-   Plug 'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']}
-
-   let g:textobj_path_no_default_key_mappings =1
-
-   call VOMap('a\', '<Plug>(textobj-path-next_path-a)')
-   call VOMap('i\', '<Plug>(textobj-path-next_path-i)')
-   call VOMap('a\|', '<Plug>(textobj-path-prev_path-a)')
-   call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
-
- "}}}
- " vim-textobj-inserted {{{
-  "i<cr>, a<cr>          for last inserted
-  call PlugTextObj( 'rhysd/vim-textobj-lastinserted', '<cr>' )
-  let g:textobj_lastinserted_no_default_key_mappings =1
-
- "}}}
- " vim-textobj-php {{{
-
-  "i<, a<        for <?php ?>
-   call PlugTextObj( 'akiyan/vim-textobj-php', '<' )
-   let g:textobj_php_no_default_key_mappings =1
+    let g:textobj_xmlattribute_no_default_key_mappings=1
+    call VOMap('ax', '<Plug>(textobj-xmlattribute-xmlattribute)')
+    call VOMap('ix', '<Plug>(textobj-xmlattribute-xmlattributenospace)')
 
 
- "}}}
- " vim-textobj-postexpr {{{
-  "ige, age        for post expression
-  call PlugTextObj( 'syngan/vim-textobj-postexpr', 'ge' )
-  let g:textobj_postexpr_no_default_key_mappings =1
+  "}}}
+  " vim-textobj-datetime {{{
 
- "}}}
-"{{{ textobj-motionmotion.vim
+    "igda, agda,      or dates auto
+    " igdd, igdf, igdt, igdz  means
+    " date, full, time, timerzone
+    Plug 'kana/vim-textobj-datetime', {'on': ['<Plug>(textobj-datetime-']}
 
-   "i'MotionMotion  for two motion range
-   Plug 'hchbaw/textobj-motionmotion.vim', {'on':['<Plug>(textobj-motionmotion-']}
-   call VOMap( "i'", '<Plug>(textobj-motionmotion-i)')
-   call VOMap( "a'", '<Plug>(textobj-motionmotion-a)')
+    let g:textobj_datetime_no_default_key_mappings=1
+    call VOMap('agda', '<Plug>(textobj-datetime-auto)')
+    call VOMap('agdd', '<Plug>(textobj-datetime-date)')
+    call VOMap('agdf', '<Plug>(textobj-datetime-full)')
+    call VOMap('agdt', '<Plug>(textobj-datetime-time)')
+    call VOMap('agdz', '<Plug>(textobj-datetime-tz)')
 
-"}}} _textobj-motionmotion.vim
- " vim-textobj-multi {{{
+    call VOMap('igda', '<Plug>(textobj-datetime-auto)')
+    call VOMap('igdd', '<Plug>(textobj-datetime-date)')
+    call VOMap('igdf', '<Plug>(textobj-datetime-full)')
+    call VOMap('igdt', '<Plug>(textobj-datetime-time)')
+    call VOMap('igdz', '<Plug>(textobj-datetime-tz)')
 
-   call PlugTextObj( 'osyo-manga/vim-textobj-multitextobj', 'm' )
+  "}}}
+  " vim-textobj-entire {{{
+    "iG, aG          for entire document
+    call PlugTextObj( 'kana/vim-textobj-entire', 'G' )
+    let g:textobj_entire_no_default_key_mappings =1
 
-   let g:textobj_multitextobj_textobjects_i = [
-         \   "\<Plug>(textobj-url-i)",
-         \   "\<Plug>(textobj-multiblock-i)",
-         \   "\<Plug>(textobj-function-i)",
-         \   "\<Plug>(textobj-entire-i)",
-         \]
+  "}}}
+  " vim-textobj-space {{{
+
+    "iS, aS i<Space> for contineous spaces
+    call PlugTextObj( 'saihoooooooo/vim-textobj-space', '<Space>' )
+    let g:textobj_space_no_default_key_mappings =1
+
+  "}}}
+  " vim-textobj-path {{{
+
+    "i|, a|, i\, a\          for Path
+    Plug 'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']}
+
+    let g:textobj_path_no_default_key_mappings =1
+
+    call VOMap('a\', '<Plug>(textobj-path-next_path-a)')
+    call VOMap('i\', '<Plug>(textobj-path-next_path-i)')
+    call VOMap('a\|', '<Plug>(textobj-path-prev_path-a)')
+    call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
+
+  "}}}
+  " vim-textobj-inserted {{{
+    "i<cr>, a<cr>          for last inserted
+    call PlugTextObj( 'rhysd/vim-textobj-lastinserted', '<cr>' )
+    let g:textobj_lastinserted_no_default_key_mappings =1
+
+  "}}}
+  " vim-textobj-php {{{
+
+    "i<, a<        for <?php ?>
+    call PlugTextObj( 'akiyan/vim-textobj-php', '<' )
+    let g:textobj_php_no_default_key_mappings =1
 
 
- "}}}
- " vim-textobj-keyvalue {{{
+  "}}}
+  " vim-textobj-postexpr {{{
+    "ige, age        for post expression
+    call PlugTextObj( 'syngan/vim-textobj-postexpr', 'ge' )
+    let g:textobj_postexpr_no_default_key_mappings =1
 
-   " Plug 'vimtaku/vim-textobj-keyvalue'
+  "}}}
+  " textobj-motionmotion.vim {{{
 
-   " let g:textobj_key_no_default_key_mappings=1
-   " ak  <Plug>(textobj-key-a)
-   " ik  <Plug>(textobj-key-i)
-   " av  <Plug>(textobj-value-a)
-   " iv  <Plug>(textobj-value-i)
+    "i'MotionMotion  for two motion range
+    Plug 'hchbaw/textobj-motionmotion.vim', {'on':['<Plug>(textobj-motionmotion-']}
+    call VOMap( "i'", '<Plug>(textobj-motionmotion-i)')
+    call VOMap( "a'", '<Plug>(textobj-motionmotion-a)')
+
+  "}}} _textobj-motionmotion.vim
+  " vim-textobj-multi {{{
+
+    call PlugTextObj( 'osyo-manga/vim-textobj-multitextobj', 'm' )
+
+    let g:textobj_multitextobj_textobjects_i = [
+          \   "\<Plug>(textobj-url-i)",
+          \   "\<Plug>(textobj-multiblock-i)",
+          \   "\<Plug>(textobj-function-i)",
+          \   "\<Plug>(textobj-entire-i)",
+          \]
 
 
- "}}}
+  "}}}
+  " vim-textobj-keyvalue {{{
+
+    " Plug 'vimtaku/vim-textobj-keyvalue'
+
+    " let g:textobj_key_no_default_key_mappings=1
+    " ak  <Plug>(textobj-key-a)
+    " ik  <Plug>(textobj-key-i)
+    " av  <Plug>(textobj-value-a)
+    " iv  <Plug>(textobj-value-i)
+
+
+  "}}}
 
  "}}}
  " ----------------------------------------------------------------------------
@@ -2560,38 +2562,38 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}
  " Plug 'tpope/vim-vinegar'            " {-} file browser
-"{{{ vimfiler.vim
+ " vimfiler.vim {{{
 
-   Plug 'Shougo/vimfiler.vim'
-   let g:loaded_netrw       = 1 "Disable Netrw
-   let g:loaded_netrwPlugin = 1 "Disable Netrw
-   let g:vimfiler_as_default_explorer=1
+ Plug 'Shougo/vimfiler.vim'
+ let g:loaded_netrw       = 1 "Disable Netrw
+ let g:loaded_netrwPlugin = 1 "Disable Netrw
+ let g:vimfiler_as_default_explorer=1
 
-   let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-         \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-         \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-         \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-         \ '^.gitignore$', '^.idea$' , '^tags$']
+ let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+       \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+       \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+       \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+       \ '^.gitignore$', '^.idea$' , '^tags$']
 
-   "Force vimfiler Enter to toggle expand/collapse
-   autocmd! FileType vimfiler call s:my_vimfiler_settings()
-   function! s:my_vimfiler_settings()
-     nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-     nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-   endfunction
+ "Force vimfiler Enter to toggle expand/collapse
+ autocmd! FileType vimfiler call s:my_vimfiler_settings()
+ function! s:my_vimfiler_settings()
+   nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+   nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+ endfunction
 
-   nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
-   nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
-   nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
+ nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
+ nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
+ nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
 
-"}}} _vimfiler.vim
+ "}}} _vimfiler.vim
 
- "{{{ vim-projectionist
+ " vim-projectionist {{{
 
  " Plug 'tpope/vim-projectionist'
 
  "}}} _vim-projectionist
- "{{{ vim-dotenv
+ " vim-dotenv {{{
 
    Plug 'tpope/vim-dotenv', {'on':['Dotenv']}
 
@@ -2607,30 +2609,30 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
-"{{{ vim-evanesco
+ " vim-evanesco {{{
 
-  " "may replace vim-oblique one day :)
+ " "may replace vim-oblique one day :)
 
-  " " Plug 'pgdouyon/vim-evanesco'
-  " Plug 'khalidchawtany/vim-evanesco'
-  " autocmd! user Evanesco       AnzuUpdateSearchStatusOutput
-  " autocmd! user EvanescoStar   AnzuUpdateSearchStatusOutput
-  " autocmd! user EvanescoRepeat AnzuUpdateSearchStatusOutput
+ " " Plug 'pgdouyon/vim-evanesco'
+ " Plug 'khalidchawtany/vim-evanesco'
+ " autocmd! user Evanesco       AnzuUpdateSearchStatusOutput
+ " autocmd! user EvanescoStar   AnzuUpdateSearchStatusOutput
+ " autocmd! user EvanescoRepeat AnzuUpdateSearchStatusOutput
 
-"}}} _vim-evanesco
+ "}}} _vim-evanesco
  " vim-oblique {{{
 
 
-   Plug 'junegunn/vim-oblique'
+ Plug 'junegunn/vim-oblique'
 
-   autocmd! User Oblique       AnzuUpdateSearchStatusOutput
-   autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput
-   autocmd! User ObliqueRepeat AnzuUpdateSearchStatusOutput
-   let g:oblique#enable_cmap=0
+ autocmd! User Oblique       AnzuUpdateSearchStatusOutput
+ autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput
+ autocmd! User ObliqueRepeat AnzuUpdateSearchStatusOutput
+ let g:oblique#enable_cmap=0
 
 
  "}}}
- "{{{ IndexedSearch
+ " IndexedSearch {{{
 
    " Plug 'khalidchawtany/IndexedSearch', {'on':['<Plug>(ShowSearchIndex_', 'ShowSearchIndex']}
 
@@ -2647,14 +2649,14 @@ call plug#begin('~/.config/nvim/plugged')
    " " nmap ? <Plug>(ShowSearchIndex_Backward)
 
  "}}} _IndexedSearch
-"{{{ vim-anzu
+ " vim-anzu {{{
 
-  Plug 'osyo-manga/vim-anzu', {'on': ['AnzuUpdateSearchStatusOutput']}
-  "Let anzu display numbers only. The search is already displayed by Oblique
-  let g:anzu_status_format = ' (%i/%l)'
+ Plug 'osyo-manga/vim-anzu', {'on': ['AnzuUpdateSearchStatusOutput']}
+ "Let anzu display numbers only. The search is already displayed by Oblique
+ let g:anzu_status_format = ' (%i/%l)'
 
-"}}} _vim-anzu
- "{{{ vim-fuzzysearch
+ "}}} _vim-anzu
+ " vim-fuzzysearch {{{
 
    Plug 'ggVGc/vim-fuzzysearch', {'on': ['FuzzySearch']}
    nnoremap g;; :FuzzySearch<cr>
@@ -2679,7 +2681,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
- "{{{ vim-easymotion
+ " vim-easymotion {{{
 
    Plug 'Lokaltog/vim-easymotion', {'on': ['<Plug>(easymotion-']}
 
@@ -2762,7 +2764,7 @@ call plug#begin('~/.config/nvim/plugged')
    nmap SgE <Plug>(columnmove-gE)
 
  "}}}
- "{{{ vim-skipit
+ " vim-skipit {{{
 
    "use <c-l>l to skip ahead forward in insert mode
    Plug 'habamax/vim-skipit',
@@ -2811,7 +2813,7 @@ call plug#begin('~/.config/nvim/plugged')
        \ }
 
  "}}}
- "{{{ TaskList.vim
+ " TaskList.vim {{{
 
    Plug 'vim-scripts/TaskList.vim', {'on':  ['TaskList']}
 
@@ -2825,7 +2827,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
 
  " History
- "{{{ undotree
+ " undotree {{{
 
    Plug 'mbbill/undotree'
 
@@ -2833,7 +2835,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}} _undotree
- "{{{ vim-mundo
+ " vim-mundo {{{
 
    Plug 'simnalamburt/vim-mundo'
 
@@ -2843,7 +2845,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-mundo
 
  " Buffers
- "{{{ vim-bufsurf
+ " vim-bufsurf {{{
 
    Plug 'ton/vim-bufsurf', {'on': ['BufSurfBack', 'BufSurfForward', 'BufSurfList']}
    nnoremap ]B :BufSurfForward<cr>
@@ -2851,7 +2853,7 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap coB :BufSurfList<cr>
 
  "}}} _vim-bufsurf
- "{{{ vim-ctrlspace
+ " vim-ctrlspace {{{
 
    Plug 'szw/vim-ctrlspace', {'on': ['CtrlSpace']} "TODO: load on demand
 
@@ -2870,7 +2872,7 @@ call plug#begin('~/.config/nvim/plugged')
    "let g:ctrlspace_use_tabline = 0
 
  "}}} _vim-ctrlspace
- "{{{ zoomwintab.vim
+ " zoomwintab.vim {{{
 
    Plug 'troydm/zoomwintab.vim', {'on': ['ZoomWinTabToggle']}
 
@@ -2883,7 +2885,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _zoomwintab.vim
 
  " Finder
- "  gtfo {{{
+ " gtfo {{{
 
    Plug 'justinmk/vim-gtfo'
    let g:gtfo#terminals = { 'mac' : 'iterm' }
@@ -2911,25 +2913,25 @@ call plug#begin('~/.config/nvim/plugged')
  " Folds {{{
  " ----------------------------------------------------------------------------
 
- "{{{ FastFold
+ " FastFold {{{
 
    Plug 'Konfekt/FastFold'
 
  "}}} _FastFold
 
- "{{{ vim-foldfocus
+ " vim-foldfocus {{{
 
    Plug 'vasconcelloslf/vim-foldfocus'
 
  "}}}} _vim-foldfocus
 
- "{{{ Volumes/Home/.config/nvim/plugged/foldsearches.vim
+ " Volumes/Home/.config/nvim/plugged/foldsearches.vim {{{
 
    Plug '/Volumes/Home/.config/nvim/plugged/foldsearches.vim'
 
  "}}} _Volumes/Home/.config/nvim/plugged/foldsearches.vim
 
- "{{{ searchfold.vim
+ " searchfold.vim {{{
 
    Plug 'khalidchawtany/searchfold.vim' , {'on':  ['<Plug>SearchFold']}
 
@@ -2942,7 +2944,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}} _searchfold.vim
 
- "{{{ foldsearch
+ " foldsearch {{{
 
   Plug 'khalidchawtany/foldsearch',
        \ { 'on': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe']}
@@ -2959,7 +2961,7 @@ call plug#begin('~/.config/nvim/plugged')
  " Themeing {{{
  " ----------------------------------------------------------------------------
 
- "{{{ goyo.vim
+ " goyo.vim {{{
 
    Plug 'junegunn/goyo.vim',      { 'on': 'Goyo'}
 
@@ -2967,18 +2969,18 @@ call plug#begin('~/.config/nvim/plugged')
    autocmd! User GoyoLeave Limelight!
 
  "}}} _goyo.vim
- "{{{ limelight.vim
+ " limelight.vim {{{
 
    Plug 'junegunn/limelight.vim', { 'on': 'Limelight'}
    let g:limelight_conceal_guifg="#C2B294"
 
  "}}} _limelight.vim
- "{{{ vim-lambdify
+ " vim-lambdify {{{
 
    Plug 'calebsmith/vim-lambdify'
 
  "}}} _vim-lambdify
- "{{{ vim-css-color
+ " vim-css-color {{{
 
    Plug 'ap/vim-css-color',            { 'for':['css','scss','sass','less','styl']}
 
@@ -3010,7 +3012,7 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap <leader>xp :RainbowParentheses!!<CR>
 
  "}}}
- "{{{ golden-ratio
+ " golden-ratio {{{
 
    Plug 'roman/golden-ratio'
 
@@ -3184,7 +3186,7 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'vim-scripts/eclipse.vim'
    Plug 'vim-scripts/pyte'
    Plug 'flazz/vim-colorschemes'
- "{{{ vim-janah
+ " vim-janah {{{
 
    Plug 'mhinz/vim-janah'
    " autocmd ColorSchme janah highlight Normal ctermbg=235
