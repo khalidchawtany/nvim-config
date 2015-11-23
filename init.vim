@@ -2537,31 +2537,52 @@ call plug#begin('~/.config/nvim/plugged')
     nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
 
 
+
+    function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+      exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+      exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+    endfunction
+
+    call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
+    call NERDTreeHighlightFile('md', 'blue', 'none', '#6699CC', 'none')
+    call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
+    call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
+    call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
+    call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
+    call NERDTreeHighlightFile('css', 'cyan', 'none', '#5486C0', 'none')
+    call NERDTreeHighlightFile('scss', 'cyan', 'none', '#5486C0', 'none')
+    call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
+    call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
+    call NERDTreeHighlightFile('ts', 'Blue', 'none', '#6699cc', 'none')
+    call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
+    call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
+    call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
+
  "}}}
  " Plug 'tpope/vim-vinegar'            " {-} file browser
 "{{{ vimfiler.vim
 
-   Plug 'Shougo/vimfiler.vim'
-   let g:loaded_netrw       = 1 "Disable Netrw
-   let g:loaded_netrwPlugin = 1 "Disable Netrw
-   let g:vimfiler_as_default_explorer=1
+   "Plug 'Shougo/vimfiler.vim'
+   "let g:loaded_netrw       = 1 "Disable Netrw
+   "let g:loaded_netrwPlugin = 1 "Disable Netrw
+   "let g:vimfiler_as_default_explorer=1
 
-   let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-         \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-         \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-         \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-         \ '^.gitignore$', '^.idea$' , '^tags$']
+   "let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+         "\ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+         "\ '\.embed\.manifest$', '\.embed\.manifest.res$',
+         "\ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+         "\ '^.gitignore$', '^.idea$' , '^tags$']
 
-   "Force vimfiler Enter to toggle expand/collapse
-   autocmd! FileType vimfiler call s:my_vimfiler_settings()
-   function! s:my_vimfiler_settings()
-     nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-     nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-   endfunction
+   ""Force vimfiler Enter to toggle expand/collapse
+   "autocmd! FileType vimfiler call s:my_vimfiler_settings()
+   "function! s:my_vimfiler_settings()
+     "nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+     "nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+   "endfunction
 
-   nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
-   nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
-   nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
+   "nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
+   "nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
+   "nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
 
 "}}} _vimfiler.vim
 
@@ -3533,11 +3554,13 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
   endfunction
 
 
+  "Term {{{
   "Enter insert mode on switch to term and on leave leave insert mode
   "------------------------------------------------------------------
-   "autocmd! BufEnter,BufWinEnter,WinEnter term://* call feedkeys('i')
-   "autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
-   "autocmd! BufLeave term://* stopinsert
+   autocmd BufWinEnter term://*  call feedkeys('i')
+   autocmd TermOpen * autocmd BufEnter <buffer> startinsert
+   autocmd! BufLeave term://* stopinsert
+   "}}}
 
 " }}}
 " ============================================================================
@@ -3732,6 +3755,42 @@ set foldmethod=marker
 " These commands open folds
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
+" Set a nicer foldtext function
+set foldtext=MyFoldText()
+function! MyFoldText()
+  let line = getline(v:foldstart)
+  if match( line, '^[ \t]*\(\/\*\|\/\/\)[*/\\]*[ \t]*$' ) == 0
+    let initial = substitute( line, '^\([ \t]\)*\(\/\*\|\/\/\)\(.*\)', '\1\2', '' )
+    let linenum = v:foldstart + 1
+    while linenum < v:foldend
+      let line = getline( linenum )
+      let comment_content = substitute( line, '^\([ \t\/\*]*\)\(.*\)$', '\2', 'g' )
+      if comment_content != ''
+        break
+      endif
+      let linenum = linenum + 1
+    endwhile
+    let sub = initial . ' ' . comment_content
+  else
+    let sub = line
+    let startbrace = substitute( line, '^.*{[ \t]*$', '{', 'g')
+    if startbrace == '{'
+      let line = getline(v:foldend)
+      let endbrace = substitute( line, '^[ \t]*}\(.*\)$', '}', 'g')
+      if endbrace == '}'
+        let sub = sub.substitute( line, '^[ \t]*}\(.*\)$', '...}\1', 'g')
+      endif
+    endif
+  endif
+  let n = v:foldend - v:foldstart + 1
+  let info = " " . n . " lines"
+  let sub = sub . "                                                                                                                  "
+  let num_w = getwinvar( 0, '&number' ) * getwinvar( 0, '&numberwidth' )
+  let fold_w = getwinvar( 0, '&foldcolumn' )
+  let sub = strpart( sub, 0, winwidth(0) - strlen( info ) - num_w - fold_w - 1 )
+  return sub . info
+
+endfunction
 
 set nowrap
 
@@ -3796,27 +3855,6 @@ call matchadd('ColorColumn', '\%81v', 100)
 " COLORS {{{
 " ============================================================================
 
- function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-  exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-  exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-  endfunction
-
-  call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
-  call NERDTreeHighlightFile('md', 'blue', 'none', '#6699CC', 'none')
-  call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
-  call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
-  call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-  call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
-  call NERDTreeHighlightFile('css', 'cyan', 'none', '#5486C0', 'none')
-  call NERDTreeHighlightFile('scss', 'cyan', 'none', '#5486C0', 'none')
-  call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
-  call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
-  call NERDTreeHighlightFile('ts', 'Blue', 'none', '#6699cc', 'none')
-  call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
-  call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
-  call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
-
-
   " vim-buftabline support
   hi! SLIdentifier guibg=#151515 guifg=#ffb700 gui=bold cterm=bold ctermbg=233i ctermfg=214
   hi! SLCharacter guibg=#151515 guifg=#e6db74 ctermbg=233 ctermfg=227
@@ -3826,8 +3864,10 @@ call matchadd('ColorColumn', '\%81v', 100)
   hi! link BufTabLineActive SLCharacter
   hi! link BufTabLineHidden SLType
 
-  hi Folded ctermfg=250 ctermbg=236 guifg=#B04A2F guibg=#232526
-  hi FoldColumn ctermfg=250 ctermbg=236 guifg=#465457 guibg=#232526
+  "hi Folded ctermfg=250 ctermbg=236 guifg=#B04A2F guibg=#232526
+  "hi FoldColumn ctermfg=250 ctermbg=236 guifg=#465457 guibg=#232526
+  hi Folded ctermfg=250 ctermbg=236 guifg=#00F0FF guibg=#232526
+  hi FoldColumn ctermfg=250 ctermbg=236 guifg=#00F0FF guibg=#232526
 
   let g:terminal_color_0  = '#2e3436'
   let g:terminal_color_1  = '#cc0000'
@@ -3858,7 +3898,7 @@ call matchadd('ColorColumn', '\%81v', 100)
 " }}}
 " ============================================================================
 
- "{{{ Align_operator
+" Align_operator {{{
   call operator#user#define('align-left', 'Op_command', 'call Set_op_command("left")')
   call operator#user#define('align-right', 'Op_command', 'call Set_op_command("right")')
   call operator#user#define('align-center', 'Op_command', 'call Set_op_command("center")')
@@ -3874,16 +3914,15 @@ call matchadd('ColorColumn', '\%81v', 100)
   endfunction
  "}}} _Align
 
-function! SetProjectPath()
+function! SetProjectPath()"{{{
   lcd ~/Development/Projects/Dwarozh/App/
   cd ~/Development/Projects/Dwarozh/App/
   pwd
 endfunction
 
-nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>
+nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>"}}}
 
-
-" function! neomake#makers#ft#cs#EnabledMakers()
+" function! neomake#makers#ft#cs#EnabledMakers()"{{{
 "   if neomake#utils#Exists('mcs')
 "     return ['mcs']
 "   end
@@ -3894,10 +3933,5 @@ nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>
 "         \ 'args': ['--parse', '--unsafe'],
 "         \ 'errorformat': '%f(%l\,%c): %trror %m',
 "         \ }
-" endfunction
-
-
-
-" hi normal guibg=#092833
-" hi Folded guibg=#1A556B guifg=yellow
+" endfunction"}}}
 
