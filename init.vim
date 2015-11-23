@@ -2562,27 +2562,27 @@ call plug#begin('~/.config/nvim/plugged')
  " Plug 'tpope/vim-vinegar'            " {-} file browser
 "{{{ vimfiler.vim
 
-   "Plug 'Shougo/vimfiler.vim'
-   "let g:loaded_netrw       = 1 "Disable Netrw
-   "let g:loaded_netrwPlugin = 1 "Disable Netrw
-   "let g:vimfiler_as_default_explorer=1
+   Plug 'Shougo/vimfiler.vim'
+   let g:loaded_netrw       = 1 "Disable Netrw
+   let g:loaded_netrwPlugin = 1 "Disable Netrw
+   let g:vimfiler_as_default_explorer=1
 
-   "let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-         "\ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-         "\ '\.embed\.manifest$', '\.embed\.manifest.res$',
-         "\ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-         "\ '^.gitignore$', '^.idea$' , '^tags$']
+   let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+         \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+         \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+         \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+         \ '^.gitignore$', '^.idea$' , '^tags$']
 
-   ""Force vimfiler Enter to toggle expand/collapse
-   "autocmd! FileType vimfiler call s:my_vimfiler_settings()
-   "function! s:my_vimfiler_settings()
-     "nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-     "nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-   "endfunction
+   "Force vimfiler Enter to toggle expand/collapse
+   autocmd! FileType vimfiler call s:my_vimfiler_settings()
+   function! s:my_vimfiler_settings()
+     nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+     nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+   endfunction
 
-   "nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
-   "nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
-   "nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
+   nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
+   nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
+   nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
 
 "}}} _vimfiler.vim
 
