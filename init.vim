@@ -1888,11 +1888,19 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
   " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
-  call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
+  "call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
+  "let g:textobj_anyblock_no_default_key_mappings =1
+
+  "" let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
+
+  Plug 'rhysd/vim-textobj-anyblock'
   let g:textobj_anyblock_no_default_key_mappings =1
 
+  vmap  aa <Plug>(textobj-anyblock-a)
+  omap  aa <Plug>(textobj-anyblock-a)
+  vmap  ia <Plug>(textobj-anyblock-i)
+  omap  ia <Plug>(textobj-anyblock-i)
   " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
-
   "}}}
 
   Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
@@ -2067,14 +2075,6 @@ call plug#begin('~/.config/nvim/plugged')
     let g:textobj_postexpr_no_default_key_mappings =1
 
   "}}}
-  " textobj-motionmotion.vim {{{
-
-    "i'MotionMotion  for two motion range
-    Plug 'hchbaw/textobj-motionmotion.vim', {'on':['<Plug>(textobj-motionmotion-']}
-    call VOMap( "i'", '<Plug>(textobj-motionmotion-i)')
-    call VOMap( "a'", '<Plug>(textobj-motionmotion-a)')
-
-  "}}} _textobj-motionmotion.vim
   " vim-textobj-multi {{{
 
     call PlugTextObj( 'osyo-manga/vim-textobj-multitextobj', 'm' )
@@ -3238,49 +3238,166 @@ call plug#end()
 " ============================================================================
 
 
-" ----------------------------------------------------------------------------
-" HTML {{{
-" ----------------------------------------------------------------------------
-  au FileType html,blade inoremap <buffer> >>     ></<C-X><C-O><Esc>%i
-  au FileType html,blade inoremap <buffer> >><CR> ></<C-X><C-O><Esc>%i<CR><ESC>O
-
-"}}}
-
-" ----------------------------------------------------------------------------
-" term {{{
-" ----------------------------------------------------------------------------
-  tnoremap <c-o> <c-\><c-n>
-
-"}}}
-
-"Toggle laststatus (statusline | statusbar)
-nnoremap <silent> co<space> :execute "set laststatus=" . (&laststatus+2)%3<cr>
-
-nnoremap <silent> [I :call List("i", 0, 0)<CR>
-nnoremap <silent> ]I :call List("i", 0, 1)<CR>
-xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
-xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
-nnoremap <silent> [D :call List("d", 0, 0)<CR>
-nnoremap <silent> ]D :call List("d", 0, 1)<CR>
-xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
-xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
+  nnoremap <silent> [I :call List("i", 0, 0)<CR>
+  nnoremap <silent> ]I :call List("i", 0, 1)<CR>
+  xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
+  xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
+  nnoremap <silent> [D :call List("d", 0, 0)<CR>
+  nnoremap <silent> ]D :call List("d", 0, 1)<CR>
+  xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
+  xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
 
   "noremap <F4> :call DiffMe()<CR>
-
-  nnoremap <c-w>O :BufOnly<cr>
 
   nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
   nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
 
+  " Close all folds except this
+  nnoremap z<Space> zMzv
 
+  nnoremap cof :call ToggleFoldMethod()<cr>
   nnoremap com :call ToggleFoldMarker()<cr>
 
   autocmd Filetype neosnippet,cs call ToggleFoldMarker()
 
 
-  nnoremap cof :call ToggleFoldMethod()<cr>
+  "CD into:
+  "current buffer file dir
+  nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
+  "current working dir
+  nnoremap cdc :lcd <c-r>=expand("%:h")<cr>/
+  "git dir ROOT
+  nnoremap cdg :lcd <c-r>=FindGitDirOrRoot()<cr><cr>
+
+  "Open current directory in Finder
+  nnoremap gof :silent !open .<cr>
+
+  nnoremap ycd :!mkdir -p %:p:h<CR>
+
+  "Go to alternate file
+  nnoremap go <C-^>
+
+  " edit in the path of current file
+  nnoremap <leader>ef :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
+  nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
+
+  " Edit the vimrc (init.vim) file
+  nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
+
+  " evaluate selected vimscript | line | whole vimrc (init.vim)
+  vnoremap <Leader>sv "vy:@v<CR>
+  nnoremap <Leader>s; "vyy:@v<CR>
+  nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
 
 
+  " <c-y>f Copy the full path of the current file to the clipboard
+  nnoremap <silent> <c-y>f :let @+=expand("%:p")<cr>:echo "Copied current file
+        \ path '".expand("%:p")."' to clipboard"<cr>
+
+  nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
+
+  " rename current buffers file
+  nnoremap <Leader>rn :call RenameFile()<cr>
+
+  " save as root
+  noremap <leader>W :w !sudo tee % > /dev/null<CR>
+
+  " Edit todo list for project
+  nnoremap ,to :e todo.org<cr>
+
+  " Laravel
+  nnoremap Úlv :e ./resources/views/<cr>
+  nnoremap Úlc :e ./resources/views/partials/<cr>
+  nnoremap Úlp :e ./public/<cr>
+
+  " Java
+  nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
+
+  " HTML
+  au FileType html,blade inoremap <buffer> >>     ></<C-X><C-O><Esc>%i
+  au FileType html,blade inoremap <buffer> >><CR> ></<C-X><C-O><Esc>%i<CR><ESC>O
+
+
+  nnoremap <F12> :call ToggleMouseFunction()<cr>
+
+
+  " { and } skip over closed folds
+  nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
+  nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
+
+  " Jump to next/previous merge conflict marker
+  nnoremap <silent> ]> /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
+  nnoremap <silent> [> ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
+
+  " Move visual lines
+  nmap <silent> j gj
+  nmap <silent> k gk
+
+  noremap  H ^
+  vnoremap H ^
+  onoremap H ^
+  noremap  L $
+  vnoremap L g_
+  onoremap L $
+
+
+  nnoremap ; :
+  nnoremap : ;
+  vnoremap ; :
+  vnoremap : ;
+
+  "Make completion more comfortable
+  inoremap <c-j> <c-n>
+  inoremap <c-k> <c-p>
+
+  inoremap <C-U> <C-G>u<C-U>
+
+  if !exists('$TMUX')
+    nnoremap <silent> <c-h> <c-w><c-h>
+    nnoremap <silent> <c-j> <c-w><c-j>
+    nnoremap <silent> <c-k> <c-w><c-k>
+    nnoremap <silent> <c-l> <c-w><c-l>
+  endif
+
+
+  " <Leader>``: Force quit all
+  nnoremap <Leader>`` :qa!<cr>
+
+
+  " Highlight TODO markers
+  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+
+  " term {{{
+  "===============================================================================
+    tnoremap <c-o> <c-\><c-n>
+
+  "}}}
+
+  " Window & Buffer {{{
+  "===============================================================================
+
+  " Shrink to fit number of lines
+  nmap <silent> <c-w>S :execute ":resize " . line('$')<cr>
+
+  " Maximize current split
+  nnoremap <c-w>M <C-w>_<C-w><Bar>
+  nnoremap <c-w>O :BufOnly<cr>
+
+  " Put an empty line before and after this line : depends on PLUGIN
+  nnoremap \\<Space> :normal [ ] <cr>
+
+  " Uppercase from insert mode while you are at the end of a word
+  inoremap <C-u> <esc>mzgUiw`za
+
+  "Remove ^M from a file
+  nnoremap  <leader>e^ :e ++ff=dos
+  nnoremap gf<C-M> :e! ++ff=dos<cr>
+
+  "}}}
+
+  " Text editting {{{
+  "===============================================================================
 
   " Underline {{{
 
@@ -3296,36 +3413,16 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
 
   "}}}
 
-  nnoremap gf<C-M> :e! ++ff=dos<cr>
-
-  " Swap two words
-  nmap <silent> gw :s/\(\%#\w\+\)\(\_W\+\)\(\w\+\)/\3\2\1/<CR>`'
-
-  " <Leader>cd: Switch to the directory of the open buffer
-  nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
-  nnoremap cdc :lcd <c-r>=expand("%:h")<cr>/
-
-  "cd to the directory containing the file in the buffer
-  "nnoremap <silent> <leader>cd :lcd %:h<CR>
-  nnoremap gpr :lcd <c-r>=FindGitDirOrRoot()<cr><cr>
-  nnoremap ycd :!mkdir -p %:p:h<CR>
 
 
-  " edit in the path of current file
-  nnoremap <leader>ef :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
-  nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
+  "TODO: conflicts with script-ease
+  command! SplitLine :normal i<CR><ESC>,ss<cr>
+  nnoremap K :call Preserve('SplitLine')<cr>
 
-  " Edit the vimrc file
-  nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
-  " run selected vimscript
-  vnoremap <Leader>sv "vy:@v<CR>
+  nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
 
-  " run vimscript line
-  nnoremap <Leader>s; "vyy:@v<CR>
-
-  " run .vimrc
-  nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
+  noremap <leader>ss :call StripWhitespace()<CR>
 
   "Discard changes
   nnoremap <leader>e<bs> :e! \| echo 'changes discarded'<cr>
@@ -3333,131 +3430,33 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
   "Retab file
   nnoremap <leader>er :retab<cr>
 
-  " <c-y>f Copy the full path of the current file to the clipboard
-  nnoremap <silent> <c-y>f :let @+=expand("%:p")<cr>:echo "Copied current file
-        \ path '".expand("%:p")."' to clipboard"<cr>
 
-
-
-  nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
-
-  nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
-
-  noremap <leader>ss :call StripWhitespace()<CR>
-
-  nnoremap <Leader>rn :call RenameFile()<cr>
-
-  "save as root
-  noremap <leader>W :w !sudo tee % > /dev/null<CR>
-  "cnoremap sw! w !sudo tee % >/dev/null
-
-  " Shrink the current window to fit the number of lines in the buffer.  Useful
-  " for those buffers that are only a few lines
-  nmap <silent> <leader>sw :execute ":resize " . line('$')<cr>
-
-  nnoremap <F12> :call ToggleMouseFunction()<cr>
-
-  nmap <silent> j gj
-  nmap <silent> k gk
-
-  "Make completion more comfortable
-  inoremap <c-j> <c-n>
-  inoremap <c-k> <c-p>
-
-  inoremap <C-U> <C-G>u<C-U>
-
-  "TODO: conflicts with script-ease
-  command! SplitLine :normal i<CR><ESC>,ss<cr>
-  nnoremap K :call Preserve('SplitLine')<cr>
-
-
-  " { and } skip over closed folds
-  nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
-  nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
-
+  " indent visually without coming back to normal mode
   vmap > >gv
   vmap < <gv
-
-  nnoremap ; :
-  nnoremap : ;
-
-  vnoremap ; :
-  vnoremap : ;
-
-  noremap H ^
-  noremap L $
-  vnoremap L g_
-
-  onoremap H ^
-  onoremap L $
-
-  if !exists('$TMUX')
-    nnoremap <silent> <c-h> <c-w><c-h>
-    nnoremap <silent> <c-j> <c-w><c-j>
-    nnoremap <silent> <c-k> <c-w><c-k>
-    nnoremap <silent> <c-l> <c-w><c-l>
-  endif
-
-  " select last matched item
-  nnoremap <leader>/ //e<Enter>v??<Enter>
-
-  " <Leader>``: Force quit all
-  nnoremap <Leader>`` :qa!<cr>
-
-  " Edit todo list for project
-  nnoremap ,to :e todo.org<cr>
-
-  " Laravel framework commons
-  nnoremap Úlv :e ./resources/views/<cr>
-  nnoremap Úlc :e ./resources/views/partials/<cr>
-  nnoremap Úlp :e ./public/<cr>
-
-
-  "uppercase from insert mode while you are at the end of a word
-  inoremap <C-u> <esc>mzgUiw`za
-
-  "center screen cursor
-  nnoremap z<Space> zMzv
-
-  " <Leader>sm: Maximize current split
-  nnoremap <Leader>sm <C-w>_<C-w><Bar>
-
-
-  "Clear the search highlight except when I move
-  autocmd! cursorhold * set nohlsearch
-  autocmd! cursormoved * set hlsearch
-
 
   " Move visual block
   vnoremap <c-j> :m '>+1<CR>gv=gv
   vnoremap <c-k> :m '<-2<CR>gv=gv
 
+  " select last matched item
+  nnoremap <leader>/ //e<Enter>v??<Enter>
+
   " Select last pasted text
   nnoremap gb `[v`]
   nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-  "Reselect the text you just entered
+  " Reselect the text you just entered
   nnoremap gV `[v`]
+  "}}}
 
-  " Highlight TODO markers
-  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
-  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+  " Toggles {{{
+  "===============================================================================
 
-  " Jump to next/previous merge conflict marker
-  " nnoremap <silent> ]m /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
-  " nnoremap <silent> [m ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
+  "Toggle laststatus (statusline | statusbar)
+  nnoremap <silent> co<space> :execute "set laststatus=" . (&laststatus+2)%3<cr>
 
-  "Put an empty line before and after this line : depends on PLUGIN
-  nnoremap \\<Space> :normal [ ] <cr>
 
-  "Open current directory in Finder
-  nnoremap <leader><cr> :silent !open .<cr>
-
-  "Go to alternate file
-  nnoremap go <C-^>
-
-  "Open/Close commands
-  "======================
   nnoremap  coq :QFix<cr>
   command! QFix call QFixToggle()
   function! QFixToggle()
@@ -3470,44 +3469,27 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
     endfor
     copen
   endfunction
+  "}}}
 
-
-  "Buffer deletion commands
-  "===========================
+  " Buffer deletion commands {{{
+  "===============================================================================
   nnoremap  Úwa :bufdo execute ":bw"<cr>
   nnoremap  ÚÚwa :bufdo execute ":bw!"<cr>
-
   nnoremap  Úww :bw<cr>
   nnoremap  ÚÚww :bw!<cr>
+  "}}}
 
-  "Remove ^M from a file
-  nnoremap  <leader>e^ :e ++ff=dos
-
-  "Execute java using ,j
-  nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
-
-  "===============================================================================
-  " Command-line Mode Key Mappings
+  " Command-line Mode Key Mappings {{{
   "===============================================================================
 
   cnoremap <c-a> <home>
   cnoremap <c-e> <end>
-
   cnoremap <c-j> <down>
   cnoremap <c-k> <up>
-
   cnoremap <c-h> <left>
   cnoremap <c-l> <right>
-
   cnoremap <c-g>pp <C-\>egetcwd()<CR>
   cnoremap <c-g>pf <C-r>=expand("%")<CR>
-
-  " Ctrl-Space: Show history
-
-
-  " Ctrl-v: Paste
-  "cnoremap <c-v> <c-r>"
-
   nnoremap z0 :set foldlevel=0<cr>
   nnoremap z1 :set foldlevel=1<cr>
   nnoremap z2 :set foldlevel=2<cr>
@@ -3520,7 +3502,9 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
   nnoremap z9 :set foldlevel=9<cr>
 
 
-" }}}
+"}}}
+
+"}}}
 " ============================================================================
 " AUTOCMD {{{
 " ============================================================================
