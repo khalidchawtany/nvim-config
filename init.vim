@@ -1888,19 +1888,11 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
   " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
-  "call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
-  "let g:textobj_anyblock_no_default_key_mappings =1
-
-  "" let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
-
-  Plug 'rhysd/vim-textobj-anyblock'
+  call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
   let g:textobj_anyblock_no_default_key_mappings =1
 
-  vmap  aa <Plug>(textobj-anyblock-a)
-  omap  aa <Plug>(textobj-anyblock-a)
-  vmap  ia <Plug>(textobj-anyblock-i)
-  omap  ia <Plug>(textobj-anyblock-i)
   " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
+
   "}}}
 
   Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
@@ -2008,6 +2000,19 @@ call plug#begin('~/.config/nvim/plugged')
 
 
   "}}}
+  " vim-textobj-path {{{
+
+    "i|, a|, i\, a\          for Path
+    Plug 'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']}
+
+    let g:textobj_path_no_default_key_mappings =1
+
+    call VOMap('a\', '<Plug>(textobj-path-next_path-a)')
+    call VOMap('i\', '<Plug>(textobj-path-next_path-i)')
+    call VOMap('a\|', '<Plug>(textobj-path-prev_path-a)')
+    call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
+
+  "}}}
   " vim-textobj-datetime {{{
 
     "igda, agda,      or dates auto
@@ -2027,46 +2032,6 @@ call plug#begin('~/.config/nvim/plugged')
     call VOMap('igdf', '<Plug>(textobj-datetime-full)')
     call VOMap('igdt', '<Plug>(textobj-datetime-time)')
     call VOMap('igdz', '<Plug>(textobj-datetime-tz)')
-
-  "}}}
-  " vim-textobj-entire {{{
-    "iG, aG          for entire document
-    call PlugTextObj( 'kana/vim-textobj-entire', 'G' )
-    let g:textobj_entire_no_default_key_mappings =1
-
-  "}}}
-  " vim-textobj-space {{{
-
-    "iS, aS i<Space> for contineous spaces
-    call PlugTextObj( 'saihoooooooo/vim-textobj-space', '<Space>' )
-    let g:textobj_space_no_default_key_mappings =1
-
-  "}}}
-  " vim-textobj-path {{{
-
-    "i|, a|, i\, a\          for Path
-    Plug 'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']}
-
-    let g:textobj_path_no_default_key_mappings =1
-
-    call VOMap('a\', '<Plug>(textobj-path-next_path-a)')
-    call VOMap('i\', '<Plug>(textobj-path-next_path-i)')
-    call VOMap('a\|', '<Plug>(textobj-path-prev_path-a)')
-    call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
-
-  "}}}
-  " vim-textobj-inserted {{{
-    "i<cr>, a<cr>          for last inserted
-    call PlugTextObj( 'rhysd/vim-textobj-lastinserted', '<cr>' )
-    let g:textobj_lastinserted_no_default_key_mappings =1
-
-  "}}}
-  " vim-textobj-php {{{
-
-    "i<, a<        for <?php ?>
-    call PlugTextObj( 'akiyan/vim-textobj-php', '<' )
-    let g:textobj_php_no_default_key_mappings =1
-
 
   "}}}
   " vim-textobj-postexpr {{{
@@ -2100,7 +2065,33 @@ call plug#begin('~/.config/nvim/plugged')
 
 
   "}}}
+  " vim-textobj-space {{{
 
+    "iS, aS i<Space> for contineous spaces
+    call PlugTextObj( 'saihoooooooo/vim-textobj-space', '<Space>' )
+    let g:textobj_space_no_default_key_mappings =1
+
+  "}}}
+  " vim-textobj-entire {{{
+    "iG, aG          for entire document
+    call PlugTextObj( 'kana/vim-textobj-entire', 'G' )
+    let g:textobj_entire_no_default_key_mappings =1
+
+  "}}}
+  " vim-textobj-inserted {{{
+    "i<cr>, a<cr>          for last inserted
+    call PlugTextObj( 'rhysd/vim-textobj-lastinserted', '<cr>' )
+    let g:textobj_lastinserted_no_default_key_mappings =1
+
+  "}}}
+  " vim-textobj-php {{{
+
+    "i<, a<        for <?php ?>
+    call PlugTextObj( 'akiyan/vim-textobj-php', '?' )
+    let g:textobj_php_no_default_key_mappings =1
+
+
+  "}}}
  "}}}
  " ----------------------------------------------------------------------------
  " Navigation {{{
