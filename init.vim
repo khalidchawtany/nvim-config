@@ -2078,12 +2078,6 @@ call plug#begin('~/.config/nvim/plugged')
     let g:textobj_entire_no_default_key_mappings =1
 
   "}}}
-  " vim-textobj-inserted {{{
-    "i<cr>, a<cr>          for last inserted
-    call PlugTextObj( 'rhysd/vim-textobj-lastinserted', '<cr>' )
-    let g:textobj_lastinserted_no_default_key_mappings =1
-
-  "}}}
   " vim-textobj-php {{{
 
     "i<, a<        for <?php ?>
