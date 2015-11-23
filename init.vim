@@ -3755,6 +3755,7 @@ set foldmethod=marker
 " These commands open folds
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
+
 " Set a nicer foldtext function
 set foldtext=MyFoldText()
 function! MyFoldText()
@@ -3789,8 +3790,8 @@ function! MyFoldText()
   let fold_w = getwinvar( 0, '&foldcolumn' )
   let sub = strpart( sub, 0, winwidth(0) - strlen( info ) - num_w - fold_w - 1 )
   return sub . info
-
 endfunction
+
 
 set nowrap
 
@@ -3812,7 +3813,6 @@ set noerrorbells visualbell t_vb=     " Disable error bells
 set nostartofline                     " Don’t reset cursor to start of line when moving around
 set ruler                             " Show the cursor position
 set showmode                          " Show the current mode
-
 
 if !&scrolloff
   set scrolloff=3                       " Keep cursor in screen by value
