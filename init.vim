@@ -3267,7 +3267,7 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
 
   "noremap <F4> :call DiffMe()<CR>
 
-  nnoremap Ú<c-o> :BufOnly<cr>
+  nnoremap <c-w>O :BufOnly<cr>
 
   nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
   nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
@@ -3282,16 +3282,18 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
 
 
 
-  " underline the current line with '='
-  nnoremap <leader>u= :t.\|s/./=<cr>:nohls<cr>
-  nnoremap <leader>u- :t.\|s/./-<cr>:nohls<cr>
-  nnoremap <leader>u~ :t.\|s/./\\~<cr>:nohls<cr>
+  " Underline {{{
 
-  " Underline current line "{{{
-  " nnoremap <leader>- "zyy"zp<c-v>$r-
-  " nnoremap <leader>= "zyy"zp<c-v>$r=
-  " nnoremap <leader><leader>- o<home><ESC>120i-<ESC>
-  " nnoremap <leader><leader>= o<home><ESC>120i=<ESC>
+    " underline the current line
+    nnoremap <leader>U= :t.\|s/./=<cr>:nohls<cr>
+    nnoremap <leader>U- :t.\|s/./-<cr>:nohls<cr>
+    nnoremap <leader>U~ :t.\|s/./\\~<cr>:nohls<cr>
+
+    "only underline from H to L
+    nnoremap <leader>u= "zyy"zp<c-v>$r=
+    nnoremap <leader>u- "zyy"zp<c-v>$r-
+    nnoremap <leader>u~ "zyy"zp<c-v>$r~
+
   "}}}
 
   nnoremap gf<C-M> :e! ++ff=dos<cr>
