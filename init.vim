@@ -10,6 +10,16 @@ let g:mapleader = ","
 " FUNCTIONS {{{
 " ============================================================================
 
+ function! NXMap(key, plug)"{{{
+   execute "nmap" a:key a:plug
+   execute "xmap" a:key a:plug
+ endfunction"}}}
+
+ function! VXMap(key, plug)"{{{
+   execute "vmap" a:key a:plug
+   execute "xmap" a:key a:plug
+ endfunction"}}}
+
  function! VOMap(key, plug)"{{{
    execute "vmap" a:key a:plug
    execute "omap" a:key a:plug
@@ -524,15 +534,16 @@ call plug#begin('~/.config/nvim/plugged')
 
  "{{{ vim-fugitive
 
- Plug 'tpope/vim-fugitive', {'on': [
-       \ 'Git',      'Gcd',     'Glcd',   'Gstatus',
-       \ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
-       \ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
-       \ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
-       \ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
-       \ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
-       \ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
-       \ ]}
+ Plug 'tpope/vim-fugitive'
+       "\ , {'on':
+       "\ [ 'Git', 'Gcd',     'Glcd',   'Gstatus',
+       "\ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
+       "\ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
+       "\ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
+       "\ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
+       "\ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
+       "\ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
+       "\ ]}
 
    autocmd User fugitive
          \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
@@ -662,7 +673,7 @@ call plug#begin('~/.config/nvim/plugged')
  " Multi-edits
  " vim-fnr {{{
 
-   Plug 'junegunn/vim-fnr', {'on': ['<Plug>FNR']}
+   Plug 'junegunn/vim-fnr', {'on': ['<Plug>(FNR)','<Plug>(FNR%)']}
 
    " Defaults
    let g:fnr_flags   = 'gc'
@@ -1004,7 +1015,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  "{{{ splitjoin.vim
 
-   " Cannot be lazyloaded :(
+   "Don't try to lazyload :(
    Plug 'AndrewRadev/splitjoin.vim'
 
  "}}} _splitjoin.vim
@@ -1020,9 +1031,8 @@ call plug#begin('~/.config/nvim/plugged')
  " Comments
  "{{{ nerdcommenter
 
+ "Don't lazyload as doing so will fragile
   Plug 'scrooloose/nerdcommenter'
-  "Add a space around the comment
-  let g:NERDSpaceDelims=1
 
  "}}} _nerdcommenter
    " Plug 'tpope/vim-commentary'
@@ -1069,13 +1079,14 @@ call plug#begin('~/.config/nvim/plugged')
        call submode#map('undo/redo', 'n', '', '+', 'g+')
      "}}} _Undoe/Redo
      "Buffer {{{
-       call submode#enter_with('buf', 'n', '', ']b', ':<C-U>exe "bnext"<cr>')
-       call submode#enter_with('buf', 'n', '', '[b', ':<C-U>exe "bprevious"<cr>')
-       call submode#map('buf', 'n', '', ']', ':<C-U>exe "bnext"<cr>')
-       call submode#map('buf', 'n', '', 'd', ':<C-U>exe "bdelete"<cr>')
-       call submode#map('buf', 'n', '', 'k', ':<C-U>exe "bdelete!"<cr>')
-       call submode#map('buf', 'n', '', 'o', ':<C-U>exe "BufOnly"<cr>')
-       call submode#map('buf', 'n', '', '[', ':<C-U>exe "bprevious"<cr>')
+       call submode#enter_with('buf', 'n', 's', ']b', ':<C-U>exe "bnext"<cr>')
+       call submode#enter_with('buf', 'n', 's', '[b', ':<C-U>exe "bprevious"<cr>')
+       call submode#map('buf', 'n', 's', ']', ':<C-U>exe "bnext"<cr>')
+       call submode#map('buf', 'n', 's', 'd', ':<C-U>exe "bdelete"<cr>')
+       call submode#map('buf', 'n', 's', 'k', ':<C-U>exe "bdelete!"<cr>')
+       call submode#map('buf', 'n', 's', 'o', ':<C-U>exe "BufOnly"<cr>')
+       call submode#map('buf', 'n', 's', '[', ':<C-U>exe "bprevious"<cr>')
+       call submode#map('buf', 'n', 's', 'l', ':<C-U>exe "buffers"<cr>')
      "}}} _Buffer
      "Jump/Edit {{{
        call submode#enter_with('Jump/Edit', 'n', '', ']j', ':<C-U>exe "normal g,zO"<cr>')
@@ -1652,7 +1663,7 @@ call plug#begin('~/.config/nvim/plugged')
  Plug 'thinca/vim-ambicmd'
  "Prevent ambicmd original mapping
  let g:vim_ambicmd_mapped = 1
- cnoremap <expr> ‰    ambicmd#expand("")
+ cnoremap <expr> ‰    ambicmd#expand("\<CR>")
     " au VimEnter * call MapAmbiCMD()
     " function! MapAmbiCMD()
         " cnoremap <expr> <Space> ambicmd#expand("\<Space>")
@@ -1669,215 +1680,6 @@ call plug#begin('~/.config/nvim/plugged')
 "}}}
 
 "}}}
- " ----------------------------------------------------------------------------
- " Themeing {{{
- " ----------------------------------------------------------------------------
-
- "{{{ goyo.vim
-
-   Plug 'junegunn/goyo.vim',      { 'on': 'Goyo'}
-
-   autocmd! User GoyoEnter Limelight
-   autocmd! User GoyoLeave Limelight!
-
- "}}} _goyo.vim
- "{{{ limelight.vim
-
-   Plug 'junegunn/limelight.vim', { 'on': 'Limelight'}
-   let g:limelight_conceal_guifg="#C2B294"
-
- "}}} _limelight.vim
- "{{{ vim-lambdify
-
-   Plug 'calebsmith/vim-lambdify'
-
- "}}} _vim-lambdify
- "{{{ vim-css-color
-
-   Plug 'ap/vim-css-color',            { 'for':['css','scss','sass','less','styl']}
-
- "}}} _vim-css-color
- " vim-better-whitespace {{{
-
-   Plug 'ntpeters/vim-better-whitespace'
-   let g:better_whitespace_filetypes_blacklist=['diff', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help']
-   autocmd FileType unite DisableWhitespace
-   autocmd FileType vimfiler DisableWhitespace
-
- "}}}
-
- " vim-indentLine {{{
-
-   " Plug 'Yggdroot/indentLine'
-   " let g:indentLine_char = '┊'
-   " " let g:indentLine_color_term=""
-   " " let g:indentLine_color_gui=""
-   " let g:indentLine_fileType=[] "Means all filetypes
-   " let g:indentLine_fileTypeExclude=[]
-   " let g:indentLine_bufNameExclude=[]
-
-
- "}}}
- " rainbow parentheses {{{
-
-   Plug 'junegunn/rainbow_parentheses.vim', {'on':  ['RainbowParentheses']}
-   nnoremap <leader>xp :RainbowParentheses!!<CR>
-
- "}}}
- "{{{ golden-ratio
-
-   Plug 'roman/golden-ratio'
-
- "}}} _golden-ratio
-
-   " Plug 'tpope/vim-flagship'
- " lightline {{{
-   Plug 'itchyny/lightline.vim'
-   Plug 'shinchu/lightline-gruvbox.vim'
-         " \ 'colorscheme': 'powerline',
-         " \ 'colorscheme': 'wombat',
-         " \ 'colorscheme': 'jellybeans',
-   let g:lightline = {
-         \ 'active': {
-         \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
-         \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
-         \ },
-         \ 'component_function': {
-         \   'fugitive': 'LightLineFugitive',
-         \   'filename': 'LightLineFilename',
-         \   'fileformat': 'LightLineFileformat',
-         \   'filetype': 'LightLineFiletype',
-         \   'fileencoding': 'LightLineFileencoding',
-         \   'mode': 'LightLineMode',
-         \ },
-         \ 'component_expand': {
-         \   'syntastic': 'SyntasticStatuslineFlag',
-         \ },
-         \ 'component_type': {
-         \   'syntastic': 'error',
-         \ },
-         \ 'subseparator': { 'left': '|', 'right': '|' }
-         \ }
-
-   " let g:lightline.colorscheme = 'gruvbox'
-   let g:lightline.colorscheme = 'wombat'
-   function! LightLineModified()
-     return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
-   endfunction
-
-   function! LightLineReadonly()
-     return &ft !~? 'help' && &readonly ? '' : ''
-   endfunction
-
-   function! LightLineFilename()
-     let fname = expand('%:t')
-     return fname == '__Tagbar__' ? g:lightline.fname :
-           \ fname =~ '__Gundo\|NERD_tree' ? '' :
-           \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-           \ &ft == 'unite' ? unite#get_status_string() :
-           \ &ft == 'vimshell' ? vimshell#get_status_string() :
-           \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
-           \ ('' != fname ? fname : '[No Name]') .
-           \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
-   endfunction
-
-   function! LightLineFugitive()
-     try
-       if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-         let mark = ' '  " edit here for cool mark
-         let _ = fugitive#head()
-         return strlen(_) ? mark._ : ''
-       endif
-     catch
-     endtry
-     return ''
-   endfunction
-
-   function! LightLineFileformat()
-     return winwidth(0) > 70 ? &fileformat : ''
-   endfunction
-
-   function! LightLineFiletype()
-     return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-   endfunction
-
-   function! LightLineFileencoding()
-     return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
-   endfunction
-
-   function! LightLineMode()
-     let fname = expand('%:t')
-     return fname == '__Tagbar__' ? 'Tagbar' :
-           \ fname == '__Gundo__' ? 'Gundo' :
-           \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
-           \ &ft == 'unite' ? 'Unite' :
-           \ &ft == 'vimfiler' ? 'VimFiler' :
-           \ &ft == 'vimshell' ? 'VimShell' :
-           \ winwidth(0) > 60 ? lightline#mode() : ''
-   endfunction
-
-   let g:tagbar_status_func = 'TagbarStatusFunc'
-
-   function! TagbarStatusFunc(current, sort, fname, ...) abort
-     let g:lightline.fname = a:fname
-     return lightline#statusline(0)
-   endfunction
-
-   augroup AutoSyntastic
-     autocmd!
-     autocmd BufWritePost *.c,*.cpp call s:syntastic()
-   augroup END
-   function! s:syntastic()
-     SyntasticCheck
-     call lightline#update()
-   endfunction
-
-   let g:unite_force_overwrite_statusline = 0
-   let g:vimfiler_force_overwrite_statusline = 0
-   let g:vimshell_force_overwrite_statusline = 0
-
-
- "}}}
-   " Plug 'ap/vim-buftabline'
-   " Plug 'ryanoasis/vim-devicons'
-
-
-
- "Theme browser
-   " Plug 'xolox/vim-misc'
-   " Plug 'xolox/vim-colorscheme-switcher'
-
- "colorschemes
-   " Plug 'junegunn/seoul256.vim'
-   Plug 'tomasr/molokai'
-   Plug 'NLKNguyen/papercolor-theme'
-   Plug 'altercation/vim-colors-solarized'
-   Plug 'kristijanhusak/vim-hybrid-material'
-   Plug 'chriskempson/tomorrow-theme'
-   Plug 'vim-scripts/buttercream.vim'
-   Plug 'vim-scripts/simpleandfriendly.vim'
-   Plug 'vim-scripts/nuvola.vim'
-   Plug 'vim-scripts/ironman.vim'
-   Plug 'vim-scripts/AutumnLeaf'
-   Plug 'vim-scripts/summerfruit256.vim'
-   Plug 'vim-scripts/eclipse.vim'
-   Plug 'vim-scripts/pyte'
-   Plug 'flazz/vim-colorschemes'
- "{{{ vim-janah
-
-   Plug 'mhinz/vim-janah'
-   " autocmd ColorSchme janah highlight Normal ctermbg=235
-
- "}}} _vim-janah
- " gruvbox {{{
-   Plug 'morhetz/gruvbox'
-
-   let g:gruvbox_contrast_dark='medium'          "soft, medium, hard"
-   let g:gruvbox_contrast_light='medium'         "soft, medium, hard"
-
- "}}}
-
- "}}}
  " ----------------------------------------------------------------------------
  " Operators {{{
  " ----------------------------------------------------------------------------
@@ -2604,8 +2406,15 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _ctrlp.vim
  " FZF {{{
 
-   Plug 'junegunn/fzf'
-   Plug 'junegunn/fzf.vim'
+   Plug 'junegunn/fzf', {'on': []}
+   Plug 'junegunn/fzf.vim', {'on': [ 'Files', 'Buffers', 'Colors', 'Ag', 'Lines',
+       \'BLines', 'Tags', 'BTags', 'Marks', 'Windows',
+       \'Locate', 'History', 'Snippets',
+       \'Commits', 'BCommits', 'Commands', 'Helptags']}
+   " These cause invalid command error
+   " , 'History:', 'History/'
+   autocmd! User fzf.vim  call plug#load('fzf')
+
    " Plug 'junegunn/fzf', {'do' : 'yes \| brew reinstall --HEAD fzf'}
    let $FZF_DEFAULT_COMMAND='ag -l -g ""'
    set rtp+=/usr/local/Cellar/fzf/HEAD
@@ -2699,33 +2508,33 @@ call plug#begin('~/.config/nvim/plugged')
 
  " NERDTree {{{
 
-   " Plug 'scrooloose/nerdtree', {'on':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind'] }
- " " Plug 'jistr/vim-nerdtree-tabs'
+    Plug 'scrooloose/nerdtree', {'on':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind'] }
+  " Plug 'jistr/vim-nerdtree-tabs'
 
-   " let g:loaded_netrw       = 1 "Disable Netrw
-   " let g:loaded_netrwPlugin = 1 "Disable Netrw
+    let g:loaded_netrw       = 1 "Disable Netrw
+    let g:loaded_netrwPlugin = 1 "Disable Netrw
 
-   " "let g:nerdtree_tabs_open_on_gui_startup = 0
-   " let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
+    "let g:nerdtree_tabs_open_on_gui_startup = 0
+    let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
 
 
-   " let NERDTreeQuitOnOpen=1
-   " let NERDTreeWinSize = 23
+    let NERDTreeQuitOnOpen=1
+    let NERDTreeWinSize = 23
 
-   " " Don't display these kinds of files
-   " let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-         " \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-         " \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-         " \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-         " \ '^.gitignore$', '^.idea$' , '^tags$']
+    " Don't display these kinds of files
+    let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+          \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+          \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+          \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+          \ '^.gitignore$', '^.idea$' , '^tags$']
 
-   " let NERDTreeShowHidden=1
-   " let NERDTreeShowBookmarks=1
+    let NERDTreeShowHidden=1
+    let NERDTreeShowBookmarks=1
 
-   " " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
-   " nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
-   " nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
-   " nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
+    " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
+    nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
+    nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
+    nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
 
 
  "}}}
@@ -3126,6 +2935,229 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}
  " ----------------------------------------------------------------------------
+ " Themeing {{{
+ " ----------------------------------------------------------------------------
+
+ "{{{ goyo.vim
+
+   Plug 'junegunn/goyo.vim',      { 'on': 'Goyo'}
+
+   autocmd! User GoyoEnter Limelight
+   autocmd! User GoyoLeave Limelight!
+
+ "}}} _goyo.vim
+ "{{{ limelight.vim
+
+   Plug 'junegunn/limelight.vim', { 'on': 'Limelight'}
+   let g:limelight_conceal_guifg="#C2B294"
+
+ "}}} _limelight.vim
+ "{{{ vim-lambdify
+
+   Plug 'calebsmith/vim-lambdify'
+
+ "}}} _vim-lambdify
+ "{{{ vim-css-color
+
+   Plug 'ap/vim-css-color',            { 'for':['css','scss','sass','less','styl']}
+
+ "}}} _vim-css-color
+ " vim-better-whitespace {{{
+
+   Plug 'ntpeters/vim-better-whitespace'
+   let g:better_whitespace_filetypes_blacklist=['diff', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help']
+   autocmd FileType unite DisableWhitespace
+   autocmd FileType vimfiler DisableWhitespace
+
+ "}}}
+
+ " vim-indentLine {{{
+
+   " Plug 'Yggdroot/indentLine'
+   " let g:indentLine_char = '┊'
+   " " let g:indentLine_color_term=""
+   " " let g:indentLine_color_gui=""
+   " let g:indentLine_fileType=[] "Means all filetypes
+   " let g:indentLine_fileTypeExclude=[]
+   " let g:indentLine_bufNameExclude=[]
+
+
+ "}}}
+ " rainbow parentheses {{{
+
+   Plug 'junegunn/rainbow_parentheses.vim', {'on':  ['RainbowParentheses']}
+   nnoremap <leader>xp :RainbowParentheses!!<CR>
+
+ "}}}
+ "{{{ golden-ratio
+
+   Plug 'roman/golden-ratio'
+
+ "}}} _golden-ratio
+
+   Plug 'ryanoasis/vim-devicons'
+
+   " Plug 'tpope/vim-flagship'
+ " lightline {{{
+   Plug 'itchyny/lightline.vim'
+   Plug 'shinchu/lightline-gruvbox.vim'
+         " \ 'colorscheme': 'powerline',
+         " \ 'colorscheme': 'wombat',
+         " \ 'colorscheme': 'jellybeans',
+   let g:lightline = {
+         \ 'active': {
+         \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
+         \   'right': [ [ 'syntastic', 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ] ]
+         \ },
+         \ 'component_function': {
+         \   'fugitive': 'LightLineFugitive',
+         \   'filename': 'LightLineFilename',
+         \   'fileformat': 'LightLineFileformat',
+         \   'filetype': 'LightLineFiletype',
+         \   'fileencoding': 'LightLineFileencoding',
+         \   'mode': 'LightLineMode',
+         \ },
+         \ 'component_expand': {
+         \   'syntastic': 'SyntasticStatuslineFlag',
+         \ },
+         \ 'component_type': {
+         \   'syntastic': 'error',
+         \ },
+         \ 'subseparator': { 'left': '|', 'right': '|' }
+         \ }
+        let g:lightline = {
+              \ 'component_function': {
+              \   'filetype': 'MyFiletype',
+              \   'fileformat': 'MyFileformat',
+              \ }
+              \ }
+
+        function! MyFiletype()
+          return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+        endfunction
+
+        function! MyFileformat()
+          return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+        endfunction
+   " let g:lightline.colorscheme = 'gruvbox'
+   let g:lightline.colorscheme = 'wombat'
+   function! LightLineModified()
+     return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
+   endfunction
+
+   function! LightLineReadonly()
+     return &ft !~? 'help' && &readonly ? '' : ''
+   endfunction
+
+   function! LightLineFilename()
+     let fname = expand('%:t')
+     return fname == '__Tagbar__' ? g:lightline.fname :
+           \ fname =~ '__Gundo\|NERD_tree' ? '' :
+           \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
+           \ &ft == 'unite' ? unite#get_status_string() :
+           \ &ft == 'vimshell' ? vimshell#get_status_string() :
+           \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
+           \ ('' != fname ? fname : '[No Name]') .
+           \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
+   endfunction
+
+   function! LightLineFugitive()
+     try
+       if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+         let mark = ' '  " edit here for cool mark
+         let _ = fugitive#head()
+         return strlen(_) ? mark._ : ''
+       endif
+     catch
+     endtry
+     return ''
+   endfunction
+
+   function! LightLineFileformat()
+     return winwidth(0) > 70 ? &fileformat : ''
+   endfunction
+
+   function! LightLineFiletype()
+     return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype : 'no ft') : ''
+   endfunction
+
+   function! LightLineFileencoding()
+     return winwidth(0) > 70 ? (strlen(&fenc) ? &fenc : &enc) : ''
+   endfunction
+
+   function! LightLineMode()
+     let fname = expand('%:t')
+     return fname == '__Tagbar__' ? 'Tagbar' :
+           \ fname == '__Gundo__' ? 'Gundo' :
+           \ fname == '__Gundo_Preview__' ? 'Gundo Preview' :
+           \ &ft == 'unite' ? 'Unite' :
+           \ &ft == 'vimfiler' ? 'VimFiler' :
+           \ &ft == 'vimshell' ? 'VimShell' :
+           \ winwidth(0) > 60 ? lightline#mode() : ''
+   endfunction
+
+   let g:tagbar_status_func = 'TagbarStatusFunc'
+
+   function! TagbarStatusFunc(current, sort, fname, ...) abort
+     let g:lightline.fname = a:fname
+     return lightline#statusline(0)
+   endfunction
+
+   augroup AutoSyntastic
+     autocmd!
+     autocmd BufWritePost *.c,*.cpp call s:syntastic()
+   augroup END
+   function! s:syntastic()
+     SyntasticCheck
+     call lightline#update()
+   endfunction
+
+   let g:unite_force_overwrite_statusline = 0
+   let g:vimfiler_force_overwrite_statusline = 0
+   let g:vimshell_force_overwrite_statusline = 0
+
+
+ "}}}
+   " Plug 'ap/vim-buftabline'
+
+
+ "Theme browser
+   " Plug 'xolox/vim-misc'
+   " Plug 'xolox/vim-colorscheme-switcher'
+
+ "colorschemes
+   " Plug 'junegunn/seoul256.vim'
+   Plug 'mhartington/oceanic-next'
+   Plug 'tomasr/molokai'
+   Plug 'NLKNguyen/papercolor-theme'
+   Plug 'altercation/vim-colors-solarized'
+   Plug 'kristijanhusak/vim-hybrid-material'
+   Plug 'chriskempson/tomorrow-theme'
+   Plug 'vim-scripts/buttercream.vim'
+   Plug 'vim-scripts/simpleandfriendly.vim'
+   Plug 'vim-scripts/nuvola.vim'
+   Plug 'vim-scripts/ironman.vim'
+   Plug 'vim-scripts/AutumnLeaf'
+   Plug 'vim-scripts/summerfruit256.vim'
+   Plug 'vim-scripts/eclipse.vim'
+   Plug 'vim-scripts/pyte'
+   Plug 'flazz/vim-colorschemes'
+ "{{{ vim-janah
+
+   Plug 'mhinz/vim-janah'
+   " autocmd ColorSchme janah highlight Normal ctermbg=235
+
+ "}}} _vim-janah
+ " gruvbox {{{
+   Plug 'morhetz/gruvbox'
+
+   let g:gruvbox_contrast_dark='medium'          "soft, medium, hard"
+   let g:gruvbox_contrast_light='medium'         "soft, medium, hard"
+
+ "}}}
+
+ "}}}
+ " ----------------------------------------------------------------------------
 
 call plug#end()
 "}}}
@@ -3447,7 +3479,15 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
 " AUTOCMD {{{
 " ============================================================================
 
+  " Enable file type detection
+  filetype on
+  " Treat .json files as .js
+  autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
+  " Treat .md files as Markdown
+  autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
   " au BufNewFile,BufRead *.blade.php
+
+
   au filetype blade
         \ let b:match_words ='<:>,<\@<=[ou]l\>[^>]*\%(>\|$\):<\@<=li\>:<\@<=/[ou]l>,<\@<=dl\>[^>]*\%(>\|$\):<\@<=d[td]\>:<\@<=/dl>,<\@<=\([^/][^ \t>]*\)[^>]*\%(>\|$\):<\@<=/\1>'
         \ | let b:match_ignorecase = 1
@@ -3492,22 +3532,12 @@ xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
     exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
   endfunction
 
-  if has("autocmd")
-    " Enable file type detection
-    filetype on
-    " Treat .json files as .js
-    autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-    " Treat .md files as Markdown
-    autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-  endif
-
 
   "Enter insert mode on switch to term and on leave leave insert mode
-   " autocmd! BufWinEnter,WinEnter term://* startinsert
-   " autocmd BufEnter term://* startinsert
-   " autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
-   " autocmd! BufLeave term://* stopinsert
-   " autocmd BufWinEnter term://* startinsert
+  "------------------------------------------------------------------
+   "autocmd! BufEnter,BufWinEnter,WinEnter term://* call feedkeys('i')
+   "autocmd TermOpen * autocmd BufEnter <buffer> call feedkeys('i')
+   "autocmd! BufLeave term://* stopinsert
 
 " }}}
 " ============================================================================
@@ -3695,8 +3725,10 @@ set smartcase
 set matchtime=2                       " time in decisecons to jump back from matching bracket
 set incsearch                         " Highlight dynamically as pattern is typed
 set history=1000
-set foldmethod=marker
 
+"Show the left side fold indicator
+set foldcolumn=1
+set foldmethod=marker
 " These commands open folds
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
@@ -3764,6 +3796,25 @@ call matchadd('ColorColumn', '\%81v', 100)
 " COLORS {{{
 " ============================================================================
 
+ function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+  exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+  exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+  endfunction
+
+  call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
+  call NERDTreeHighlightFile('md', 'blue', 'none', '#6699CC', 'none')
+  call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
+  call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
+  call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
+  call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
+  call NERDTreeHighlightFile('css', 'cyan', 'none', '#5486C0', 'none')
+  call NERDTreeHighlightFile('scss', 'cyan', 'none', '#5486C0', 'none')
+  call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
+  call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
+  call NERDTreeHighlightFile('ts', 'Blue', 'none', '#6699cc', 'none')
+  call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
+  call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
+  call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
 
 
   " vim-buftabline support
@@ -3775,6 +3826,8 @@ call matchadd('ColorColumn', '\%81v', 100)
   hi! link BufTabLineActive SLCharacter
   hi! link BufTabLineHidden SLType
 
+  hi Folded ctermfg=250 ctermbg=236 guifg=#B04A2F guibg=#232526
+  hi FoldColumn ctermfg=250 ctermbg=236 guifg=#465457 guibg=#232526
 
   let g:terminal_color_0  = '#2e3436'
   let g:terminal_color_1  = '#cc0000'
