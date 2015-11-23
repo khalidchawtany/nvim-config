@@ -3025,6 +3025,11 @@ call plug#begin('~/.config/nvim/plugged')
          " \ 'colorscheme': 'powerline',
          " \ 'colorscheme': 'wombat',
          " \ 'colorscheme': 'jellybeans',
+
+
+         "\   'fileformat': 'LightLineFileformat',
+         "\   'filetype': 'LightLineFiletype',
+
    let g:lightline = {
          \ 'active': {
          \   'left': [ [ 'mode', 'paste' ], [ 'fugitive', 'filename' ], ['ctrlpmark'] ],
@@ -3033,8 +3038,8 @@ call plug#begin('~/.config/nvim/plugged')
          \ 'component_function': {
          \   'fugitive': 'LightLineFugitive',
          \   'filename': 'LightLineFilename',
-         \   'fileformat': 'LightLineFileformat',
-         \   'filetype': 'LightLineFiletype',
+         \   'filetype': 'MyFiletype',
+         \   'fileformat': 'MyFileformat',
          \   'fileencoding': 'LightLineFileencoding',
          \   'mode': 'LightLineMode',
          \ },
@@ -3044,22 +3049,36 @@ call plug#begin('~/.config/nvim/plugged')
          \ 'component_type': {
          \   'syntastic': 'error',
          \ },
-         \ 'subseparator': { 'left': '|', 'right': '|' }
+         \ 'subseparator': { 'left': '', 'right': '' }
          \ }
-        let g:lightline = {
-              \ 'component_function': {
-              \   'filetype': 'MyFiletype',
-              \   'fileformat': 'MyFileformat',
-              \ }
-              \ }
 
         function! MyFiletype()
           return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
         endfunction
 
         function! MyFileformat()
-          return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+          "return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ''
+          let fileformat = ""
+
+          if &fileformat == "dos"
+            let fileformat = ""
+          elseif &fileformat == "unix"
+              "let fileformat = ""
+              let fileformat = ""
+          elseif &fileformat == "mac"
+            let fileformat = ""
+          endif
+
+          " Temporary (hopefully) fix for glyph issues in gvim (proper fix is with the
+          " actual font patcher)
+          let artifactFix = "\u00A0"
+
+          return fileformat . artifactFix
+
+          "return fileformat
+
         endfunction
+
    " let g:lightline.colorscheme = 'gruvbox'
    let g:lightline.colorscheme = 'wombat'
    function! LightLineModified()
@@ -3067,11 +3086,14 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
    function! LightLineReadonly()
-     return &ft !~? 'help' && &readonly ? '' : ''
+     return &ft !~? 'help' && &readonly ? '' : ''
    endfunction
 
    function! LightLineFilename()
      let fname = expand('%:t')
+     if fname == 'zsh'
+       return "  "
+     endif
      return fname == '__Tagbar__' ? g:lightline.fname :
            \ fname =~ '__Gundo\|NERD_tree' ? '' :
            \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
@@ -3085,7 +3107,7 @@ call plug#begin('~/.config/nvim/plugged')
    function! LightLineFugitive()
      try
        if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
-         let mark = ' '  " edit here for cool mark
+         let mark = ' '  " edit here for cool mark     
          let _ = fugitive#head()
          return strlen(_) ? mark._ : ''
        endif
