@@ -3785,6 +3785,11 @@ function! MyFoldText()
   endif
   let n = v:foldend - v:foldstart + 1
   let info = " " . n . " lines"
+
+  if &foldmethod == 'marker'
+    let sub = strpart(sub, 0, strlen(sub)- (strlen(&foldmarker)-1)/2)
+  endif
+
   let sub = sub . "                                                                                                                  "
   let num_w = getwinvar( 0, '&number' ) * getwinvar( 0, '&numberwidth' )
   let fold_w = getwinvar( 0, '&foldcolumn' )
