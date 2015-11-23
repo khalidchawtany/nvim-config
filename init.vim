@@ -2105,7 +2105,7 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
 
  " File
- "{{{ unite.vim
+ " unite.vim {{{
 
    Plug 'Shougo/unite.vim'
    Plug 'Shougo/unite-outline'
@@ -2268,7 +2268,7 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap ÚÚL :Unite -quick-match line<cr>
 
  "}}} _unite.vim
- "{{{ ctrlp.vim
+ " ctrlp.vim {{{
 
    " " Plug 'kien/ctrlp.vim'
    " Plug 'ctrlpvim/ctrlp.vim', {'on': ['CtrlP']}
