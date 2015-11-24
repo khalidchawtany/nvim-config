@@ -502,31 +502,31 @@ let g:mapleader = ","
 
 call plug#begin('~/.config/nvim/plugged')
 
-  " VimPlug template {{{
+ " VimPlug template {{{
 
-  "" Make sure you use single quotes
-  "Plug 'junegunn/seoul256.vim'
-  "Plug 'junegunn/vim-easy-align'
+ "" Make sure you use single quotes
+ "Plug 'junegunn/seoul256.vim'
+ "Plug 'junegunn/vim-easy-align'
 
-  "" On-demand loading
-  "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-  "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+ "" On-demand loading
+ "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+ "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 
-  "" Using git URL
-  "Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+ "" Using git URL
+ "Plug 'https://github.com/junegunn/vim-github-dashboard.git'
 
-  "" Plugin options
-  "Plug 'nsf/gocode', { 'tag': 'go.weekly.2012-03-13', 'rtp': 'vim' }
+ "" Plugin options
+ "Plug 'nsf/gocode', { 'tag': 'go.weekly.2012-03-13', 'rtp': 'vim' }
 
-  "" Plugin outside ~/.vim/plugged with post-update hook
-  "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+ "" Plugin outside ~/.vim/plugged with post-update hook
+ "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 
-  "" Unmanaged plugin (manually installed and updated)
-  "Plug '~/my-prototype-plugin'
+ "" Unmanaged plugin (manually installed and updated)
+ "Plug '~/my-prototype-plugin'
 
-  " On plugin Loaded
-  " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
-  "}}}  
+ " On plugin Loaded
+ " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
+ "}}}
 
  " ----------------------------------------------------------------------------
  " Version Control & Diff {{{
@@ -2102,13 +2102,13 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'Shougo/unite-session'
    Plug 'Shougo/neoyank.vim'
    Plug 'tsukkee/unite-tag'
-"{{{ unite-bookmark-file
+   " unite-bookmark-file {{{
 
    Plug 'liquidz/unite-bookmark-file'
    ":Unite bookmark/file
    let g:unite_bookmark_file = '~/.config/nvim/.cache/unite-bookmark-file'
 
-"}}} _unite-bookmark-file
+   "}}} _unite-bookmark-file
    Plug 'ujihisa/unite-colorscheme'
    Plug 'ujihisa/unite-locate'
    Plug 'sgur/unite-everything'
@@ -2124,7 +2124,7 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'kannokanno/unite-todo'
    Plug 'osyo-manga/unite-fold'
    Plug 'osyo-manga/unite-highlight'
- "{{{ unite-fasd.vim
+   " unite-fasd.vim {{{
 
    Plug 'critiqjo/unite-fasd.vim'
    " Path to fasd script (must be set)
@@ -2135,7 +2135,7 @@ call plug#begin('~/.config/nvim/plugged')
    let g:unite_fasd#read_only = 0
    "Unite fasd OR Unite fasd:mru
 
- "}}} _unite-fasd.vim
+   "}}} _unite-fasd.vim
 
 
    au VimEnter * call SetUpUniteMenus()
@@ -3149,28 +3149,8 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
    " Plug 'ap/vim-buftabline'
 
-
- "Theme browser
-   " Plug 'xolox/vim-misc'
-   " Plug 'xolox/vim-colorscheme-switcher'
-
  "colorschemes
-   " Plug 'junegunn/seoul256.vim'
-   Plug 'mhartington/oceanic-next'
    Plug 'tomasr/molokai'
-   Plug 'NLKNguyen/papercolor-theme'
-   Plug 'altercation/vim-colors-solarized'
-   Plug 'kristijanhusak/vim-hybrid-material'
-   Plug 'chriskempson/tomorrow-theme'
-   Plug 'vim-scripts/buttercream.vim'
-   Plug 'vim-scripts/simpleandfriendly.vim'
-   Plug 'vim-scripts/nuvola.vim'
-   Plug 'vim-scripts/ironman.vim'
-   Plug 'vim-scripts/AutumnLeaf'
-   Plug 'vim-scripts/summerfruit256.vim'
-   Plug 'vim-scripts/eclipse.vim'
-   Plug 'vim-scripts/pyte'
-   Plug 'flazz/vim-colorschemes'
  " vim-janah {{{
 
    Plug 'mhinz/vim-janah'
