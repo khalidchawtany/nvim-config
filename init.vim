@@ -1706,31 +1706,6 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}
 
- " operator-insert {{{
-
-   Plug 'mwgkgk/vim-operator-insert'             "insert after textobj
-   nmap <Space>i <Plug>(operator-insert)
-
-
- "}}}
-
- " operator-append {{{
-
-   Plug 'mwgkgk/vim-operator-append'             "append after textobj
-   nmap <Space>a <Plug>(operator-append)
-
-
- "}}}
-
- " operator-comment {{{
-
-   Plug 'emonkak/vim-operator-comment'
-   nmap <Space>cc <Plug>(operator-comment)
-   nmap <Space>cu <Plug>(operator-uncomment)
-
-
- "}}}
-
  " operator-blockwise {{{
 
    Plug 'osyo-manga/vim-operator-blockwise'
@@ -1748,14 +1723,6 @@ call plug#begin('~/.config/nvim/plugged')
    nmap <Space>>> <Plug>(operator-jerk-forward-partial)
    nmap <Space><  <Plug>(operator-jerk-backward)
    nmap <Space><< <Plug>(operator-jerk-backward-partial)
-
-
- "}}}
-
- " operator-sort {{{
-   Plug 'emonkak/vim-operator-sort'
-
-   nmap <Space>s <Plug>(operator-sort)
 
 
  "}}}
