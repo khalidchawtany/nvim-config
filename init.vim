@@ -569,7 +569,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-gitgutter
  " vimagit {{{
 
-   Plug 'jreybert/vimagit', {'on': ['Magit']}
+   Plug 'jreybert/vimagit', {'on': ['Magit'], 'branch': 'next'}
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
  "}}} _vimagit
