@@ -3474,8 +3474,19 @@ call plug#end()
 
     " return to the same line when file is reopened
     au BufReadPost *
-          \ if line("'\"") > 0 && line("'\"") <= line("$") |
-          \     execute 'normal! g`"zvzz' |
+          \ let s:path=expand("%:path") |
+          \ if exists('g:current_file_path') |
+          \   if g:current_file_path != s:path |
+          \     if line("'\"") > 0 && line("'\"") <= line("$") |
+          \       execute 'normal! g`"zvzz' |
+          \       let g:current_file_path=s:path |
+          \     endif |
+          \   endif |
+          \ else |
+          \     if line("'\"") > 0 && line("'\"") <= line("$") |
+          \       execute 'normal! g`"zvzz' |
+          \       let g:current_file_path=s:path |
+          \     endif |
           \ endif
   augroup END
 
