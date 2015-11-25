@@ -1667,6 +1667,7 @@ call plug#begin('~/.config/nvim/plugged')
  "Prevent ambicmd original mapping
  let g:vim_ambicmd_mapped = 1
 
+ cnoremap ‰ <CR>
  function! MapAmbiCMD()
    call plug#load('vim-ambicmd')
    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
