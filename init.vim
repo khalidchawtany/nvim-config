@@ -1,3 +1,12 @@
+"Preven neovim-dot-app to source me twice {{{
+if exists('neovim_dot_app')
+  if exists('g:VIMRC_SOURCED')
+    finish
+  endif
+endif
+let g:VIMRC_SOURCED=1
+"}}}
+
 let g:python_host_prog='/usr/local/bin/python'
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
