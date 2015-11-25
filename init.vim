@@ -1662,22 +1662,19 @@ call plug#begin('~/.config/nvim/plugged')
  " Command line
  " ambicmd {{{
 
- Plug 'thinca/vim-ambicmd'
+ Plug 'thinca/vim-ambicmd', {'on': []}
+
  "Prevent ambicmd original mapping
  let g:vim_ambicmd_mapped = 1
- cnoremap <expr> ‰    ambicmd#expand("\<CR>")
-    " au VimEnter * call MapAmbiCMD()
-    " function! MapAmbiCMD()
-        " cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-        " cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
-    " endfunction
 
-    " autocmd CmdwinEnter * call MapAmbiCMD_2()
-    " function! MapAmbiCMD_2()
-      " inoremap <buffer> <expr> <space> ambicmd#expand("\<space>")
-      " inoremap <buffer> <expr> <cr>    ambicmd#expand("\<cr>")
-      " startinsert!
-    " endfunction
+ function! MapAmbiCMD()
+   call plug#load('vim-ambicmd')
+   cnoremap <expr> <Space> ambicmd#expand("\<Space>")
+   cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+   call feedkeys(':', 'n')
+   nnoremap ; :
+ endfunction
+ nnoremap <silent>; :call MapAmbiCMD()<cr>
 
 "}}}
 
@@ -3273,7 +3270,7 @@ call plug#end()
   onoremap L $
 
 
-  nnoremap ; :
+  "nnoremap ; : "ambicmd does remap this properly
   nnoremap : ;
   vnoremap ; :
   vnoremap : ;
