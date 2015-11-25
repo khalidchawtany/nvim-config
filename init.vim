@@ -3371,6 +3371,10 @@ call plug#end()
   "Retab file
   nnoremap <leader>er :retab<cr>
 
+  "Better copy/cut/paste
+  noremap <leader>d "_d
+  noremap <leader>y "+y
+  noremap <leader>p "+p
 
   " indent visually without coming back to normal mode
   vmap > >gv
