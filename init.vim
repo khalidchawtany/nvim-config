@@ -3237,7 +3237,7 @@ call plug#end()
   " evaluate selected vimscript | line | whole vimrc (init.vim)
   vnoremap <Leader>sv "vy:@v<CR>
   nnoremap <Leader>s; "vyy:@v<CR>
-  nnoremap <silent> <leader>sv :so $MYVIMRC<CR>
+  nnoremap <silent> <leader>sv :unlet g:VIMRC_SOURCED<cr>:so $MYVIMRC<CR>
 
 
   " <c-y>f Copy the full path of the current file to the clipboard
