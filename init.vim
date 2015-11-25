@@ -3370,9 +3370,8 @@ call plug#end()
 
   " select last matched item
   nnoremap <leader>/ //e<Enter>v??<Enter>
-
-  " Select last pasted text
-  nnoremap gb `[v`]
+  " Select last pasted text, pasted-textobj does a much better job
+  "nnoremap gb `[v`]
   nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
 
   " Reselect the text you just entered
