@@ -3806,7 +3806,9 @@ set cpo+=n                             " Draw color for lines that has number on
 
 set showmode                          " Show the current mode
 
-set showcmd                           " Makes OS X slow, if lazy redraw set
+if !exists('neovim_dot_app')
+  set showcmd                           " Makes OS X slow, if lazy redraw set
+endif
 
 set display+=lastline
 
