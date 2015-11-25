@@ -3737,9 +3737,13 @@ function! MyFoldText()
 
   if &foldmethod == 'marker'
     let sub = strpart(sub, 0, strlen(sub)- (strlen(&foldmarker)-1)/2)
+    let sub = substitute( sub, '^"\s*', '', 'g')
+    let sub = substitute( sub, '^\s*', '', 'g')
+    let sub = substitute( sub, '"\s*$', '', 'g')
   endif
 
-  let sub = sub . "                                                                                                                  "
+  let sub = ' ' . sub . "                                                                                                    "
+  "let sub = sub . "                                                                                                              "
   let num_w = getwinvar( 0, '&number' ) * getwinvar( 0, '&numberwidth' )
   let fold_w = getwinvar( 0, '&foldcolumn' )
   let sub = strpart( sub, 0, winwidth(0) - strlen( info ) - num_w - fold_w - 1 )
