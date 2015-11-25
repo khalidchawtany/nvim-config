@@ -3029,7 +3029,7 @@ call plug#begin('~/.config/nvim/plugged')
          \ }
 
         function! MyFiletype()
-          return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+          return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() . "\u00A0" : 'no ft') : ''
         endfunction
 
         function! MyFileformat()
@@ -3045,12 +3045,12 @@ call plug#begin('~/.config/nvim/plugged')
             let fileformat = ""
           endif
 
-          " Temporary (hopefully) fix for glyph issues in gvim (proper fix is with the
-          " actual font patcher)
-          "let artifactFix = "\u00A0"
-          "return fileformat . artifactFix
+           "Temporary (hopefully) fix for glyph issues in gvim (proper fix is with the
+           "actual font patcher)
+          let artifactFix = "\u00A0"
+          return fileformat . artifactFix
 
-          return fileformat
+          "return fileformat
 
         endfunction
 
