@@ -1033,6 +1033,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  "Don't lazyload as doing so will fragile
   Plug 'scrooloose/nerdcommenter'
+  "call s:SetUpForNewFiletype(&filetype, 1)
 
  "}}} _nerdcommenter
    " Plug 'tpope/vim-commentary'
@@ -2871,7 +2872,9 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-foldfocus {{{
 
-   Plug 'vasconcelloslf/vim-foldfocus'
+   Plug 'vasconcelloslf/vim-foldfocus', {'on': []}
+   nnoremap <leader>zz<cr> :call plug#load('vim-foldfocus')<Bar>execute "nnoremap <leader>zz\<cr\> :call FoldFocus('vnew')\<cr\>"<Bar>call FoldFocus('vnew')<CR>
+   nnoremap <leader>z<cr>  :call plug#load('vim-foldfocus')<Bar>execute "nnoremap <leader>z\<cr\> :call FoldFocus('e')\<cr\>"<Bar>call FoldFocus('e')<CR>
 
  "}}}} _vim-foldfocus
 
@@ -2911,6 +2914,22 @@ call plug#begin('~/.config/nvim/plugged')
  " Themeing {{{
  " ----------------------------------------------------------------------------
 
+ " vim-startify {{{
+  Plug 'mhinz/vim-startify'
+  nnoremap <F1> :Startify<cr>
+  let g:startify_files_number = 5
+
+  function! s:filter_header(lines) abort
+    let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
+    let centered_lines = map(copy(a:lines),
+          \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+    return centered_lines
+  endfunction
+
+  let g:startify_custom_header =
+        \ s:filter_header(map(split(system('fortune -s| cowsay'), '\n'), '"   ". v:val') + ['',''])
+ "}}}
+
  " goyo.vim {{{
 
    Plug 'junegunn/goyo.vim',      { 'on': 'Goyo'}
@@ -2927,7 +2946,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _limelight.vim
  " vim-lambdify {{{
 
-   Plug 'calebsmith/vim-lambdify'
+ Plug 'calebsmith/vim-lambdify', {'for': ['javascript']}
 
  "}}} _vim-lambdify
  " vim-css-color {{{
@@ -2973,10 +2992,6 @@ call plug#begin('~/.config/nvim/plugged')
    " Plug 'tpope/vim-flagship'
  " lightline {{{
    Plug 'itchyny/lightline.vim'
-   Plug 'shinchu/lightline-gruvbox.vim'
-         " \ 'colorscheme': 'powerline',
-         " \ 'colorscheme': 'wombat',
-         " \ 'colorscheme': 'jellybeans',
 
 
          "\   'fileformat': 'LightLineFileformat',
@@ -3030,8 +3045,10 @@ call plug#begin('~/.config/nvim/plugged')
 
         endfunction
 
+   "Plug 'shinchu/lightline-gruvbox.vim'
    " let g:lightline.colorscheme = 'gruvbox'
    let g:lightline.colorscheme = 'wombat'
+
    function! LightLineModified()
      return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
    endfunction
@@ -3116,12 +3133,6 @@ call plug#begin('~/.config/nvim/plugged')
 
  "colorschemes
    Plug 'tomasr/molokai'
- " vim-janah {{{
-
-   Plug 'mhinz/vim-janah'
-   " autocmd ColorSchme janah highlight Normal ctermbg=235
-
- "}}} _vim-janah
  " gruvbox {{{
    Plug 'morhetz/gruvbox'
 
@@ -3738,11 +3749,9 @@ endfunction
 
 set nowrap
 
-set timeout
-set timeoutlen=750
+set timeout timeoutlen=750
 "NeoVim handles ESC keys as alt+key set this to solve the problem
-set ttimeout
-set ttimeoutlen=0
+set ttimeout ttimeoutlen=0 
 
 " Show the filename in the window titlebar
 set title "titlestring=
