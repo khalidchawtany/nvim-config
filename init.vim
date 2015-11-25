@@ -3590,12 +3590,17 @@ set backspace=indent,eol,start        " Allow backspace in insert mode
 set gdefault                          " make g default for search
 set magic                             " Magic matching
 
+set nolazyredraw
+
 " set formatoptions+=j                " Delete comment character when joining commented lines
 
-set encoding=utf-8 nobomb
+"Set these only at startup
+if !exists('g:VIMRC_SOURCED')
+  set encoding=utf-8 nobomb
+endif
+
 set termencoding=utf-8
 scriptencoding utf-8
-set nolazyredraw
 
 " Centralize backups, swapfiles and undo history
 set backupdir=~/.config/nvim/.cache/backups
