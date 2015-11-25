@@ -3769,7 +3769,7 @@ set cpo+=n                             " Draw color for lines that has number on
 
 set showmode                          " Show the current mode
 
-set noshowcmd                           " Makes OS X slow, if lazy redraw set
+set showcmd                           " Makes OS X slow, if lazy redraw set
 
 set display+=lastline
 
