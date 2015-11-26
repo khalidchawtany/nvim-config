@@ -3226,30 +3226,188 @@ call plug#end()
 " MAPPINGS {{{
 " ============================================================================
 
+  " Utils {{{
+  "===============================================================================
 
-  nnoremap <silent> [I :call List("i", 0, 0)<CR>
-  nnoremap <silent> ]I :call List("i", 0, 1)<CR>
-  xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
-  xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
-  nnoremap <silent> [D :call List("d", 0, 0)<CR>
-  nnoremap <silent> ]D :call List("d", 0, 1)<CR>
-  xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
-  xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
+    nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
+    nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
 
-  "noremap <F4> :call DiffMe()<CR>
+    nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
 
-  nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
-  nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
+    nnoremap <F12> :call ToggleMouseFunction()<cr>
 
-  " Close all folds except this
-  nnoremap z<Space> zMzv
+    " { and } skip over closed folds
+    nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
+    nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
 
-  nnoremap cof :call ToggleFoldMethod()<cr>
-  nnoremap com :call ToggleFoldMarker()<cr>
+    " Jump to next/previous merge conflict marker
+    nnoremap <silent> ]> /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
+    nnoremap <silent> [> ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
 
-  autocmd Filetype neosnippet,cs call ToggleFoldMarker()
+    " Move visual lines
+    nmap <silent> j gj
+    nmap <silent> k gk
+
+    noremap  H ^
+    vnoremap H ^
+    onoremap H ^
+    noremap  L $
+    vnoremap L g_
+    onoremap L $
 
 
+    "nnoremap ; : "ambicmd does remap this properly
+    nnoremap : ;
+    vnoremap ; :
+    vnoremap : ;
+
+    "Make completion more comfortable
+    inoremap <c-j> <c-n>
+    inoremap <c-k> <c-p>
+
+    inoremap <C-U> <C-G>u<C-U>
+
+    if !exists('$TMUX')
+      nnoremap <silent> <c-h> <c-w><c-h>
+      nnoremap <silent> <c-j> <c-w><c-j>
+      nnoremap <silent> <c-k> <c-w><c-k>
+      nnoremap <silent> <c-l> <c-w><c-l>
+    endif
+
+
+    " Highlight TODO markers
+    match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+    match todo '\v^(\<|\=|\>){7}([^=].+)?$'
+  "}}}
+
+  " Folds {{{
+  "===============================================================================
+
+    " Close all folds except this
+    nnoremap z<Space> zMzv
+    nnoremap z0 :set foldlevel=0<cr>
+    nnoremap z1 :set foldlevel=1<cr>
+    nnoremap z2 :set foldlevel=2<cr>
+    nnoremap z3 :set foldlevel=3<cr>
+    nnoremap z4 :set foldlevel=4<cr>
+    nnoremap z5 :set foldlevel=5<cr>
+    nnoremap z6 :set foldlevel=6<cr>
+    nnoremap z7 :set foldlevel=7<cr>
+    nnoremap z8 :set foldlevel=8<cr>
+    nnoremap z9 :set foldlevel=9<cr>
+
+    nnoremap cof :call ToggleFoldMethod()<cr>
+    nnoremap com :call ToggleFoldMarker()<cr>
+
+    autocmd Filetype neosnippet,cs call ToggleFoldMarker()
+  "}}}
+
+  " Terminal {{{
+  "===============================================================================
+    tnoremap <c-o> <c-\><c-n>
+
+  "}}}
+
+  " Window & Buffer {{{
+  "===============================================================================
+
+  " Shrink to fit number of lines
+  nmap <silent> <c-w>S :execute ":resize " . line('$')<cr>
+
+  " Maximize current split
+  nnoremap <c-w>M <C-w>_<C-w><Bar>
+
+  " Buffer deletion commands {{{
+
+    nnoremap <c-w>O :BufOnly<cr>
+
+    nnoremap  Úwa :bufdo execute ":bw"<cr>
+    nnoremap  ÚÚwa :bufdo execute ":bw!"<cr>
+    nnoremap  Úww :bw<cr>
+    nnoremap  ÚÚww :bw!<cr>
+  "}}}
+
+
+  "}}}
+
+  " Text editting {{{
+  "===============================================================================
+
+  "TODO: conflicts with script-ease
+  command! SplitLine :normal i<CR><ESC>,ss<cr>
+  nnoremap K :call Preserve('SplitLine')<cr>
+
+  " Put empty line around (UnImpaired)
+  nnoremap \<Space> :normal [ ] <cr>
+
+  " Uppercase from insert mode while you are at the end of a word
+  inoremap <C-u> <esc>mzgUiw`za
+
+  "Remove ^M from a file
+  nnoremap  <leader>e^ :e ++ff=dos
+  nnoremap gf<C-M> :e! ++ff=dos<cr>
+
+  "Retab file
+  nnoremap <leader>er :retab<cr>
+
+  noremap <leader>ss :call StripWhitespace()<CR>
+
+  " Underline {{{
+
+    " underline the current line
+    nnoremap <leader>U= :t.\|s/./=<cr>:nohls<cr>
+    nnoremap <leader>U- :t.\|s/./-<cr>:nohls<cr>
+    nnoremap <leader>U~ :t.\|s/./\\~<cr>:nohls<cr>
+
+    "only underline from H to L
+    nnoremap <leader>u= "zyy"zp<c-v>$r=
+    nnoremap <leader>u- "zyy"zp<c-v>$r-
+    nnoremap <leader>u~ "zyy"zp<c-v>$r~
+
+  "}}}
+
+  " Better copy/cut/paste {{{
+    noremap <leader>d "_d
+    noremap <leader>y "+y
+    noremap <leader>p "+p
+  "}}}
+
+  " Indentation {{{
+    " indent visually without coming back to normal mode
+    vmap > >gv
+    vmap < <gv
+    nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
+  "}}}
+
+  " Move visual block
+  vnoremap <c-j> :m '>+1<CR>gv=gv
+  vnoremap <c-k> :m '<-2<CR>gv=gv
+
+  " select last matched item
+  nnoremap <leader>/ //e<Enter>v??<Enter>
+
+  " Reselect the text you just entered
+  nnoremap gV `[v`]
+  "}}}
+
+  " Writting and Quitting {{{
+  "===============================================================================
+
+  nnoremap ,qq :q<cr>
+  nnoremap ,qa :qall<cr>
+  nnoremap ,wq :wq<cr>
+  nnoremap ,ww :w<cr>
+  nnoremap ,wa :wall<cr>
+  nnoremap <Leader>`` :qa!<cr>
+
+  " save as root
+  noremap <leader>W :w !sudo tee % > /dev/null<CR>
+
+  "Discard changes
+  nnoremap <leader>e<bs> :e! \| echo 'changes discarded'<cr>
+  "}}}
+
+  " Path & File {{{
   "CD into:
   "current buffer file dir
   nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
@@ -3270,6 +3428,16 @@ call plug#end()
   nnoremap <leader>ef :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
   nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
 
+  " <c-y>f Copy the full path of the current file to the clipboard
+  nnoremap <silent> <c-y>f :let @+=expand("%:p")<cr>:echo "Copied current file
+        \ path '".expand("%:p")."' to clipboard"<cr>
+
+  " rename current buffers file
+  nnoremap <Leader>rn :call RenameFile()<cr>
+
+  " Edit todo list for project
+  nnoremap ,to :e todo.org<cr>
+
   " Edit the vimrc (init.vim) file
   nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
@@ -3277,174 +3445,6 @@ call plug#end()
   vnoremap <Leader>sv "vy:@v<CR>
   nnoremap <Leader>s; "vyy:@v<CR>
   nnoremap <silent> <leader>sv :unlet g:VIMRC_SOURCED<cr>:so $MYVIMRC<CR>
-
-
-  " <c-y>f Copy the full path of the current file to the clipboard
-  nnoremap <silent> <c-y>f :let @+=expand("%:p")<cr>:echo "Copied current file
-        \ path '".expand("%:p")."' to clipboard"<cr>
-
-  nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
-
-  " rename current buffers file
-  nnoremap <Leader>rn :call RenameFile()<cr>
-
-  " save as root
-  noremap <leader>W :w !sudo tee % > /dev/null<CR>
-
-  " Edit todo list for project
-  nnoremap ,to :e todo.org<cr>
-
-  " Laravel
-  nnoremap Úlv :e ./resources/views/<cr>
-  nnoremap Úlc :e ./resources/views/partials/<cr>
-  nnoremap Úlp :e ./public/<cr>
-
-  " Java
-  nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
-
-  " HTML
-  au FileType html,blade inoremap <buffer> >>     ></<C-X><C-O><Esc>%i
-  au FileType html,blade inoremap <buffer> >><CR> ></<C-X><C-O><Esc>%i<CR><ESC>O
-
-
-  nnoremap <F12> :call ToggleMouseFunction()<cr>
-
-
-  " { and } skip over closed folds
-  nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
-  nnoremap <expr> { foldclosed(search('^$', 'Wnb')) == -1 ? "{" : "{k{"
-
-  " Jump to next/previous merge conflict marker
-  nnoremap <silent> ]> /\v^(\<\|\=\|\>){7}([^=].+)?$<CR>
-  nnoremap <silent> [> ?\v^(\<\|\=\|\>){7}([^=].+)\?$<CR>
-
-  " Move visual lines
-  nmap <silent> j gj
-  nmap <silent> k gk
-
-  noremap  H ^
-  vnoremap H ^
-  onoremap H ^
-  noremap  L $
-  vnoremap L g_
-  onoremap L $
-
-
-  "nnoremap ; : "ambicmd does remap this properly
-  nnoremap : ;
-  vnoremap ; :
-  vnoremap : ;
-
-  "Make completion more comfortable
-  inoremap <c-j> <c-n>
-  inoremap <c-k> <c-p>
-
-  inoremap <C-U> <C-G>u<C-U>
-
-  if !exists('$TMUX')
-    nnoremap <silent> <c-h> <c-w><c-h>
-    nnoremap <silent> <c-j> <c-w><c-j>
-    nnoremap <silent> <c-k> <c-w><c-k>
-    nnoremap <silent> <c-l> <c-w><c-l>
-  endif
-
-
-  " Writting and Quitting
-  nnoremap ,qq :q<cr>
-  nnoremap ,qa :qall<cr>
-  nnoremap ,wq :wq<cr>
-  nnoremap ,ww :w<cr>
-  nnoremap ,wa :wall<cr>
-  nnoremap <Leader>`` :qa!<cr>
-
-
-  " Highlight TODO markers
-  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
-  match todo '\v^(\<|\=|\>){7}([^=].+)?$'
-
-  " term {{{
-  "===============================================================================
-    tnoremap <c-o> <c-\><c-n>
-
-  "}}}
-
-  " Window & Buffer {{{
-  "===============================================================================
-
-  " Shrink to fit number of lines
-  nmap <silent> <c-w>S :execute ":resize " . line('$')<cr>
-
-  " Maximize current split
-  nnoremap <c-w>M <C-w>_<C-w><Bar>
-  nnoremap <c-w>O :BufOnly<cr>
-
-  " Put an empty line before and after this line : depends on PLUGIN
-  nnoremap \\<Space> :normal [ ] <cr>
-
-  " Uppercase from insert mode while you are at the end of a word
-  inoremap <C-u> <esc>mzgUiw`za
-
-  "Remove ^M from a file
-  nnoremap  <leader>e^ :e ++ff=dos
-  nnoremap gf<C-M> :e! ++ff=dos<cr>
-
-  "}}}
-
-  " Text editting {{{
-  "===============================================================================
-
-  " Underline {{{
-
-    " underline the current line
-    nnoremap <leader>U= :t.\|s/./=<cr>:nohls<cr>
-    nnoremap <leader>U- :t.\|s/./-<cr>:nohls<cr>
-    nnoremap <leader>U~ :t.\|s/./\\~<cr>:nohls<cr>
-
-    "only underline from H to L
-    nnoremap <leader>u= "zyy"zp<c-v>$r=
-    nnoremap <leader>u- "zyy"zp<c-v>$r-
-    nnoremap <leader>u~ "zyy"zp<c-v>$r~
-
-  "}}}
-
-
-
-  "TODO: conflicts with script-ease
-  command! SplitLine :normal i<CR><ESC>,ss<cr>
-  nnoremap K :call Preserve('SplitLine')<cr>
-
-
-  nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
-
-  noremap <leader>ss :call StripWhitespace()<CR>
-
-  "Discard changes
-  nnoremap <leader>e<bs> :e! \| echo 'changes discarded'<cr>
-
-  "Retab file
-  nnoremap <leader>er :retab<cr>
-
-  "Better copy/cut/paste
-  noremap <leader>d "_d
-  noremap <leader>y "+y
-  noremap <leader>p "+p
-
-  " indent visually without coming back to normal mode
-  vmap > >gv
-  vmap < <gv
-
-  " Move visual block
-  vnoremap <c-j> :m '>+1<CR>gv=gv
-  vnoremap <c-k> :m '<-2<CR>gv=gv
-
-  " select last matched item
-  nnoremap <leader>/ //e<Enter>v??<Enter>
-  " Select last pasted text, pasted-textobj does a much better job
-  "nnoremap gb `[v`]
-  nnoremap <expr> g<c-v> '`[' . strpart(getregtype(), 0, 1) . '`]'
-
-  " Reselect the text you just entered
-  nnoremap gV `[v`]
   "}}}
 
   " Toggles {{{
@@ -3468,14 +3468,6 @@ call plug#end()
   endfunction
   "}}}
 
-  " Buffer deletion commands {{{
-  "===============================================================================
-  nnoremap  Úwa :bufdo execute ":bw"<cr>
-  nnoremap  ÚÚwa :bufdo execute ":bw!"<cr>
-  nnoremap  Úww :bw<cr>
-  nnoremap  ÚÚww :bw!<cr>
-  "}}}
-
   " Command-line Mode Key Mappings {{{
   "===============================================================================
 
@@ -3487,19 +3479,38 @@ call plug#end()
   cnoremap <c-l> <right>
   cnoremap <c-g>pp <C-\>egetcwd()<CR>
   cnoremap <c-g>pf <C-r>=expand("%")<CR>
-  nnoremap z0 :set foldlevel=0<cr>
-  nnoremap z1 :set foldlevel=1<cr>
-  nnoremap z2 :set foldlevel=2<cr>
-  nnoremap z3 :set foldlevel=3<cr>
-  nnoremap z4 :set foldlevel=4<cr>
-  nnoremap z5 :set foldlevel=5<cr>
-  nnoremap z6 :set foldlevel=6<cr>
-  nnoremap z7 :set foldlevel=7<cr>
-  nnoremap z8 :set foldlevel=8<cr>
-  nnoremap z9 :set foldlevel=9<cr>
 
 
 "}}}
+
+  " Languages {{{
+  "===============================================================================
+
+  " Laravel
+  nnoremap Úlv :e ./resources/views/<cr>
+  nnoremap Úlc :e ./resources/views/partials/<cr>
+  nnoremap Úlp :e ./public/<cr>
+
+  " Java
+  nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
+
+  " HTML
+  au FileType html,blade inoremap <buffer> >>     ></<C-X><C-O><Esc>%i
+  au FileType html,blade inoremap <buffer> >><CR> ></<C-X><C-O><Esc>%i<CR><ESC>O
+
+  "}}}
+
+  nnoremap <silent> [I :call List("i", 0, 0)<CR>
+  nnoremap <silent> ]I :call List("i", 0, 1)<CR>
+  xnoremap <silent> [I :<C-u>call List("i", 1, 0)<CR>
+  xnoremap <silent> ]I :<C-u>call List("i", 1, 1)<CR>
+  nnoremap <silent> [D :call List("d", 0, 0)<CR>
+  nnoremap <silent> ]D :call List("d", 0, 1)<CR>
+  xnoremap <silent> [D :<C-u>call List("d", 1, 0)<CR>
+  xnoremap <silent> ]D :<C-u>call List("d", 1, 1)<CR>
+
+  "noremap <F4> :call DiffMe()<CR>
+
 
 "}}}
 " ============================================================================
@@ -3828,7 +3839,7 @@ set nowrap
 
 set timeout timeoutlen=750
 "NeoVim handles ESC keys as alt+key set this to solve the problem
-set ttimeout ttimeoutlen=0 
+set ttimeout ttimeoutlen=0
 
 " Show the filename in the window titlebar
 set title "titlestring=
