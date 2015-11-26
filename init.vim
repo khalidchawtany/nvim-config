@@ -568,6 +568,7 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'jreybert/vimagit', {'on': ['Magit'], 'branch': 'next'}
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
+   nnoremap <leader>M :Magit<cr>
  "}}} _vimagit
 
  " DirDiff.vim {{{
