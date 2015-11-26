@@ -2598,10 +2598,15 @@ call plug#begin('~/.config/nvim/plugged')
  " Content
  " Clever-f {{{
 
-   Plug 'rhysd/clever-f.vim'
-   nmap f<BS> <Plug>(clever-f-reset)
-   vmap f<BS> <Plug>(clever-f-reset)
+ Plug 'rhysd/clever-f.vim', {'on':
+       \ [ '<Plug>(clever-f-F)', '<Plug>(clever-f-T)',
+         \ '<Plug>(clever-f-f)', '<Plug>(clever-f-t)' ]}
 
+   Map nox F     <Plug>(clever-f-F)
+   Map nox T     <Plug>(clever-f-T)
+   Map nox f     <Plug>(clever-f-f)
+   Map nox t     <Plug>(clever-f-t)
+   Map n   f<BS> <Plug>(clever-f-reset)
 
 
  "}}}
