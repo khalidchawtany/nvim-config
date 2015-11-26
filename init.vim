@@ -3307,7 +3307,12 @@ call plug#end()
   endif
 
 
-  " <Leader>``: Force quit all
+  " Writting and Quitting
+  nnoremap ,qq :q<cr>
+  nnoremap ,qa :qall<cr>
+  nnoremap ,wq :wq<cr>
+  nnoremap ,ww :w<cr>
+  nnoremap ,wa :wall<cr>
   nnoremap <Leader>`` :qa!<cr>
 
 
