@@ -2148,7 +2148,7 @@ call plug#begin('~/.config/nvim/plugged')
  " File
  " unite.vim {{{
 
-   Plug 'Shougo/unite.vim', {'on': ['Unite']}
+   Plug 'Shougo/unite.vim'
    "Plug 'Shougo/unite.vim'
    Plug 'Shougo/unite-outline'
    Plug 'Shougo/unite-build'
@@ -2193,8 +2193,8 @@ call plug#begin('~/.config/nvim/plugged')
    "}}} _unite-fasd.vim
 
 
-   autocmd! User unite.vim  call SetUpUniteMenus()
-   "au VimEnter * call SetUpUniteMenus()
+   "autocmd! User unite.vim  call SetUpUniteMenus()
+   au VimEnter * call SetUpUniteMenus()
    function! SetUpUniteMenus()
 
      " Enable fuzzy matching and sorting in all Unite functions
