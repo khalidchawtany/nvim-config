@@ -1036,8 +1036,37 @@ call plug#begin('~/.config/nvim/plugged')
  " nerdcommenter {{{
 
  "Don't lazyload as doing so will fragile
-  Plug 'scrooloose/nerdcommenter'
+  Plug 'scrooloose/nerdcommenter', {'on':
+        \ [
+        \ '<Plug>NERDCommenterToggle',
+        \ '<Plug>NERDCommenterAltDelims',
+        \ '<Plug>NERDCommenterAlignBoth',
+        \ '<Plug>NERDCommenterInvert',
+        \ '<Plug>NERDCommenterAlignLeft',
+        \ '<Plug>NERDCommenterMinimal',
+        \ '<Plug>NERDCommenterNested',
+        \ '<Plug>NERDCommenterSexy',
+        \ '<Plug>NERDCommenterUncomment',
+        \ '<Plug>NERDCommenterYank',
+        \ '<Plug>NERDCommenterComment',
+        \ '<Plug>NERDCommenterAppend',
+        \ '<Plug>NERDCommenterToEOL'
+        \ ]}
   "call s:SetUpForNewFiletype(&filetype, 1)
+
+  Map nx  ,c<Space>     <Plug>NERDCommenterToggle
+  Map nx  ,ca           <Plug>NERDCommenterAltDelims
+  Map nx  ,cb           <Plug>NERDCommenterAlignBoth
+  Map nx  ,ci           <Plug>NERDCommenterInvert
+  Map nx  ,cl           <Plug>NERDCommenterAlignLeft
+  Map nx  ,cm           <Plug>NERDCommenterMinimal
+  Map nx  ,cn           <Plug>NERDCommenterNested
+  Map nx  ,cs           <Plug>NERDCommenterSexy
+  Map nx  ,cu           <Plug>NERDCommenterUncomment
+  Map nx  ,cy           <Plug>NERDCommenterYank
+  Map nx  ,cc           <Plug>NERDCommenterComment
+  Map n  ,cA            <Plug>NERDCommenterAppend
+  Map n  ,c$            <Plug>NERDCommenterToEOL
 
  "}}} _nerdcommenter
    " Plug 'tpope/vim-commentary'
