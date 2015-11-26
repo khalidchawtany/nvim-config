@@ -527,8 +527,18 @@ call plug#begin('~/.config/nvim/plugged')
  "" Unmanaged plugin (manually installed and updated)
  "Plug '~/my-prototype-plugin'
 
- " On plugin Loaded
- " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
+  " On plugin Loaded
+  " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
+
+  "noremap <silent> s
+        "\ :call plug#load('vim-easymotion')
+        "\<Bar>map s <Plug>(easymotion-prefix)
+        "\<Bar>echo "easymotion ready"
+        "\<Bar>call feedkeys("\<Plug>(easymotion-prefix)")
+        "\<CR>
+
+
+
  "}}}
 
  " ----------------------------------------------------------------------------
