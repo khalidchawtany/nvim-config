@@ -2103,13 +2103,14 @@ call plug#begin('~/.config/nvim/plugged')
  " File
  " unite.vim {{{
 
-   Plug 'Shougo/unite.vim'
+   Plug 'Shougo/unite.vim', {'on': ['Unite']}
+   "Plug 'Shougo/unite.vim'
    Plug 'Shougo/unite-outline'
    Plug 'Shougo/unite-build'
    Plug 'Shougo/unite-help'
    Plug 'Shougo/unite-sudo'
    Plug 'Shougo/unite-session'
-   Plug 'Shougo/neoyank.vim'
+   "Plug 'Shougo/neoyank.vim'   "Breaks a lazyloading on some plugins like sort-motion
    Plug 'tsukkee/unite-tag'
    " unite-bookmark-file {{{
 
@@ -2147,7 +2148,8 @@ call plug#begin('~/.config/nvim/plugged')
    "}}} _unite-fasd.vim
 
 
-   au VimEnter * call SetUpUniteMenus()
+   autocmd! User unite.vim  call SetUpUniteMenus()
+   "au VimEnter * call SetUpUniteMenus()
    function! SetUpUniteMenus()
 
      " Enable fuzzy matching and sorting in all Unite functions
