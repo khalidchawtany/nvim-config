@@ -2607,7 +2607,22 @@ call plug#begin('~/.config/nvim/plugged')
  " vim-oblique {{{
 
 
- Plug 'junegunn/vim-oblique'
+ Plug 'junegunn/vim-oblique', {'on': [
+       \ '<Plug>(Oblique-#)', '<Plug>(Oblique-*)', '<Plug>(Oblique-/)',
+       \ '<Plug>(Oblique-?)', '<Plug>(Oblique-N)', '<Plug>(Oblique-g#)',
+       \ '<Plug>(Oblique-g*)', '<Plug>(Oblique-n)', '<Plug>(Oblique-F/)',
+       \ '<Plug>(Oblique-F?)' ]}
+
+ Map nx  #  <Plug>(Oblique-#)
+ Map nx  *  <Plug>(Oblique-*)
+ Map nox /  <Plug>(Oblique-/)
+ Map nox ?  <Plug>(Oblique-?)
+ Map nx  N  <Plug>(Oblique-N)
+ Map n   g# <Plug>(Oblique-g#)
+ Map n   g* <Plug>(Oblique-g*)
+ Map nx  n  <Plug>(Oblique-n)
+ Map nox z/ <Plug>(Oblique-F/)
+ Map nox z? <Plug>(Oblique-F?)
 
  autocmd! User Oblique       AnzuUpdateSearchStatusOutput
  autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput
