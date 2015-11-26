@@ -18,28 +18,26 @@ let g:mapleader = ","
 " ============================================================================
 " FUNCTIONS {{{
 " ============================================================================
+ function! Map(mode, key, op)"{{{
+   "echomsg a:mode "-" a:key "-" a:op
+   let silent=""
+   for c in split(a:mode, '\zs')
+     if c == "!"                       | let silent="<silent>"      | continue | endif
+     if type(c)==1 && tolower(c) !=# c | let c=tolower(c)."noremap" | else     | let c=tolower(c)."map" | endif
+     execute c silent a:key a:op
+     let silent=""
+   endfor
+ endfunction
 
-  function! NXMap(key, plug)"{{{
-    execute "nmap" a:key a:plug
-    execute "xmap" a:key a:plug
-  endfunction"}}}
-
-  function! VXMap(key, plug)"{{{
-    execute "vmap" a:key a:plug
-    execute "xmap" a:key a:plug
-  endfunction"}}}
-
-  function! VOMap(key, plug)"{{{
-    execute "vmap" a:key a:plug
-    execute "omap" a:key a:plug
-  endfunction"}}}
+ command! -nargs=* Map call Map(<f-args>)
+"}}}
 
   function! PlugTextObj(repo, key)"{{{
     let name = a:repo
     let name = substitute(name, ".*/vim-textobj-", "", "")
     execute  "Plug '" . a:repo . "', {'on': ['<Plug>(textobj-" . name . "-']}"
-    execute "call VOMap(\"i" . a:key . "\", \"<Plug>(textobj-" . name . "-i)\")"
-    execute "call VOMap(\"a" . a:key . "\", \"<Plug>(textobj-" . name . "-a)\")"
+    execute "Map vo" "i".a:key "<Plug>(textobj-" . name . "-i)"
+    execute "Map vo" "a".a:key "<Plug>(textobj-" . name . "-a)"
   endfunction"}}}
 
   function! CreateFoldableCommentFunction() range"{{{
