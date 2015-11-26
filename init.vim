@@ -3876,10 +3876,11 @@ function! MyFoldText()
   let info = " " . n . " lines"
 
   if &foldmethod == 'marker'
+    let comment_string = substitute(&cms, "\%s", "", "g")   
     let sub = strpart(sub, 0, strlen(sub)- (strlen(&foldmarker)-1)/2)
-    let sub = substitute( sub, '^"\s*', '', 'g')
+    let sub = substitute( sub, '^\s*' . comment_string . '\s*', '', 'g')
     let sub = substitute( sub, '^\s*', '', 'g')
-    let sub = substitute( sub, '"\s*$', '', 'g')
+    let sub = substitute( sub, comment_string.'\s*$', '', 'g')
   endif
 
   let sub = ' ' . sub . "                                                                                                    "
