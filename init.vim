@@ -1073,8 +1073,9 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  " splitjoin.vim {{{
 
-   "Don't try to lazyload :(
-   Plug 'AndrewRadev/splitjoin.vim'
+   Plug 'AndrewRadev/splitjoin.vim' , {'on':[]}
+   nnoremap gS :call plug#load('splitjoin.vim')<cr>:silent! call feedkeys("gS")<cr>
+   nnoremap gJ :call plug#load('splitjoin.vim')<cr>:silent! call feedkeys("gJ")<cr>
 
  "}}} _splitjoin.vim
 
