@@ -1864,7 +1864,7 @@ call plug#begin('~/.config/nvim/plugged')
   " vim-textobj-parameter {{{
   "i,, a,  ai2,         for parameter
   call PlugTextObj( 'sgur/vim-textobj-parameter', ',' )
-  call VOMap("i2,", "textobj-parameter-greedy-i")
+  Map vo i2, <Plug>(textobj-parameter-greedy-i)
 
   "}}} _vim-textobj-parameter
   " vim-textobj-line {{{
@@ -1899,7 +1899,7 @@ call plug#begin('~/.config/nvim/plugged')
 
     "gb              for pasted text
     Plug 'saaguero/vim-textobj-pastedtext', {'on': ['<Plug>(textobj-pastedtext-text)']}
-    call VOMap('gb', '<Plug>(textobj-pastedtext-text)')
+    Map vo gb <Plug>(textobj-pastedtext-text)
 
   "}}} _vim-textobj-pastedtext
   " vim-textobj-syntax {{{
@@ -1923,23 +1923,23 @@ call plug#begin('~/.config/nvim/plugged')
 
     "ic, ac, aC  for comment
     call PlugTextObj( 'glts/vim-textobj-comment', 'c' )
-    call VOMap("aC", "textobj-comment-big-a")
+    Map vo aC <Plug>(textobj-comment-big-a)
 
   "}}} _vim-textobj-comment
   " vim-textobj-indblock {{{
 
     "io, ao, iO, aO  for indented blocks
     call PlugTextObj( 'glts/vim-textobj-indblock', 'o' )
-    call VOMap("iO", "<Plug>(textobj-indblock-i)")
-    call VOMap("aO", "<Plug>(textobj-indblock-a)")
+    Map vo iO <Plug>(textobj-indblock-i)
+    Map vo aO <Plug>(textobj-indblock-a)
 
   "}}} _vim-textobj-indblock
   " vim-textobj-indent {{{
 
     "ii, ai, iI, aI  for Indent
     call PlugTextObj( 'kana/vim-textobj-indent', 'i' )
-    call VOMap('iI', "<Plug>(textobj-indent-same-i)")
-    call VOMap('aI', "<plug>(textobj-indent-same-a)")
+    Map vo iI <Plug>(textobj-indent-same-i)
+    Map vo aI <plug>(textobj-indent-same-a)
 
   "}}} _vim-textobj-indent
   " vim-textobj-dash {{{
@@ -1976,8 +1976,8 @@ call plug#begin('~/.config/nvim/plugged')
     "i/, a/, i?, a?  for Searched pattern
     Plug 'kana/vim-textobj-lastpat'
     \, {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']}
-    call VOMap('i/', "<Plug>(textobj-lastpat-n)")
-    call VOMap('i?', "<Plug>(textobj-lastpat-N)")
+    Map vo i/ <Plug>(textobj-lastpat-n)
+    Map vo i? <Plug>(textobj-lastpat-N)
 
   "}}} _vim-textobj-lastpat
   " vim-textobj-quote {{{
@@ -1994,8 +1994,8 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'akiyan/vim-textobj-xml-attribute', {'on': ['<Plug>(textobj-xmlattribute-']}
 
     let g:textobj_xmlattribute_no_default_key_mappings=1
-    call VOMap('ax', '<Plug>(textobj-xmlattribute-xmlattribute)')
-    call VOMap('ix', '<Plug>(textobj-xmlattribute-xmlattributenospace)')
+    Map vo ax <Plug>(textobj-xmlattribute-xmlattribute)
+    Map vo ix <Plug>(textobj-xmlattribute-xmlattributenospace)
 
 
   "}}}
@@ -2006,10 +2006,10 @@ call plug#begin('~/.config/nvim/plugged')
 
     let g:textobj_path_no_default_key_mappings =1
 
-    call VOMap('a\', '<Plug>(textobj-path-next_path-a)')
-    call VOMap('i\', '<Plug>(textobj-path-next_path-i)')
-    call VOMap('a\|', '<Plug>(textobj-path-prev_path-a)')
-    call VOMap('i\|', '<Plug>(textobj-path-prev_path-i)')
+    Map vo a\\ <Plug>(textobj-path-next_path-a)
+    Map vo i\\ <Plug>(textobj-path-next_path-i)
+    Map vo a\\| <Plug>(textobj-path-prev_path-a)
+    Map vo i\\| <Plug>(textobj-path-prev_path-i)
 
   "}}}
   " vim-textobj-datetime {{{
@@ -2020,17 +2020,17 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'kana/vim-textobj-datetime', {'on': ['<Plug>(textobj-datetime-']}
 
     let g:textobj_datetime_no_default_key_mappings=1
-    call VOMap('agda', '<Plug>(textobj-datetime-auto)')
-    call VOMap('agdd', '<Plug>(textobj-datetime-date)')
-    call VOMap('agdf', '<Plug>(textobj-datetime-full)')
-    call VOMap('agdt', '<Plug>(textobj-datetime-time)')
-    call VOMap('agdz', '<Plug>(textobj-datetime-tz)')
+    Map vo agda <Plug>(textobj-datetime-auto)
+    Map vo agdd <Plug>(textobj-datetime-date)
+    Map vo agdf <Plug>(textobj-datetime-full)
+    Map vo agdt <Plug>(textobj-datetime-time)
+    Map vo agdz <Plug>(textobj-datetime-tz)
 
-    call VOMap('igda', '<Plug>(textobj-datetime-auto)')
-    call VOMap('igdd', '<Plug>(textobj-datetime-date)')
-    call VOMap('igdf', '<Plug>(textobj-datetime-full)')
-    call VOMap('igdt', '<Plug>(textobj-datetime-time)')
-    call VOMap('igdz', '<Plug>(textobj-datetime-tz)')
+    Map vo igda <Plug>(textobj-datetime-auto)
+    Map vo igdd <Plug>(textobj-datetime-date)
+    Map vo igdf <Plug>(textobj-datetime-full)
+    Map vo igdt <Plug>(textobj-datetime-time)
+    Map vo igdz <Plug>(textobj-datetime-tz)
 
   "}}}
   " vim-textobj-postexpr {{{
