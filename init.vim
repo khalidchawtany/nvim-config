@@ -219,7 +219,7 @@ let g:mapleader = ","
     exe 'keepjumps help ' . a:topic
   endfunction "}}}
 
-  " ScratchPad {{{
+" ScratchPad {{{
   augroup scratchpad
     au!
     au BufNewFile,BufRead .scratchpads/scratchpad.* call ScratchPadLoad()
@@ -2922,7 +2922,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-startify {{{
   Plug 'mhinz/vim-startify'
-  nnoremap <F1> :Startify<cr>
+  nnoremap <M-F1> :Startify<cr>
   let g:startify_files_number = 5
 
   function! s:filter_header(lines) abort
