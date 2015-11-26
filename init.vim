@@ -1,4 +1,4 @@
-"Preven neovim-dot-app to source me twice {{{
+"Prevent neovim-dot-app to source me twice {{{
 if exists('neovim_dot_app')
   if exists('g:VIMRC_SOURCED')
     finish
@@ -372,9 +372,7 @@ let g:mapleader = ","
     redraw
   endfunction "}}}
 
-  "{{{ CreateLaravelGeneratorFunction
-
-  function! CreateLaravelGeneratorFunction()
+  function! CreateLaravelGeneratorFunction()"{{{
     "Generate laravel generator command
 
     "alias g:m="php artisan generate:model"
@@ -413,9 +411,7 @@ let g:mapleader = ","
 
     return command
 
-  endfunction
-
-  "}}} _CreateLaravelGeneratorFunction
+  endfunction"}}}
 
   function! ExecuteLaravelGeneratorCMD()"{{{
     let cmd = CreateLaravelGeneratorFunction()
@@ -3922,4 +3918,3 @@ nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>"}}}
 "         \ 'errorformat': '%f(%l\,%c): %trror %m',
 "         \ }
 " endfunction"}}}
-
