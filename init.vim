@@ -2701,13 +2701,7 @@ call plug#begin('~/.config/nvim/plugged')
 
    Plug 'Lokaltog/vim-easymotion', {'on': ['<Plug>(easymotion-']}
 
-  "<Bar> call investigate#Investigate()<CR>
-   noremap <silent> s
-         \ :call plug#load('vim-easymotion')
-         \<Bar>map s <Plug>(easymotion-prefix)
-         \<Bar>echo "easymotion ready"
-         \<Bar>call feedkeys("\<Plug>(easymotion-prefix)")
-         \<CR>
+   map s <Plug>(easymotion-prefix)
 
    map sl          <Plug>(easymotion-lineforward)
    map sh          <Plug>(easymotion-linebackward)
