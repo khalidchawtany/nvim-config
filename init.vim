@@ -57,11 +57,11 @@ let g:mapleader = ","
 
       let name = strpart(line, name_start, name_length)
 
-      let res = append(a:firstline - 1, "\"{{{ " . name)
+      let res = append(a:firstline - 1, " \" " . name . " {{{")
       let res = append(a:firstline, "")
 
       let res = append(a:lastline + 2, "")
-      let res = append(a:lastline + 3, "\"}}} _" . name)
+      let res = append(a:lastline + 3, " \"}}} _" . name)
 
       " let cleanLine = substitute(lifirstlinene, '\(\s\| \)\+$', '', 'e')
       " call setline(lineno, cleanLine)
@@ -547,16 +547,15 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-fugitive {{{
 
- Plug 'tpope/vim-fugitive'
-       "\ , {'on':
-       "\ [ 'Git', 'Gcd',     'Glcd',   'Gstatus',
-       "\ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
-       "\ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
-       "\ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
-       "\ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
-       "\ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
-       "\ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
-       "\ ]}
+ Plug 'tpope/vim-fugitive' , {'on':
+       \ [ 'Git', 'Gcd',     'Glcd',   'Gstatus',
+       \ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
+       \ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
+       \ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
+       \ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
+       \ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
+       \ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
+       \ ]}
 
    autocmd User fugitive
          \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
@@ -624,38 +623,20 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _lazyList.vim
  " vim-simple-todo {{{
 
-   Plug 'vitalk/vim-simple-todo', {'on':
-         \ ['<Plug>(simple-todo-new)',
-         \ '<Plug>(simple-todo-new-start-of-line)',
-         \ '<Plug>(simple-todo-below)',
-         \ '<Plug>(simple-todo-above)',
-         \ '<Plug>(simple-todo-mark-as-done)',
-         \ '<Plug>(simple-todo-mark-as-undone)']
-         \ }
+   Plug 'vitalk/vim-simple-todo', {'on': ['<Plug>(simple-todo-'] }
 
    " Disable default key bindings
    let g:simple_todo_map_keys = 0
 
-   nmap glti <Plug>(simple-todo-new)
-   " imap glti <Plug>(simple-todo-new)
 
    let g:simple_todo_tick_symbol = 'y'
 
-   " nmap <Leader>i <Plug>(simple-todo-new)
-   " imap <Leader>i <Plug>(simple-todo-new)
-   " imap <Leader>I <Plug>(simple-todo-new-start-of-line)
-   " nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
-   " vmap <Leader>I <Plug>(simple-todo-new-start-of-line)
-   " nmap <Leader>o <Plug>(simple-todo-below)
-   " imap <Leader>o <Plug>(simple-todo-below)
-   " nmap <Leader>O <Plug>(simple-todo-above)
-   " imap <Leader>O <Plug>(simple-todo-above)
-   " nmap <Leader>x <Plug>(simple-todo-mark-as-done)
-   " vmap <Leader>x <Plug>(simple-todo-mark-as-done)
-   " imap <Leader>x <Plug>(simple-todo-mark-as-done)
-   " nmap <Leader>X <Plug>(simple-todo-mark-as-undone)
-   " vmap <Leader>X <Plug>(simple-todo-mark-as-undone)
-   " imap <Leader>X <Plug>(simple-todo-mark-as-undone)
+   nmap <Leader>i <Plug>(simple-todo-new)
+   nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
+   nmap <Leader>o <Plug>(simple-todo-below)
+   nmap <Leader>O <Plug>(simple-todo-above)
+   nmap <Leader>x <Plug>(simple-todo-mark-as-done)
+   nmap <Leader>X <Plug>(simple-todo-mark-as-undone)
 
 
  "}}} _vim-simple-todo
@@ -772,11 +753,15 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-multiple-cursors
  " vim-markmultiple {{{
 
- Plug 'adinapoli/vim-markmultiple'
+ Plug 'adinapoli/vim-markmultiple', {'on':[]}
  let g:mark_multiple_trigger = "<C-n>"
 
- "if effect remains on scree clear with "call MarkMultipleClean()"
- nnoremap <c-n><BS> call MarkMutlipleClean()
+ nnoremap <C-N>  :call plug#load('vim-markmultiple')<cr>:call MarkMultiple()<CR>
+ xnoremap <C-N>  :call plug#load('vim-markmultiple')<cr>:call MarkMultiple()<CR>
+
+ "if effect remains on screen clear with "call MarkMultipleClean()"
+ Map  NV <BS><c-n> :call\ MarkMultipleClean()<cr>
+
 
  "}}} _vim-markmultiple
  " multichange.vim {{{
@@ -788,22 +773,18 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _multichange.vim
  " vim-multiedit {{{
 
- Plug 'hlissner/vim-multiedit'
-                           " \,
-                           " \{
-                           " \   'on':
-                           " \     [
-                           " \         'MultieditAddMark', 'MultieditAddRegion',
-                           " \         'MultieditRestore', 'MultieditHop', 'Multiedit',
-                           " \         'MultieditClear', 'MultieditReset'
-                           " \     ]
-                           " \}
+ Plug 'hlissner/vim-multiedit' , { 'on': [
+       \   'MultieditAddMark', 'MultieditAddRegion',
+       \   'MultieditRestore', 'MultieditHop', 'Multiedit',
+       \   'MultieditClear', 'MultieditReset'
+       \ ] }
 
    let g:multiedit_no_mappings = 1
    let g:multiedit_auto_reset = 1
 
    "Force multiedit key bindings and make it faster :)
    au VimEnter * call BindMultieditKeys()
+   "au User vim-multiedit call BindMultieditKeys()
 
    function! BindMultieditKeys()
 
@@ -870,7 +851,14 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-rectinsert
 
  " Isolate
- Plug 'chrisbra/NrrwRgn'
+ " NrrwRgn {{{
+
+   Plug 'chrisbra/NrrwRgn', {'on':
+        \ ['NR', 'NarrowRegion', 'NW', 'NarrowWindow', 'WidenRegion',
+        \ 'NRV', 'NUD', 'NRPrepare', 'NRP', 'NRMulti', 'NRM', 'NRSyncOnWrite',
+        \ 'NRS', 'NRNoSyncOnWrite', 'NRN', 'NRL']}
+
+ "}}} _NrrwRgn
 
  " Yank
  " YankRing {{{
@@ -1000,14 +988,13 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _switch.vim
  " vim-exchange {{{
 
-   Plug 'tommcdo/vim-exchange', {'on':  ['ExchangeClear', '<Plug>(Exchange)', '<Plug>(ExchangeLine)', '<Plug>(ExchangeClear)']}
+   Plug 'tommcdo/vim-exchange', {'on':  ['ExchangeClear', '<Plug>(Exchange']}
+   xmap  X             <Plug>(Exchange)
+   nmap  cxx           <Plug>(ExchangeLine)
+   nmap  cxc           <Plug>(ExchangeClear)
+   nmap  cx            <Plug>(Exchange)
 
  "}}} _vim-exchange
- " vim-tag-comment {{{
-   " Comment out HTML properly
-   Plug 'mvolkmann/vim-tag-comment', {'on': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']}
-
- "}}} _vim-tag-comment
  " EasyAlign {{{
 
    Plug 'junegunn/vim-easy-align',          {'on':  ['EasyAlign', '<Plug>(EasyAlign)']}
@@ -1078,35 +1065,29 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap gJ :call plug#load('splitjoin.vim')<cr>:silent! call feedkeys("gJ")<cr>
 
  "}}} _splitjoin.vim
-
  " vim-sort-motion {{{
 
- Plug 'christoomey/vim-sort-motion', {'on': ['<Plug>SortMotion', '<Plug>SortLines', '<Plug>SortMotionVisual']}
- map  gs  <Plug>SortMotion
- map  gss <Plug>SortLines
- vmap gs  <Plug>SortMotionVisual
+  Plug 'christoomey/vim-sort-motion', {'on': ['<Plug>Sort']}
+  map  gs  <Plug>SortMotion
+  map  gss <Plug>SortLines
+  vmap gs  <Plug>SortMotionVisual
 
  "}}} _vim-sort-motion
+ " vim-tag-comment {{{
+   " Comment out HTML properly
+   Plug 'mvolkmann/vim-tag-comment', {'on': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']}
+   nmap <leader>tc :ElementComment<cr>
+   nmap <leader>tu :ElementUncomment<cr>
+   nmap <leader>tC :TagComment<cr>
+   nmap <leader>tU :TagUncomment<cr>
+
+ "}}} _vim-tag-comment
+
  " Comments
  " nerdcommenter {{{
 
  "Don't lazyload as doing so will fragile
-  Plug 'scrooloose/nerdcommenter', {'on':
-        \ [
-        \ '<Plug>NERDCommenterToggle',
-        \ '<Plug>NERDCommenterAltDelims',
-        \ '<Plug>NERDCommenterAlignBoth',
-        \ '<Plug>NERDCommenterInvert',
-        \ '<Plug>NERDCommenterAlignLeft',
-        \ '<Plug>NERDCommenterMinimal',
-        \ '<Plug>NERDCommenterNested',
-        \ '<Plug>NERDCommenterSexy',
-        \ '<Plug>NERDCommenterUncomment',
-        \ '<Plug>NERDCommenterYank',
-        \ '<Plug>NERDCommenterComment',
-        \ '<Plug>NERDCommenterAppend',
-        \ '<Plug>NERDCommenterToEOL'
-        \ ]}
+  Plug 'scrooloose/nerdcommenter', {'on': [ '<Plug>NERDCommenter' ]}
   "call s:SetUpForNewFiletype(&filetype, 1)
 
   Map nx  ,c<Space>     <Plug>NERDCommenterToggle
@@ -1129,14 +1110,29 @@ call plug#begin('~/.config/nvim/plugged')
 
  " Auto-manipulators
  " vim-endwise {{{
+   Plug 'tpope/vim-endwise', {'on': []}
 
-   Plug 'tpope/vim-endwise'
+   "Lazy load endwise
+   augroup load_endwise
+     autocmd!
+     autocmd InsertEnter * call plug#load('vim-endwise') | autocmd! load_endwise
+   augroup END
 
  "}}} _vim-endwise
+ " vim-closer {{{
+
+   Plug 'rstacruz/vim-closer'
+
+ "}}} _vim-closer
  " delimitmate {{{
 
-   Plug 'Raimondi/delimitMate'
+   Plug 'Raimondi/delimitMate', {'on': []}
    " au FileType blade let b:delimitMate_autoclose = 0
+   "Lazy load delimitMate
+   augroup load_delimitMate
+     autocmd!
+     autocmd InsertEnter * call plug#load('delimitMate') | autocmd! load_delimitMate
+   augroup END
 
  "}}}
 
@@ -1167,16 +1163,17 @@ call plug#begin('~/.config/nvim/plugged')
        call submode#leave_with('undo/redo', 'n', '', '<Esc>')
        call submode#map('undo/redo', 'n', '', '-', 'g-')
        call submode#map('undo/redo', 'n', '', '+', 'g+')
-     "}}} _Undoe/Redo
+     "}}} _Undo/Redo
      "Buffer {{{
-       call submode#enter_with('buf', 'n', 's', ']b', ':<C-U>exe "bnext"<cr>')
-       call submode#enter_with('buf', 'n', 's', '[b', ':<C-U>exe "bprevious"<cr>')
+       call submode#enter_with('buf', 'n', 's', ']b', ':<C-U>exe "bnext<Bar>hi Normal guibg=red"<cr>')
+       call submode#enter_with('buf', 'n', 's', '[b', ':<C-U>exe "bprevious<Bar>hi Normal guibg=red"<cr>')
        call submode#map('buf', 'n', 's', ']', ':<C-U>exe "bnext"<cr>')
        call submode#map('buf', 'n', 's', 'd', ':<C-U>exe "bdelete"<cr>')
        call submode#map('buf', 'n', 's', 'k', ':<C-U>exe "bdelete!"<cr>')
        call submode#map('buf', 'n', 's', 'o', ':<C-U>exe "BufOnly"<cr>')
        call submode#map('buf', 'n', 's', '[', ':<C-U>exe "bprevious"<cr>')
        call submode#map('buf', 'n', 's', 'l', ':<C-U>exe "buffers"<cr>')
+       autocmd! User buf_leaving :hi Normal guibg=#1B1D1E<cr>
      "}}} _Buffer
      "Jump/Edit {{{
        call submode#enter_with('Jump/Edit', 'n', '', ']j', ':<C-U>exe "normal g,zO"<cr>')
@@ -1187,6 +1184,17 @@ call plug#begin('~/.config/nvim/plugged')
    endfunction
 
  "}}}
+ " vim-hopper {{{
+
+   "Plug 'LFDM/vim-hopper'
+   Plug 'khalidchawtany/vim-hopper'
+   "let g:hopper_prefix = '<esc>'
+   let g:hopper_prefix = '<space>'
+   let g:hopper_file_opener = [ 'angular' ]
+
+ "}}} _vim-hopper
+
+
  " vim-unimpaired {{{
 
  Plug 'tpope/vim-unimpaired'
@@ -1194,13 +1202,14 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-unimpaired
  " vim-man {{{
 
-   Plug 'bruno-/vim-man'
+   Plug 'bruno-/vim-man', {'on': ['Man', 'SMan', 'VMan', 'Mangrep']}
 
  "}}} _vim-man
  " vim-follow-my-lead {{{
 
    ",fml
-   Plug 'ktonga/vim-follow-my-lead'
+   Plug 'ktonga/vim-follow-my-lead', {'on': ['<Plug>(FollowMyLead)']}
+   nnoremap <leader>fml <Plug>(FollowMyLead)
    let g:fml_all_sources=1 "1 for all sources, 0(Default) for $MYVIMRC.
 
  "}}} _vim-follow-my-lead
@@ -1217,13 +1226,15 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _capture.vim
  " vim-eunuch {{{
 
-   Plug 'tpope/vim-eunuch'
+   Plug 'tpope/vim-eunuch', {'on': [ 'Remove', 'Unlink', 'Move', 'Rename',
+       \ 'Chmod', 'Mkdir', 'Find', 'Locate', 'SudoEdit', 'SudoWrite', 'Wall', 'W' ]}
 
  "}}} _vim-eunuch
  " vim-capslock {{{
 
-   Plug 'tpope/vim-capslock' ",{'on':['<Plug>CapsLockToggle', '<Plug>(CapsLockEnable)', '<Plug>(CapsLockDisable)']}
-
+   Plug 'tpope/vim-capslock' ,{'on':['<Plug>CapsLockToggle',
+       \ '<Plug>(CapsLockEnable)', '<Plug>(CapsLockDisable)']}
+   imap <C-L> <C-O><Plug>CapsLockToggle
  "}}} _vim-capslock
 
  " vim-characterize {{{
@@ -1515,6 +1526,11 @@ call plug#begin('~/.config/nvim/plugged')
    let g:user_emmet_leader_key='◊Ú'
 
  "}}}
+ " vim-hyperstyle {{{
+
+   Plug 'rstacruz/vim-hyperstyle', {'for': ['css']}
+
+ "}}} _vim-hyperstyle
  " vim-closetag {{{
 
    " "This plugin uses > of the clos tag to work in insert mode
@@ -1619,7 +1635,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _neoterm
  " vim-test {{{
 
-   Plug 'janko-m/vim-test'
+   Plug 'janko-m/vim-test', {'on': [ 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' ]}
 
  "}}} _vim-test
 
@@ -1670,7 +1686,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  " neosnippet {{{
 
-   Plug 'Shougo/neosnippet'
+   Plug 'Shougo/neosnippet', {'on': ['<Plug>(neosnippet_expand_']}
    " Plugin key-mappings.
    imap <c-\>     <Plug>(neosnippet_expand_or_jump)
    smap <c-\>     <Plug>(neosnippet_expand_or_jump)
@@ -1795,7 +1811,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  " operator-blockwise {{{
 
-   Plug 'osyo-manga/vim-operator-blockwise'
+   Plug 'osyo-manga/vim-operator-blockwise', {'on': ['<Plug>(operator-blockwise-']}
    nmap <Space>Y <Plug>(operator-blockwise-yank-head)
    nmap <Space>D <Plug>(operator-blockwise-delete-head)
    nmap <Space>C <Plug>(operator-blockwise-change-head)
@@ -1877,6 +1893,9 @@ call plug#begin('~/.config/nvim/plugged')
  " targets.vim {{{
 
   Plug 'wellle/targets.vim'
+  let g:targets_pairs = '()b {}b []b <>b'
+
+  "for c
   "Some samples:
   " cin)   Change inside next parens
   " cil)   Change inside last parens
@@ -1893,7 +1912,7 @@ call plug#begin('~/.config/nvim/plugged')
   "g:targets_quotes
   "g:targets_separators
   "g:targets_tagTrigger
-  let g:targets_argTrigger=";"
+  "let g:targets_argTrigger="a"
   "g:targets_argOpening
   "g:targets_argClosing
   "g:targets_argSeparator
@@ -1904,7 +1923,6 @@ call plug#begin('~/.config/nvim/plugged')
 
   Plug 'kana/vim-textobj-user'
   " let g:textobj_blockwise_enable_default_key_mapping =0
-  Plug 'machakann/vim-textobj-delimited'        "id, ad, iD, aD  for Delimiters takes numbers d2id
   " Plug 'kana/vim-textobj-function'
   Plug 'machakann/vim-textobj-functioncall'     "if, af
   " Plug 'kana/vim-niceblock'
@@ -1942,14 +1960,16 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
   " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
-  call PlugTextObj( 'rhysd/vim-textobj-anyblock', 'a' )
+  call PlugTextObj( 'rhysd/vim-textobj-anyblock', ';' )
   let g:textobj_anyblock_no_default_key_mappings =1
-
-  " let g:textobj#anyblock#blocks =  [ '(', '{', '[', '"', "'", '<', '`', 'f`'  ]
 
   "}}}
 
-  Plug 'osyo-manga/vim-textobj-blockwise'       "<c-v>iw, cIw    for block selection
+  "Don't try to lazyload these two
+  Plug 'osyo-manga/vim-textobj-blockwise' "<c-v>iw, cIw    for block selection
+  Plug 'machakann/vim-textobj-delimited' "id, ad, iD, aD   for Delimiters takes numbers d2id
+
+
   " vim-textobj-pastedtext {{{
 
     "gb              for pasted text
@@ -2029,13 +2049,13 @@ call plug#begin('~/.config/nvim/plugged')
   " vim-textobj-lastpat {{{
 
     "i/, a/, i?, a?  for Searched pattern
-    Plug 'kana/vim-textobj-lastpat'
-    \, {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']}
+    Plug 'kana/vim-textobj-lastpat' , {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']}
     Map vo i/ <Plug>(textobj-lastpat-n)
     Map vo i? <Plug>(textobj-lastpat-N)
 
   "}}} _vim-textobj-lastpat
   " vim-textobj-quote {{{
+
   " "TODO these mappings are fake
   " "iq, aq, iQ, aQ  for Curely quotes
   " call PlugTextObj( 'reedes/vim-textobj-quote', 'q' )
@@ -2109,13 +2129,13 @@ call plug#begin('~/.config/nvim/plugged')
   "}}}
   " vim-textobj-keyvalue {{{
 
-    " Plug 'vimtaku/vim-textobj-keyvalue'
+    Plug 'vimtaku/vim-textobj-keyvalue', {'on': ['<Plug>(textobj-key-', '<Plug>(textobj-value-']}
 
-    " let g:textobj_key_no_default_key_mappings=1
-    " ak  <Plug>(textobj-key-a)
-    " ik  <Plug>(textobj-key-i)
-    " av  <Plug>(textobj-value-a)
-    " iv  <Plug>(textobj-value-i)
+    let g:textobj_key_no_default_key_mappings=1
+    Map vo ak  <Plug>(textobj-key-a)
+    Map vo ik  <Plug>(textobj-key-i)
+    Map vo aK  <Plug>(textobj-value-a)
+    Map vo iK  <Plug>(textobj-value-i)
 
 
   "}}}
@@ -2148,7 +2168,7 @@ call plug#begin('~/.config/nvim/plugged')
  " File
  " unite.vim {{{
 
-   Plug 'Shougo/unite.vim'
+   Plug 'Shougo/unite.vim', {'on': ['Unite', 'UniteWithCursorWord']}
    "Plug 'Shougo/unite.vim'
    Plug 'Shougo/unite-outline'
    Plug 'Shougo/unite-build'
@@ -2193,8 +2213,8 @@ call plug#begin('~/.config/nvim/plugged')
    "}}} _unite-fasd.vim
 
 
-   "autocmd! User unite.vim  call SetUpUniteMenus()
-   au VimEnter * call SetUpUniteMenus()
+   autocmd! User unite.vim  call SetUpUniteMenus()
+   "au VimEnter * call SetUpUniteMenus()
    function! SetUpUniteMenus()
 
      " Enable fuzzy matching and sorting in all Unite functions
@@ -2450,7 +2470,8 @@ call plug#begin('~/.config/nvim/plugged')
  " FZF {{{
 
    Plug 'junegunn/fzf', {'on': []}
-   Plug 'junegunn/fzf.vim', {'on': [ 'Files', 'Buffers', 'Colors', 'Ag', 'Lines',
+   Plug 'junegunn/fzf.vim', {'on': [ '<plug>(fzf-maps-', '<plug>(fzf-complete-',
+         \ 'Files', 'Buffers', 'Colors', 'Ag', 'Lines',
        \'BLines', 'Tags', 'BTags', 'Marks', 'Windows',
        \'Locate', 'History', 'Snippets',
        \'Commits', 'BCommits', 'Commands', 'Helptags']}
@@ -2549,85 +2570,106 @@ call plug#begin('~/.config/nvim/plugged')
 
  " }}}
 
- " NERDTree {{{
+ " ranger.vim {{{
 
-    Plug 'scrooloose/nerdtree', {'on':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind'] }
-  " Plug 'jistr/vim-nerdtree-tabs'
+   Plug 'francoiscabrol/ranger.vim'
+   Plug 'rbgrouleff/bclose.vim'
+   map <leader>f :call OpenRanger()<CR>
 
-    let g:loaded_netrw       = 1 "Disable Netrw
-    let g:loaded_netrwPlugin = 1 "Disable Netrw
+ "}}} _ranger.vim
+ " vim-dirvish {{{
 
-    "let g:nerdtree_tabs_open_on_gui_startup = 0
-    let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
+   Plug 'justinmk/vim-dirvish'
 
+ "}}} _vim-dirvish
+ " vim-vinegar {{{
 
-    let NERDTreeQuitOnOpen=1
-    let NERDTreeWinSize = 23
+   Plug 'tpope/vim-vinegar'            " {-} file browser
 
-    " Don't display these kinds of files
-    let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-          \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-          \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-          \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-          \ '^.gitignore$', '^.idea$' , '^tags$']
-
-    let NERDTreeShowHidden=1
-    let NERDTreeShowBookmarks=1
-
-    " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
-    nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
-    nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
-    nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
-
-
-
-    function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-      exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-      exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-    endfunction
-
-    call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
-    call NERDTreeHighlightFile('md', 'blue', 'none', '#6699CC', 'none')
-    call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
-    call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
-    call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-    call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
-    call NERDTreeHighlightFile('css', 'cyan', 'none', '#5486C0', 'none')
-    call NERDTreeHighlightFile('scss', 'cyan', 'none', '#5486C0', 'none')
-    call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
-    call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
-    call NERDTreeHighlightFile('ts', 'Blue', 'none', '#6699cc', 'none')
-    call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
-    call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
-    call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
-
- "}}}
- " Plug 'tpope/vim-vinegar'            " {-} file browser
+ "}}} _vim-vinegar
  " vimfiler.vim {{{
 
- Plug 'Shougo/vimfiler.vim'
- let g:loaded_netrw       = 1 "Disable Netrw
- let g:loaded_netrwPlugin = 1 "Disable Netrw
- let g:vimfiler_as_default_explorer=1
+  Plug 'Shougo/vimfiler.vim', {'on': ['VimFiler', 'VimFilerBufferDir', 'VimFilerCurrentDir']}
+  "let g:loaded_netrw       = 1 "Disable Netrw
+  "let g:loaded_netrwPlugin = 1 "Disable Netrw
+  let g:vimfiler_as_default_explorer=1
 
- let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-       \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-       \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-       \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-       \ '^.gitignore$', '^.idea$' , '^tags$']
+  let g:vimfiler_ignore_pattern=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+        \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+        \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+        \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+        \ '^.gitignore$', '^.idea$' , '^tags$']
 
- "Force vimfiler Enter to toggle expand/collapse
- autocmd! FileType vimfiler call s:my_vimfiler_settings()
- function! s:my_vimfiler_settings()
-   nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
-   nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
- endfunction
+  "Force vimfiler Enter to toggle expand/collapse
+  autocmd! FileType vimfiler call s:my_vimfiler_settings()
+  function! s:my_vimfiler_settings()
+    nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+    nmap <silent><buffer> <cr> <Plug>(vimfiler_expand_or_edit)
+  endfunction
 
- nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
- nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
- nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
+  au User vimfiler.vim call MapVimFiler()
+
+  function! MapVimFiler()
+    nnoremap <silent> Ú<c-l><c-l> :VimFiler -simple -split -winwidth=33 -force-hide<cr>
+    nnoremap <silent> Ú<c-l><c-f> :VimFilerBufferDir -simple -split -winwidth=33 -force-hide<cr>
+    nnoremap <silent> Ú<c-l><c-d> :VimFilerCurrentDir -simple -split -winwidth=33 -force-hide<cr>
+  endfunction
 
  "}}} _vimfiler.vim
+ " NERDTree {{{
+
+   Plug 'scrooloose/nerdtree', {'on':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind'] }
+   "Plug 'scrooloose/nerdtree'
+  "Plug 'jistr/vim-nerdtree-tabs'
+
+   "let g:loaded_netrw       = 1 "Disable Netrw
+   "let g:loaded_netrwPlugin = 1 "Disable Netrw
+
+   "let g:nerdtree_tabs_open_on_gui_startup = 0
+   let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
+
+
+   let NERDTreeQuitOnOpen=1
+   let NERDTreeWinSize = 23
+
+   " Don't display these kinds of files
+   let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
+         \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
+         \ '\.embed\.manifest$', '\.embed\.manifest.res$',
+         \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
+         \ '^.gitignore$', '^.idea$' , '^tags$']
+
+   let NERDTreeShowHidden=1
+   let NERDTreeShowBookmarks=1
+
+   " nnoremap Ú<c-l> :NERDTreeTabsToggle<cr>
+   nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
+   nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
+   nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
+
+
+
+   function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
+     exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
+     exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
+   endfunction
+
+   call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
+   call NERDTreeHighlightFile('md', 'blue', 'none', '#6699CC', 'none')
+   call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
+   call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
+   call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
+   call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
+   call NERDTreeHighlightFile('css', 'cyan', 'none', '#5486C0', 'none')
+   call NERDTreeHighlightFile('scss', 'cyan', 'none', '#5486C0', 'none')
+   call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
+   call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
+   call NERDTreeHighlightFile('ts', 'Blue', 'none', '#6699cc', 'none')
+   call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
+   call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
+   call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
+
+ "}}}
 
  " vim-projectionist {{{
 
@@ -2643,9 +2685,7 @@ call plug#begin('~/.config/nvim/plugged')
  " Content
  " Clever-f {{{
 
- Plug 'rhysd/clever-f.vim', {'on':
-       \ [ '<Plug>(clever-f-F)', '<Plug>(clever-f-T)',
-         \ '<Plug>(clever-f-f)', '<Plug>(clever-f-t)' ]}
+   Plug 'rhysd/clever-f.vim', {'on': [ '<Plug>(clever-f-' ]}
 
    Map nox F     <Plug>(clever-f-F)
    Map nox T     <Plug>(clever-f-T)
@@ -2669,11 +2709,7 @@ call plug#begin('~/.config/nvim/plugged')
  " vim-oblique {{{
 
 
- Plug 'junegunn/vim-oblique', {'on': [
-       \ '<Plug>(Oblique-#)', '<Plug>(Oblique-*)', '<Plug>(Oblique-/)',
-       \ '<Plug>(Oblique-?)', '<Plug>(Oblique-N)', '<Plug>(Oblique-g#)',
-       \ '<Plug>(Oblique-g*)', '<Plug>(Oblique-n)', '<Plug>(Oblique-F/)',
-       \ '<Plug>(Oblique-F?)' ]}
+ Plug 'junegunn/vim-oblique', {'on': [ '<Plug>(Oblique-' ]}
 
  Map nx  #  <Plug>(Oblique-#)
  Map nx  *  <Plug>(Oblique-*)
@@ -2726,8 +2762,8 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-fuzzysearch
  " grepper {{{
 
- Plug 'mhinz/vim-grepper', {'on': [ 'Grepper', '<plug>(Grepper)' ]}
-   nmap <leader>gg <plug>(Grepper)
+ Plug 'mhinz/vim-grepper', {'on': [ 'Grepper', '<plug>(Grepper' ]}
+
    xmap <leader>gg <plug>(Grepper)
    cmap <leader>gg <plug>(GrepperNext)
    nmap <leader>gs <plug>(GrepperMotion)
@@ -2822,13 +2858,7 @@ call plug#begin('~/.config/nvim/plugged')
  " vim-skipit {{{
 
    "use <c-l>l to skip ahead forward in insert mode
-   Plug 'habamax/vim-skipit',
-         \ {'on': [
-         \ '<Plug>SkipItForward',
-         \ '<Plug>SkipAllForward',
-         \ '<Plug>SkipItBack',
-         \ '<Plug>SkipAllBack'
-         \ ]}
+   Plug 'habamax/vim-skipit', {'on': [ '<Plug>Skip' ]}
    imap <C-s>j <Plug>SkipItForward
    imap <C-s>l <Plug>SkipAllForward
    imap <C-s>k <Plug>SkipItBack
@@ -2871,6 +2901,7 @@ call plug#begin('~/.config/nvim/plugged')
  " TaskList.vim {{{
 
    Plug 'vim-scripts/TaskList.vim', {'on':  ['TaskList']}
+   nnoremap ,tl :TaskList<cr>
 
  "}}} _TaskList.vim
  " Tagbar {{{
@@ -2884,20 +2915,14 @@ call plug#begin('~/.config/nvim/plugged')
  " History
  " undotree {{{
 
-   Plug 'mbbill/undotree'
+   Plug 'mbbill/undotree', {'on': ['UndotreeShow', 'UndotreeFocus', 'UndotreeToggle']}
 
    let g:undotree_WindowLayout = 2
+   nnoremap ,ut :UndotreeToggle<cr>
+   nnoremap ,us :UndotreeShow<cr>
 
 
  "}}} _undotree
- " vim-mundo {{{
-
-   Plug 'simnalamburt/vim-mundo'
-
-   let g:gundo_preview_bottom = 1
-
-
- "}}} _vim-mundo
 
  " Buffers
  " vim-bufsurf {{{
@@ -2910,7 +2935,7 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-bufsurf
  " vim-ctrlspace {{{
 
-   Plug 'szw/vim-ctrlspace', {'on': ['CtrlSpace']} "TODO: load on demand
+   Plug 'szw/vim-ctrlspace', {'on': ['CtrlSpace']}
 
    if executable("ag")
      let g:ctrlspace_glob_command = 'ag -l --nocolor -g ""'
@@ -2942,8 +2967,12 @@ call plug#begin('~/.config/nvim/plugged')
  " Finder
  " gtfo {{{
 
-   Plug 'justinmk/vim-gtfo'
+   Plug 'justinmk/vim-gtfo', {'on': []}
    let g:gtfo#terminals = { 'mac' : 'iterm' }
+  nnoremap <silent> gof :unmap gof<Bar>call plug#load('vim-gtfo')<cr>:<c-u>call gtfo#open#file("%:p")<cr>
+  nnoremap <silent> got :unmap got<Bar>call plug#load('vim-gtfo')<cr>:<c-u>call gtfo#open#term("%:p:h", "")<cr>
+  nnoremap <silent> goF :unmap goF<Bar>call plug#load('vim-gtfo')<cr>:<c-u>call gtfo#open#file(getcwd())<cr>
+  nnoremap <silent> goT :unmap goT<Bar>call plug#load('vim-gtfo')<cr>:<c-u>call gtfo#open#term(getcwd(), "")<cr>
 
  "}}}
 
@@ -2984,7 +3013,8 @@ call plug#begin('~/.config/nvim/plugged')
 
  " Volumes/Home/.config/nvim/plugged/foldsearches.vim {{{
 
-   Plug '/Volumes/Home/.config/nvim/plugged/foldsearches.vim'
+
+       \ Plug '/Volumes/Home/.config/nvim/plugged/foldsearches.vim'
 
  "}}} _Volumes/Home/.config/nvim/plugged/foldsearches.vim
 
@@ -3085,13 +3115,27 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap <leader>xp :RainbowParentheses!!<CR>
 
  "}}}
+   Plug 'ryanoasis/vim-devicons'
+
+
+ "Golden Ratio
  " golden-ratio {{{
 
    Plug 'roman/golden-ratio'
 
  "}}} _golden-ratio
+ " GoldenView.Vim {{{
 
-   Plug 'ryanoasis/vim-devicons'
+   "Plug 'zhaocai/GoldenView.Vim'
+   "let g:goldenview__enable_default_mapping = 0
+
+ "}}} _GoldenView.Vim
+ " vim-eighties {{{
+
+   "Plug 'justincampbell/vim-eighties'
+
+ "}}} _vim-eighties
+
 
    " Plug 'tpope/vim-flagship'
  " lightline {{{
@@ -3253,6 +3297,8 @@ call plug#end()
 " ============================================================================
 " COMMANDS {{{
 " ============================================================================
+  command! SyntaxLoadedFrom :echo join(map(map(split(&runtimepath, ','), "split(v:val, '/') + ['syntax']"), "'/' . join(v:val, '/')"), "\n")<cr>
+
   command! -nargs=1 Ilist call List("i", 1, 0, <f-args>)
   command! -nargs=1 Dlist call List("d", 1, 0, <f-args>)
 
@@ -3464,6 +3510,9 @@ call plug#end()
   "}}}
 
   " Path & File {{{
+
+  autocmd Filetype netrw nnoremap q :quit<cr>
+
   "CD into:
   "current buffer file dir
   nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
@@ -3473,7 +3522,7 @@ call plug#end()
   nnoremap cdg :lcd <c-r>=FindGitDirOrRoot()<cr><cr>
 
   "Open current directory in Finder
-  nnoremap gof :silent !open .<cr>
+  "nnoremap gof :silent !open .<cr>
 
   nnoremap ycd :!mkdir -p %:p:h<CR>
 
@@ -3492,7 +3541,7 @@ call plug#end()
   nnoremap <Leader>rn :call RenameFile()<cr>
 
   " Edit todo list for project
-  nnoremap ,to :e todo.org<cr>
+  nnoremap ,tp :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
 
   " Edit the vimrc (init.vim) file
   nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -3876,19 +3925,26 @@ function! MyFoldText()
   let info = " " . n . " lines"
 
   if &foldmethod == 'marker'
-    let comment_string = substitute(&cms, "\%s", "", "g")   
+    let comment_string = substitute(&cms, "\%s", "", "g")
     let sub = strpart(sub, 0, strlen(sub)- (strlen(&foldmarker)-1)/2)
     let sub = substitute( sub, '^\s*' . comment_string . '\s*', '', 'g')
     let sub = substitute( sub, '^\s*', '', 'g')
     let sub = substitute( sub, comment_string.'\s*$', '', 'g')
   endif
 
-  let sub = ' ' . sub . "                                                                                                    "
-  "let sub = sub . "                                                                                                              "
+  let sub =  ' ' . sub . "                                                                                                    "
+  "let sub = sub . "                                                                                                               "
   let num_w = getwinvar( 0, '&number' ) * getwinvar( 0, '&numberwidth' )
   let fold_w = getwinvar( 0, '&foldcolumn' )
   let sub = strpart( sub, 0, winwidth(0) - strlen( info ) - num_w - fold_w - 1 )
-  return sub . info
+
+  let s:foldlevel = v:foldlevel
+  while (s:foldlevel > 1)
+    let sub = ' '.sub
+    let s:foldlevel = s:foldlevel-1
+  endwhile
+
+  return  sub . info
 endfunction
 
 
