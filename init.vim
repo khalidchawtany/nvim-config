@@ -3061,7 +3061,7 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-startify {{{
   Plug 'mhinz/vim-startify'
-  nnoremap <M-F1> :Startify<cr>
+  nnoremap <F1> :Startify<cr>
   let g:startify_files_number = 5
 
   function! s:filter_header(lines) abort
