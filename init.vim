@@ -1731,6 +1731,8 @@ call plug#begin('~/.config/nvim/plugged')
 
    let g:deoplete#auto_completion_start_length = 1
 
+   "let g:deoplete#sources._ = ['buffer', 'file', 'ultisnips']
+
  "}}} _deoplete.nvim
  " neoinclude.vim {{{
 
@@ -2484,6 +2486,7 @@ call plug#begin('~/.config/nvim/plugged')
    set rtp+=/usr/local/Cellar/fzf/HEAD
 
    " `Files [PATH]`    | Files (similar to  `:FZF` )
+   " `GitFiles [PATH]` | Git files
    " `Buffers`         | Open buffers
    " `Colors`          | Color schemes
    " `Ag [PATTERN]`    | {ag}{5} search result (CTRL-A to select all, CTRL-D to deselect all)
@@ -2493,14 +2496,15 @@ call plug#begin('~/.config/nvim/plugged')
    " `BTags`           | Tags in the current buffer
    " `Marks`           | Marks
    " `Windows`         | Windows
-   " `Locate PATTERN`  |  `locate`  command output
-   " `History`         |  `v:oldfiles`  and open buffers
+   " `Locate PATTERN`  | `locate`  command output
+   " `History`         | `v:oldfiles`  and open buffers
    " `History:`        | Command history
    " `History/`        | Search history
    " `Snippets`        | Snippets ({UltiSnips}{6})
    " `Commits`         | Git commits (requires {fugitive.vim}{7})
    " `BCommits`        | Git commits for the current buffer
    " `Commands`        | Commands
+   " `Maps`            | Normal mode maps
    " `Helptags`        | Help tags [1]
 
 
@@ -2515,12 +2519,14 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
    nnoremap Ú<c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
 
-   call Map_FZF("FZF!", "f", "--reverse")
+   call Map_FZF("FZF!", "f", "--reverse %:h ")
+   call Map_FZF("FZF!", "p", "--reverse")
    call Map_FZF("Buffers", "b", "")
    call Map_FZF("Buffers", "o", "")
    call Map_FZF("Colors!", "c", "")
    call Map_FZF("Ag!", "a", "")
-   call Map_FZF("Lines!", "l", "")
+   call Map_FZF("Lines!", "L", "")
+   call Map_FZF("BLines!", "l", "")
    call Map_FZF("BTags!", "t", "")
    call Map_FZF("Tags!", "]", "")
    " call Map_FZF("Locate", "p", "--reverse")
@@ -2528,7 +2534,8 @@ call plug#begin('~/.config/nvim/plugged')
    call Map_FZF("History/!", "/", "")
    call Map_FZF("History:!", "Ú", "")             "<cr>
    call Map_FZF("Commands!", "‰", "")             ":
-   call Map_FZF("BCommits!", "g", "")
+   call Map_FZF("Commits!", "g", "")
+   call Map_FZF("BCommits!", "G", "")
    call Map_FZF("Snippets!", "s", "")
    call Map_FZF("Marks!", "◊", "")                "'
    call Map_FZF("Windows!", "w", "")
@@ -2545,6 +2552,10 @@ call plug#begin('~/.config/nvim/plugged')
    imap <c-x><c-i> <plug>(fzf-complete-buffer-line)
    imap <c-x><c-\> <plug>(fzf-complete-file)
 
+   nnoremap <c-p><c-d> :call fzf#run({"source":"ls", "sink":"lcd"})<cr>
+   nnoremap <c-p>d :call fzf#run({"source":"ls", "sink":"cd"})<cr>
+
+
    " Replace the default dictionary completion with fzf-based fuzzy completion
    " inoremap <expr> <c-x><c-k> fzf#complete('cat /usr/share/dict/words')
 
@@ -2560,8 +2571,8 @@ call plug#begin('~/.config/nvim/plugged')
    command! -nargs=1 PrintPathInNextLine call PrintPathInNextLineFunction(<f-args>)
 
    let g:fzf_action = {
-         \ 'ctrl-m': 'e',
-         \ 'ctrl-t': 'tabedit',
+         \ 'ctrl-m': 'e!',
+         \ 'ctrl-t': 'tabedit!',
          \ 'ctrl-x': 'split',
          \ 'ctrl-o': 'PrintPathInNextLine',
          \ 'ctrl-i': 'PrintPath',
@@ -3469,9 +3480,9 @@ call plug#end()
   "}}}
 
   " Better copy/cut/paste {{{
-    noremap <leader>d "_d
-    noremap <leader>y "+y
-    noremap <leader>p "+p
+    map <leader>d "_d
+    map <leader>y "+y
+    map <leader>p "+p
   "}}}
 
   " Indentation {{{
