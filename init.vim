@@ -3156,6 +3156,11 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}} _vim-eighties
 
+ " visual-split.vim {{{
+
+   Plug 'wellle/visual-split.vim' ", {'on': ['VSResize', 'VSSplit', 'VSSplitAbove', 'VSSplitBelow']}
+
+ "}}} _visual-split.vim
 
    " Plug 'tpope/vim-flagship'
  " lightline {{{
@@ -3979,7 +3984,7 @@ set title "titlestring=
 
 syntax on
 set virtualedit=all
-set mouse=a
+set mouse=                            " Let the term control mouse selection
 set hidden
 set laststatus=2                      " force status line display
 set noerrorbells visualbell t_vb=     " Disable error bells
