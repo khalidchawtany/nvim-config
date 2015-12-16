@@ -1469,6 +1469,9 @@ call plug#begin('~/.config/nvim/plugged')
  "}}}
  " Plug 'm2mdas/phpcomplete-extended-laravel'
  " Plug 'vim-scripts/phpfolding.vim', {'for': 'php'}
+ Plug 'phpvim/phpcd.vim', {'for': 'php'}
+ Plug 'vim-scripts/progressbar-widget', {'for': 'php'} " used for showing the index progress
+ autocmd FileType php setlocal omnifunc=phpcd#CompletePHP
 
  " blade
  " vim-blade {{{
@@ -2519,8 +2522,14 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
    nnoremap Ú<c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
 
-   call Map_FZF("FZF!", "f", "--reverse %:h ")
-   call Map_FZF("FZF!", "p", "--reverse")
+   call Map_FZF("FZF!", "f", " --reverse %:p:h ")
+   call Map_FZF("FZF!", "d", " --reverse <c-r>=FindGitDirOrRoot()<cr>")
+   call Map_FZF("FZF!", "u", " --reverse %:p:h:h ")
+   call Map_FZF("FZF!", "1", " --reverse %:p:h:h ")
+   call Map_FZF("FZF!", "2", " --reverse %:p:h:h:h ")
+   call Map_FZF("FZF!", "3", " --reverse %:p:h:h:h:h ")
+   call Map_FZF("FZF!", "4", " --reverse %:p:h:h:h:h:h ")
+   call Map_FZF("FZF!", "p", " --reverse")
    call Map_FZF("Buffers", "b", "")
    call Map_FZF("Buffers", "o", "")
    call Map_FZF("Colors!", "c", "")
@@ -2552,8 +2561,8 @@ call plug#begin('~/.config/nvim/plugged')
    imap <c-x><c-i> <plug>(fzf-complete-buffer-line)
    imap <c-x><c-\> <plug>(fzf-complete-file)
 
-   nnoremap <c-p><c-d> :call fzf#run({"source":"ls", "sink":"lcd"})<cr>
-   nnoremap <c-p>d :call fzf#run({"source":"ls", "sink":"cd"})<cr>
+   "nnoremap <c-p><c-d> :call fzf#run({"source":"ls", "sink":"lcd"})<cr>
+   "nnoremap <c-p>d :call fzf#run({"source":"ls", "sink":"cd"})<cr>
 
 
    " Replace the default dictionary completion with fzf-based fuzzy completion
