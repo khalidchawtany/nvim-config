@@ -117,7 +117,7 @@ public void ${1:should_be_true}()
 }
 endsnippet
 
-snippet tsu "Test SetUp"
+snippet tsetup "Test SetUp"
 [SetUp]
 public void SetUp()
 {
@@ -125,7 +125,7 @@ public void SetUp()
 }
 endsnippet
 
-snippet ttd "Test TearDown"
+snippet tteardown "Test TearDown"
 [TearDown]
 public void TearDown()
 {
@@ -133,16 +133,16 @@ public void TearDown()
 }
 endsnippet
 
-snippet tfsu "Test Fixture SetUp"
-[TestFixtureSetUp]
+snippet tfsetup "Test Fixture SetUp"
+[OneTimeSetUpAttribute]
 public void TestFixtureSetUp()
 {
 	$0
 }
 endsnippet
 
-snippet tftd "Test Fixture SetUp"
-[TestFixtureTearDown]
+snippet tfteardown "Test Fixture SetUp"
+[OneTimeTearDownAttribute]
 public void TestFixtureTearDown()
 {
 	${VISUAL}$0
@@ -158,6 +158,13 @@ snippet region "Region"
 #endregion
 endsnippet
 
+snippet # "Region"
+#region $1
+
+	${VISUAL}$0
+
+#endregion
+endsnippet
 
 ################################################################################
 #                                   XML Docs                                   #
