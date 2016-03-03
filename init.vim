@@ -15,10 +15,10 @@ let g:python3_host_skip_check = 1
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 " Leader Keys {{{
-let mapleader = ","
-let g:mapleader = ","
-let localleader = "\\"
-let g:loaclleader = "\\"
+  let mapleader = "\<space>"
+  let g:mapleader = "\<space>"
+  let localleader = "\\"
+  let g:loaclleader = "\\"
 "}}}
 
 " ============================================================================
@@ -1411,7 +1411,7 @@ call plug#begin('~/.config/nvim/plugged')
      source ~/.config/nvim/scripts/make_cs_solution.vim
      autocmd BufWritePost *.cs BuildCSharpSolution
 
-     nnoremap ,oo :BuildCSharpSolution<cr>
+     nnoremap <leader>oo :BuildCSharpSolution<cr>
 
      let g:SetOmniSharpOptionsIsSet = 1
      "can set preview here also but i found it causes flicker
@@ -1920,9 +1920,9 @@ call plug#begin('~/.config/nvim/plugged')
 
    Plug 'kana/vim-operator-user'
 
-   nmap <Space>al  <Plug>(operator-align-left)
-   nmap <Space>ar  <Plug>(operator-align-right)
-   nmap <Space>ac  <Plug>(operator-align-center)
+   nmap <leader>oal  <Plug>(operator-align-left)
+   nmap <leader>oar  <Plug>(operator-align-right)
+   nmap <leader>oac  <Plug>(operator-align-center)
 
 
  "}}}
@@ -1930,8 +1930,8 @@ call plug#begin('~/.config/nvim/plugged')
  " operator-camelize {{{
 
    Plug 'tyru/operator-camelize.vim'
-   nmap <Space>u <Plug>(operator-camelize)
-   nmap <Space>U <Plug>(operator-decamelize)
+   nmap <leader>ou <Plug>(operator-camelize)
+   nmap <leader>oU <Plug>(operator-decamelize)
 
 
  "}}}
@@ -1939,9 +1939,9 @@ call plug#begin('~/.config/nvim/plugged')
  " operator-blockwise {{{
 
    Plug 'osyo-manga/vim-operator-blockwise', {'on': ['<Plug>(operator-blockwise-']}
-   nmap <Space>Y <Plug>(operator-blockwise-yank-head)
-   nmap <Space>D <Plug>(operator-blockwise-delete-head)
-   nmap <Space>C <Plug>(operator-blockwise-change-head)
+   nmap <leader>oY <Plug>(operator-blockwise-yank-head)
+   nmap <leader>oD <Plug>(operator-blockwise-delete-head)
+   nmap <leader>oC <Plug>(operator-blockwise-change-head)
 
 
  "}}}
@@ -1949,10 +1949,10 @@ call plug#begin('~/.config/nvim/plugged')
  " operator-jerk {{{
 
    Plug 'machakann/vim-operator-jerk'
-   nmap <Space>>  <Plug>(operator-jerk-forward)
-   nmap <Space>>> <Plug>(operator-jerk-forward-partial)
-   nmap <Space><  <Plug>(operator-jerk-backward)
-   nmap <Space><< <Plug>(operator-jerk-backward-partial)
+   nmap <leader>o>  <Plug>(operator-jerk-forward)
+   nmap <leader>o>> <Plug>(operator-jerk-forward-partial)
+   nmap <leader>o<  <Plug>(operator-jerk-backward)
+   nmap <leader>o<< <Plug>(operator-jerk-backward-partial)
 
 
  "}}}
@@ -2912,7 +2912,7 @@ call plug#begin('~/.config/nvim/plugged')
  Plug 'mhinz/vim-grepper', {'on': [ 'Grepper', '<plug>(Grepper' ]}
 
    xmap <leader>gg <plug>(Grepper)
-   cmap <leader>gg <plug>(GrepperNext)
+   cmap <c-g>n <plug>(GrepperNext)
    nmap <leader>gs <plug>(GrepperMotion)
    xmap <leader>gs <plug>(GrepperMotion)
 
@@ -2929,49 +2929,145 @@ call plug#begin('~/.config/nvim/plugged')
 
    Plug 'Lokaltog/vim-easymotion', {'on': ['<Plug>(easymotion-']}
 
-   map s <Plug>(easymotion-prefix)
+   map s         <Plug>(easymotion-prefix)
+   map s;        <Plug>(easymotion-s2)
+   map ss;       <Plug>(easymotion-sn)
 
-   map sl          <Plug>(easymotion-lineforward)
-   map sh          <Plug>(easymotion-linebackward)
+   map sl        <Plug>(easymotion-lineforward)
+   map sh        <Plug>(easymotion-linebackward)
+   map s<space>  <Plug>(easymotion-lineanywhere)
 
-   " map ◊l          <Plug>(easymotion-bd-fl)
+   map ssf       <Plug>(easymotion-bd-f)
+   map sst       <Plug>(easymotion-bd-t)
+   map ssw       <Plug>(easymotion-bd-w)
+   map ssW       <Plug>(easymotion-bd-W)
+   map ssw       <Plug>(easymotion-bd-e)
+   map ssE       <Plug>(easymotion-bd-E)
+   map ssj       <Plug>(easymotion-bd-jk)
+   map ssk       <Plug>(easymotion-bd-jk)
+   map ssl       <Plug>(easymotion-bd-jk)
+   map ssn       <Plug>(easymotion-bd-n)
+   map ssa       <Plug>(easymotion-jumptoanywhere)
+   map s<cr>       <Plug>(easymotion-repeat)
 
-   map <c-s><c-s>         <Plug>(easymotion-s2)
-   " map ◊Ț<c-s>     <Plug>(easymotion-bd-s2)
-   map <c-s>s      <Plug>(easymotion-sn)
-   " map ◊<c-s>      <Plug>(easymotion-bd-fn)
+   map <c-s>L    <Plug>(easymotion-eol-bd-jk)
+   map <c-s>H    <Plug>(easymotion-sol-bd-jk)
 
-   map <c-s>f <Plug>(easymotion-bd-f)
-   map ssf    <Plug>(easymotion-bd-f)
-   map <c-s>t <Plug>(easymotion-bd-t)
-   map sst    <Plug>(easymotion-bd-t)
-   map <c-s>w <Plug>(easymotion-bd-w)
-   map ssw    <Plug>(easymotion-bd-w)
-   "map ◊<c-s-w>    <Plug>(easymotion-bd-W)
-   map <c-s>e <Plug>(easymotion-bd-e)
-   map sse    <Plug>(easymotion-bd-e)
-   "map ◊<c-s-e>    <Plug>(easymotion-bd-E)
-   map <c-s>n <Plug>(easymotion-bd-n)
-   map ssn    <Plug>(easymotion-bd-n)
-
-   map <c-s>j      <Plug>(easymotion-bd-jk)
-   map ssj      <Plug>(easymotion-bd-jk)
-   map <c-s>k      <Plug>(easymotion-bd-jk)
-   map ssk      <Plug>(easymotion-bd-jk)
-
-   map <c-s>l      <Plug>(easymotion-eol-bd-jk)
-   map <c-s>h      <Plug>(easymotion-sol-bd-jk)
+   map <c-s>f    <Plug>(easymotion-overwin-f)
+   map <c-s>;    <Plug>(easymotion-overwin-f2)
+   map <c-s>w    <Plug>(easymotion-overwin-w)
+   map <c-s>l    <Plug>(easymotion-overwin-line)
 
 
-   " <Plug>(easymotion-sn) <Plug>(easymotion-fn) <Plug>(easymotion-Fn)
-   " <Plug>(easymotion-tn) <Plug>(easymotion-Tn) <Plug>(easymotion-bd-tn)
-   " <Plug>(easymotion-sln) <Plug>(easymotion-fln) <Plug>(easymotion-Fln)
-   " <Plug>(easymotion-tln) <Plug>(easymotion-Tln) <Plug>(easymotion-bd-tln)
-
-   " <Plug>(easymotion-s2) <Plug>(easymotion-f2) <Plug>(easymotion-F2)
-   " <Plug>(easymotion-t2) <Plug>(easymotion-T2) <Plug>(easymotion-bd-t2)
-   " <Plug>(easymotion-sl2) <Plug>(easymotion-fl2) <Plug>(easymotion-Fl2)
-   " <Plug>(easymotion-tl2) <Plug>(easymotion-Tl2) <Plug>(easymotion-bd-tl2)
+" Default Maps {{{
+"   Default Mapping      | Details
+"   ---------------------|----------------------------------------------
+"   <Leader>f{char}      | Find {char} to the right. See |f|.
+"   <Leader>F{char}      | Find {char} to the left. See |F|.
+"   <Leader>t{char}      | Till before the {char} to the right. See |t|.
+"   <Leader>T{char}      | Till after the {char} to the left. See |T|.
+"   <Leader>w            | Beginning of word forward. See |w|.
+"   <Leader>W            | Beginning of WORD forward. See |W|.
+"   <Leader>b            | Beginning of word backward. See |b|.
+"   <Leader>B            | Beginning of WORD backward. See |B|.
+"   <Leader>e            | End of word forward. See |e|.
+"   <Leader>E            | End of WORD forward. See |E|.
+"   <Leader>ge           | End of word backward. See |ge|.
+"   <Leader>gE           | End of WORD backward. See |gE|.
+"   <Leader>j            | Line downward. See |j|.
+"   <Leader>k            | Line upward. See |k|.
+"   <Leader>n            | Jump to latest "/" or "?" forward. See |n|.
+"   <Leader>N            | Jump to latest "/" or "?" backward. See |N|.
+"   <Leader>s            | Find(Search) {char} forward and backward.
+"                        | See |f| and |F|.
+" Unused Maps
+"   More <Plug> Mapping Table         | (No assignment by default)
+"   ----------------------------------|---------------------------------
+"   <Plug>(easymotion-bd-f)           | See |<Plug>(easymotion-s)|
+"   <Plug>(easymotion-bd-t)           | See |<Plug>(easymotion-bd-t)|
+"   <Plug>(easymotion-bd-w)           | See |<Plug>(easymotion-bd-w)|
+"   <Plug>(easymotion-bd-W)           | See |<Plug>(easymotion-bd-W)|
+"   <Plug>(easymotion-bd-e)           | See |<Plug>(easymotion-bd-e)|
+"   <Plug>(easymotion-bd-E)           | See |<Plug>(easymotion-bd-E)|
+"   <Plug>(easymotion-bd-jk)          | See |<Plug>(easymotion-bd-jk)|
+"   <Plug>(easymotion-bd-n)           | See |<Plug>(easymotion-bd-n)|
+"   <Plug>(easymotion-jumptoanywhere) | See |<Plug>(easymotion-jumptoanywhere)|
+"   <Plug>(easymotion-repeat)         | See |<Plug>(easymotion-repeat)|
+"   <Plug>(easymotion-next)           | See |<Plug>(easymotion-next)|
+"   <Plug>(easymotion-prev)           | See |<Plug>(easymotion-prev)|
+"   <Plug>(easymotion-sol-j)          | See |<Plug>(easymotion-sol-j)|
+"   <Plug>(easymotion-sol-k)          | See |<Plug>(easymotion-sol-k)|
+"   <Plug>(easymotion-eol-j)          | See |<Plug>(easymotion-eol-j)|
+"   <Plug>(easymotion-eol-k)          | See |<Plug>(easymotion-eol-k)|
+"   <Plug>(easymotion-iskeyword-w)    | See |<Plug>(easymotion-iskeyword-w)|
+"   <Plug>(easymotion-iskeyword-b)    | See |<Plug>(easymotion-iskeyword-b)|
+"   <Plug>(easymotion-iskeyword-bd-w) | See |<Plug>(easymotion-iskeyword-bd-w)|
+"   <Plug>(easymotion-iskeyword-e)    | See |<Plug>(easymotion-iskeyword-e)|
+"   <Plug>(easymotion-iskeyword-ge)   | See |<Plug>(easymotion-iskeyword-ge)|
+"   <Plug>(easymotion-iskeyword-bd-e) | See |<Plug>(easymotion-iskeyword-bd-e)|
+"   <Plug>(easymotion-vim-n)          | See |<Plug>(easymotion-vim-n)|
+"   <Plug>(easymotion-vim-N)          | See |<Plug>(easymotion-vim-N)|
+"                                     |
+"   Within Line Motion                | See |easymotion-within-line|
+"   ----------------------------------|---------------------------------
+"   <Plug>(easymotion-sl)             | See |<Plug>(easymotion-sl)|
+"   <Plug>(easymotion-fl)             | See |<Plug>(easymotion-fl)|
+"   <Plug>(easymotion-Fl)             | See |<Plug>(easymotion-Fl)|
+"   <Plug>(easymotion-bd-fl)          | See |<Plug>(easymotion-sl)|
+"   <Plug>(easymotion-tl)             | See |<Plug>(easymotion-tl)|
+"   <Plug>(easymotion-Tl)             | See |<Plug>(easymotion-Tl)|
+"   <Plug>(easymotion-bd-tl)          | See |<Plug>(easymotion-bd-tl)|
+"   <Plug>(easymotion-wl)             | See |<Plug>(easymotion-wl)|
+"   <Plug>(easymotion-bl)             | See |<Plug>(easymotion-bl)|
+"   <Plug>(easymotion-bd-wl)          | See |<Plug>(easymotion-bd-wl)|
+"   <Plug>(easymotion-el)             | See |<Plug>(easymotion-el)|
+"   <Plug>(easymotion-gel)            | See |<Plug>(easymotion-gel)|
+"   <Plug>(easymotion-bd-el)          | See |<Plug>(easymotion-bd-el)|
+"   <Plug>(easymotion-lineforward)    | See |<Plug>(easymotion-lineforward)|
+"   <Plug>(easymotion-linebackward)   | See |<Plug>(easymotion-linebackward)|
+"   <Plug>(easymotion-lineanywhere)   | See |<Plug>(easymotion-lineanywhere)|
+"                                     |
+"   Multi Input Find Motion           | See |easymotion-multi-input|
+"   ----------------------------------|---------------------------------
+"   <Plug>(easymotion-s2)             | See |<Plug>(easymotion-s2)|
+"   <Plug>(easymotion-f2)             | See |<Plug>(easymotion-f2)|
+"   <Plug>(easymotion-F2)             | See |<Plug>(easymotion-F2)|
+"   <Plug>(easymotion-bd-f2)          | See |<Plug>(easymotion-s2)|
+"   <Plug>(easymotion-t2)             | See |<Plug>(easymotion-t2)|
+"   <Plug>(easymotion-T2)             | See |<Plug>(easymotion-T2)|
+"   <Plug>(easymotion-bd-t2)          | See |<Plug>(easymotion-bd-t2)|
+"                                     |
+"   <Plug>(easymotion-sl2)            | See |<Plug>(easymotion-sl2)|
+"   <Plug>(easymotion-fl2)            | See |<Plug>(easymotion-fl2)|
+"   <Plug>(easymotion-Fl2)            | See |<Plug>(easymotion-Fl2)|
+"   <Plug>(easymotion-tl2)            | See |<Plug>(easymotion-tl2)|
+"   <Plug>(easymotion-Tl2)            | See |<Plug>(easymotion-Tl2)|
+"                                     |
+"   <Plug>(easymotion-sn)             | See |<Plug>(easymotion-sn)|
+"   <Plug>(easymotion-fn)             | See |<Plug>(easymotion-fn)|
+"   <Plug>(easymotion-Fn)             | See |<Plug>(easymotion-Fn)|
+"   <Plug>(easymotion-bd-fn)          | See |<Plug>(easymotion-sn)|
+"   <Plug>(easymotion-tn)             | See |<Plug>(easymotion-tn)|
+"   <Plug>(easymotion-Tn)             | See |<Plug>(easymotion-Tn)|
+"   <Plug>(easymotion-bd-tn)          | See |<Plug>(easymotion-bd-tn)|
+"                                     |
+"   <Plug>(easymotion-sln)            | See |<Plug>(easymotion-sln)|
+"   <Plug>(easymotion-fln)            | See |<Plug>(easymotion-fln)|
+"   <Plug>(easymotion-Fln)            | See |<Plug>(easymotion-Fln)|
+"   <Plug>(easymotion-bd-fln)         | See |<Plug>(easymotion-sln)|
+"   <Plug>(easymotion-tln)            | See |<Plug>(easymotion-tln)|
+"   <Plug>(easymotion-Tln)            | See |<Plug>(easymotion-Tln)|
+"   <Plug>(easymotion-bd-tln)         | See |<Plug>(easymotion-bd-tln)|
+"
+"   Over Window Motion                | (No assignment by default)
+"   ----------------------------------|---------------------------------
+"   <Plug>(easymotion-overwin-f)      | See |<Plug>(easymotion-overwin-f)|
+"   <Plug>(easymotion-overwin-f2)     | See |<Plug>(easymotion-overwin-f2)|
+"   <Plug>(easymotion-overwin-line)   | See |<Plug>(easymotion-overwin-line)|
+"   <Plug>(easymotion-overwin-w)      | See |<Plug>(easymotion-overwin-w)|
+"
+"-----------------------------------------------------------------------------
+"}}}
 
    " keep cursor colum when JK motion
    let g:EasyMotion_startofline = 0
@@ -2980,26 +3076,26 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-easymotion
  " columnmove {{{
 
-   Plug 'machakann/vim-columnmove', {'on': ['<Plug>(columnmove-']}
+   "Plug 'machakann/vim-columnmove', {'on': ['<Plug>(columnmove-']}
 
-   let g:columnmove_no_default_key_mappings = 1
+   "let g:columnmove_no_default_key_mappings = 1
 
-   nmap Sf <Plug>(columnmove-f)
-   nmap St <Plug>(columnmove-t)
-   nmap SF <Plug>(columnmove-F)
-   nmap ST <Plug>(columnmove-T)
-   nmap S; <Plug>(columnmove-;)
-   nmap S, <Plug>(columnmove-,)
+   "nmap Sf <Plug>(columnmove-f)
+   "nmap St <Plug>(columnmove-t)
+   "nmap SF <Plug>(columnmove-F)
+   "nmap ST <Plug>(columnmove-T)
+   "nmap S; <Plug>(columnmove-;)
+   "nmap S, <Plug>(columnmove-,)
 
-   nmap Sw <Plug>(columnmove-w)
-   nmap Sb <Plug>(columnmove-b)
-   nmap Se <Plug>(columnmove-e)
-   nmap Sge <Plug>(columnmove-ge)
+   "nmap Sw <Plug>(columnmove-w)
+   "nmap Sb <Plug>(columnmove-b)
+   "nmap Se <Plug>(columnmove-e)
+   "nmap Sge <Plug>(columnmove-ge)
 
-   nmap SW <Plug>(columnmove-W)
-   nmap SB <Plug>(columnmove-B)
-   nmap SE <Plug>(columnmove-E)
-   nmap SgE <Plug>(columnmove-gE)
+   "nmap SW <Plug>(columnmove-W)
+   "nmap SB <Plug>(columnmove-B)
+   "nmap SE <Plug>(columnmove-E)
+   "nmap SgE <Plug>(columnmove-gE)
 
  "}}}
  " vim-skipit {{{
@@ -3048,12 +3144,12 @@ call plug#begin('~/.config/nvim/plugged')
  " TaskList.vim {{{
 
    Plug 'vim-scripts/TaskList.vim', {'on':  ['TaskList']}
-   nnoremap ,tl :TaskList<cr>
+   nnoremap <leader>tl :TaskList<cr>
 
  "}}} _TaskList.vim
  " Tagbar {{{
 
-   Plug 'majutsushi/tagbar',                {'on':  [ 'Tagbar', 'TagbarToggle', ] }
+   Plug 'majutsushi/tagbar', {'on':  [ 'Tagbar', 'TagbarToggle', ] }
    nnoremap <silent> <leader>tb :TagbarToggle<CR>
 
 
@@ -3074,8 +3170,8 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'mbbill/undotree', {'on': ['UndotreeShow', 'UndotreeFocus', 'UndotreeToggle']}
 
    let g:undotree_WindowLayout = 2
-   nnoremap ,ut :UndotreeToggle<cr>
-   nnoremap ,us :UndotreeShow<cr>
+   nnoremap <leader>ut :UndotreeToggle<cr>
+   nnoremap <leader>us :UndotreeShow<cr>
 
 
  "}}} _undotree
@@ -3680,11 +3776,11 @@ call plug#end()
   " Writting and Quitting {{{
   "===============================================================================
 
-  nnoremap ,qq :q<cr>
-  nnoremap ,qa :qall<cr>
-  nnoremap ,wq :wq<cr>
-  nnoremap ,ww :w<cr>
-  nnoremap ,wa :wall<cr>
+  nnoremap <leader>qq :q<cr>
+  nnoremap <leader>qa :qall<cr>
+  nnoremap <leader>wq :wq<cr>
+  nnoremap <leader>ww :w<cr>
+  nnoremap <leader>wa :wall<cr>
   nnoremap <Leader>`` :qa!<cr>
 
   " save as root
@@ -3726,7 +3822,7 @@ call plug#end()
   nnoremap <Leader>rn :call RenameFile()<cr>
 
   " Edit todo list for project
-  nnoremap ,tp :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
+  nnoremap <leader>tp :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
 
   " Edit the vimrc (init.vim) file
   nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
@@ -3816,7 +3912,7 @@ call plug#end()
 
   "Unless the file name has test in it mark it C for *.cs
   "if the file name has test in it mark it T for *.cs
-  autocmd BufLeave *.cs 
+  autocmd BufLeave *.cs
         \ | if (expand("<afile>")) =~ ".*test.*"
         \ | execute 'normal! mT'
         \ | else
