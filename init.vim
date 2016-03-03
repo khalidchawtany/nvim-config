@@ -8,16 +8,52 @@ let g:VIMRC_SOURCED=1
 "}}}
 
 let g:python_host_prog='/usr/local/bin/python'
+let g:python3_host_prog='/usr/local/bin/python3'
+let g:python_host_skip_check = 1
+let g:python3_host_skip_check = 1
 
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-
+" Leader Keys {{{
 let mapleader = ","
 let g:mapleader = ","
+let localleader = "\\"
+let g:loaclleader = "\\"
+"}}}
 
 " ============================================================================
 " FUNCTIONS {{{
 " ============================================================================
+
+ " <c-g> insert mode align ( = , : ) {{{
+function! CharsNeeded(char)
+  let s:cur_line = line(".")
+  let s:cur_col  =  col(".")
+  let s:i   =  0
+  let s:pos = -1
+  while s:pos == -1
+    let s:i += 1
+    let s:line = getline(s:cur_line - s:i)
+    let s:pos  = stridx(s:line, a:char, s:cur_col)
+    if s:i == s:cur_line
+      return -1
+    endif
+  endwhile
+  return s:pos - s:cur_col + 1
+endfunction
+
+function! InsertSpaces()
+  let s:char = getline(".")[-1:]
+  let s:nspace = CharsNeeded(s:char)
+  if s:nspace > -1
+    call setline(".", getline(".")[:-2] . repeat(" ", s:nspace) . s:char)
+  endif
+  echom "No `" . s:char . "' found in the previous lines."
+endfunction
+
+inoremap <silent> <C-g> <C-[>:call InsertSpaces()<CR>A
+"}}}
+
  function! Map(mode, key, op)"{{{
    "echomsg a:mode "-" a:key "-" a:op
    let silent=""
@@ -565,6 +601,12 @@ call plug#begin('~/.config/nvim/plugged')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
 
  "}}} _vim-fugitive
+ " gv.vim {{{
+
+   "Requires vim-fugitive
+   Plug 'junegunn/gv.vim'
+
+ "}}} _gv.vim
  " vim-gitgutter {{{
 
    Plug 'airblade/vim-gitgutter'
@@ -656,6 +698,18 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'junegunn/vim-journal', {'for': ['journal']}
 
  "}}} _vim-journal
+ " vim-notes {{{
+
+   Plug 'xolox/vim-notes'
+   Plug 'xolox/vim-misc'
+
+ "}}} _vim-notes
+ " vimwiki {{{
+
+   Plug 'vimwiki/vimwiki'
+   let g:vimwiki_map_prefix = '<Leader>v'
+
+ "}}} _vimwiki
  " junkfile.vim {{{
 
    Plug 'Shougo/junkfile.vim', {'on': ['JunkfileOpen']}
@@ -760,7 +814,8 @@ call plug#begin('~/.config/nvim/plugged')
  xnoremap <C-N>  :call plug#load('vim-markmultiple')<cr>:call MarkMultiple()<CR>
 
  "if effect remains on screen clear with "call MarkMultipleClean()"
- Map  NV <BS><c-n> :call\ MarkMultipleClean()<cr>
+ "Map <c-bs>
+ Map  NV Ą :call\ MarkMultipleClean()<cr>
 
 
  "}}} _vim-markmultiple
@@ -1043,8 +1098,8 @@ call plug#begin('~/.config/nvim/plugged')
                            \      '<Plug>Isurround'
                            \ ]}
 
-   nmap ds <Plug>Dsurround
-   nmap cs <Plug>Csurround
+   nmap dS <Plug>Dsurround
+   nmap cS <Plug>Csurround
    nmap ys <Plug>Ysurround
    nmap yS <Plug>YSurround
    nmap yss <Plug>Yssurround
@@ -1110,13 +1165,13 @@ call plug#begin('~/.config/nvim/plugged')
 
  " Auto-manipulators
  " vim-endwise {{{
-   Plug 'tpope/vim-endwise', {'on': []}
+   "Plug 'tpope/vim-endwise', {'on': []}
 
-   "Lazy load endwise
-   augroup load_endwise
-     autocmd!
-     autocmd InsertEnter * call plug#load('vim-endwise') | autocmd! load_endwise
-   augroup END
+   ""Lazy load endwise
+   "augroup load_endwise
+     "autocmd!
+     "autocmd InsertEnter * call plug#load('vim-endwise') | autocmd! load_endwise
+   "augroup END
 
  "}}} _vim-endwise
  " vim-closer {{{
@@ -1140,6 +1195,8 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
  " Utils {{{
  " ----------------------------------------------------------------------------
+
+
 
  " vim-submode {{{
    Plug 'kana/vim-submode'
@@ -1165,15 +1222,17 @@ call plug#begin('~/.config/nvim/plugged')
        call submode#map('undo/redo', 'n', '', '+', 'g+')
      "}}} _Undo/Redo
      "Buffer {{{
-       call submode#enter_with('buf', 'n', 's', ']b', ':<C-U>exe "bnext<Bar>hi Normal guibg=red"<cr>')
-       call submode#enter_with('buf', 'n', 's', '[b', ':<C-U>exe "bprevious<Bar>hi Normal guibg=red"<cr>')
-       call submode#map('buf', 'n', 's', ']', ':<C-U>exe "bnext"<cr>')
-       call submode#map('buf', 'n', 's', 'd', ':<C-U>exe "bdelete"<cr>')
-       call submode#map('buf', 'n', 's', 'k', ':<C-U>exe "bdelete!"<cr>')
-       call submode#map('buf', 'n', 's', 'o', ':<C-U>exe "BufOnly"<cr>')
-       call submode#map('buf', 'n', 's', '[', ':<C-U>exe "bprevious"<cr>')
-       call submode#map('buf', 'n', 's', 'l', ':<C-U>exe "buffers"<cr>')
-       autocmd! User buf_leaving :hi Normal guibg=#1B1D1E<cr>
+       ""call submode#enter_with('buf', 'n', 's', ']b', ':<C-U>exe "bnext<Bar>hi Normal guibg=red"<cr>')
+       ""call submode#enter_with('buf', 'n', 's', '[b', ':<C-U>exe "bprevious<Bar>hi Normal guibg=red"<cr>')
+       "call submode#enter_with('buf', 'n', 's', ']b', ':<C-U>exe "bnext"<cr>')
+       "call submode#enter_with('buf', 'n', 's', '[b', ':<C-U>exe "bprevious"<cr>')
+       "call submode#map('buf', 'n', 's', ']', ':<C-U>exe "bnext"<cr>')
+       "call submode#map('buf', 'n', 's', 'd', ':<C-U>exe "bdelete"<cr>')
+       "call submode#map('buf', 'n', 's', 'k', ':<C-U>exe "bdelete!"<cr>')
+       "call submode#map('buf', 'n', 's', 'o', ':<C-U>exe "BufOnly"<cr>')
+       "call submode#map('buf', 'n', 's', '[', ':<C-U>exe "bprevious"<cr>')
+       "call submode#map('buf', 'n', 's', 'l', ':<C-U>exe "buffers"<cr>')
+       "autocmd! User buf_leaving :hi Normal guibg=#1B1D1E<cr>
      "}}} _Buffer
      "Jump/Edit {{{
        call submode#enter_with('Jump/Edit', 'n', '', ']j', ':<C-U>exe "normal g,zO"<cr>')
@@ -1370,51 +1429,53 @@ call plug#begin('~/.config/nvim/plugged')
      endif
 
      " Builds can also run asynchronously with vim-dispatch installed
-     nnoremap <leader>ob :wa!<cr>:OmniSharpBuildAsync<cr>
+     nnoremap <localleader>b :wa!<cr>:OmniSharpBuildAsync<cr>
+     nnoremap <localleader>tt :OmniSharpRunTests<cr>
+     nnoremap <localleader>tf :OmniSharpRunTestFixture<cr>
+     nnoremap <localleader>ta :OmniSharpRunAllTests<cr>
+     nnoremap <localleader>tl :OmniSharpRunLastTests<cr>
 
-     nnoremap <leader>ogd :OmniSharpGotoDefinition<cr>
-     nnoremap <leader>ofi :OmniSharpFindImplementations<cr>
-     nnoremap <leader>oft :OmniSharpFindType<cr>
-     nnoremap <leader>ofs :OmniSharpFindSymbol<cr>
-     nnoremap <leader>ofu :OmniSharpFindUsages<cr>
+     nnoremap <localleader>gd :OmniSharpGotoDefinition<cr>
+     nnoremap <localleader>gi :OmniSharpFindImplementations<cr>
+     nnoremap <localleader>gt :OmniSharpFindType<cr>
+     nnoremap <localleader>gs :OmniSharpFindSymbol<cr>
+     nnoremap <localleader>gu :OmniSharpFindUsages<cr>
+     nnoremap <localleader>gm :OmniSharpFindMembers<cr>
 
-     nnoremap <leader>ofm :OmniSharpFindMembers<cr>
      " cursor can be anywhere on the line containing an issue
-     nnoremap <leader>ox  :OmniSharpFixIssue<cr>
-     nnoremap <leader>ofx :OmniSharpFixUsings<cr>
-     nnoremap <leader>ott :OmniSharpTypeLookup<cr>
-     nnoremap <leader>odc :OmniSharpDocumentation<cr>
+     nnoremap <localleader>fi  :OmniSharpFixIssue<cr>
+     nnoremap <localleader>fu :OmniSharpFixUsings<cr>
+
+     nnoremap <localleader>tl :OmniSharpTypeLookup<cr>
+     " Add syntax highlighting for types and interfaces
+     nnoremap <localleader>ht :OmniSharpHighlightTypes<cr>
+
+     nnoremap <localleader>d :OmniSharpDocumentation<cr>
      "navigate up by method/property/field
-     nnoremap <leader>ok :OmniSharpNavigateUp<cr>
+     nnoremap <localleader>nk :OmniSharpNavigateUp<cr>
      "navigate down by method/property/field
-     nnoremap <leader>oj :OmniSharpNavigateDown<cr>
+     nnoremap <localleader>nj :OmniSharpNavigateDown<cr>
 
      " Contextual code actions (requires CtrlP or unite.vim)
-     nnoremap <leader>o<space> :OmniSharpGetCodeActions<cr>
+     nnoremap <localleader>a :OmniSharpGetCodeActions<cr>
      " Run code actions with text selected in visual mode to extract method
-     vnoremap <leader>o<space> :call OmniSharp#GetCodeActions('visual')<cr>
+     vnoremap <localleader>a :call OmniSharp#GetCodeActions('visual')<cr>
 
      " rename with dialog
-     nnoremap <leader>onm :OmniSharpRename<cr>
+     nnoremap <localleader>rn :OmniSharpRename<cr>
      " rename without dialog - with cursor on the symbol to rename... ':Rename newname'
 
      " Force OmniSharp to reload the solution. Useful when switching branches etc.
-     nnoremap <leader>ors :OmniSharpReloadSolution<cr>
-     nnoremap <leader>ocf :OmniSharpCodeFormat<cr>
+     nnoremap <localleader>rs :OmniSharpReloadSolution<cr>
+     nnoremap <localleader>= :OmniSharpCodeFormat<cr>
      " Load the current .cs file to the nearest project
-     nnoremap <leader>otp :OmniSharpAddToProject<cr>
+     nnoremap <localleader>i :OmniSharpAddToProject<cr>
 
      " (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
-     nnoremap <leader>oss :OmniSharpStartServer<cr>
-     nnoremap <leader>osp :OmniSharpStopServer<cr>
+     nnoremap <localleader>ss :OmniSharpStartServer<cr>
+     nnoremap <localleader>st :OmniSharpStopServer<cr>
 
-     " Add syntax highlighting for types and interfaces
-     nnoremap <leader>oth :OmniSharpHighlightTypes<cr>
 
-     nnoremap <leader>ort :OmniSharpRunTests<cr>
-     nnoremap <leader>orf :OmniSharpRunTestFixture<cr>
-     nnoremap <leader>ora :OmniSharpRunAllTests<cr>
-     nnoremap <leader>orl :OmniSharpRunLastTests<cr>
    endfunction
 
    augroup omnisharp_commands
@@ -1460,18 +1521,50 @@ call plug#begin('~/.config/nvim/plugged')
  "}}} _vim-markdown
 
  " PHP
+ " phpcomplete.vim {{{
+
+   "Plug 'shawncplus/phpcomplete.vim'
+
+ "}}} _phpcomplete.vim
  " phpcomplete-extended {{{
 
-   " Plug 'm2mdas/phpcomplete-extended'
-   " let g:phpcomplete_index_composer_command = "composer"
-   " " autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
+    "Plug 'm2mdas/phpcomplete-extended'
+    "let g:phpcomplete_index_composer_command = "composer"
+    "autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
 
  "}}}
- " Plug 'm2mdas/phpcomplete-extended-laravel'
- " Plug 'vim-scripts/phpfolding.vim', {'for': 'php'}
- Plug 'phpvim/phpcd.vim', {'for': 'php'}
- Plug 'vim-scripts/progressbar-widget', {'for': 'php'} " used for showing the index progress
- autocmd FileType php setlocal omnifunc=phpcd#CompletePHP
+  "Plug 'm2mdas/phpcomplete-extended-laravel'
+  "Plug 'vim-scripts/phpfolding.vim', {'for': ['php']}
+ " pdv {{{
+
+   Plug 'tobyS/vmustache', {'for': ['PHP']}
+   Plug 'tobyS/pdv', {'for': ['PHP']}
+   let g:pdv_template_dir = $HOME ."/.config/nvim/plugged/pdv/templates_snip"
+   nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
+
+ "}}} _pdv
+
+ " phpcd.vim {{{
+
+   Plug 'phpvim/phpcd.vim', {'for': ['php']}
+   Plug 'vim-scripts/progressbar-widget', {'for': ['php']} " used for showing the index progress
+
+ "}}} _phpcd.vim
+ " PHP-Indenting-for-VIm {{{
+
+   Plug '2072/PHP-Indenting-for-VIm', {'for': ['php']}
+
+ "}}} _PHP-Indenting-for-VIm
+ " phpfolding.vim {{{
+
+   Plug 'phpvim/phpfolding.vim', {'for': ['php']}
+
+ "}}} _phpfolding.vim
+ " tagbar-phpctags.vim {{{
+
+   Plug 'vim-php/tagbar-phpctags.vim', {'for': ['php']}
+
+ "}}} _tagbar-phpctags.vim
 
  " blade
  " vim-blade {{{
@@ -1653,13 +1746,14 @@ call plug#begin('~/.config/nvim/plugged')
 
  " UltiSnips {{{
 
-   Plug 'SirVer/ultisnips', { 'on': [] }
+   "Don't lazy load using go to inser mode as this makes vim very slow
+   Plug 'SirVer/ultisnips' ", { 'on': [] }
 
    "Lazy load ultisnips
-   augroup load_ultisnips
-     autocmd!
-     autocmd InsertEnter * call plug#load('ultisnips') | autocmd! load_ultisnips
-   augroup END
+   "augroup load_ultisnips
+     "autocmd!
+     "autocmd InsertEnter * call plug#load('ultisnips') | autocmd! load_ultisnips
+   "augroup END
 
 
    "Temporarily disable autotrigger
@@ -1731,10 +1825,38 @@ call plug#begin('~/.config/nvim/plugged')
 
    " Use deoplete.
    let g:deoplete#enable_at_startup = 1
+   let g:deoplete#enable_ignore_case = 1
+   let g:deoplete#enable_smart_case = 1
+   let g:deoplete#enable_fuzzy_completion = 1
+   let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
+   let g:deoplete#omni#input_patterns.php = [
+         \'[^. \t0-9]\.\w*',
+         \'[^. \t0-9]\->\w*',
+         \'[^. \t0-9]\::\w*',
+         \]
+   let g:deoplete#omni#input_patterns.java = [
+         \'[^. \t0-9]\.\w*',
+         \'[^. \t0-9]\->\w*',
+         \'[^. \t0-9]\::\w*',
+         \]
+   let g:deoplete#omni#input_patterns.jsp = ['[^. \t0-9]\.\w*']
+   inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
+   inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
 
+   "Setting omni_patterns prevents all Deoplete features :(
+   "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   "let g:deoplete#omni_patterns = {}
+   "let g:deoplete#omni_patterns.java = '[^. *\t]\.\w*'
+   "let g:deoplete#omni_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+
+   "let g:deoplete#omni#input_patterns = {}
+   "let g:deoplete#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+   let g:deoplete#sources = {}
+   let g:deoplete#sources._=['omni', 'buffer', 'member', 'tag', 'ultisnips', 'file']
+   let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
    let g:deoplete#auto_completion_start_length = 1
 
-   "let g:deoplete#sources._ = ['buffer', 'file', 'ultisnips']
 
  "}}} _deoplete.nvim
  " neoinclude.vim {{{
@@ -2510,6 +2632,11 @@ call plug#begin('~/.config/nvim/plugged')
    " `Maps`            | Normal mode maps
    " `Helptags`        | Help tags [1]
 
+   function! s:find_git_root()
+     return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+   endfunction
+
+   command! FZFProjectFiles execute 'Files' s:find_git_root()
 
    function! Map_FZF(cmd, key, options)
      exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . a:options . "<cr>"
@@ -2549,6 +2676,7 @@ call plug#begin('~/.config/nvim/plugged')
    call Map_FZF("Marks!", "◊", "")                "'
    call Map_FZF("Windows!", "w", "")
    call Map_FZF("Helptags!", "k", "")
+   call Map_FZF("FZFProjectFiles", "r", "")
 
    nmap <leader><tab> <plug>(fzf-maps-n)
    xmap <leader><tab> <plug>(fzf-maps-x)
@@ -2666,7 +2794,6 @@ call plug#begin('~/.config/nvim/plugged')
    nnoremap Ú<c-l><c-l> :NERDTreeToggle<cr>
    nnoremap Ú<c-l><c-d> :NERDTreeCWD<cr>
    nnoremap Ú<c-l><c-f> :NERDTreeFind<cr>
-
 
 
    function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
@@ -2931,6 +3058,15 @@ call plug#begin('~/.config/nvim/plugged')
 
 
  "}}}
+ " accelerated-jk {{{
+
+   "Plug 'rhysd/accelerated-jk'
+   "nmap j <Plug>(accelerated_jk_gj)
+   "nmap k <Plug>(accelerated_jk_gk)
+   "nmap j <Plug>(accelerated_jk_gj_position)
+   "nmap k <Plug>(accelerated_jk_gk_position)
+
+ "}}} _accelerated-jk
 
  " History
  " undotree {{{
@@ -3020,6 +3156,8 @@ call plug#begin('~/.config/nvim/plugged')
  " FastFold {{{
 
    Plug 'Konfekt/FastFold'
+   "Update folds manually using zuz
+   let g:fastfold_savehook = 0
 
  "}}} _FastFold
 
@@ -3313,9 +3451,29 @@ call plug#begin('~/.config/nvim/plugged')
    let g:gruvbox_contrast_light='medium'         "soft, medium, hard"
 
  "}}}
+ " vim-lucius {{{
+
+  Plug 'jonathanfilip/vim-lucius'
+
+ "}}} _vim-lucius
 
  "}}}
  " ----------------------------------------------------------------------------
+ " Nyaovim {{{
+ " ----------------------------------------------------------------------------
+ if exists('g:nyaovim_version')
+   Plug 'rhysd/nyaovim-popup-tooltip'
+   Plug 'rhysd/nyaovim-mini-browser'
+   Plug 'rhysd/nyaovim-markdown-preview'
+ endif
+"}}}
+ " ----------------------------------------------------------------------------
+
+ "Database
+ Plug 'vim-scripts/dbext.vim'
+
+
+
 
 call plug#end()
 "}}}
@@ -3359,9 +3517,11 @@ call plug#end()
     nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
     nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
 
-    nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| echo ""<cr>
+    nnoremap <silent> <BS> :nohlsearch \| redraw! \| diffupdate \| normal \<Plug>(FastFoldUpdate) \| echo ""<cr>
 
     nnoremap <F12> :call ToggleMouseFunction()<cr>
+
+    vnoremap . :norm.<CR>
 
     " { and } skip over closed folds
     nnoremap <expr> } foldclosed(search('^$', 'Wn')) == -1 ? "}" : "}j}"
@@ -3572,7 +3732,7 @@ call plug#end()
   nnoremap <silent> <leader>ev :e $MYVIMRC<CR>
 
   " evaluate selected vimscript | line | whole vimrc (init.vim)
-  vnoremap <Leader>sv "vy:@v<CR>
+  vnoremap <Leader>s; "vy:@v<CR>
   nnoremap <Leader>s; "vyy:@v<CR>
   nnoremap <silent> <leader>sv :unlet g:VIMRC_SOURCED<cr>:so $MYVIMRC<CR>
   "}}}
@@ -3647,6 +3807,31 @@ call plug#end()
 " AUTOCMD {{{
 " ============================================================================
 
+" Jump back to last file of a specific type or path
+"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  autocmd BufLeave *.css,*.less,*scss normal! mC
+  autocmd BufLeave *.html             normal! mH
+  autocmd BufLeave *.php              normal! mP
+  autocmd BufLeave vimrc,*.vim        normal! mV
+
+  "Unless the file name has test in it mark it C for *.cs
+  "if the file name has test in it mark it T for *.cs
+  autocmd BufLeave *.cs 
+        \ | if (expand("<afile>")) =~ ".*test.*"
+        \ | execute 'normal! mT'
+        \ | else
+        \ | execute 'normal! mC'
+        \ | endif
+
+  autocmd BufLeave *.css,*.less,*scss normal! mS
+  autocmd BufLeave *.js,*.coffee      normal! mJ
+  "autocmd BufLeave *.erb,*.haml       normal! mV
+  "autocmd BufLeave */models/*         normal! mM
+  "autocmd BufLeave */controllers/*    normal! mC
+  "autocmd BufLeave */test/*,*/spec/*  normal! mT
+  "autocmd BufLeave routes.rb          normal! mR
+
+
   " Enable file type detection
   filetype on
   " Treat .json files as .js
@@ -3719,6 +3904,17 @@ call plug#end()
    autocmd TermOpen * autocmd BufEnter <buffer> startinsert
    autocmd! BufLeave term://* stopinsert
    "}}}
+
+   "Set PHP Completion options
+   "autocmd FileType php setlocal completeopt+=preview | setlocal omnifunc=phpcd#CompletePHP
+   autocmd FileType php setlocal completeopt+=preview | setlocal omnifunc=phpcd#CompletePHP
+
+   "Close Omni-Completion perview tip window to close when a selection is made
+   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+   "This on may cause slowness
+   "autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+
+
 
 " }}}
 " ============================================================================
@@ -3920,7 +4116,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
 
 " Set a nicer foldtext function
-set foldtext=MyFoldText()
+au BufEnter,BufWinEnter *.vim set foldtext=MyFoldText()
 function! MyFoldText()
   let line = getline(v:foldstart)
   if match( line, '^[ \t]*\(\/\*\|\/\/\)[*/\\]*[ \t]*$' ) == 0
@@ -3957,7 +4153,7 @@ function! MyFoldText()
     let sub = substitute( sub, comment_string.'\s*$', '', 'g')
   endif
 
-  let sub =  ' ' . sub . "                                                                                                    "
+  let sub =  ' ' . sub . "                                                                                                "
   "let sub = sub . "                                                                                                               "
   let num_w = getwinvar( 0, '&number' ) * getwinvar( 0, '&numberwidth' )
   let fold_w = getwinvar( 0, '&foldcolumn' )
@@ -3999,7 +4195,7 @@ if !&sidescrolloff
   set sidescrolloff=5
 endif
 
-set cpoptions+=ces$                    " CW wrap W with $ instead of delete
+"set cpoptions+=ces$                    " CW wrap W with $ instead of delete
 set cpo+=n                             " Draw color for lines that has number only
 
 set showmode                          " Show the current mode
