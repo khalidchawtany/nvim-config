@@ -583,15 +583,16 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-fugitive {{{
 
- Plug 'tpope/vim-fugitive' , {'on':
-       \ [ 'Git', 'Gcd',     'Glcd',   'Gstatus',
-       \ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
-       \ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
-       \ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
-       \ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
-       \ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
-       \ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
-       \ ]}
+ Plug 'tpope/vim-fugitive'
+       "\ , {'on':
+       "\ [ 'Git', 'Gcd',     'Glcd',   'Gstatus',
+       "\ 'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
+       "\ 'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
+       "\ 'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
+       "\ 'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
+       "\ 'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
+       "\ 'Gmove',    'Gremove', 'Gblame', 'Gbrowse'
+       "\ ]}
 
    autocmd User fugitive
          \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
@@ -617,7 +618,7 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'jreybert/vimagit', {'on': ['Magit'], 'branch': 'next'}
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
-   nnoremap <leader>M :Magit<cr>
+   nnoremap <leader>G :Magit<cr>
  "}}} _vimagit
 
  " DirDiff.vim {{{
@@ -722,6 +723,8 @@ call plug#begin('~/.config/nvim/plugged')
  " Multi-edits
  " vim-fnr {{{
 
+
+   "Requires pseudocl
    Plug 'junegunn/vim-fnr', {'on': ['<Plug>(FNR)','<Plug>(FNR%)']}
 
    " Defaults
@@ -1050,6 +1053,12 @@ call plug#begin('~/.config/nvim/plugged')
    nmap  cx            <Plug>(Exchange)
 
  "}}} _vim-exchange
+
+ " vim-lion {{{
+
+   Plug 'tommcdo/vim-lion'
+
+ "}}} _vim-lion
  " EasyAlign {{{
 
    Plug 'junegunn/vim-easy-align',          {'on':  ['EasyAlign', '<Plug>(EasyAlign)']}
@@ -1197,7 +1206,24 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
 
 
+ " pipe.vim {{{
 
+   "Pipe !command output to vim
+   Plug 'NLKNguyen/pipe.vim'
+
+ "}}} _pipe.vim
+
+
+ " tinymode.vim {{{
+
+ Plug 'vim-scripts/tinymode.vim'
+
+ "}}} _tinymode.vim
+ " tinykeymap_vim {{{
+
+ Plug 'tomtom/tinykeymap_vim'
+
+ "}}} _tinykeymap_vim
  " vim-submode {{{
    Plug 'kana/vim-submode'
    let g:submode_timeout=0
@@ -1248,7 +1274,7 @@ call plug#begin('~/.config/nvim/plugged')
    "Plug 'LFDM/vim-hopper'
    Plug 'khalidchawtany/vim-hopper'
    "let g:hopper_prefix = '<esc>'
-   let g:hopper_prefix = '<space>'
+   let g:hopper_prefix = ','
    let g:hopper_file_opener = [ 'angular' ]
 
  "}}} _vim-hopper
@@ -1365,11 +1391,6 @@ call plug#begin('~/.config/nvim/plugged')
    Plug 'gioele/vim-autoswap'
 
  "}}} _vim-autoswap
- " vim-pseudocl {{{
-
-   Plug 'junegunn/vim-pseudocl'  "Required by oblique & fnr
-
- "}}} _vim-pseudocl
  " investigate.vim {{{
 
  Plug 'keith/investigate.vim', {'on': []}
@@ -1382,6 +1403,17 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
  " languages {{{
  " ----------------------------------------------------------------------------
+
+
+
+ "SQL
+ Plug 'vim-scripts/dbext.vim'
+ Plug 'NLKNguyen/pipe-mysql.vim'
+
+
+
+ "Python
+ Plug 'tweekmonster/braceless.vim'
 
  " Java
  " Plug 'tpope/vim-classpath'
@@ -1961,6 +1993,7 @@ call plug#begin('~/.config/nvim/plugged')
  " ----------------------------------------------------------------------------
  " text-objects {{{
  " ----------------------------------------------------------------------------
+ Plug 'jeetsukumaran/vim-indentwise'
 
  " argumentative {{{
 
@@ -2047,6 +2080,11 @@ call plug#begin('~/.config/nvim/plugged')
 
 "}}} _targets.vim
 
+ " CamelCaseMotion {{{
+
+   Plug 'bkad/CamelCaseMotion'
+
+ "}}} _CamelCaseMotion
 
   Plug 'kana/vim-textobj-user'
   " let g:textobj_blockwise_enable_default_key_mapping =0
@@ -2647,7 +2685,8 @@ call plug#begin('~/.config/nvim/plugged')
    " autocmd VimEnter * command! Colors call fzf#vim#colors({'left': '30%', 'options': '--reverse --margin 30%,0'})
 
    nnoremap Úfp :exe ":Locate " . expand("%:h")<cr>
-   nnoremap Ú<c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
+   nnoremap <c-;>fp :exe ":Locate " . expand("%:h")<cr>
+   nnoremap <c-;><c-f><c-p> :exe ":Locate! " . expand("%:h")<cr>
 
    call Map_FZF("FZF!", "f", " --reverse %:p:h ")
    call Map_FZF("FZF!", "d", " --reverse <c-r>=FindGitDirOrRoot()<cr>")
@@ -2677,8 +2716,8 @@ call plug#begin('~/.config/nvim/plugged')
    call Map_FZF("Windows!", "w", "")
    call Map_FZF("Helptags!", "k", "")
    call Map_FZF("FZFProjectFiles", "r", "")
-
    nmap <leader><tab> <plug>(fzf-maps-n)
+
    xmap <leader><tab> <plug>(fzf-maps-x)
    omap <leader><tab> <plug>(fzf-maps-o)
 
@@ -2853,27 +2892,40 @@ call plug#begin('~/.config/nvim/plugged')
  " autocmd! user EvanescoRepeat AnzuUpdateSearchStatusOutput
 
  "}}} _vim-evanesco
+
+ " vim-pseudocl {{{
+
+   Plug 'junegunn/vim-pseudocl'  "Required by oblique & fnr
+
+ "}}} _vim-pseudocl
+
  " vim-oblique {{{
 
-
  Plug 'junegunn/vim-oblique', {'on': [ '<Plug>(Oblique-' ]}
+
 
  Map nx  #  <Plug>(Oblique-#)
  Map nx  *  <Plug>(Oblique-*)
  Map nox /  <Plug>(Oblique-/)
  Map nox ?  <Plug>(Oblique-?)
- Map nx  N  <Plug>(Oblique-N)
  Map n   g# <Plug>(Oblique-g#)
  Map n   g* <Plug>(Oblique-g*)
- Map nx  n  <Plug>(Oblique-n)
  Map nox z/ <Plug>(Oblique-F/)
  Map nox z? <Plug>(Oblique-F?)
+
+ "Make n/N move forward/backwards regardless of search direction
+ "Map nx  n  <Plug>(Oblique-n)
+ "Map nx  N  <Plug>(Oblique-N)
+ "noremap <expr> n 'Nn'[v:searchforward]
+ "noremap <expr> N 'nN'[v:searchforward]
+ nmap <expr>n ['<Plug>(Oblique-N)','<Plug>(Oblique-n)'][v:searchforward]
+ nmap <expr>N ['<Plug>(Oblique-n)','<Plug>(Oblique-N)'][v:searchforward]
 
  autocmd! User Oblique       AnzuUpdateSearchStatusOutput
  autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput
  autocmd! User ObliqueRepeat AnzuUpdateSearchStatusOutput
- let g:oblique#enable_cmap=0
 
+ let g:oblique#enable_cmap=0
 
  "}}}
  " IndexedSearch {{{
@@ -3305,17 +3357,22 @@ call plug#begin('~/.config/nvim/plugged')
  " vim-startify {{{
   Plug 'mhinz/vim-startify'
   nnoremap <F1> :Startify<cr>
+  let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
   let g:startify_files_number = 5
 
-  function! s:filter_header(lines) abort
-    let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
-    let centered_lines = map(copy(a:lines),
-          \ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
-    return centered_lines
-  endfunction
+  "Make bookmarks for fast nav
+  let g:startify_bookmarks = [ {'c': '~/.vimrc'}, '~/.zshrc' ]
+  let g:startify_session_dir = '~/.config/nvim/.cache/startify/session'
 
-  let g:startify_custom_header =
-        \ s:filter_header(map(split(system('fortune -s| cowsay'), '\n'), '"   ". v:val') + ['',''])
+  "function! s:filter_header(lines) abort
+    "let longest_line   = max(map(copy(a:lines), 'len(v:val)'))
+    "let centered_lines = map(copy(a:lines),
+          "\ 'repeat(" ", (&columns / 2) - (longest_line / 2)) . v:val')
+    "return centered_lines
+  "endfunction
+
+  "let g:startify_custom_header =
+        "\ s:filter_header(map(split(system('fortune -s| cowsay'), '\n'), '"   ". v:val') + ['',''])
  "}}}
 
  " goyo.vim {{{
@@ -3539,6 +3596,7 @@ call plug#begin('~/.config/nvim/plugged')
    " Plug 'ap/vim-buftabline'
 
  "colorschemes
+   Plug 'mswift42/vim-themes'
    Plug 'tomasr/molokai'
  " gruvbox {{{
    Plug 'morhetz/gruvbox'
@@ -3555,6 +3613,17 @@ call plug#begin('~/.config/nvim/plugged')
 
  "}}}
  " ----------------------------------------------------------------------------
+
+ " neovim-qt {{{
+  " Neovim-qt Guifont command
+  command -nargs=? Guifont call rpcnotify(0, 'Gui', 'SetFont', "<args>") | let g:Guifont="<args>"
+  "Guifont dejavu sans mono for powerline:h18
+  Guifont sauce code pro light:h18
+  "set lines=30 columns=100
+ " }}}
+
+
+
  " Nyaovim {{{
  " ----------------------------------------------------------------------------
  if exists('g:nyaovim_version')
@@ -3609,6 +3678,19 @@ call plug#end()
 
   " Utils {{{
   "===============================================================================
+  "
+
+
+  " toggle the last search pattern register between the last two search patterns
+  function! s:ToggleSearchPattern()
+    let next_search_pattern_index = -1
+    if @/ ==# histget('search', -1)
+      let next_search_pattern_index = -2
+    endif
+    let @/ = histget('search', next_search_pattern_index)
+  endfunction
+  "nnoremap <silent> <Leader>/ :<C-u>call <SID>ToggleSearchPattern()<CR>
+
 
     nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
     nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
@@ -3897,7 +3979,6 @@ call plug#end()
 
   "noremap <F4> :call DiffMe()<CR>
 
-
 "}}}
 " ============================================================================
 " AUTOCMD {{{
@@ -3991,6 +4072,43 @@ call plug#end()
     endw
     exe max([min([n_lines, a:maxheight]), a:minheight]) . "wincmd _"
   endfunction
+
+
+  "Make cusrsorline visible only in the current window
+  augroup highlight_follows_focus
+    autocmd!
+    autocmd WinEnter * set cursorline
+    autocmd WinLeave * set nocursorline
+  augroup END
+
+  augroup highligh_follows_vim
+    autocmd!
+    autocmd FocusGained * set cursorline
+    autocmd FocusLost * set nocursorline
+  augroup END
+
+  "Make numbers visible for current window only
+  augroup active_relative_number
+    au!
+    au BufEnter * :setlocal number relativenumber
+    au WinEnter * :setlocal number relativenumber
+    au BufLeave * :setlocal nonumber norelativenumber
+    au WinLeave * :setlocal nonumber norelativenumber
+  augroup END
+
+  "disable numbers in insert mode
+  augroup toggle_relative_number  " can be toggled normally with 'cor'
+    autocmd!
+    autocmd InsertEnter * :setlocal norelativenumber
+    autocmd InsertLeave * :setlocal relativenumber
+  augroup END
+
+  "open quickfix/locationlist on each relevant operatgion
+  augroup autoquickfix
+    autocmd!
+    autocmd QuickFixCmdPost [^l]* cwindow
+    autocmd QuickFixCmdPost    l* lwindow
+  augroup END
 
 
   "Term {{{
@@ -4372,26 +4490,26 @@ call matchadd('ColorColumn', '\%81v', 100)
 " ============================================================================
 
 " Align_operator {{{
-  call operator#user#define('align-left', 'Op_command', 'call Set_op_command("left")')
-  call operator#user#define('align-right', 'Op_command', 'call Set_op_command("right")')
-  call operator#user#define('align-center', 'Op_command', 'call Set_op_command("center")')
+call operator#user#define('align-left', 'Op_command', 'call Set_op_command("left")')
+call operator#user#define('align-right', 'Op_command', 'call Set_op_command("right")')
+call operator#user#define('align-center', 'Op_command', 'call Set_op_command("center")')
 
-  let s:op_command_command = ''
+let s:op_command_command = ''
 
-  function! Set_op_command(command)
-    let s:op_command_command = a:command
-  endfunction
+function! Set_op_command(command)
+  let s:op_command_command = a:command
+endfunction
 
-  function! Op_command(motion_wiseness)
-    execute "'[,']" s:op_command_command
-  endfunction
- "}}} _Align
+function! Op_command(motion_wiseness)
+  execute "'[,']" s:op_command_command
+endfunction
+"}}} _Align
 
 function! SetProjectPath()"{{{
   lcd ~/Development/Projects/Dwarozh/App/
   cd ~/Development/Projects/Dwarozh/App/
   pwd
-endfunction
+endfunction "}}}
 
 nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>"}}}
 
