@@ -172,6 +172,9 @@ inoremap <silent> <C-g> <C-[>:call InsertSpaces()<CR>A
   function! FindGitDirOrRoot()"{{{
     let curdir = expand('%:p:h')
     let gitdir = finddir('.git', curdir . ';')
+    if gitdir == '.git'
+      return '.'
+    endif
     if gitdir != ''
       return substitute(gitdir, '\/\.git$', '', '')
     else
