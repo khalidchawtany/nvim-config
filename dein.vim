@@ -1320,6 +1320,9 @@ call dein#add( 'haya14busa/revital.vim' )
 
  "}}} _pipe.vim
 
+ "vim-signature {{{
+   call dein#add('kshenoy/vim-signature')
+ "}}} _vim-signature'
 
  " tinymode.vim {{{
 
