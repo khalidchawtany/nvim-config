@@ -3282,19 +3282,6 @@ call dein#add( 'haya14busa/revital.vim' )
  "}}} _vim-dotenv
 
  " Content
- " Clever-f {{{
-
-   call dein#add( 'rhysd/clever-f.vim' , {'on_map': [ '<Plug>(clever-f-' ]})
-
-   Map nox F     <Plug>(clever-f-F)
-   Map nox T     <Plug>(clever-f-T)
-   Map nox f     <Plug>(clever-f-f)
-   Map nox t     <Plug>(clever-f-t)
-   "The following makes fFtF useless because of the time out
-   "Map n   f<BS> <Plug>(clever-f-reset)
-
-
- "}}}
  " vim-evanesco {{{
 
  " "may replace vim-oblique one day :)
@@ -3429,6 +3416,19 @@ call dein#add( 'haya14busa/revital.vim' )
 
  "}}}_vim-side-search
 
+ " Clever-f {{{
+
+   call dein#add( 'rhysd/clever-f.vim' , {'on_map': [ '<Plug>(clever-f-' ]})
+
+   Map nox F     <Plug>(clever-f-F)
+   Map nox T     <Plug>(clever-f-T)
+   Map nox f     <Plug>(clever-f-f)
+   Map nox t     <Plug>(clever-f-t)
+   "The following makes fFtF useless because of the time out
+   "Map n   f<BS> <Plug>(clever-f-reset)
+
+
+ "}}}
  " vim-easymotion {{{
 
    call dein#add( 'Lokaltog/vim-easymotion', {'on_map': ['<Plug>(easymotion-']} )
