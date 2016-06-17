@@ -3858,7 +3858,8 @@ call dein#add( 'haya14busa/revital.vim' )
 
    "call dein#add( 'ap/vim-css-color',            { 'on_ft':['css','scss','sass','less','styl']} )
    call dein#add( 'ap/vim-css-color' )
-   "au BufWinEnter *.vim call css_color#init('hex', '', 'vimHiGuiRgb,vimComment,vimLineComment,vimString')
+   au BufWinEnter *.vim call css_color#init('hex', '', 'vimHiGuiRgb,vimComment,vimLineComment,vimString')
+   au BufWinEnter *.blade.php call css_color#extend('htmlString,htmlCommentPart,phpStringSingle')
 
  "}}} _vim-css-color
  "vim-stylus {{{
