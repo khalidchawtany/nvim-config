@@ -3096,6 +3096,45 @@ call dein#add( 'haya14busa/revital.vim' )
          \ 'ctrl-i': 'PrintPath',
          \ 'ctrl-v': 'vsplit' }
 
+   " Tabs {{{
+   function! s:tablist()
+     redir => tabs
+     silent tabs
+     redir END
+     let new_tabs = filter(split(tabs, '\n'), 'v:val =~ "Tab page"')
+     let i = 0
+     while i < len(new_tabs)
+       let current_tab_buffers = map(tabpagebuflist(i + 1), "bufname(v:val)")
+       let current_tab_buffers = map(current_tab_buffers, "substitute(v:val, 'term:.*', ':term:', '') ")
+       let current_tab_buffers = map(current_tab_buffers, "substitute(v:val, '^.*/', '', '')")
+       let new_tabs[i] = new_tabs[i] . '             '.join(current_tab_buffers, ' | ')
+       let i = i + 1
+     endwhile
+     return new_tabs
+   endfunction
+
+   function! s:tabopen(e)
+     "echomsg 'bufname='bufname("")
+     "echomsg ':normal! '. matchstr(a:e, 'Tab page \zs[0-9]*\ze .*$').'gt'
+     "execute 'normal! ' . matchstr(a:e, 'Tab page \zs[0-9]*\ze .*$').'gt'
+     execute ':tabnext ' . matchstr(a:e, 'Tab page \zs[0-9]*\ze .*$')
+     "let g:fzf_cmd='normal! ' . matchstr(a:e, 'Tab page \zs[0-9]*\ze .*$').'gt'
+     "call timer_start(50, '<sid>SwitchTab', {'repeat': 1})
+   endfunction
+   "func! s:SwitchTab(timer)
+   "execute g:fzf_cmd
+   "endfunc
+
+   tmap <c-p><c-i> <c-\><c-n><c-p><c-i>
+
+   nnoremap <silent> <c-p><c-i> :call fzf#run({
+         \   'source':  reverse(<sid>tablist()),
+         \   'sink':    function('<sid>tabopen'),
+         \   'options': " --preview-window right:50%  --preview 'echo {}'  --bind ?:toggle-preview",
+         \   'down':    len(<sid>tablist()) + 2
+         \ })<cr>
+
+   "}}} _Tabs
    function! s:buflist()
      redir => ls
      silent ls
