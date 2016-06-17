@@ -12,6 +12,11 @@ let g:WindowFrameless=0
 nnoremap <silent> <c-w><bs>   :let g:WindowFrameless=(g:WindowFrameless + 1) % 2<cr>:call rpcnotify(0, 'Gui', 'WindowFrameless', g:WindowFrameless)<cr>
 
 
-cnoremap <S-lt> <
-"cnoremap <t_ü>< <
 map <c-6> <c-^>
+
+"Map CMD-# to tabs
+for i in [1,2,3,4,5,6,7,8,9]
+  execute "nnoremap  <D-" . i . ">           :tabnext " . i . "<cr>"
+  execute "vnoremap  <D-" . i . ">      <c-u>:tabnext " . i . "<cr>"
+  execute "tnoremap  <D-" . i . "> <c-\\><c-n>:tabnext " . i . "<cr>"
+endfor
