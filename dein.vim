@@ -3001,36 +3001,63 @@ call dein#add( 'haya14busa/revital.vim' )
    endfunction
 
 
-   function! Map_FZF(cmd, key, options)
+   function! Map_FZF(cmd, key, options, cword)
      exe "nnoremap <c-p><c-" . a:key . "> :" . a:cmd . a:options . "<cr>"
-     exe "nnoremap <c-p>" . a:key . " :" . a:cmd . a:options . "<cr>"
+    "This type is where no args passed
+     if a:cword == 0
+       exe "nnoremap <c-p>" . a:key . " :" . a:cmd . a:options . "<cr>"
+
+    "This type is where -q used pass args
+     elseif a:cword == 1
+       exe "nnoremap <c-p>" . a:key . " :" . a:cmd . a:options .
+             \ " -q <c-r>=shellescape(expand('<cword>'))<cr>" . "<cr>"
+       exe "vnoremap <c-p>" . a:key . " :<c-u>" . a:cmd . a:options .
+             \ " -q <c-r>=shellescape(GetVisualSelection())<cr>" . "<cr>"
+
+    "This type is where 'word DOES produce results
+     elseif a:cword == 2
+       exe "nnoremap <c-p>" . a:key . " :" . a:cmd . a:options .
+             \ " '<c-r>=expand('<cword>')<cr><cr>"
+       exe "vnoremap <c-p>" . a:key . " :<c-u>" . a:cmd . a:options .
+             \ " '<c-r>=GetVisualSelection()<cr><cr>"
+
+    "This type is where 'word does NOT produce results
+     elseif a:cword == 3
+       exe "nnoremap <c-p>" . a:key . " :" . a:cmd . a:options .
+             \ " <c-r>=expand('<cword>')<cr><cr>"
+       exe "vnoremap <c-p>" . a:key . " :<c-u>" . a:cmd . a:options .
+             \ " <c-r>=GetVisualSelection()<cr><cr>"
+     endif
      exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . a:options "<cr>"
+ 
    endfunction
 
-   call Map_FZF("FZF! ", "d", " --reverse %:p:h "                      )
-   call Map_FZF("FZF! ", "r", " --reverse <c-r>=FindGitDirOrRoot()<cr>")
-   call Map_FZF("FZF! ", "p", " --reverse"                             )
-   call Map_FZF("Buffers", "b", ""                                     )
-   call Map_FZF("Ag!", "a", ""                                         )
-   call Map_FZF("Lines!", "L", ""                                      )
-   call Map_FZF("BLines!", "l", ""                                     )
-   call Map_FZF("BTags!", "t", ""                                      )
-   call Map_FZF("Tags!", "]", ""                                       )
-   "call Map_FZF("Locate", "<cr>", "--reverse  %:p:h"                  )
-   call Map_FZF("GitFiles", "v", ""                                    )
-   call Map_FZF("Commits!", "g", ""                                    )
-   call Map_FZF("BCommits!", "G", ""                                   )
-   call Map_FZF("Snippets!", "s", ""                                   )
-   call Map_FZF("Marks!", "◊", ""                                      )
-   call Map_FZF("Marks!", "'", ""                                      )
-   call Map_FZF("Windows!", "w", ""                                    )
-   call Map_FZF("Helptags!", "k", ""                                   )
+
+  "call Map_FZF("COMMAND", "KEY", "OPTIONS"                             , cw )
+   call Map_FZF("FZF! ", "d", " --reverse %:p:h "                       ,  0 )
+   call Map_FZF("FZF! ", "r", " --reverse <c-r>=FindGitDirOrRoot()<cr>" ,  0 )
+   call Map_FZF("FZF! ", "p", " --reverse"                              ,  1 )
+   call Map_FZF("Buffers", "b", ""                                      ,  0 )
+   call Map_FZF("Ag!", "a", ""                                          ,  3 )
+   call Map_FZF("Lines!", "L", ""                                       ,  2 )
+   call Map_FZF("BLines!", "l", ""                                      ,  2 )
+   call Map_FZF("BTags!", "t", ""                                       ,  0 )
+   call Map_FZF("Tags!", "]", ""                                        ,  0 )
+   "call Map_FZF("Locate", "<cr>", "--reverse  %:p:h"                   ,  0 )
+   call Map_FZF("GitFiles", "v", ""                                     ,  0 )
+   call Map_FZF("Commits!", "g", ""                                     ,  0 )
+   call Map_FZF("BCommits!", "G", ""                                    ,  0 )
+   call Map_FZF("Snippets!", "s", ""                                    ,  0 )
+   call Map_FZF("Marks!", "◊", ""                                       ,  0 )
+   call Map_FZF("Marks!", "'", ""                                       ,  0 )
+   call Map_FZF("Windows!", "w", ""                                     ,  0 )
+   call Map_FZF("Helptags!", "k", ""                                    ,  0 )
 
 
    "nmap <c-p><c-i> <plug>(fzf-maps-n)
-   nnoremap <c-p><c-i> :Maps!<cr>
-   xmap <c-p><c-i> <plug>(fzf-maps-x)
-   omap <c-p><c-i> <plug>(fzf-maps-o)
+   nnoremap <c-p><c-m> :Maps!<cr>
+   xmap <c-p><c-m> <plug>(fzf-maps-x)
+   omap <c-p><c-m> <plug>(fzf-maps-o)
 
    imap <c-x><c-k> <plug>(fzf-complete-word)
    imap <c-x><c-f> <plug>(fzf-complete-path)
