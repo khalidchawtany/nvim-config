@@ -2074,15 +2074,17 @@ call dein#add( 'haya14busa/revital.vim' )
  call dein#add( 'Shougo/deoplete.nvim',
        \ {
        \ 'on_event': ['InsertEnter'],
-       \ 'hook_post_source' : " call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy']) |
-       \                        call deoplete#custom#set('omni', 'mark', '') "
+       \ 'hook_post_source' : " call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])"
        \ })
 
+   "let g:deoplete#omni_patterns = {} //This disables all features
+   let g:deoplete#enable_fuzzy_completion = 1
+   let g:deoplete#auto_completion_start_length = 1
    let g:deoplete#enable_at_startup = 1
    let g:deoplete#enable_ignore_case = 1
    let g:deoplete#enable_smart_case = 1
    let g:deoplete#enable_camel_case = 1
-   let g:deoplete#enable_refresh_always = 1
+   "let g:deoplete#enable_refresh_always = 1
    let g:deoplete#max_abbr_width = 0
    let g:deoplete#max_menu_width = 0
    let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
