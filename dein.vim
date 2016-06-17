@@ -1263,7 +1263,24 @@ call dein#add( 'haya14busa/revital.vim' )
   Map n   <leader>c$           <Plug>NERDCommenterToEOL
 
  "}}} _nerdcommenter
-   " Plug 'tpope/vim-commentary'
+ " vim-commentary {{{
+ call dein#add ('tpope/vim-commentary',
+       \ {
+       \ 'on_map':
+       \ [
+       \  '<Plug>Commentary',
+       \  '<Plug>CommentaryLine',
+       \  '<Plug>ChangeCommentary'
+       \ ],
+       \ 'on_cmd': [ 'Commentary' ]
+       \ })
+ xmap gc  <Plug>Commentary
+ nmap gc  <Plug>Commentary
+ omap gc  <Plug>Commentary
+ nmap gcc <Plug>CommentaryLine
+ nmap cgc <Plug>ChangeCommentary
+ nmap gcu <Plug>Commentary<Plug>Commentary
+ " }}} _vim-commentary
    " Plug 'tomtom/tcomment_vim'
 
  " Auto-manipulators
