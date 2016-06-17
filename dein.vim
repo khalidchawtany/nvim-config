@@ -3135,6 +3135,8 @@ call dein#add( 'haya14busa/revital.vim' )
          \ })<cr>
 
    "}}} _Tabs
+
+   "open_buffers -term {{{
    function! s:buflist()
      redir => ls
      silent ls
@@ -3153,6 +3155,8 @@ call dein#add( 'haya14busa/revital.vim' )
          \   'options': '+m',
          \   'down':    len(<sid>buflist()) + 2
          \ })<CR>
+
+   "}}} _open_buffers -term
 
  " }}}
 
