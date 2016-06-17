@@ -2327,6 +2327,17 @@ call dein#add( 'haya14busa/revital.vim' )
   call dein#add( 'reedes/vim-textobj-sentence' )            "is, as, ), (,   For real english sentences
                                                 " also adds g) and g( for
                                                  " sentence navigation
+  " vim-textobj-function {{{
+     " Plug 'kana/vim-textobj-function'
+     call PlugTextObj( 'kana/vim-textobj-function', 'f' )
+     let g:textobj_function_no_default_key_mappings =1
+     Map vo iF <Plug>(textobj-function-I)
+     Map vo aF <Plug>(textobj-function-A)
+  " }}} _vim-textobj-function
+  " vim-textobj-functioncall {{{
+     call PlugTextObj( 'machakann/vim-textobj-functioncall', 'C' )
+     let g:textobj_functioncall_no_default_key_mappings =1
+  " }}} _vim-textobj-functioncall
 
   "Doubles the following to avoid overlap with targets.vim
   " vim-textobj-parameter {{{
@@ -2363,9 +2374,20 @@ call dein#add( 'haya14busa/revital.vim' )
 
   "Don't try to lazyload these two
   call dein#add( 'osyo-manga/vim-textobj-blockwise' ) "<c-v>iw, cIw    for block selection
-  call dein#add( 'machakann/vim-textobj-delimited' )  "id, ad, iD, aD   for Delimiters takes numbers d2id
 
+  " vim-textobj-delimited {{{
 
+    "id, ad, iD, aD   for Delimiters takes numbers d2id
+    call dein#add( 'machakann/vim-textobj-delimited', {'on_map': ['<Plug>(textobj-delimited-']} )
+    Map vo id <Plug>(textobj-delimited-forward-i)
+    Map vo id <Plug>(textobj-delimited-forward-i)
+    Map vo ad <Plug>(textobj-delimited-forward-a)
+    Map vo ad <Plug>(textobj-delimited-forward-a)
+    Map vo iD <Plug>(textobj-delimited-backward-i)
+    Map vo iD <Plug>(textobj-delimited-backward-i)
+    Map vo aD <Plug>(textobj-delimited-backward-a)
+    Map vo aD <Plug>(textobj-delimited-backward-a)
+  "}}} _vim-textobj-delimited
   " vim-textobj-pastedtext {{{
 
     "gb              for pasted text
