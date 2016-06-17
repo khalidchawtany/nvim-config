@@ -1556,6 +1556,8 @@ call dein#add( 'haya14busa/revital.vim' )
  " investigate.vim {{{
 
  call dein#add( 'keith/investigate.vim', {'on_map': ['gK']} )
+ let g:investigate_dash_for_blade="laravel"
+ let g:investigate_dash_for_php="laravel"
  let g:investigate_use_dash=1
 
  "}}} _investigate.vim
