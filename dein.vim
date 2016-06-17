@@ -4329,15 +4329,13 @@ filetype plugin indent on
   inoremap <C-u> <esc>mzgUiw`za
 
   "Remove ^M from a file
-  nnoremap <leader>e^ :e ++ff=dos
   nnoremap <c-g>e<cr> :e ++ff=dos
 
   "Retab file
-  nnoremap <leader>er :retab<cr>
-  nnoremap <c-g>er :e ++ff=dos
+  nnoremap <c-g>e<Tab> :retab<cr>
 
-  noremap <leader>ss :call StripWhitespace()<CR>
-  noremap <c-g>e<space> :call StripWhitespace()<CR>
+  "Strip whitespace
+  nnoremap <c-g>e<space> :call StripWhitespace()<CR>
 
   " Underline {{{
 
