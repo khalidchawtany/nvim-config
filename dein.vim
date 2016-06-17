@@ -2942,6 +2942,30 @@ call dein#add( 'haya14busa/revital.vim' )
          \               'Locate', 'History', 'History:', 'History/', 'Snippets',
          \               'Commits', 'BCommits', 'Commands', 'Helptags']
          \ })
+    let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
+
+    let $FZF_DEFAULT_OPTS="--bind '::jump,;:jump-accept'"
+
+    let $FZF_DEFAULT_COMMAND='ag -l -g ""'
+    "set rtp+=/usr/local/Cellar/fzf/HEAD
+    set rtp+=/usr/local/opt/fzf
+    call dein#add( 'junegunn/fzf.vim',
+          \ {
+          \   'on_map':
+          \ [
+          \   '<plug>(fzf-',
+          \   ['i', '<plug>(fzf-complete-word)'],
+          \   ['i', '<plug>(fzf-complete-path)'],
+          \   ['i', '<plug>(fzf-complete-file-ag)'],
+          \   ['i', '<plug>(fzf-complete-line)'],
+          \   ['i', '<plug>(fzf-complete-buffer-line)'],
+          \   ['i', '<plug>(fzf-complete-file)']
+          \ ],
+          \   'on_cmd': ['Files', 'GitFiles', 'Buffers', 'Colors', 'Ag', 'Lines',
+          \               'BLines', 'Tags', 'BTags', 'Maps', 'Marks', 'Windows',
+          \               'Locate', 'History', 'History:', 'History/', 'Snippets',
+          \               'Commits', 'BCommits', 'Commands', 'Helptags']
+          \ })
 
    " [Buffers] Jump to the existing window if possible
    let g:fzf_buffers_jump = 1
