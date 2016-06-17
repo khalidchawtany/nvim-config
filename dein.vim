@@ -1987,24 +1987,36 @@ call dein#add( 'haya14busa/revital.vim' )
  " Snippets {{{
  " ----------------------------------------------------------------------------
 
+ " xptemplate {{{
+
+   let g:xptemplate_key = '<c-\>'
+   let g:xptemplate_nav_next = '<C-j>'
+   let g:xptemplate_nav_prev = '<C-k>'
+   call dein#add( 'drmingdrmer/xptemplate')
+   set runtimepath+=/Volumes/Home/.config/nvim/xpt-personal
+
+   "call dein#add( 'drmingdrmer/xptemplate', { 'on_func': ['XPTemplateStart', 'XPTemplatePreWrap'] })
+   "inoremap  <C-\>           <C-R>=XPTemplateStart(0,{'k':'<C-\++'})<CR>
+   "inoremap  <C-R><C-\>      <C-R>=XPTemplateStart(0,{'k':'<C-r++<C-\++','forcePum':1})<CR>
+   "inoremap  <C-R><C-R><C-\> <C-R>=XPTemplateStart(0,{'k':'<C-r++<C-r++<C-\++','popupOnly':1})<CR>
+   "snoremap  <C-\>           <C-C>`>a<C-R>=XPTemplateStart(0,{'k':'<C-\++'})<CR>
+   "xnoremap  <C-\>           "0s<C-R>=XPTemplatePreWrap(@0)<CR>
+
+ "}}}
  " UltiSnips {{{
 
    "Don't lazy load using go to inser mode as this makes vim very slow
-   call dein#add( 'SirVer/ultisnips', {
-        \ 'lazy': 1,
-        \ 'on_map':
-        \ [
-        \   ['i', '‰'],
-        \   ['i', '<c-cr>']
-        \ ],
-        \ 'on_cmd': ['UltiSnipsEdit'],
-        \ 'hook_post_source': 'call UltiSnips#FileTypeChanged()'
-        \ })
-
-   "augroup UltiSnipsFileType
-   "    autocmd!
-   "    autocmd FileType * call UltiSnips#FileTypeChanged()
-   "augroup END
+   call dein#add( 'SirVer/ultisnips') ", {
+        "\ 'lazy': 1,
+        "\ 'on_map': [ ['i', '‰'], ['i', '<c-cr>'] ],
+        "\ 'on_cmd': ['UltiSnipsEdit'],
+        "\ 'hook_post_source': 'call UltiSnips#FileTypeChanged()'
+        "\ })
+   "au VimEnter * au! UltiSnipsFileType
+   ""augroup UltiSnipsFileType
+   ""    autocmd!
+   ""    autocmd FileType * call UltiSnips#FileTypeChanged()
+   ""augroup END
 
    let g:UltiSnipsEnableSnipMate = 0
 
