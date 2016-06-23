@@ -4261,6 +4261,7 @@ call dein#add( 'haya14busa/revital.vim' )
     let g:lmap.g = {
           \'name' : 'Git Menu',
           \'m':  ['Magit',      'Magit'],
+          \'l':  ['GV',         'Log'],
           \'s':  ['Gstatus',    'Status'],
           \'c':  ['Gcommit',    'Commit'],
           \'ds': ['Gdiff',      'Diff'],
