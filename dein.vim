@@ -724,7 +724,8 @@ call dein#add( 'haya14busa/revital.vim' )
    call dein#add( 'jreybert/vimagit', {'on': ['Magit'], 'rev': 'next'} )
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
-   nnoremap <leader>G :Magit<cr>
+   "nnoremap <leader>G :Magit<cr>
+   let g:magit_show_magit_mapping=''
  "}}} _vimagit
 
  " DirDiff.vim {{{
@@ -3190,7 +3191,7 @@ call dein#add( 'haya14busa/revital.vim' )
 
    call dein#add( 'francoiscabrol/ranger.vim' )
    call dein#add( 'rbgrouleff/bclose.vim' )
-   let g:ranger_map_keys = 1
+   let g:ranger_map_keys = 0
    nnoremap <leader>fr :call OpenRanger()<CR>
 
  "}}} _ranger.vim
@@ -4241,6 +4242,7 @@ call dein#add( 'haya14busa/revital.vim' )
     nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
     vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
+
     " Define prefix dictionary
     let g:lmap =  {}
     " Second level dictionaries:
@@ -5256,3 +5258,4 @@ nnoremap <silent> <c-p><c-\> :call SetProjectPath()<cr>"}}}
 
 " }}}
 " ============================================================================
+
