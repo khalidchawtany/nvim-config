@@ -4275,6 +4275,13 @@ call dein#add( 'haya14busa/revital.vim' )
     " The Descriptions for other mappings defined by NerdCommenter, will default
     " to their respective commands.
 
+    function! s:my_displayfunc()
+      let g:leaderGuide#displayname =
+            \ substitute(g:leaderGuide#displayname, '\c<cr>$', '', '')
+      let g:leaderGuide#displayname = 
+            \ substitute(g:leaderGuide#displayname, '^<Plug>', '', '')
+    endfunction
+    let g:leaderGuide_displayfunc = [function("s:my_displayfunc")]
 
  " _vim-leader-guide }}}
 
