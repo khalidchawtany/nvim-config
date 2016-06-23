@@ -4256,12 +4256,15 @@ call dein#add( 'haya14busa/revital.vim' )
     " Create new menus not based on existing mappings:
     let g:lmap.g = {
           \'name' : 'Git Menu',
-          \'s' : ['Gstatus', 'Git Status'],
-          \'p' : ['Gpull',   'Git Pull'],
-          \'u' : ['Gpush',   'Git Push'],
-          \'c' : ['Gcommit', 'Git Commit'],
-          \'m' : ['Magit', 'Magit'],
-          \'w' : ['Gwrite',  'Git Write'],
+          \'m':  ['Magit',      'Magit'],
+          \'s':  ['Gstatus',    'Status'],
+          \'c':  ['Gcommit',    'Commit'],
+          \'ds': ['Gdiff',      'Diff'],
+          \'dv': ['Gvdiff',     'V-Diff'],
+          \'p':  ['Gpull',      'Pull'],
+          \'u':  ['Gpush',      'Push'],
+          \'r':  ['Gread',      'Read'],
+          \'w':  ['Gwrite',     'Write'],
           \}
 
     " If you use NERDCommenter:
