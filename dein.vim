@@ -3190,6 +3190,7 @@ call dein#add( 'haya14busa/revital.vim' )
 
    call dein#add( 'francoiscabrol/ranger.vim' )
    call dein#add( 'rbgrouleff/bclose.vim' )
+   let g:ranger_map_keys = 1
    nnoremap <leader>fr :call OpenRanger()<CR>
 
  "}}} _ranger.vim
@@ -4236,6 +4237,10 @@ call dein#add( 'haya14busa/revital.vim' )
  " vim-leader-guide {{{
     call dein#add('hecal3/vim-leader-guide')
 
+    call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
+    nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
+    vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
+
     " Define prefix dictionary
     let g:lmap =  {}
     " Second level dictionaries:
@@ -4245,6 +4250,9 @@ call dein#add( 'haya14busa/revital.vim' )
     " leader-f is the "File Menu" group.
     " Unnamed groups will show a default string
 
+    "No relative line numbers in ledare guide
+    au FileType leaderGuide set norelativenumber
+
     " Create new menus not based on existing mappings:
     let g:lmap.g = {
           \'name' : 'Git Menu',
@@ -4252,6 +4260,7 @@ call dein#add( 'haya14busa/revital.vim' )
           \'p' : ['Gpull',   'Git Pull'],
           \'u' : ['Gpush',   'Git Push'],
           \'c' : ['Gcommit', 'Git Commit'],
+          \'m' : ['Magit', 'Magit'],
           \'w' : ['Gwrite',  'Git Write'],
           \}
 
@@ -4263,9 +4272,6 @@ call dein#add( 'haya14busa/revital.vim' )
     " The Descriptions for other mappings defined by NerdCommenter, will default
     " to their respective commands.
 
-    call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
-    nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
-    vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
  " _vim-leader-guide }}}
 
