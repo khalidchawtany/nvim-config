@@ -4253,6 +4253,8 @@ call dein#add( 'haya14busa/revital.vim' )
     "No relative line numbers in ledare guide
     au FileType leaderGuide set norelativenumber
 
+    let g:leaderGuide_sort_horizontal=0
+
     " Create new menus not based on existing mappings:
     let g:lmap.g = {
           \'name' : 'Git Menu',
