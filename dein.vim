@@ -3202,7 +3202,7 @@ call dein#add( 'haya14busa/revital.vim' )
  "}}} _vim-dirvish
  " vim-vinegar {{{
 
-   call dein#add( 'tpope/vim-vinegar' )           
+   call dein#add( 'tpope/vim-vinegar' )
 
  "}}} _vim-vinegar
  " vimfiler.vim {{{
@@ -4248,6 +4248,7 @@ call dein#add( 'haya14busa/revital.vim' )
     " Second level dictionaries:
     let g:lmap.f = { 'name' : 'File Menu' }
     let g:lmap.o = { 'name' : 'Open Stuff' }
+    let g:lmap.f.m = { 'name' : 'Manager' }
     " 'name' is a special field. It will define the name of the group.
     " leader-f is the "File Menu" group.
     " Unnamed groups will show a default string
@@ -4264,13 +4265,24 @@ call dein#add( 'haya14busa/revital.vim' )
           \'l':  ['GV',         'Log'],
           \'s':  ['Gstatus',    'Status'],
           \'c':  ['Gcommit',    'Commit'],
-          \'ds': ['Gdiff',      'Diff'],
-          \'dv': ['Gvdiff',     'V-Diff'],
           \'p':  ['Gpull',      'Pull'],
           \'u':  ['Gpush',      'Push'],
           \'r':  ['Gread',      'Read'],
+          \'d':
+          \     {
+          \        'name' : 'Diff',
+          \        'v': ['Gvdiff', 'V-Diff'],
+          \        's': ['Gdiff', 'S-Diff'],
+          \    },
           \'w':  ['Gwrite',     'Write'],
           \}
+
+    "Allow Diff has it is own menu
+    "let g:lmap.g.d =
+          "\ { 'name' : 'Diff',
+          "\'v': ['Gvdiff', 'V-Diff'],
+          "\'s': ['Gdiff', 'S-Diff'],
+          "\ }
 
     " If you use NERDCommenter:
     let g:lmap.c = { 'name' : 'Comments' }
@@ -4283,7 +4295,7 @@ call dein#add( 'haya14busa/revital.vim' )
     function! s:my_displayfunc()
       let g:leaderGuide#displayname =
             \ substitute(g:leaderGuide#displayname, '\c<cr>$', '', '')
-      let g:leaderGuide#displayname = 
+      let g:leaderGuide#displayname =
             \ substitute(g:leaderGuide#displayname, '^<Plug>', '', '')
     endfunction
     let g:leaderGuide_displayfunc = [function("s:my_displayfunc")]
