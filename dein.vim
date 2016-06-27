@@ -44,11 +44,9 @@ function! s:InitRepeatRegisterQ() "{{{
     call repeat#set("\<Plug>(ExecuteRegisterQ)")
     return 'q'
 endfunction
-nnoremap <silent> <Plug>(ExecuteRegisterQ
-    \ :<C-u>execute 'normal! ' . v:count1 . '@q' \|
-    \ call repeat#set("\<Plug>(ExecuteRegisterQ)")<CR>
-
+au VimEnter * nnoremap <silent> <Plug>(ExecuteRegisterQ)  :<C-u>execute 'normal! ' . v:count1 . '@q' \| call repeat#set("\<Plug>(ExecuteRegisterQ)")<CR>
 nnoremap <expr> q <SID>InitRepeatRegisterQ()
+
 "}}}
 
 function s:BW(BWStage) "{{{
@@ -800,25 +798,28 @@ call dein#add( 'haya14busa/revital.vim' )
  "}}} _lazyList.vim
  " vim-simple-todo {{{
 
-   call dein#add( 'vitalk/vim-simple-todo', {'on_map': ['<Plug>(simple-todo-'] })
+ call dein#add( 'vitalk/vim-simple-todo', {
+       \ 'on_ft': ['org'],
+       \ 'hook_post_source' : " 
+         \ |  nmap <Leader>i <Plug>(simple-todo-new)
+         \ |  nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
+         \ |  nmap <Leader>o <Plug>(simple-todo-below)
+         \ |  nmap <Leader>O <Plug>(simple-todo-above)
+         \ |  nmap <Leader>x <Plug>(simple-todo-mark-as-done)
+         \ |  nmap <Leader>X <Plug>(simple-todo-mark-as-undone) "
+       \ })
+       "\ 'on_map': ['<Plug>(simple-todo-']
 
    " Disable default key bindings
    let g:simple_todo_map_keys = 0
 
-
    let g:simple_todo_tick_symbol = 'y'
 
-   nmap <Leader>i <Plug>(simple-todo-new)
-   nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
-   nmap <Leader>o <Plug>(simple-todo-below)
-   nmap <Leader>O <Plug>(simple-todo-above)
-   nmap <Leader>x <Plug>(simple-todo-mark-as-done)
-   nmap <Leader>X <Plug>(simple-todo-mark-as-undone)
 
 
  "}}} _vim-simple-todo
  "vim-dotoo {{{
-    call dein#add('dhruvasagar/vim-dotoo', {'on_ft': 'org'} )
+    call dein#add('dhruvasagar/vim-dotoo', {'on_ft': ['org']} )
  "}}} _vim-todo
  " vim-table-mode {{{
 
@@ -1583,20 +1584,25 @@ call dein#add( 'haya14busa/revital.vim' )
  "}}} _undofile_warn.vim
  " vim-obsession {{{
 
-   call dein#add( 'tpope/vim-obsession', {'on_cmd':['Obsess']} )
+   call dein#add( 'tpope/vim-obsession', {'on_cmd':['Obsession']} )
 
  "}}} _vim-obsession
- " vim-scriptease {{{
 
-   call dein#add( 'tpope/vim-scriptease', {'on_ft': ['vim']} )
-
- "}}} _vim-scriptease
  " vim-autoswap {{{
 
    call dein#add( 'gioele/vim-autoswap' )
 
  "}}} _vim-autoswap
 
+ " vim-scriptease {{{
+
+   call dein#add( 'tpope/vim-scriptease', {'on_ft': ['vim']} )
+
+ "}}} _vim-scriptease
+ " vim-debugger {{{
+ call dein#add('haya14busa/vim-debugger',
+       \ {'on_cmd': ['DebugOn', 'Debugger', 'debug', 'StackTrace', 'CallStack', 'CallStackReport']})
+ " }}} _vim-debugger
 
  call dein#add( 'KabbAmine/vCoolor.vim')
  call dein#add('sunaku/vim-shortcut')
@@ -1815,7 +1821,7 @@ call dein#add( 'haya14busa/revital.vim' )
 
    "Set PHP Completion options
    "autocmd FileType php setlocal completeopt+=preview | setlocal omnifunc=phpcd#CompletePHP
-   autocmd FileType php setlocal completeopt+=preview | setlocal omnifunc=phpcd#CompletePHP
+   autocmd FileType php setlocal completeopt-=preview | setlocal omnifunc=phpcd#CompletePHP
 
    "Close Omni-Completion perview tip window to close when a selection is made
    autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
@@ -1832,8 +1838,11 @@ call dein#add( 'haya14busa/revital.vim' )
  "}}} _PHP-Indenting-for-VIm
  " phpfolding.vim {{{
 
+   "No more maintained
    "call dein#add( 'phpvim/phpfolding.vim', {'on_ft': ['php']} )
-   call dein#add( 'phpvim/phpfolding.vim' )
+   "call dein#add( 'phpvim/phpfolding.vim' )
+   "call dein#add( 'phpvim/phpfold.vim', {'build' : 'composer update'} )
+
 
  "}}} _phpfolding.vim
  " tagbar-phpctags.vim {{{
@@ -1844,7 +1853,11 @@ call dein#add( 'haya14busa/revital.vim' )
 
  "Go
  call dein#add( 'fatih/vim-go', {'on_ft': ['go']} )
- call dein#add( 'zchee/deoplete-go', { 'on_ft': ['go'], 'build': 'make'} )
+
+ call dein#add( 'zchee/deoplete-go', {
+       \ 'on_ft': ['go'], 'build': 'make',
+       \ 'on_event': 'VimEnter', 'on_if': 'has("nvim")'
+       \ } )
 
  "Rust
  " vim-racer {{{
@@ -2094,9 +2107,12 @@ call dein#add( 'haya14busa/revital.vim' )
 
  call dein#add( 'Shougo/deoplete.nvim',
        \ {
-       \ 'on_event': ['InsertEnter'],
+       \ 'on_event': ['InsertEnter', 'VimEnter'],
+       \ 'on_if': '!has("nvim")' ,
        \ 'hook_post_source' : " call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])"
        \ })
+
+   let g:deoplete#auto_complete_delay=0
 
    "let g:deoplete#omni_patterns = {} //This disables all features
    let g:deoplete#enable_fuzzy_completion = 1
@@ -2111,11 +2127,12 @@ call dein#add( 'haya14busa/revital.vim' )
    let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
    let g:deoplete#omni#input_patterns.java = [ '[^. \t0-9]\.\w*', '[^. \t0-9]\->\w*', '[^. \t0-9]\::\w*', ]
    "let g:deoplete#omni#input_patterns.php = '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-   let g:deoplete#omni#input_patterns.php = [ '[^. \t0-9]\.\w*', '[^. \t0-9]\->\w*', '[^. \t0-9]\::\w*', ]
+   let g:deoplete#omni#input_patterns.php = [ '.*', '[^. \t0-9]\.\w*', '[^. \t0-9]\->\w*', '[^. \t0-9]\::\w*', ]
    let g:deoplete#ignore_sources = {}
    let g:deoplete#ignore_sources._ = ['javacomplete2']
-   inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
-   inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
+   let g:deoplete#ignore_sources.php = ['javacomplete2', 'look']
+   "inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
+   "inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
    set isfname-==
 
    "My Settings
@@ -2129,33 +2146,41 @@ call dein#add( 'haya14busa/revital.vim' )
  "}}} _deoplete.nvim
  " neoinclude.vim {{{
 
-   call dein#add( 'Shougo/neoinclude.vim' )
+   call dein#add( 'Shougo/neoinclude.vim' , { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
 
  "}}} _neoinclude.vim
  " neco-syntax {{{
 
-   call dein#add( 'Shougo/neco-syntax' )
+  "Slows down PHP files so much
+   "call dein#add( 'Shougo/neco-syntax' )
 
  "}}} _neco-syntax
  " neco-vim {{{
 
-   call dein#add( 'Shougo/neco-vim' )
+   call dein#add( 'Shougo/neco-vim' , { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
 
  "}}} _neco-vim
  " echodoc.vim {{{
 
-   call dein#add( 'Shougo/echodoc.vim' )
+   call dein#add( 'Shougo/echodoc.vim', { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
 
  "}}} _echodoc.vim
- call dein#add('ujihisa/neco-look')
+ " neco-look {{{
+ call dein#add('ujihisa/neco-look', { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
+ "}}} _neco-look 
+
 
  " YouCompleteMe {{{
-   " Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --gocode-completer --omnisharp-completer' }
+   call dein#add('Valloric/YouCompleteMe',
+         \ {
+         \ 'build': './install.py --clang-completer --gocode-completer --omnisharp-completer',
+         \ 'on_event': 'VimEnter', 'on_if': 'has("nvim")'
+         \ })
 
-   " " make YCM compatible with UltiSnips (using supertab)
-   " let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-   " let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-   " let g:SuperTabDefaultCompletionType = '<C-n>'
+   " make YCM compatible with UltiSnips (using supertab)
+   let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+   let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+   let g:SuperTabDefaultCompletionType = '<C-n>'
 
 
  "}}}
@@ -3020,7 +3045,9 @@ call dein#add( 'haya14busa/revital.vim' )
        exe "vnoremap <c-p>" . a:key . " :<c-u>" . a:cmd . a:options .
              \ " <c-r>=GetVisualSelection()<cr><cr>"
      endif
-     exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . a:options "<cr>"
+     if has('nvim')
+       exe "tnoremap <c-p><c-" . a:key . "> <c-\\><c-n>:" . a:cmd . a:options "<cr>"
+     endif
 
    endfunction
 
@@ -3117,7 +3144,9 @@ call dein#add( 'haya14busa/revital.vim' )
    "execute g:fzf_cmd
    "endfunc
 
-   tmap <c-p><c-i> <c-\><c-n><c-p><c-i>
+   if has('nvim')
+     tmap <c-p><c-i> <c-\><c-n><c-p><c-i>
+   endif
 
    nnoremap <silent> <c-p><c-i> :call fzf#run({
          \   'source':  reverse(<sid>tablist()),
@@ -3780,8 +3809,9 @@ call dein#add( 'haya14busa/revital.vim' )
  " tmux
  " tmux-navigator {{{
 
-   if exists('$TMUX')
-     call dein#add( 'christoomey/vim-tmux-navigator' )
+     call dein#add( 'christoomey/vim-tmux-navigator' ,
+           \ {'on_event': 'VimEnter', 'on_if': "exists('$TMUX')"}
+           \ )
 
      let g:tmux_navigator_no_mappings = 1
      nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
@@ -3789,14 +3819,15 @@ call dein#add( 'haya14busa/revital.vim' )
      nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
      nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
      nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
-   endif
 
  "}}}
 
  " terminal
  " nvimux {{{
-    call dein#add('hkupty/nvimux')
+    call dein#add('hkupty/nvimux',
+          \ {'on_event': 'VimEnter', 'on_if': 'has("nvim")'})
     let g:nvimux_prefix='<C-cr>'
+    "call dein#add('hkupty/nvimux')
  "}}} _nvimux
  " neoterm {{{
 
@@ -4242,10 +4273,11 @@ call dein#add( 'haya14busa/revital.vim' )
     nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
     vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
-
+    "let g:leaderGuide_run_map_on_popup = 0
     " Define prefix dictionary
     let g:lmap =  {}
     " Second level dictionaries:
+    let g:lmap.e = { 'name' : 'Edit' }
     let g:lmap.f = { 'name' : 'File Menu' }
     let g:lmap.o = { 'name' : 'Open Stuff' }
     let g:lmap.f.m = { 'name' : 'Manager' }
@@ -4449,7 +4481,9 @@ filetype plugin indent on
 
   " Terminal {{{
   "===============================================================================
+  if has('nvim')
     tnoremap <c-o> <c-\><c-n>
+  endif
     "tnoremap <expr> <esc> &filetype == 'fzf' ? "\<esc>" : "\<c-\>\<c-n>"
   "}}}
 
@@ -4831,17 +4865,19 @@ filetype plugin indent on
   "Term {{{
   "Enter insert mode on switch to term and on leave leave insert mode
   "------------------------------------------------------------------
-  augroup term_buf
-    autocmd!
-    "The following causes vimux to have an i inserted :(
-    "autocmd BufWinEnter term://*  call feedkeys('i')
-    autocmd TermOpen * autocmd BufEnter <buffer> startinsert
-    autocmd! BufLeave term://* stopinsert
+  if has('nvim')
+    augroup term_buf
+      autocmd!
+      "The following causes vimux to have an i inserted :(
+      "autocmd BufWinEnter term://*  call feedkeys('i')
+      autocmd TermOpen * autocmd BufEnter <buffer> startinsert
+      autocmd! BufLeave term://* stopinsert
 
-    "Prevent listing terminal buffers in ls command
-    "autocmd Filetype term set nobuflisted
-    autocmd TermOpen * set nobuflisted
-  augroup END
+      "Prevent listing terminal buffers in ls command
+      "autocmd Filetype term set nobuflisted
+      autocmd TermOpen * set nobuflisted
+    augroup END
+  endif
    "}}}
 
 
@@ -4921,17 +4957,34 @@ endif
 set termencoding=utf-8
 scriptencoding utf-8
 
-" Centralize backups, swapfiles and undo history
-set backupdir=~/.config/nvim/.cache/backups
+if has('vim')
+  " small tweaks
+  set ttyfast                       " indicate a fast terminal connection
+  set tf                            " improve redrawing for newer computers
+endif
 
 "How should I decide to take abackup
 set backupcopy=auto
 
-set directory=~/.config/nvim/.cache/swaps
-set viewdir=~/.config/nvim/.cache/views
+" Centralize backups, swapfiles and undo history
+if has('nvim')
+  set backupdir=~/.config/nvim/.cache/backups
 
-if exists("&undodir")
-set undodir=~/.config/nvim/.cache/undo
+  set directory=~/.config/nvim/.cache/swaps
+  set viewdir=~/.config/nvim/.cache/views
+
+  if exists("&undodir")
+    set undodir=~/.config/nvim/.cache/undo
+  endif
+else
+  set backupdir=~/.vim/.cache/backups
+
+  set directory=~/.vim/.cache/swaps
+  set viewdir=~/.vim/.cache/views
+
+  if exists("&undodir")
+    set undodir=~/.vim/.cache/undo
+  endif
 endif
 
 set undofile                          " Save undo's after file closes
@@ -4979,7 +5032,7 @@ endif
 
 set sessionoptions-=options
 
-"set noswapfile
+set noswapfile
 "Dont warn me about swap files existence
 "set shortmess+=A
 
@@ -5128,7 +5181,7 @@ set noerrorbells visualbell t_vb=     " Disable error bells
 set nostartofline                     " Don’t reset cursor to start of line when moving around
 set ruler                             " Show the cursor position
 set showmode                          " Show the current mode
-
+set shortmess=atI                     " Don’t show the intro message when starting Vim
 
 if !&scrolloff
   set scrolloff=3                       " Keep cursor in screen by value
@@ -5177,7 +5230,7 @@ call matchadd('ColorColumn', '\%81v', 100)
   hi Visual guibg=#D45438 guifg=white
   hi PmenuSel guibg=#D45438 guifg=white
 
-  hi FoldColumn guibg=none guifg=#373b41
+  hi FoldColumn guibg=#1d1f21 guifg=#373b41
   hi Folded ctermfg=243 ctermbg=234 guifg=#707880 guibg=#151515
 
   hi NERDTreeCurrentNode guibg=#B34826 guifg=white
