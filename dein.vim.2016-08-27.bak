@@ -176,7 +176,7 @@ inoremap <silent> <C-g> <C-[>:call InsertSpaces()<CR>A
   function! PlugTextObj(repo, key)"{{{
     let name = a:repo
     let name = substitute(name, ".*/vim-textobj-", "", "")
-    execute  "Plug  '" . a:repo . "', {'on': ['<Plug>(textobj-" . name . "-']}"
+    execute  "call dein#add( '" . a:repo . "', {'on_map': ['<Plug>(textobj-" . name . "-']})"
     execute "Map vo" "i".a:key "<Plug>(textobj-" . name . "-i)"
     execute "Map vo" "a".a:key "<Plug>(textobj-" . name . "-a)"
   endfunction"}}}
@@ -643,44 +643,33 @@ inoremap <silent> <C-g> <C-[>:call InsertSpaces()<CR>A
 " PLUG-INS {{{
 " ============================================================================
 
-call plug#begin('~/.config/nvim/plugged')
+"Clean unused plugins UNINSTALL
+"call map(dein#check_clean(), "delete(v:val, 'rf')")
 
- " VimPlug template {{{
+"DEIN START {{{
+"dein Scripts-----------------------------
+if &compatible
+  set nocompatible               " Be iMproved
+endif
 
- "" Make sure you use single quotes
- "Plug 'junegunn/seoul256.vim'
- "Plug 'junegunn/vim-easy-align'
+"Dein be quiet ;)
+"let g:dein#install_progress_type="none"
+"let g:dein#install_message_type="none"
+"let g:dein#install_process_timeout=500
 
- "" On-demand loading
- "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
- "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+"Let Notifier notify me of anything
+let g:dein#enable_notification=1
 
- "" Using git URL
- "Plug 'https://github.com/junegunn/vim-github-dashboard.git'
+" Required:
+set runtimepath^=/Volumes/Home/.config/nvim/dein/repos/github.com/Shougo/dein.vim
 
- "" Plugin options
- "Plug 'nsf/gocode', { 'tag': 'go.weekly.2012-03-13', 'rtp': 'vim' }
+" Required:
+call dein#begin(expand('/Volumes/Home/.config/nvim/dein'))
 
- "" Plugin outside ~/.vim/plugged with post-update hook
- "Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-
- "" Unmanaged plugin (manually installed and updated)
- "Plug '~/my-prototype-plugin'
-
-  " On plugin Loaded
-  " autocmd! User vim-easymotion  execute "normal \<Plug>(easymotion-prefix)"
-
-  "noremap <silent> s
-        "\ :call plug#load('vim-easymotion')
-        "\<Bar>map s <Plug>(easymotion-prefix)
-        "\<Bar>echo "easymotion ready"
-        "\<Bar>call feedkeys("\<Plug>(easymotion-prefix)")
-        "\<CR>
-
-
-
- "}}}
-
+" Let dein manage dein
+" Required:
+call dein#add('Shougo/dein.vim')
+"}}} _DEIN START
 
 " ----------------------------------------------------------------------------
 " Libraries {{{
@@ -689,7 +678,7 @@ call plug#begin('~/.config/nvim/plugged')
  " vital.vim {{{
 
  "Make vim faster with Vitalize
- Plug  'vim-jp/vital.vim' 
+ call dein#add( 'vim-jp/vital.vim' )
 
  "}}} _vital.vim
 
@@ -700,19 +689,17 @@ call plug#begin('~/.config/nvim/plugged')
 
  " vim-fugitive {{{
 
- Plug  'tpope/vim-fugitive'
-       \ , { 'on': [
+ call dein#add( 'tpope/vim-fugitive'
+       \ , { 'on_cmd': [
        \     'Git', 'Gcd',     'Glcd',   'Gstatus',
        \     'Gcommit',  'Gmerge',  'Gpull',  'Gpush',
        \     'Gfetch',   'Ggrep',   'Glgrep', 'Glog',
        \     'Gllog',    'Gedit',   'Gsplit', 'Gvsplit',
        \     'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
        \     'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
-       \     'Gmove', 'Gremove', 'Gblame', 'Gbrowse' ]
-       \ }
- "XXXXX
-       "\  'hook_post_source': "call fugitive#detect(expand('%:p')"
-autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
+       \     'Gmove', 'Gremove', 'Gblame', 'Gbrowse' ],
+       \  'hook_post_source': "call fugitive#detect(expand('%:p'))"
+       \ })
 
  autocmd User fugitive
        \ if fugitive#buffer().type() =~# '^\%(tree\|blob\)$' |
@@ -725,21 +712,20 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  " gv.vim {{{
 
    "Requires vim-fugitive
-   Plug  'junegunn/gv.vim', {
-         \ 'on': ['GV']
-         \ }
-	 "XXXXX
-         "\ 'depends': 'vim-fugitive',
+   call dein#add( 'junegunn/gv.vim', {
+         \ 'depends': 'vim-fugitive',
+         \ 'on_cmd': ['GV', 'GV!', 'GV?']
+         \ })
 
  "}}} _gv.vim
  " vim-gitgutter {{{
 
-   Plug  'airblade/vim-gitgutter' 
+   call dein#add( 'airblade/vim-gitgutter' )
 
  "}}} _vim-gitgutter
  " vimagit {{{
 
-   Plug  'jreybert/vimagit', {'on': ['Magit'], 'branch': 'next'} 
+   call dein#add( 'jreybert/vimagit', {'on': ['Magit'], 'rev': 'next'} )
    " Don't show help as it can be toggled by h
    let g:magit_show_help=0
    "nnoremap <leader>G :Magit<cr>
@@ -748,12 +734,12 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  " DirDiff.vim {{{
 
-   Plug  'vim-scripts/DirDiff.vim', {'on': ['DirDiff']} 
+   call dein#add( 'vim-scripts/DirDiff.vim', {'on_cmd': ['DirDiff']} )
 
  "}}} _DirDiff.vim
  " vim-diff-enhanced {{{
 
-  Plug  'chrisbra/vim-diff-enhanced' 
+  call dein#add( 'chrisbra/vim-diff-enhanced' )
   " started In Diff-Mode set diffexpr (plugin not loaded yet)
   if &diff
     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
@@ -761,11 +747,11 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-diff-enhanced
  " Recover-With-Diff{{{
 
- Plug  'chrisbra/Recover.vim' 
+ call dein#add( 'chrisbra/Recover.vim' )
 
  "}}} _Recover-With-Diff
 
- Plug 'rickhowe/diffchar.vim'
+ call dein#add('rickhowe/diffchar.vim')
 
  "}}}
  " ----------------------------------------------------------------------------
@@ -775,13 +761,13 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  " Org
  " vim-speeddating {{{
 
-   Plug  'tpope/vim-speeddating', {'for': ['org'], 'on': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']} 
+   call dein#add( 'tpope/vim-speeddating', {'on_ft': ['org'],'on_map': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']} )
 
  "}}} _vim-speeddating
  " vim-orgmode {{{
 
-   "Plug  'jceb/vim-orgmode', {'for': 'org'} 
-   Plug  'jceb/vim-orgmode' 
+   "call dein#add( 'jceb/vim-orgmode', {'on_ft': 'org'} )
+   call dein#add( 'jceb/vim-orgmode' )
    let g:org_agenda_files=['~/org/index.org']
    let g:org_todo_keywords=['TODO', 'FEEDBACK', 'VERIFY', 'WIP', '|', 'DONE', 'DELEGATED']
    let g:org_heading_shade_leading_stars = 1   "Hide the star noise
@@ -789,15 +775,15 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-orgmode
  "SyntaxRange {{{
 
-    Plug 'SyntaxRange'
+    call dein#add('SyntaxRange')
 
  "}}} _SyntaxRange
  "utl.vim{{{
-   Plug  'utl.vim' 
+   call dein#add( 'utl.vim' )
  "_utl.vim}}}
  " lazyList.vim {{{
 
-   Plug  'KabbAmine/lazyList.vim', {'on': ['LazyList']} 
+   call dein#add( 'KabbAmine/lazyList.vim', {'on_cmd': ['LazyList']} )
 
    let g:lazylist_omap = 'igll'
    nnoremap glli :LazyList
@@ -818,16 +804,17 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _lazyList.vim
  " vim-simple-todo {{{
 
- Plug 'vitalk/vim-simple-todo', { 'for': ['org'] }
- "XXXXX
-       "\ 'hook_post_source' : "
-         "\ |  nmap <Leader>i <Plug>(simple-todo-new
-         "\ |  nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
-         "\ |  nmap <Leader>o <Plug>(simple-todo-below)
-         "\ |  nmap <Leader>O <Plug>(simple-todo-above)
-         "\ |  nmap <Leader>x <Plug>(simple-todo-mark-as-done)
-         "\ |  nmap <Leader>X <Plug>(simple-todo-mark-as-undone) "
-       "\ 'on': ['<Plug>(simple-todo-']
+ call dein#add( 'vitalk/vim-simple-todo', {
+       \ 'on_ft': ['org'],
+       \ 'hook_post_source' : "
+         \ |  nmap <Leader>i <Plug>(simple-todo-new)
+         \ |  nmap <Leader>I <Plug>(simple-todo-new-start-of-line)
+         \ |  nmap <Leader>o <Plug>(simple-todo-below)
+         \ |  nmap <Leader>O <Plug>(simple-todo-above)
+         \ |  nmap <Leader>x <Plug>(simple-todo-mark-as-done)
+         \ |  nmap <Leader>X <Plug>(simple-todo-mark-as-undone) "
+       \ })
+       "\ 'on_map': ['<Plug>(simple-todo-']
 
    " Disable default key bindings
    let g:simple_todo_map_keys = 0
@@ -838,41 +825,41 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  "}}} _vim-simple-todo
  "vim-dotoo {{{
-    Plug 'dhruvasagar/vim-dotoo', {'for': ['org']} 
+    call dein#add('dhruvasagar/vim-dotoo', {'on_ft': ['org']} )
  "}}} _vim-todo
  " vim-table-mode {{{
 
-   Plug  'dhruvasagar/vim-table-mode', {'on': ['TabelModeEnable', 'TableModeToggle', 'Tableize']} 
+   call dein#add( 'dhruvasagar/vim-table-mode', {'on_cmd': ['TabelModeEnable', 'TableModeToggle', 'Tableize']} )
    let g:table_mode_corner_corner="+"
    let g:table_mode_header_fillchar="="
 
  "}}} _vim-table-mode
  " calendar.vim {{{
 
-   Plug  'itchyny/calendar.vim', {'on': ['Calendar'] } 
+   call dein#add( 'itchyny/calendar.vim', {'on_cmd': ['Calendar'] } )
    let g:calendar_date_month_name = 1
 
  "}}} _calendar.vim
  " calendar-vim {{{
 
-   Plug  'mattn/calendar-vim', {'on': ['CalendarH', 'CalendarT'] } 
+   call dein#add( 'mattn/calendar-vim', {'on_cmd': ['CalendarH', 'CalendarT'] } )
 
  "}}} _calendar-vim
  " vim-journal {{{
 
-   "Plug  'junegunn/vim-journal', {'for': ['journal']} 
-   Plug  'junegunn/vim-journal' 
+   "call dein#add( 'junegunn/vim-journal', {'on_ft': ['journal']} )
+   call dein#add( 'junegunn/vim-journal' )
 
  "}}} _vim-journal
  " vimwiki {{{
 
-   Plug  'vimwiki/vimwiki' 
+   call dein#add( 'vimwiki/vimwiki' )
    let g:vimwiki_map_prefix = '<Leader>v'
 
  "}}} _vimwiki
  " junkfile.vim {{{
 
-   Plug  'Shougo/junkfile.vim', {'on': ['JunkfileOpen']} 
+   call dein#add( 'Shougo/junkfile.vim', {'on_cmd': ['JunkfileOpen']} )
    let g:junkfile#directory = $HOME . '/.config/nvim/cache/junkfile'
 
    nnoremap <leader>jo :JunkfileOpen
@@ -884,7 +871,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
 
    "Requires pseudocl
-   Plug  'junegunn/vim-fnr', {'on': ['<Plug>(FNR)','<Plug>(FNR%)']} 
+   call dein#add( 'junegunn/vim-fnr', {'on_map': ['<Plug>(FNR)','<Plug>(FNR%)']} )
 
    " Defaults
    let g:fnr_flags   = 'gc'
@@ -922,13 +909,13 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-over
  " vim-enmasse {{{
 
-   Plug  'Wolfy87/vim-enmasse',         { 'on': 'EnMasse'} 
+   call dein#add( 'Wolfy87/vim-enmasse',         { 'on_cmd': 'EnMasse'} )
    " EnMass the sublime like search and edit then save back to corresponding files
 
  "}}} _vim-enmasse
  " vim-swoop {{{
 
-   Plug  'pelodelfuego/vim-swoop', {'on': ['Swoop']} 
+   call dein#add( 'pelodelfuego/vim-swoop', {'on_cmd': ['Swoop']} )
    let g:swoopUseDefaultKeyMap = 0
 
    " nmap <Leader>ml :call SwoopMulti()<CR>
@@ -951,18 +938,18 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-swoop
  " vim-ags {{{
 
- Plug  'gabesoft/vim-ags', {'on': ['Ags']} 
+ call dein#add( 'gabesoft/vim-ags', {'on_cmd': ['Ags']} )
 
  "}}} _vim-ags
  " inline_edit.vim {{{
 
-   Plug  'AndrewRadev/inline_edit.vim', { 'on': ['InlineEdit']} 
+   call dein#add( 'AndrewRadev/inline_edit.vim', { 'on_cmd': ['InlineEdit']} )
 
  "}}} _inline_edit.vim
  " vim-multiple-cursors {{{
 
  "TODO: Set some mapping
-   Plug  'terryma/vim-multiple-cursors' 
+   call dein#add( 'terryma/vim-multiple-cursors' )
 
    let g:multi_cursor_use_default_mapping=0
    "Use ctrl-n to select next instance
@@ -970,7 +957,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-multiple-cursors
  " vim-markmultiple {{{
 
- Plug  'adinapoli/vim-markmultiple'
+ call dein#add( 'adinapoli/vim-markmultiple', {'on_func':['MarkMultiple']} )
  let g:mark_multiple_trigger = "<C-n>"
 
  nnoremap <C-N>  :call MarkMultiple()<CR>
@@ -984,18 +971,18 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-markmultiple
  " multichange.vim {{{
 
- Plug  'AndrewRadev/multichange.vim' 
+ call dein#add( 'AndrewRadev/multichange.vim' )
  let g:multichange_mapping        = 'sm'
- let g:multichange_motionping = 'm'
+ let g:multichange_motion_mapping = 'm'
 
  "}}} _multichange.vim
  " vim-multiedit {{{
 
- Plug  'hlissner/vim-multiedit' , { 'on': [
+ call dein#add( 'hlissner/vim-multiedit' , { 'on_cmd': [
        \   'MultieditAddMark', 'MultieditAddRegion',
        \   'MultieditRestore', 'MultieditHop', 'Multiedit',
        \   'MultieditClear', 'MultieditReset'
-       \ ] } 
+       \ ] } )
 
    let g:multiedit_no_mappings = 1
    let g:multiedit_auto_reset = 1
@@ -1051,12 +1038,12 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-multiedit
  " vim-abolish {{{
 
-   Plug  'tpope/vim-abolish',           { 'on': ['S','Subvert', 'Abolish']} 
+   call dein#add( 'tpope/vim-abolish',           { 'on_cmd': ['S','Subvert', 'Abolish']} )
 
  "}}} _vim-abolish
  " vim-rengbang {{{
 
-   Plug  'deris/vim-rengbang',          { 'on': [ 'RengBang', 'RengBangUsePrev' ] } 
+   call dein#add( 'deris/vim-rengbang',          { 'on_cmd': [ 'RengBang', 'RengBangUsePrev' ] } )
 
    "Use instead of increment it is much powerfull
    " RengBang \(\d\+\) Start# Increment# Select# %03d => 001, 002
@@ -1064,21 +1051,22 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-rengbang
  " vim-rectinsert {{{
 
-   Plug  'deris/vim-rectinsert',        { 'on': ['RectInsert', 'RectReplace'] } 
+   call dein#add( 'deris/vim-rectinsert',        { 'on_cmd': ['RectInsert', 'RectReplace'] } )
 
  "}}} _vim-rectinsert
 
  " Isolate
  " NrrwRgn {{{
 
- Plug  'chrisbra/NrrwRgn', {
-       \ 'on':
+ call dein#add( 'chrisbra/NrrwRgn', {
+       \ 'on_cmd':
        \   [
        \    'NR', 'NarrowRegion', 'NW', 'NarrowWindow', 'WidenRegion',
        \    'NRV', 'NUD', 'NRPrepare', 'NRP', 'NRMulti', 'NRM',
-       \    'NRS', 'NRNoSyncOnWrite', 'NRN', 'NRL', 'NRSyncOnWrite' , '<Plug>Nrrwrgn'
-			 \   ]
-       \ }
+       \    'NRS', 'NRNoSyncOnWrite', 'NRN', 'NRL', 'NRSyncOnWrite'
+       \   ],
+       \ 'on_map': ['<Plug>Nrrwrgn']
+       \ })
 
  nmap <leader>nr <Plug>NrrwrgnDo
 
@@ -1135,7 +1123,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  " }}}
  " vim-peekaboo {{{
 
-   Plug  'junegunn/vim-peekaboo' 
+   call dein#add( 'junegunn/vim-peekaboo' )
 
    " Default peekaboo window
    let g:peekaboo_window = 'vertical botright 30new'
@@ -1150,7 +1138,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-peekaboo
  " UnconditionalPaste {{{
 
-   Plug  'vim-scripts/UnconditionalPaste', {'on': ['<Plug>UnconditionalPaste']} 
+   call dein#add( 'vim-scripts/UnconditionalPaste', {'on_map': ['<Plug>UnconditionalPaste']} )
    Map n gPP  <Plug>UnconditionalPasteGPlusBefore
    Map n gPp  <Plug>UnconditionalPasteGPlusAfter
    Map n gpP  <Plug>UnconditionalPastePlusBefore
@@ -1200,19 +1188,19 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  " vim-copy-as-rtf {{{
 
- Plug  'zerowidth/vim-copy-as-rtf', {'on': ['CopyRTF']} 
+ call dein#add( 'zerowidth/vim-copy-as-rtf', {'on_cmd': ['CopyRTF']} )
 
  "}}} _vim-copy-as-rtf
 
  " Single-edits
  " switch.vim {{{
 
-   Plug  'AndrewRadev/switch.vim', {'on':  ['Switch']} 
+   call dein#add( 'AndrewRadev/switch.vim', {'on_cmd':  ['Switch']} )
 
  "}}} _switch.vim
  " vim-exchange {{{
 
-   Plug  'tommcdo/vim-exchange', {'on':  ['ExchangeClear' ,'<Plug>(Exchange']}
+   call dein#add( 'tommcdo/vim-exchange', {'on_cmd':  ['ExchangeClear'] , 'on_map': ['<Plug>(Exchange']} )
    xmap c<cr><cr>     <Plug>(Exchange)
    nmap c<cr>l    <Plug>(ExchangeLine)
    nmap c<cr>c    <Plug>(ExchangeClear)
@@ -1222,7 +1210,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-exchange
 
  " ReplaceWithRegister{{{
- Plug 'vim-scripts/ReplaceWithRegister', { 'on': ['<Plug>ReplaceWithRegister']}
+ call dein#add('vim-scripts/ReplaceWithRegister', { 'on_map': ['<Plug>ReplaceWithRegister']})
  nmap <Leader>r  <Plug>ReplaceWithRegisterOperator
  nmap <Leader>rr <Plug>ReplaceWithRegisterLine
  xmap <Leader>r  <Plug>ReplaceWithRegisterVisual
@@ -1231,12 +1219,12 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  " vim-lion {{{
 
-   Plug  'tommcdo/vim-lion' 
+   call dein#add( 'tommcdo/vim-lion' )
 
  "}}} _vim-lion
  " EasyAlign {{{
 
-   Plug  'junegunn/vim-easy-align',          {'on':  ['EasyAlign','<Plug>(EasyAlign)']} 
+   call dein#add( 'junegunn/vim-easy-align',          {'on_cmd':  ['EasyAlign'], 'on_map':[ '<Plug>(EasyAlign)']} )
 
    " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
    vmap <Enter> <Plug>(EasyAlign)
@@ -1249,7 +1237,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}}
  " tabular {{{
 
-   Plug  'godlygeek/tabular', {'on': ['Tabularize']} 
+   call dein#add( 'godlygeek/tabular', {'on_cmd': ['Tabularize']} )
 
    nnoremap <leader>a& :Tabularize /&<CR>
    vnoremap <leader>a& :Tabularize /&<CR>
@@ -1272,16 +1260,17 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _tabular
  " vim-surround {{{
  " ----------------------------------------------------------------------------
- Plug  't9md/vim-surround_custom_mapping' 
- Plug  'tpope/vim-surround', {
-                           \   'on' :[
+ call dein#add( 't9md/vim-surround_custom_mapping' )
+ call dein#add( 'tpope/vim-surround', {
+                           \   'on_map' :[
                            \      '<Plug>Dsurround' , '<Plug>Csurround',
                            \      '<Plug>Ysurround' , '<Plug>YSurround',
                            \      '<Plug>Yssurround', '<Plug>YSsurround',
                            \      '<Plug>YSsurround', '<Plug>VgSurround',
                            \      '<Plug>VSurround' , '<Plug>ISurround',
-                           \      '<Plug>Isurround' , '<Plug>ISurround'
-                           \ ]} 
+                           \      ['i', '<Plug>Isurround'],
+                           \      ['i', '<Plug>ISurround']
+                           \ ]} )
    let g:surround_no_mappings=1
    nmap dS <Plug>Dsurround
    nmap cS <Plug>Csurround
@@ -1312,12 +1301,12 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}}
  " splitjoin.vim {{{
 
- Plug  'AndrewRadev/splitjoin.vim' 
-       "\ ,{
-       "\ 'on':['gS', 'gJ', 'SplitjoinSplit', 'SplitjoinJoin']
-       "\ } 
- "XXXXX
-       "\ 'hook_post_source': "call MapSplitJoin("
+ call dein#add( 'AndrewRadev/splitjoin.vim' ,
+       \ {
+       \ 'on_map':['gS', 'gJ'],
+       \ 'on_cmd': ['SplitjoinSplit', 'SplitjoinJoin'],
+       \ 'hook_post_source': "call MapSplitJoin()"
+       \ } )
 
  " Fix for gk/gj(goes to HOME/END) after splitjoin
  function MapSplitJoin()
@@ -1328,7 +1317,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _splitjoin.vim
  " vim-sort-motion {{{
 
-  Plug  'christoomey/vim-sort-motion', {'on': ['<Plug>Sort']} 
+  call dein#add( 'christoomey/vim-sort-motion', {'on_map': ['<Plug>Sort']} )
   map  gs  <Plug>SortMotion
   map  gss <Plug>SortLines
   vmap gs  <Plug>SortMotionVisual
@@ -1336,7 +1325,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-sort-motion
  " vim-tag-comment {{{
    " Comment out HTML properly
-   Plug  'mvolkmann/vim-tag-comment', {'on': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']} 
+   call dein#add( 'mvolkmann/vim-tag-comment', {'on_cmd': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']} )
    nmap <leader>tc :ElementComment<cr>
    nmap <leader>tu :ElementUncomment<cr>
    nmap <leader>tC :TagComment<cr>
@@ -1348,7 +1337,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  " nerdcommenter {{{
 
  "Don't lazyload as doing so will fragile
-  Plug  'scrooloose/nerdcommenter', {'on': [ '<Plug>NERDCommenter' ]} 
+  call dein#add( 'scrooloose/nerdcommenter', {'on_map': [ '<Plug>NERDCommenter' ]} )
   "call s:SetUpForNewFiletype(&filetype, 1)
 
   Map nx  <leader>c<Space>     <Plug>NERDCommenterToggle
@@ -1367,15 +1356,16 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  "}}} _nerdcommenter
  " vim-commentary {{{
- Plug 'tpope/vim-commentary',
+ call dein#add ('tpope/vim-commentary',
        \ {
-       \ 'on':
+       \ 'on_map':
        \ [
        \  '<Plug>Commentary',
        \  '<Plug>CommentaryLine',
-       \  '<Plug>ChangeCommentary',
-			 \ 'Commentary' ]
-       \ }
+       \  '<Plug>ChangeCommentary'
+       \ ],
+       \ 'on_cmd': [ 'Commentary' ]
+       \ })
  xmap gc  <Plug>Commentary
  nmap gc  <Plug>Commentary
  omap gc  <Plug>Commentary
@@ -1398,15 +1388,13 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  "}}} _vim-endwise
  " vim-closer {{{
 
-   Plug  'rstacruz/vim-closer' 
+   call dein#add( 'rstacruz/vim-closer' )
 
  "}}} _vim-closer
  " delimitmate {{{
 
  "XXXX
- Plug  'Raimondi/delimitMate'
- "XXXXX
- ", {'on_event': ['InsertEnter']} 
+ call dein#add( 'Raimondi/delimitMate', {'on_event': ['InsertEnter']} )
    " au FileType blade let b:delimitMate_autoclose = 0
 
  "}}}
@@ -1418,37 +1406,35 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  " vim-arpeggio {{{
 
  " Allow new form of keymaps throgh holding two keys together
- Plug 'kana/vim-arpeggio'
+ call dein#add('kana/vim-arpeggio')
 
  "}}} _vim-arpeggio
 
  " pipe.vim {{{
 
    "Pipe !command output to vim
-   Plug  'NLKNguyen/pipe.vim' 
+   call dein#add( 'NLKNguyen/pipe.vim' )
 
  "}}} _pipe.vim
 
  "vim-signature {{{
-   Plug 'kshenoy/vim-signature'
+   call dein#add('kshenoy/vim-signature')
  "}}} _vim-signature'
 
  " tinymode.vim {{{
 
- Plug  'vim-scripts/tinymode.vim' 
+ call dein#add( 'vim-scripts/tinymode.vim' )
 
  "}}} _tinymode.vim
  " tinykeymap_vim {{{
 
  "TODO XXX find away to make use of tinykeymap
- Plug  'tomtom/tinykeymap_vim'
- "XXXXX
- ", {'lazy': 1} 
+ call dein#add( 'tomtom/tinykeymap_vim', {'lazy': 1} )
 
  "}}} _tinykeymap_vim
  " vim-submode {{{
-   "Plug  'kana/vim-submode' 
-   Plug  'khalidchawtany/vim-submode' 
+   "call dein#add( 'kana/vim-submode' )
+   call dein#add( 'khalidchawtany/vim-submode' )
    let g:submode_timeout=0
 
    au VimEnter * call BindSubModes()
@@ -1539,7 +1525,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
  " vim-hopper {{{
 
    "Plug 'LFDM/vim-hopper'
-   Plug  'khalidchawtany/vim-hopper'
+   call dein#add( 'khalidchawtany/vim-hopper')
    "let g:hopper_prefix = '<esc>'
    let g:hopper_prefix = ','
    let g:hopper_file_opener = [ 'angular' ]
@@ -1549,41 +1535,41 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  " vim-unimpaired {{{
 
- Plug  'tpope/vim-unimpaired' 
+ call dein#add( 'tpope/vim-unimpaired' )
 
  "}}} _vim-unimpaired
  " vim-man {{{
 
-   Plug  'bruno-/vim-man', {'on': ['Man', 'SMan', 'VMan', 'Mangrep']} 
+   call dein#add( 'bruno-/vim-man', {'on_cmd': ['Man', 'SMan', 'VMan', 'Mangrep']} )
 
  "}}} _vim-man
  " vim-rsi {{{
 
-   Plug  'tpope/vim-rsi' 
+   call dein#add( 'tpope/vim-rsi' )
 
  "}}} _vim-rsi
  " capture.vim {{{
 
    "Capture EX-commad in a buffer
-   Plug  'tyru/capture.vim', {'on': 'Capture'} 
+   call dein#add( 'tyru/capture.vim', {'on_cmd': 'Capture'} )
 
  "}}} _capture.vim
  " vim-eunuch {{{
 
-   Plug  'tpope/vim-eunuch', {'on': [ 'Remove', 'Unlink', 'Move', 'Rename',
-       \ 'Chmod', 'Mkdir', 'Find', 'Locate', 'SudoEdit', 'SudoWrite', 'Wall', 'W' ]}
+   call dein#add( 'tpope/vim-eunuch', {'on_cmd': [ 'Remove', 'Unlink', 'Move', 'Rename',
+       \ 'Chmod', 'Mkdir', 'Find', 'Locate', 'SudoEdit', 'SudoWrite', 'Wall', 'W' ]})
 
  "}}} _vim-eunuch
- "Plug  'duggiefresh/vim-easydir' 
+ "call dein#add( 'duggiefresh/vim-easydir' )
 
  " vim-capslock {{{
 
- Plug  'tpope/vim-capslock' ,{
-       \ 'on':[
-       \   '<Plug>CapsLockToggle',
-       \   '<Plug>CapsLockEnable',
-       \   '<Plug>CapsLockDisable'
-       \ ]}
+ call dein#add( 'tpope/vim-capslock' ,{
+       \ 'on_map':[
+       \  ['n', '<Plug>CapsLockToggle'],
+       \  ['n', '<Plug>CapsLockEnable'],
+       \  ['n', '<Plug>CapsLockDisable']
+       \ ]})
    imap <c-l>o <C-O><Plug>CapsLockToggle
    imap <c-l>e <C-O><Plug>CapsLockEnable
    imap <c-l>d <C-O><Plug>CapsLockDisable
@@ -1591,12 +1577,12 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
 
  " vim-characterize {{{
 
-   Plug  'tpope/vim-characterize', {'on':['<Plug>(characterize)']} 
+   call dein#add( 'tpope/vim-characterize', {'on_map':['<Plug>(characterize)']} )
 
  "}}} _vim-characterize
  " unicode {{{
 
-   Plug  'chrisbra/unicode.vim', {'on':['Diagraphs', 'SearchUnicode', 'UnicodeName', 'UnicodeTable']} 
+   call dein#add( 'chrisbra/unicode.vim', {'on_cmd':['Diagraphs', 'SearchUnicode', 'UnicodeName', 'UnicodeTable']} )
 
    " :Digraphs        - Search for specific digraph char
    " :SearchUnicode   - Search for specific unicode char
@@ -1608,7 +1594,7 @@ autocmd! User vim-fugitive call fugitive#detect(expand('%:p')
    " <F4>        - Combine characters into digraphs
 
  "}}}
-  "Plug  'seletskiy/vim-nunu'            "Disable relative numbers on cursor move
+  "call dein#add( 'seletskiy/vim-nunu' )           "Disable relative numbers on cursor move
 let s:prev_line = 0
 augroup rnu_nu
     au!
@@ -1618,7 +1604,7 @@ augroup end
 
  " vim-repeat {{{
 
- Plug  'tpope/vim-repeat' 
+ call dein#add( 'tpope/vim-repeat' )
 
  "}}} _vim-repeat
  " Plug 'vim-scripts/confirm-quit'
@@ -1630,44 +1616,45 @@ augroup end
  "}}} _undofile_warn.vim
  " vim-obsession {{{
 
-   Plug  'tpope/vim-obsession', {'on':['Obsession']} 
+   call dein#add( 'tpope/vim-obsession', {'on_cmd':['Obsession']} )
 
  "}}} _vim-obsession
 
  " vim-autoswap {{{
 
-   Plug  'gioele/vim-autoswap' 
+   call dein#add( 'gioele/vim-autoswap' )
 
  "}}} _vim-autoswap
 
  " vim-scriptease {{{
 
- Plug  'tpope/vim-scriptease', {
-       \ 'for': ['vim'],
-       \ 'on': ['PP', 'Runtime', 'Time', 'Disarm', 'Scriptnames'. 'Verbose', 'Breakadd', 'Vedit', 'Vsplit', 'Vtabedit']
-       \ } 
- "XXXXX
- ", 'K', 'zS', 'g!'
+ call dein#add( 'tpope/vim-scriptease', {
+       \ 'on_ft': ['vim'],
+       \ 'on_cmd': ['PP', 'Runtime', 'Time', 'Disarm', 'Scriptnames'. 'Verbose', 'Breakadd', 'Vedit', 'Vsplit', 'Vtabedit'],
+       \ 'on_map': ['K', 'zS', 'g!']
+       \ } )
+
  "}}} _vim-scriptease
  " vim-debugger {{{
- Plug 'haya14busa/vim-debugger',
-       \ {'on': ['DebugOn', 'Debugger', 'Debug', 'StackTrace', 'CallStack', 'CallStackReport']}
+ call dein#add('haya14busa/vim-debugger',
+       \ {'on_cmd': ['DebugOn', 'Debugger', 'debug', 'StackTrace', 'CallStack', 'CallStackReport']})
  " }}} _vim-debugger
  " vim-scripts/Decho {{{
- Plug 'vim-scripts/Decho', {
-       \ 'on': ['Decho', 'DechoOn']
-       \ }
+ call dein#add('vim-scripts/Decho', {
+       \ 'on_cmd': ['Decho', 'DechoOn'],
+       \ 'on_func': ['Decho', 'Dfunc', 'Dredir', 'DechoMsgOn', 'DechoRemOn', 'DechoTabOn', 'DechoVarOn'  ],
+       \ })
      " Usage:
     " call Dfunc("YourFunctionName([arg1<".a:arg1."> arg2<".a:arg2.">])")
     " call Dret("YourFunctionName [returnvalue]")
  "}}} _vim-scripts/Decho
 
 
- Plug  'KabbAmine/vCoolor.vim'
- Plug 'sunaku/vim-shortcut'
+ call dein#add( 'KabbAmine/vCoolor.vim')
+ call dein#add('sunaku/vim-shortcut')
  " vim-hardtime {{{
 
-   Plug  'takac/vim-hardtime', {'on': ['HardTimeOn', 'HardTimeToggle']} 
+   call dein#add( 'takac/vim-hardtime', {'on_cmd': ['HardTimeOn', 'HardTimeToggle']} )
 
    let g:hardtime_timeout = 1000
 
@@ -1688,9 +1675,7 @@ augroup end
  "}}} _vim-hardtime
  " investigate.vim {{{
 
- Plug  'keith/investigate.vim'
- "XXXXX
- ", {'on': ['gK']} 
+ call dein#add( 'keith/investigate.vim', {'on_map': ['gK']} )
  let g:investigate_dash_for_blade="laravel"
  let g:investigate_dash_for_php="laravel"
  let g:investigate_use_dash=1
@@ -1703,7 +1688,7 @@ augroup end
  " ----------------------------------------------------------------------------
 
  "Python
- Plug  'tweekmonster/braceless.vim', {'for': ['python']} 
+ call dein#add( 'tweekmonster/braceless.vim', {'on_ft': ['python']} )
 
  " Java
  " Plug 'tpope/vim-classpath'
@@ -1713,7 +1698,7 @@ augroup end
 
    " let g:OmniSharp_server_type = 'roslyn'
    let g:OmniSharp_server_path = "/Volumes/Home/.config/nvim/plugged/Omnisharp/server/Omnisharp/bin/Debug/OmniSharp.exe"
-   Plug  'nosami/Omnisharp', {'for': ['cs']} 
+   call dein#add( 'nosami/Omnisharp', {'on_ft': ['cs']} )
 
    " Plug 'khalidchawtany/omnisharp-vim', {'branch': 'nUnitQuickFix'}
 
@@ -1824,28 +1809,28 @@ augroup end
  "}}}
  " vim-csharp {{{
 
-   Plug  'OrangeT/vim-csharp', {'for': ['cs']} 
+   call dein#add( 'OrangeT/vim-csharp', {'on_ft': ['cs']} )
 
  "}}} _vim-csharp
 
  " applescript
  " applescript {{{
 
-   "Plug  'vim-scripts/applescript.vim' ,     {'for': ['applescript']} 
-   Plug  'vim-scripts/applescript.vim' 
+   "call dein#add( 'vim-scripts/applescript.vim' ,     {'on_ft': ['applescript']} )
+   call dein#add( 'vim-scripts/applescript.vim' )
 
  "}}} _applescript
 
  " markdown
  " vim-markdown {{{
 
-   "Plug  'tpope/vim-markdown', {'for':['markdown']} 
-   Plug  'tpope/vim-markdown' 
+   "call dein#add( 'tpope/vim-markdown', {'on_ft':['markdown']} )
+   call dein#add( 'tpope/vim-markdown' )
 
  "}}} _vim-markdown
 
  " CSV
- Plug  'chrisbra/csv.vim', {'for': ['csv']} 
+ call dein#add( 'chrisbra/csv.vim', {'on_ft': ['csv']} )
 
  " PHP
  " phpcomplete.vim {{{
@@ -1863,10 +1848,10 @@ augroup end
   "Plug 'm2mdas/phpcomplete-extended-laravel'
  " pdv {{{
 
-   "Plug  'tobyS/vmustache', {'for': ['PHP']} 
-   Plug  'tobyS/vmustache' 
-   "Plug  'tobyS/pdv', {'for': ['PHP']} 
-   Plug  'tobyS/pdv' 
+   "call dein#add( 'tobyS/vmustache', {'on_ft': ['PHP']} )
+   call dein#add( 'tobyS/vmustache' )
+   "call dein#add( 'tobyS/pdv', {'on_ft': ['PHP']} )
+   call dein#add( 'tobyS/pdv' )
    let g:pdv_template_dir = $HOME ."/.config/nvim/plugged/pdv/templates_snip"
    nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
 
@@ -1874,17 +1859,16 @@ augroup end
 
  " phpcd.vim {{{
 
- Plug  'phpvim/phpcd.vim',
+ call dein#add( 'phpvim/phpcd.vim',
        \ {
-       \ 'for': ['php'],
-       \ 'do': '/usr/local/bin/composer update'
-       \ }
- "XXXXX
-       "\ 'if': 'has("nvim")',
-       "\ 'on_if': 'has("nvim")',
-       "\ 'on_event': 'VimEnter',
-   "Plug  'vim-scripts/progressbar-widget', {'on_source': 'phpcd.vim'}  " used for showing the index progress
-   Plug  'vim-scripts/progressbar-widget' 
+       \ 'if': 'has("nvim")',
+       \ 'on_ft': ['php'],
+       \ 'on_if': 'has("nvim")',
+       \ 'on_event': 'VimEnter',
+       \ 'build': '/usr/local/bin/composer update'
+       \ } )
+   "call dein#add( 'vim-scripts/progressbar-widget', {'on_source': 'phpcd.vim'} ) " used for showing the index progress
+   call dein#add( 'vim-scripts/progressbar-widget' )
 
 
    "Set PHP Completion options
@@ -1900,36 +1884,39 @@ augroup end
  "}}} _phpcd.vim
  " PHP-Indenting-for-VIm {{{
 
-   "Plug  '2072/PHP-Indenting-for-VIm', {'for': ['php']} 
-   Plug  '2072/PHP-Indenting-for-VIm' 
+   "call dein#add( '2072/PHP-Indenting-for-VIm', {'on_ft': ['php']} )
+   call dein#add( '2072/PHP-Indenting-for-VIm' )
 
  "}}} _PHP-Indenting-for-VIm
  " phpfolding.vim {{{
 
    "No more maintained
-   "Plug  'phpvim/phpfolding.vim', {'for': ['php']} 
-   "Plug  'phpvim/phpfolding.vim' 
-   Plug  'phpvim/phpfold.vim'
+   "call dein#add( 'phpvim/phpfolding.vim', {'on_ft': ['php']} )
+   "call dein#add( 'phpvim/phpfolding.vim' )
+   call dein#add( 'phpvim/phpfold.vim',
+         \ {
+         \ 'if': '0'
+         \ })
          "\ 'if': 'has("nvim")',
-         "\ 'for': ['php'],
+         "\ 'on_ft': ['php'],
          "\ 'on_if': 'has("nvim")',
          "\ 'on_event': 'VimEnter',
-         "\ 'do' : 'composer update'
+         "\ 'build' : 'composer update'
          "\ } )
 
 
  "}}} _phpfolding.vim
  " tagbar-phpctags.vim {{{
 
-   Plug  'vim-php/tagbar-phpctags.vim', {'for': ['php']} 
+   call dein#add( 'vim-php/tagbar-phpctags.vim', {'on_ft': ['php']} )
 
  "}}} _tagbar-phpctags.vim
  " noahfredrerick/vim-composer {{{
-	Plug 'noahfrederick/vim-composer',
+ cal dein#add( 'noahfrederick/vim-composer',
        \ {
        \ 'for': 'php',
-       \ 'on': ['Composer', 'Ecomposer', 'A', 'Dispatch']
-       \ }
+       \ 'on_cmd': ['Composer', 'Ecomposer', 'A', 'Dispatch']
+       \ })
  "}}} _noahfredrerick/vim-composer
 
  let g:loaded_matchit=1
@@ -1950,18 +1937,17 @@ let g:loaded_matchparen=1
  augroup END
 
  "Go
- Plug  'fatih/vim-go', {'for': ['go']} 
+ call dein#add( 'fatih/vim-go', {'on_ft': ['go']} )
 
- Plug  'zchee/deoplete-go', {
-       \ 'for': ['go'], 'do': '/usr/bin/make'
-       \ } 
- "XXXXX
-       "\ 'on_event': 'VimEnter', 'on_if': 'has("nvim")'
+ call dein#add( 'zchee/deoplete-go', {
+       \ 'on_ft': ['go'], 'build': '/usr/bin/make',
+       \ 'on_event': 'VimEnter', 'on_if': 'has("nvim")'
+       \ } )
 
  "Rust
  " vim-racer {{{
 
- Plug  'racer-rust/vim-racer', {'for': ['rust']} 
+ call dein#add( 'racer-rust/vim-racer', {'on_ft': ['rust']} )
  let g:racer_cmd = "/Volumes/Home/.cargo/bin/racer"
  let $RUST_SRC_PATH="/Volumes/Home/Development/Applications/rust/src/"
 
@@ -1970,24 +1956,22 @@ let g:loaded_matchparen=1
  " blade
  " vim-blade {{{
 
-   "Plug  'xsbeats/vim-blade', {'for':['blade'] } 
-   "Plug  'xsbeats/vim-blade' 
+   "call dein#add( 'xsbeats/vim-blade', {'on_ft':['blade'] } )
+   "call dein#add( 'xsbeats/vim-blade' )
    ""au BufNewFile,BufRead *.blade.php set filetype=html
    "au BufNewFile,BufRead *.blade.php set filetype=blade
 
-   Plug 'jwalton512/vim-blade'
+   call dein#add('jwalton512/vim-blade')
 
  "}}}
-   Plug 'johnhamelink/blade.vim'
-	 "XXXXX
-	 ", {'on_if': '0'}
+   call dein#add('johnhamelink/blade.vim', {'on_if': '0'})
 
  " Web Dev
  " breeze.vim {{{
 
-   Plug  'gcmt/breeze.vim', {'on':
+   call dein#add( 'gcmt/breeze.vim', {'on_map':
        \   [
-       \       '<Plug>(breeze-jump-tag-forward',
+       \       '<Plug>(breeze-jump-tag-forward)',
        \       '<Plug>(breeze-jump-tag-backward)',
        \       '<Plug>(breeze-jump-attribute-forward)',
        \       '<Plug>(breeze-jump-attribute-backward)',
@@ -1996,7 +1980,7 @@ let g:loaded_matchparen=1
        \       '<Plug>(breeze-next-attribute)',
        \       '<Plug>(breeze-prev-attribute)'
        \ ] ,
-       \'for': ['php', 'blade', 'html', 'xhtml', 'xml']}
+       \'on_ft': ['php', 'blade', 'html', 'xhtml', 'xml']})
 
 
    au FileType html,blade,php,xml,xhtml call MapBreezeKeys()
@@ -2023,7 +2007,7 @@ let g:loaded_matchparen=1
  "}}}
  " emmet {{{
 
-   Plug  'mattn/emmet-vim', {'for':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']} 
+   call dein#add( 'mattn/emmet-vim', {'on_ft':['html','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']} )
 
    "let g:user_emmet_mode='a'         "enable all function in all mode.
    let g:user_emmet_mode='i'         "enable all function in insert mode
@@ -2032,7 +2016,7 @@ let g:loaded_matchparen=1
  "}}}
  " vim-hyperstyle {{{
 
-   Plug  'rstacruz/vim-hyperstyle', {'for': ['css']} 
+   call dein#add( 'rstacruz/vim-hyperstyle', {'on_ft': ['css']} )
 
  "}}} _vim-hyperstyle
  " vim-closetag {{{
@@ -2040,7 +2024,7 @@ let g:loaded_matchparen=1
     "This plugin uses > of the clos tag to work in insert mode
     "<table|   => press > to have <table>|<table>
     "press > again to have <table>|<table>
-    Plug  'alvan/vim-closetag', {'for': ['html', 'xml', 'blade', 'php']} 
+    call dein#add( 'alvan/vim-closetag', {'on_ft': ['html', 'xml', 'blade', 'php']} )
     " # filenames like *.xml, *.html, *.xhtml, ...
     let g:closetag_filenames = "*.html,*.xhtml,*.phtml,*.blade.php,*.php"
 
@@ -2049,12 +2033,12 @@ let g:loaded_matchparen=1
  " closetag {{{
 
    "Ctrl+_ to close next unimpared tag
-   Plug  'vim-scripts/closetag.vim' , {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} 
+   call dein#add( 'vim-scripts/closetag.vim' , {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
 
  "}}}
  " MatchTagAlways {{{
 
-   Plug  'Valloric/MatchTagAlways' , { 'for':['html', 'php','xhtml','xml','blade']} 
+   call dein#add( 'Valloric/MatchTagAlways' , {'on_if': 0, 'on_ft':['html', 'php','xhtml','xml','blade']} )
    let g:mta_filetypes = {
        \ 'html' : 1,
        \ 'xhtml' : 1,
@@ -2068,7 +2052,7 @@ let g:loaded_matchparen=1
 
  " vim-ragtag {{{
 
-  Plug  'tpope/vim-ragtag', {'for':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} 
+  call dein#add( 'tpope/vim-ragtag', {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
   let g:ragtag_global_maps = 1
 
  "}}} _vim-ragtag
@@ -2076,17 +2060,17 @@ let g:loaded_matchparen=1
  " Compilers
  " vimproc.vim {{{
 
-   Plug  'Shougo/vimproc.vim', {'do': '/usr/bin/make'} 
+   call dein#add( 'Shougo/vimproc.vim', {'build': '/usr/bin/make'} )
 
  "}}} _vimproc.vim
  " vim-dispatch {{{
 
-   Plug  'tpope/vim-dispatch' 
+   call dein#add( 'tpope/vim-dispatch' )
 
  "}}} _vim-dispatch
  " neomake {{{
 
-   Plug  'benekastah/neomake', {'on': ['Neomake']} 
+   call dein#add( 'benekastah/neomake', {'on_cmd': ['Neomake']} )
 
    " autocmd! BufWritePost * Neomake
    " let g:neomake_airline = 0
@@ -2097,12 +2081,12 @@ let g:loaded_matchparen=1
  "}}} _neomake
  " vim-accio {{{
 
-   Plug  'pgdouyon/vim-accio', {'on': ['Accio']} 
+   call dein#add( 'pgdouyon/vim-accio', {'on_cmd': ['Accio']} )
 
  "}}} _vim-accio
  " syntastic {{{
 
- Plug  'scrooloose/syntastic', {'on': ['SyntasticCheck']} 
+ call dein#add( 'scrooloose/syntastic', {'on_cmd': ['SyntasticCheck']} )
 
    let g:syntastic_scala_checkers=['']
    let g:syntastic_always_populate_loc_list = 1
@@ -2113,12 +2097,12 @@ let g:loaded_matchparen=1
  "}}} _syntastic
  " vim-test {{{
 
-   Plug  'janko-m/vim-test', {'on': [ 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' ]} 
+   call dein#add( 'janko-m/vim-test', {'on_cmd': [ 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' ]} )
 
  "}}} _vim-test
 
  " vim-fetch {{{
-   Plug  'kopischke/vim-fetch'               "Fixes how vim handles FN(LN:CN
+   call dein#add( 'kopischke/vim-fetch' )              "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
 
  "}}}
@@ -2128,12 +2112,12 @@ let g:loaded_matchparen=1
 
  " xptemplate {{{
 
-   Plug  'drmingdrmer/xptemplate'
-         "\ , {
-         "\ 'if': 'has("nvim")',
-         "\ 'on_event': [ 'VimEnter'],
-         "\ 'on_if': 'has("nvim")'
-         "\ }
+   call dein#add( 'drmingdrmer/xptemplate',
+         \ {
+         \ 'if': 'has("nvim")',
+         \ 'on_event': [ 'VimEnter'],
+         \ 'on_if': 'has("nvim")'
+         \ })
    if has('nvim')
      set runtimepath+=/Volumes/Home/.config/nvim/xpt-personal
      let g:xptemplate_key = '<c-\>'
@@ -2141,7 +2125,7 @@ let g:loaded_matchparen=1
      let g:xptemplate_nav_prev = '<C-k>'
    endif
 
-   "Plug  'drmingdrmer/xptemplate', { 'on_func': ['XPTemplateStart', 'XPTemplatePreWrap'] }
+   "call dein#add( 'drmingdrmer/xptemplate', { 'on_func': ['XPTemplateStart', 'XPTemplatePreWrap'] })
    "inoremap  <C-\>           <C-R>=XPTemplateStart(0,{'k':'<C-\++'})<CR>
    "inoremap  <C-R><C-\>      <C-R>=XPTemplateStart(0,{'k':'<C-r++<C-\++','forcePum':1})<CR>
    "inoremap  <C-R><C-R><C-\> <C-R>=XPTemplateStart(0,{'k':'<C-r++<C-r++<C-\++','popupOnly':1})<CR>
@@ -2152,10 +2136,10 @@ let g:loaded_matchparen=1
  " UltiSnips {{{
 
    "Don't lazy load using go to inser mode as this makes vim very slow
-   Plug  'SirVer/ultisnips' ", {
+   call dein#add( 'SirVer/ultisnips') ", {
         "\ 'lazy': 1,
-        "\ 'on': [ ['i', '<c-cr>'], ['i', '<c-cr>'] ],
-        "\ 'on': ['UltiSnipsEdit'],
+        "\ 'on_map': [ ['i', '<c-cr>'], ['i', '<c-cr>'] ],
+        "\ 'on_cmd': ['UltiSnipsEdit'],
         "\ 'hook_post_source': 'call UltiSnips#FileTypeChanged()'
         "\ })
    "au VimEnter * au! UltiSnipsFileType
@@ -2179,8 +2163,8 @@ let g:loaded_matchparen=1
  "}}}
  " vim-snippets {{{
 
-   "Plug  'honza/vim-snippets', {'on_source': ['ultisnips']} 
-   Plug  'honza/vim-snippets' 
+   "call dein#add( 'honza/vim-snippets', {'on_source': ['ultisnips']} )
+   call dein#add( 'honza/vim-snippets' )
 
  "}}} _vim-snippets
 
@@ -2192,20 +2176,19 @@ let g:loaded_matchparen=1
  "deoplete
  " deoplete.nvim {{{
 
- Plug  'Shougo/deoplete.nvim'
- "XXXXX
-       "\, {
-       "\ 'on_event': ['InsertEnter', 'VimEnter'],
-       "\ 'on_if': 'has("nvim")' ,
-       "\ 'hook_post_source' :
-       "\ "
-       "\        call deoplete#custom#set('member', 'file', 9999)
-       "\     |  call deoplete#custom#set('member', 'rank', 9998)
-       "\     |  call deoplete#custom#set('buffer', 'rank', 9997)
-       "\     |  call deoplete#custom#set('ultisnips', 'rank', 9996)
-       "\     |  call deoplete#custom#set('omni', 'rank', 9995)
-       "\ "
-       "\ }
+ call dein#add( 'Shougo/deoplete.nvim',
+       \ {
+       \ 'on_event': ['InsertEnter', 'VimEnter'],
+       \ 'on_if': 'has("nvim")' ,
+       \ 'hook_post_source' :
+       \ "
+       \        call deoplete#custom#set('member', 'file', 9999)
+       \     |  call deoplete#custom#set('member', 'rank', 9998)
+       \     |  call deoplete#custom#set('buffer', 'rank', 9997)
+       \     |  call deoplete#custom#set('ultisnips', 'rank', 9996)
+       \     |  call deoplete#custom#set('omni', 'rank', 9995)
+       \ "
+       \ })
        "\    call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
        "\  | call deoplete#custom#set('_', 'sorters', ['sorter_word'])
 
@@ -2243,45 +2226,36 @@ let g:loaded_matchparen=1
  "}}} _deoplete.nvim
  " neoinclude.vim {{{
 
-   Plug  'Shougo/neoinclude.vim' 
-	 "XXXXX
-				 "\, { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' }
+   call dein#add( 'Shougo/neoinclude.vim' , { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
 
  "}}} _neoinclude.vim
  " neco-syntax {{{
 
   "Slows down PHP files so much
-   "Plug  'Shougo/neco-syntax' 
+   "call dein#add( 'Shougo/neco-syntax' )
 
  "}}} _neco-syntax
  " neco-vim {{{
 
-   Plug  'Shougo/neco-vim' 
-	 "XXXXX
-				 ", { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' }
+   call dein#add( 'Shougo/neco-vim' , { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
 
  "}}} _neco-vim
  " echodoc.vim {{{
 
-   Plug  'Shougo/echodoc.vim'
-	 "XXXXX
-	 ", { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' }
+   call dein#add( 'Shougo/echodoc.vim', { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
 
  "}}} _echodoc.vim
  " neco-look {{{
- Plug 'ujihisa/neco-look'
- "XXXXX
- ", { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' }
+ call dein#add('ujihisa/neco-look', { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
  "}}} _neco-look
 
 
  " YouCompleteMe {{{
-   Plug 'Valloric/YouCompleteMe',
+   call dein#add('Valloric/YouCompleteMe',
          \ {
-         \ 'do': '~/.config/nvim/dein/repos/github.com/Valloric/YouCompleteMe/install.py --clang-completer --gocode-completer --omnisharp-completer',
-         \ }
-	 "XXXXX
-         "\ 'on_event': 'VimEnter', 'on_if': '!has("nvim")'
+         \ 'build': '~/.config/nvim/dein/repos/github.com/Valloric/YouCompleteMe/install.py --clang-completer --gocode-completer --omnisharp-completer',
+         \ 'on_event': 'VimEnter', 'on_if': '!has("nvim")'
+         \ })
 
    " make YCM compatible with UltiSnips (using supertab)
    let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
@@ -2294,22 +2268,21 @@ let g:loaded_matchparen=1
  " Command line
  " ambicmd {{{
 
- Plug 'thinca/vim-ambicmd', {'on': []}
+ "XXXXX
+ call dein#add( 'thinca/vim-ambicmd', {'on': []} )
 
  "Prevent ambicmd original mapping
  let g:vim_ambicmd_mapped = 1
 
- cnoremap ‰ <CR>
- cnoremap <c-cr> <CR>
+ "cnoremap <c-cr> <CR>
  function! MapAmbiCMD()
-   call plug#load('vim-ambicmd')
+   call dein#source('vim-ambicmd')
    cnoremap <expr> <Space> ambicmd#expand("\<Space>")
-   cnoremap <expr> <CR>    ambicmd#expand("\<CR>")
+   cnoremap <expr> <c-CR>    ambicmd#expand("\<CR>")
    call feedkeys(':', 'n')
    nnoremap ; :
  endfunction
- nnoremap <silent>; :call MapAmbiCMD()<cr>
-
+ nnoremap <silent> ; :call MapAmbiCMD()<cr>
 
 "}}}
 
@@ -2320,7 +2293,7 @@ let g:loaded_matchparen=1
 
  " operator-usr {{{
 
-   Plug  'kana/vim-operator-user' 
+   call dein#add( 'kana/vim-operator-user' )
 
    nmap <leader>oal  <Plug>(operator-align-left)
    nmap <leader>oar  <Plug>(operator-align-right)
@@ -2331,7 +2304,7 @@ let g:loaded_matchparen=1
 
  " operator-camelize {{{
 
-   Plug  'tyru/operator-camelize.vim' 
+   call dein#add( 'tyru/operator-camelize.vim' )
    nmap <leader>ou <Plug>(operator-camelize)
    nmap <leader>oU <Plug>(operator-decamelize)
 
@@ -2340,7 +2313,7 @@ let g:loaded_matchparen=1
 
  " operator-blockwise {{{
 
-   Plug  'osyo-manga/vim-operator-blockwise', {'on': ['<Plug>(operator-blockwise-']} 
+   call dein#add( 'osyo-manga/vim-operator-blockwise', {'on_map': ['<Plug>(operator-blockwise-']} )
    nmap <leader>oY <Plug>(operator-blockwise-yank-head)
    nmap <leader>oD <Plug>(operator-blockwise-delete-head)
    nmap <leader>oC <Plug>(operator-blockwise-change-head)
@@ -2350,7 +2323,7 @@ let g:loaded_matchparen=1
 
  " operator-jerk {{{
 
-   Plug  'machakann/vim-operator-jerk' 
+   call dein#add( 'machakann/vim-operator-jerk' )
    nmap <leader>o>  <Plug>(operator-jerk-forward)
    nmap <leader>o>> <Plug>(operator-jerk-forward-partial)
    nmap <leader>o<  <Plug>(operator-jerk-backward)
@@ -2363,10 +2336,10 @@ let g:loaded_matchparen=1
  " ----------------------------------------------------------------------------
  " text-objects {{{
  " ----------------------------------------------------------------------------
- Plug  'jeetsukumaran/vim-indentwise' 
+ call dein#add( 'jeetsukumaran/vim-indentwise' )
 
  " vim-swap {{{
-   Plug  'machakann/vim-swap', {'on': ['<Plug>(swap-'] } 
+   call dein#add( 'machakann/vim-swap', {'on_map': ['<Plug>(swap-'] } )
    let g:swap_no_default_key_mappings = 1
    nmap g<   <Plug>(swap-prev)
    nmap g>   <Plug>(swap-next)
@@ -2375,7 +2348,7 @@ let g:loaded_matchparen=1
  " _vim-swap }}}
  " argumentative {{{
 
-   Plug  'PeterRincker/vim-argumentative', {'on': ['<Plug>Argumentative_']} 
+   call dein#add( 'PeterRincker/vim-argumentative', {'on_map': ['<Plug>Argumentative_']} )
 
    "Move and manipultae arguments of a function
    nmap [; <Plug>Argumentative_Prev
@@ -2394,7 +2367,7 @@ let g:loaded_matchparen=1
 
  "}}}
  " argwrap {{{
-   Plug  'FooSoft/vim-argwrap', {'on': ['ArgWrap']} 
+   call dein#add( 'FooSoft/vim-argwrap', {'on_cmd': ['ArgWrap']} )
 
    nnoremap <silent> g;w :ArgWrap<CR>
    let g:argwrap_padded_braces = '[{('
@@ -2403,9 +2376,10 @@ let g:loaded_matchparen=1
  "}}}
  " sideways {{{
 
-   Plug  'AndrewRadev/sideways.vim',
-                           \ {'on': ['SidewaysLeft', 'SidewaysRight',
+   call dein#add( 'AndrewRadev/sideways.vim',
+                           \ {'on_cmd': ['SidewaysLeft', 'SidewaysRight',
                            \ 'SidewaysJumpLeft', 'SidewaysJumpRight']}
+                           \)
 
    nnoremap s;k :SidewaysJumpRight<cr>
    nnoremap s;j :SidewaysJumpLeft<cr>
@@ -2421,7 +2395,7 @@ let g:loaded_matchparen=1
  "}}}
  " vim-after-textobj {{{
 
-   Plug  'junegunn/vim-after-object' 
+   call dein#add( 'junegunn/vim-after-object' )
    " autocmd VimEnter * call after_object#enable('=', ':', '-', '#', ' ')
    " ]= and [= instead of a= and aa=
    autocmd VimEnter * call after_object#enable([']', '['], '=', ':', '-', '#', ' ', '>', '<')
@@ -2430,7 +2404,7 @@ let g:loaded_matchparen=1
  "}}}
  " targets.vim {{{
 
-  Plug  'wellle/targets.vim' 
+  call dein#add( 'wellle/targets.vim' )
   let g:targets_pairs = '()b {}b []b <>b'
 
   "for c
@@ -2460,17 +2434,17 @@ let g:loaded_matchparen=1
 
  " CamelCaseMotion {{{
 
-   Plug  'bkad/CamelCaseMotion' 
+   call dein#add( 'bkad/CamelCaseMotion' )
 
  "}}} _CamelCaseMotion
 
-  Plug  'kana/vim-textobj-user' 
+  call dein#add( 'kana/vim-textobj-user' )
   " let g:textobj_blockwise_enable_default_key_mapping =0
   " Plug 'kana/vim-niceblock'
 
   " vim-textobj-line does this too :)
   " Plug 'rhysd/vim-textobj-continuous-line'                "iv, av          for continuous line
-  Plug  'reedes/vim-textobj-sentence'             "is, as, , (,   For real english sentences
+  call dein#add( 'reedes/vim-textobj-sentence' )            "is, as, ), (,   For real english sentences
                                                                              "also adds g) and g( for
                                                                              "sentence navigation
   " vim-textobj-function {{{
@@ -2519,12 +2493,12 @@ let g:loaded_matchparen=1
   "}}}
 
   "Don't try to lazyload this (Dein lazyloaded delimited :) )
-  Plug  'osyo-manga/vim-textobj-blockwise'  "<c-v>iw, cIw    for block selection
+  call dein#add( 'osyo-manga/vim-textobj-blockwise' ) "<c-v>iw, cIw    for block selection
 
   " vim-textobj-delimited {{{
 
     "id, ad, iD, aD   for Delimiters takes numbers d2id
-    Plug  'machakann/vim-textobj-delimited', {'on': ['<Plug>(textobj-delimited-']} 
+    call dein#add( 'machakann/vim-textobj-delimited', {'on_map': ['<Plug>(textobj-delimited-']} )
     Map vo id <Plug>(textobj-delimited-forward-i)
     Map vo id <Plug>(textobj-delimited-forward-i)
     Map vo ad <Plug>(textobj-delimited-forward-a)
@@ -2537,7 +2511,7 @@ let g:loaded_matchparen=1
   " vim-textobj-pastedtext {{{
 
     "gb              for pasted text
-    Plug  'saaguero/vim-textobj-pastedtext', {'on': ['<Plug>(textobj-pastedtext-text)']} 
+    call dein#add( 'saaguero/vim-textobj-pastedtext', {'on_map': ['<Plug>(textobj-pastedtext-text)']} )
     Map vo gb <Plug>(textobj-pastedtext-text)
 
   "}}} _vim-textobj-pastedtext
@@ -2613,7 +2587,7 @@ let g:loaded_matchparen=1
   " vim-textobj-lastpat {{{
 
     "i/, a/, i?, a?  for Searched pattern
-    Plug  'kana/vim-textobj-lastpat' , {'on': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']} 
+    call dein#add( 'kana/vim-textobj-lastpat' , {'on_map': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']} )
     Map vo i/ <Plug>(textobj-lastpat-n)
     Map vo i? <Plug>(textobj-lastpat-N)
 
@@ -2630,7 +2604,7 @@ let g:loaded_matchparen=1
   " vim-textobj-xml {{{
 
     "ixa, axa        for XML attributes
-    Plug  'akiyan/vim-textobj-xml-attribute', {'on': ['<Plug>(textobj-xmlattribute-']} 
+    call dein#add( 'akiyan/vim-textobj-xml-attribute', {'on_map': ['<Plug>(textobj-xmlattribute-']} )
 
     let g:textobj_xmlattribute_no_default_key_mappings=1
     Map vo ax <Plug>(textobj-xmlattribute-xmlattribute)
@@ -2641,7 +2615,7 @@ let g:loaded_matchparen=1
   " vim-textobj-path {{{
 
     "i|, a|, i\, a\          for Path
-    Plug  'paulhybryant/vim-textobj-path', {'on': ['<Plug>(textobj-path-']} 
+    call dein#add( 'paulhybryant/vim-textobj-path', {'on_map': ['<Plug>(textobj-path-']} )
 
     let g:textobj_path_no_default_key_mappings =1
 
@@ -2656,7 +2630,7 @@ let g:loaded_matchparen=1
     "igda, agda,      or dates auto
     " igdd, igdf, igdt, igdz  means
     " date, full, time, timerzone
-    Plug  'kana/vim-textobj-datetime', {'on': ['<Plug>(textobj-datetime-']} 
+    call dein#add( 'kana/vim-textobj-datetime', {'on_map': ['<Plug>(textobj-datetime-']} )
 
     let g:textobj_datetime_no_default_key_mappings=1
     Map vo agda <Plug>(textobj-datetime-auto)
@@ -2693,7 +2667,7 @@ let g:loaded_matchparen=1
   "}}}
   " vim-textobj-keyvalue {{{
 
-    Plug  'vimtaku/vim-textobj-keyvalue', {'on': ['<Plug>(textobj-key-', '<Plug>(textobj-value-']} 
+    call dein#add( 'vimtaku/vim-textobj-keyvalue', {'on_map': ['<Plug>(textobj-key-', '<Plug>(textobj-value-']} )
 
     let g:textobj_key_no_default_key_mappings=1
     Map vo ak  <Plug>(textobj-key-a)
@@ -2731,12 +2705,12 @@ let g:loaded_matchparen=1
 
  " File
  " denite.vim{{{
-   Plug  'Shougo/denite.nvim' 
+   call dein#add( 'Shougo/denite.nvim' )
  " }}} _dnite.vim
 
  " neomru.vim {{{
 
-   Plug  'Shougo/neomru.vim' 
+   call dein#add( 'Shougo/neomru.vim' )
    "call unite#custom#source(  'neomru/file', 'matchers',  ['matcher_project_files', 'matcher_fuzzy'])
    "nnoremap <silent> <leader>pr :Unite neomru/file<cr>
    "nnoremap <silent> [unite]d \ :<C-u>Unite -buffer-name=files -default-action=lcd neomru/directory<CR>
@@ -2748,44 +2722,45 @@ let g:loaded_matchparen=1
 
  " unite.vim {{{
 
- Plug  'Shougo/unite.vim' ",
+ call dein#add( 'Shougo/unite.vim') ",
        \ {
-       \ 'on': ['Unite', 'UniteWithCursorWord'],
-       \ }
+       \ 'on_cmd': ['Unite', 'UniteWithCursorWord'],
+       \ 'on_func': ['unite#custom#', 'unite#custom#source'],
+       \ })
 
    "Plug 'Shougo/unite.vim'
-   Plug  'Shougo/unite-outline' 
-   Plug  'Shougo/unite-build' 
-   Plug  'Shougo/unite-help' 
-   Plug  'Shougo/unite-sudo' 
-   Plug  'Shougo/unite-session' 
+   call dein#add( 'Shougo/unite-outline' )
+   call dein#add( 'Shougo/unite-build' )
+   call dein#add( 'Shougo/unite-help' )
+   call dein#add( 'Shougo/unite-sudo' )
+   call dein#add( 'Shougo/unite-session' )
    "Plug 'Shougo/neoyank.vim'   "Breaks a lazyloading on some plugins like sort-motion
-   Plug  'tsukkee/unite-tag' 
+   call dein#add( 'tsukkee/unite-tag' )
    " unite-bookmark-file {{{
 
-   Plug  'liquidz/unite-bookmark-file' 
+   call dein#add( 'liquidz/unite-bookmark-file' )
    ":Unite bookmark/file
    let g:unite_bookmark_file = '~/.config/nvim/.cache/unite-bookmark-file'
 
    "}}} _unite-bookmark-file
-   Plug  'ujihisa/unite-colorscheme' 
-   Plug  'ujihisa/unite-locate' 
-   Plug  'sgur/unite-everything' 
-   Plug  'tacroe/unite-mark' 
-   Plug  'tacroe/unite-alias' 
-   Plug  'hakobe/unite-script' 
-   Plug  'soh335/unite-qflist' 
-   Plug  'thinca/vim-unite-history' 
-   Plug  'sgur/unite-qf' 
-   Plug  'oppara/vim-unite-cake' 
-   Plug  't9md/vim-unite-ack' 
-   Plug  'Sixeight/unite-grep' 
-   Plug  'kannokanno/unite-todo' 
-   Plug  'osyo-manga/unite-fold' 
-   Plug  'osyo-manga/unite-highlight' 
+   call dein#add( 'ujihisa/unite-colorscheme' )
+   call dein#add( 'ujihisa/unite-locate' )
+   call dein#add( 'sgur/unite-everything' )
+   call dein#add( 'tacroe/unite-mark' )
+   call dein#add( 'tacroe/unite-alias' )
+   call dein#add( 'hakobe/unite-script' )
+   call dein#add( 'soh335/unite-qflist' )
+   call dein#add( 'thinca/vim-unite-history' )
+   call dein#add( 'sgur/unite-qf' )
+   call dein#add( 'oppara/vim-unite-cake' )
+   call dein#add( 't9md/vim-unite-ack' )
+   call dein#add( 'Sixeight/unite-grep' )
+   call dein#add( 'kannokanno/unite-todo' )
+   call dein#add( 'osyo-manga/unite-fold' )
+   call dein#add( 'osyo-manga/unite-highlight' )
    " unite-fasd.vim {{{
 
-   Plug  'critiqjo/unite-fasd.vim' 
+   call dein#add( 'critiqjo/unite-fasd.vim' )
    " Path to fasd script (must be set)
    let g:unite_fasd#fasd_path = '/usr/local/bin/fasd'
    " Path to fasd cache -- defaults to '~/.fasd'
@@ -3059,16 +3034,16 @@ let g:loaded_matchparen=1
 
  "}}} _ctrlp.vim
  " FZF {{{
-   "Plug 'junegunn/fzf', { 'on_source': ['fzf.vim'] }
-   "Plug 'junegunn/fzf', { 'do': './install --all', 'merged': 0 }
+   "call dein#add('junegunn/fzf', { 'on_source': ['fzf.vim'] })
+   "call dein#add('junegunn/fzf', { 'build': './install --all', 'merged': 0 })
    "set rtp+=/usr/local/opt/fzf
-   "Plug '/usr/local/Cellar/fzf/HEAD', {
-         "\ 'on': ['FZF'],
+   "call dein#add('/usr/local/Cellar/fzf/HEAD', {
+         "\ 'on_cmd': ['FZF'],
          "\ 'on_func': ['fzf#run', 'fzf#vim']
-         "\ }
-   "Plug 'junegunn/fzf', {'do': 'brew reinstall --HEAD fzf','branch': 'd6a99c0391b3859c5db9a0072b366caaf3278f18',  'merged': 0 }
-   "Plug 'junegunn/fzf', {'do': '/usr/local/bin/brew reinstall --HEAD fzf',  'merged': 0 }
-   Plug 'junegunn/fzf', { 'do': '~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin', 'merged': 0 }
+         "\ })
+   "call dein#add('junegunn/fzf', {'build': 'brew reinstall --HEAD fzf','rev': 'd6a99c0391b3859c5db9a0072b366caaf3278f18',  'merged': 0 })
+   "call dein#add('junegunn/fzf', {'build': '/usr/local/bin/brew reinstall --HEAD fzf',  'merged': 0 })
+   call dein#add('junegunn/fzf', { 'build': '~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin', 'merged': 0 })
 
    "Fix fzf already running error
    "au TermClose *FZF* bw!
@@ -3085,22 +3060,23 @@ let g:loaded_matchparen=1
 
     let $FZF_DEFAULT_COMMAND='ag -l -g ""'
 
-    Plug  'junegunn/fzf.vim',
+    call dein#add( 'junegunn/fzf.vim',
           \ {
-          \   'on':
+          \   'on_map':
           \ [
           \   '<plug>(fzf-',
-          \   '<plug>(fzf-complete-word',
-          \   '<plug>(fzf-complete-path)',
-          \   '<plug>(fzf-complete-file-ag)',
-          \   '<plug>(fzf-complete-line)',
-          \   '<plug>(fzf-complete-buffer-line)',
-          \   '<plug>(fzf-complete-file)',
-          \   'Files', 'GitFiles', 'Buffers', 'Colors', 'Ag', 'Lines',
-          \   'BLines', 'Tags', 'BTags', 'Maps', 'Marks', 'Windows',
-          \   'Locate', 'History', 'Snippets',
-          \   'Commits', 'BCommits', 'Commands', 'Helptags']
-          \ }
+          \   ['i', '<plug>(fzf-complete-word)'],
+          \   ['i', '<plug>(fzf-complete-path)'],
+          \   ['i', '<plug>(fzf-complete-file-ag)'],
+          \   ['i', '<plug>(fzf-complete-line)'],
+          \   ['i', '<plug>(fzf-complete-buffer-line)'],
+          \   ['i', '<plug>(fzf-complete-file)']
+          \ ],
+          \   'on_cmd': ['Files', 'GitFiles', 'Buffers', 'Colors', 'Ag', 'Lines',
+          \               'BLines', 'Tags', 'BTags', 'Maps', 'Marks', 'Windows',
+          \               'Locate', 'History', 'History:', 'History/', 'Snippets',
+          \               'Commits', 'BCommits', 'Commands', 'Helptags']
+          \ })
 
    " [Buffers] Jump to the existing window if possible
    let g:fzf_buffers_jump = 1
@@ -3346,11 +3322,11 @@ endfunction
      let l:term_buffer_id = str2nr(matchstr(a:e, '^[ 0-9]*'))
      echomsg l:term_buffer_id
      let l:buffers_parent_tab = -1
-      for i in range(tabpagenr('$'))
-         if (index(tabpagebuflist(i + 1), l:term_buffer_id) >= 0)
+			for i in range(tabpagenr('$'))
+			   if (index(tabpagebuflist(i + 1), l:term_buffer_id) >= 0)
            let l:buffers_parent_tab = i + 1
          endif
-      endfor
+			endfor
       if (buffers_parent_tab >= 0)
         execute "tabnext " l:buffers_parent_tab
         execute bufwinnr(l:term_buffer_id) "wincmd w"
@@ -3369,22 +3345,22 @@ endfunction
 
  " }}}
  " fzfmru {{{
-  Plug 'tweekmonster/fzf-filemru', {'on': ['FilesMru', 'ProjectMru']}
+  call dein#add('tweekmonster/fzf-filemru', {'on_cmd': ['FilesMru', 'ProjectMru']})
   nnoremap <c-p><Space> :FilesMru --tiebreak=end<cr>
   nnoremap <c-p><c-u> :FilesMru --tiebreak=end<cr>
  "}}} _fzfmru
 
  " ranger.vim {{{
 
-   Plug  'francoiscabrol/ranger.vim' 
-   Plug  'rbgrouleff/bclose.vim' 
+   call dein#add( 'francoiscabrol/ranger.vim' )
+   call dein#add( 'rbgrouleff/bclose.vim' )
    let g:ranger_map_keys = 0
    nnoremap <leader>ar :call OpenRanger()<CR>
 
  "}}} _ranger.vim
  " vim-dirvish {{{
 
-   Plug  'justinmk/vim-dirvish'          " {-} file browser
+   call dein#add( 'justinmk/vim-dirvish' )         " {-} file browser
    ":'<,'>Shdo mv {} {}-copy.txt
     augroup my_dirvish_events
       autocmd!
@@ -3413,15 +3389,15 @@ endfunction
  "}}} _vim-dirvish
  " vim-vinegar {{{
 
-   Plug  'tpope/vim-vinegar' 
+   call dein#add( 'tpope/vim-vinegar' )
 
  "}}} _vim-vinegar
  " vimfiler.vim {{{
-       "\     'on': [['n', '<Plug>']],
- Plug  'Shougo/vimfiler.vim', {
+       "\     'on_map': [['n', '<Plug>']],
+ call dein#add( 'Shougo/vimfiler.vim', {
        \     'depends': 'unite.vim',
-       \     'on': ['VimFiler', 'VimFilerBufferDir', 'VimFilerCurrentDir']
-       \ }
+       \     'on_cmd': ['VimFiler', 'VimFilerBufferDir', 'VimFilerCurrentDir']
+       \ })
   "let g:loaded_netrw       = 1 "Disable Netrw
   "let g:loaded_netrwPlugin = 1 "Disable Netrw
   let g:vimfiler_as_default_explorer=1
@@ -3450,8 +3426,8 @@ endfunction
  "}}} _vimfiler.vim
  " NERDTree {{{
 
-   Plug  'scrooloose/nerdtree', {'on':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind', 'NERDTree'] } 
-   "Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'depends': 'nerdtree' }
+   call dein#add( 'scrooloose/nerdtree', {'on_cmd':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind', 'NERDTree'] } )
+   "call dein#add('tiagofumo/vim-nerdtree-syntax-highlight', { 'depends': 'nerdtree' })
    "Plug 'scrooloose/nerdtree'
   "Plug 'jistr/vim-nerdtree-tabs'
 
@@ -3505,19 +3481,19 @@ endfunction
 
  " vim-projectionist {{{
 
-  Plug  'tpope/vim-projectionist', {'on': ['E', 'S', 'V', 'T', 'A', 'AS', 'AV', 'AT']} 
+  call dein#add( 'tpope/vim-projectionist', {'on_cmd': ['E', 'S', 'V', 'T', 'A', 'AS', 'AV', 'AT']} )
 
  "}}} _vim-projectionist
  " vim-dotenv {{{
 
-   Plug  'tpope/vim-dotenv', {'on':['Dotenv']} 
+   call dein#add( 'tpope/vim-dotenv', {'on_cmd':['Dotenv']} )
 
  "}}} _vim-dotenv
 
  " Content
  " vim-interestingwords {{{
 
-Plug 'lfv89/vim-interestingwords'
+call dein#add('lfv89/vim-interestingwords')
 map <leader>in <Plug>InterestingWords
 let g:interestingWordsDefaultMappings=1
 
@@ -3525,13 +3501,13 @@ let g:interestingWordsDefaultMappings=1
 
  " vim-stay {{{
 
-Plug 'kopischke/vim-stay'
+call dein#add('kopischke/vim-stay')
 
  "}}} _vim-stay
 
  " vim-hilow {{{
 
-Plug 'olambo/vim-hilow'
+call dein#add('olambo/vim-hilow')
 let g:hilow_keys = 0
 nnoremap <silent> gj :call hilow#down(0,11)<cr>
 nnoremap <silent> gk :call hilow#up(0,11)<cr>
@@ -3540,9 +3516,7 @@ nnoremap <silent> gk :call hilow#up(0,11)<cr>
  " nvim-miniyank {{{
 
 
-Plug 'bfredl/nvim-miniyank' 
-"XXXXX
-", {'if': 'has("nvim")'}
+call dein#add('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
 
  "}}} _nvim-miniyank
 
@@ -3560,14 +3534,14 @@ Plug 'bfredl/nvim-miniyank'
 
  " vim-pseudocl {{{
 
-   Plug  'junegunn/vim-pseudocl'  "Required by oblique & fnr
+   call dein#add( 'junegunn/vim-pseudocl' ) "Required by oblique & fnr
 
  "}}} _vim-pseudocl
 
  " incsearch.vim {{{
 
- Plug  'haya14busa/incsearch.vim' 
- Plug  'haya14busa/incsearch-fuzzy.vim' 
+ call dein#add( 'haya14busa/incsearch.vim' )
+ call dein#add( 'haya14busa/incsearch-fuzzy.vim' )
  "Many more options Look at HELP
  "map /  <Plug>(incsearch-forward)
  "map ?  <Plug>(incsearch-backward)
@@ -3578,7 +3552,7 @@ Plug 'bfredl/nvim-miniyank'
  let g:oblique#enable_cmap=0
  "let g:oblique#clear_highlight=0
 
- Plug  'junegunn/vim-oblique', {'on': [ '<Plug>(Oblique-' ]} 
+ call dein#add( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
 
 
  Map nx  #  <Plug>(Oblique-#)
@@ -3606,7 +3580,7 @@ Plug 'bfredl/nvim-miniyank'
 
  "}}}
  "scalpel {{{
-   Plug 'wincent/scalpel', {'on': ['Scalpel', '<Plug>(Scalpel)']}
+   call dein#add('wincent/scalpel', {'on_cmd': ['Scalpel'], 'on_map': ['<Plug>(Scalpel)']})
    nmap  g;r <Plug>(Scalpel)
  "}}} _scalpel
 
@@ -3629,21 +3603,21 @@ Plug 'bfredl/nvim-miniyank'
  "}}} _IndexedSearch
  " vim-anzu {{{
 
- Plug  'osyo-manga/vim-anzu', {'on': ['AnzuUpdateSearchStatusOutput']} 
+ call dein#add( 'osyo-manga/vim-anzu', {'on_cmd': ['AnzuUpdateSearchStatusOutput']} )
  "Let anzu display numbers only. The search is already displayed by Oblique
  let g:anzu_status_format = ' (%i/%l)'
 
  "}}} _vim-anzu
  " vim-fuzzysearch {{{
 
-   Plug  'ggVGc/vim-fuzzysearch', {'on': ['FuzzySearch']} 
+   call dein#add( 'ggVGc/vim-fuzzysearch', {'on_cmd': ['FuzzySearch']} )
    nnoremap g\f :FuzzySearch<cr>
 
 
  "}}} _vim-fuzzysearch
  " grepper {{{
 
- Plug  'mhinz/vim-grepper', {'on': [ 'Grepper', '<plug>(Grepper' ]} 
+ call dein#add( 'mhinz/vim-grepper', {'on_cmd': [ 'Grepper'], 'on_map': [ '<plug>(Grepper' ]} )
 
    xmap g\g <plug>(Grepper)
    cmap <c-g>n <plug>(GrepperNext)
@@ -3660,7 +3634,7 @@ Plug 'bfredl/nvim-miniyank'
 
  "}}}
  "vim-side-search{{{
- Plug 'ddrscott/vim-side-search', {'on':['SideSearch']}
+ call dein#add('ddrscott/vim-side-search', {'on_cmd':['SideSearch']})
  " How should we execute the search?
  " --heading and --stats are required!
  let g:side_search_prg = 'ag --word-regexp'
@@ -3684,9 +3658,10 @@ Plug 'bfredl/nvim-miniyank'
 
  " Clever-f {{{
 
- Plug  'rhysd/clever-f.vim' , {
-       \ 'on': [ '<Plug>(clever-f-' ],
-       \ }
+ call dein#add( 'rhysd/clever-f.vim' , {
+       \ 'on_map': [ '<Plug>(clever-f-' ],
+       \ 'on_func': [ 'clever_f#reset' ]
+       \ })
 
    Map nox F     <Plug>(clever-f-F)
    Map nox T     <Plug>(clever-f-T)
@@ -3699,7 +3674,7 @@ Plug 'bfredl/nvim-miniyank'
  "}}}
  " vim-easymotion {{{
 
-   Plug  'Lokaltog/vim-easymotion', {'on': ['<Plug>(easymotion-']} 
+   call dein#add( 'Lokaltog/vim-easymotion', {'on_map': ['<Plug>(easymotion-']} )
 
    map s         <Plug>(easymotion-prefix)
    map s;        <Plug>(easymotion-s2)
@@ -3873,13 +3848,13 @@ Plug 'bfredl/nvim-miniyank'
  " vim-skipit {{{
 
    "use <c-l>l to skip ahead forward in insert mode
-   Plug  'habamax/vim-skipit', {
-         \ 'on':
+   call dein#add( 'habamax/vim-skipit', {
+         \ 'on_map':
          \ [
-         \   '<Plug>SkipItForward',  '<Plug>SkipAllForward',
-         \   '<Plug>SkipItBack',     '<Plug>SkipAllBack'
+         \   ['i' , '<Plug>SkipItForward'], ['i' , '<Plug>SkipAllForward'],
+         \   ['i' , '<Plug>SkipItBack'],    ['i' , '<Plug>SkipAllBack']
          \ ]
-         \ }
+         \ })
    imap <C-s>j <Plug>SkipItForward
    imap <C-s>l <Plug>SkipAllForward
    imap <C-s>k <Plug>SkipItBack
@@ -3888,7 +3863,7 @@ Plug 'bfredl/nvim-miniyank'
  "}}} _vim-skipit
  " patternjump {{{
 
-   Plug  'machakann/vim-patternjump', {'on': ['<Plug>(patternjump-']} 
+   call dein#add( 'machakann/vim-patternjump', {'on_map': ['<Plug>(patternjump-']} )
    let g:patternjump_no_default_key_mappings = 1
    map <c-s>l <Plug>(patternjump-forward)
    map <c-s>h <Plug>(patternjump-backward)
@@ -3921,13 +3896,13 @@ Plug 'bfredl/nvim-miniyank'
  "}}}
  " TaskList.vim {{{
 
-   Plug  'vim-scripts/TaskList.vim', {'on':  ['TaskList']} 
+   call dein#add( 'vim-scripts/TaskList.vim', {'on_cmd':  ['TaskList']} )
    nnoremap <leader>tl :TaskList<cr>
 
  "}}} _TaskList.vim
  " Tagbar {{{
 
-   Plug  'majutsushi/tagbar', {'on':  [ 'Tagbar', 'TagbarToggle', ] } 
+   call dein#add( 'majutsushi/tagbar', {'on_cmd':  [ 'Tagbar', 'TagbarToggle', ] } )
    nnoremap <silent> <leader>tb :TagbarToggle<CR>
 
 
@@ -3945,7 +3920,7 @@ Plug 'bfredl/nvim-miniyank'
  " History
  " undotree {{{
 
-   Plug  'mbbill/undotree' , {'on': ['UndotreeShow', 'UndotreeFocus', 'UndotreeToggle']} 
+   call dein#add( 'mbbill/undotree' , {'on_cmd': ['UndotreeShow', 'UndotreeFocus', 'UndotreeToggle']} )
 
    "let g:undotree_WindowLayout = 2
    nnoremap <leader>ut :UndotreeToggle<cr>
@@ -3954,13 +3929,13 @@ Plug 'bfredl/nvim-miniyank'
 
  "}}} _undotree
  " Gundo.vim {{{
-   Plug 'sjl/gundo.vim'
+   call dein#add('sjl/gundo.vim')
  " }}} _gundo.vom
 
  " Buffers
  " vim-bufsurf {{{
 
- Plug  'ton/vim-bufsurf' ", {'on': ['BufSurfBack', 'BufSurfForward', 'BufSurfList']} 
+ call dein#add( 'ton/vim-bufsurf') ", {'on_cmd': ['BufSurfBack', 'BufSurfForward', 'BufSurfList']} )
  nnoremap ]h :BufSurfForward<cr>
  nnoremap [h :BufSurfBack<cr>
  nnoremap coB :BufSurfList<cr>
@@ -3968,7 +3943,7 @@ Plug 'bfredl/nvim-miniyank'
  "}}} _vim-bufsurf
 
  " vim_drawer {{{
-   Plug 'samuelsimoes/vim-drawer', {'on': ['VimDrawer']} 
+   call dein#add('samuelsimoes/vim-drawer', {'on_cmd': ['VimDrawer']} )
    let g:vim_drawer_spaces = [
          \["model", "app"],
          \["controller", "Http\/Controllers"],
@@ -3979,7 +3954,7 @@ Plug 'bfredl/nvim-miniyank'
    nnoremap <C-w><Space> :VimDrawer<CR>
  "}}} _vim-drawer
  "{{{ vim-ctrlspace
- Plug  'szw/vim-ctrlspace', {'on': ['CtrlSpace']} 
+ call dein#add( 'szw/vim-ctrlspace', {'on_cmd': ['CtrlSpace']} )
 
    if executable("ag")
      let g:ctrlspace_glob_command = 'ag -l --nocolor -g ""'
@@ -3998,7 +3973,7 @@ Plug 'bfredl/nvim-miniyank'
  "}}} _vim-ctrlspace
  " zoomwintab.vim {{{
 
-   Plug  'troydm/zoomwintab.vim', {'on': ['ZoomWinTabToggle']} 
+   call dein#add( 'troydm/zoomwintab.vim', {'on_cmd': ['ZoomWinTabToggle']} )
 
    let g:zoomwintab_remap = 0
    " zoom with <META-O> in any mode
@@ -4011,9 +3986,7 @@ Plug 'bfredl/nvim-miniyank'
  " Finder
  " gtfo {{{
 
-   Plug  'justinmk/vim-gtfo'
-	 "XXXXX
-	 ", {'on': ['gof', 'got', 'goF', 'goT']} 
+   call dein#add( 'justinmk/vim-gtfo', {'on_map': ['gof', 'got', 'goF', 'goT']} )
    let g:gtfo#terminals = { 'mac' : 'iterm' }
    nnoremap <silent> gof :<c-u>call gtfo#open#file("%:p")<cr>
    nnoremap <silent> got :<c-u>call gtfo#open#term("%:p:h", "")<cr>
@@ -4025,9 +3998,9 @@ Plug 'bfredl/nvim-miniyank'
  " tmux
  " tmux-navigator {{{
 
-     Plug  'christoomey/vim-tmux-navigator' 
-		 "XXXXX
-           "\, {'on_event': 'VimEnter', 'on_if': "exists('$TMUX'"}
+     call dein#add( 'christoomey/vim-tmux-navigator' ,
+           \ {'on_event': 'VimEnter', 'on_if': "exists('$TMUX')"}
+           \ )
 
      if exists('$TMUX')
        let g:tmux_navigator_no_mappings = 1
@@ -4042,17 +4015,17 @@ Plug 'bfredl/nvim-miniyank'
 
  " terminal
  " nvimux {{{
-    Plug 'hkupty/nvimux'
-		"XXXXX
-          "\, {'on_event': 'VimEnter', 'on_if': 'has("nvim")'})
+    call dein#add('hkupty/nvimux',
+          \ {'on_event': 'VimEnter', 'on_if': 'has("nvim")'})
     let g:nvimux_prefix='<c-cr>'
-    "Plug 'hkupty/nvimux'
+    "call dein#add('hkupty/nvimux')
  "}}} _nvimux
  " neoterm {{{
 
- Plug  'kassio/neoterm',
+ call dein#add( 'kassio/neoterm',
        \ {
-       \ 'on':
+       \ 'on_func': [ 'neoterm#test#libs#add', 'neoterm#repl#set'],
+       \ 'on_cmd':
        \   [
        \     'T',
        \     'Tnew',
@@ -4069,6 +4042,7 @@ Plug 'bfredl/nvim-miniyank'
        \     'Ttoggle'
        \   ]
        \ }
+       \)
 
    let g:neoterm_clear_cmd = "clear; printf '=%.0s' {1..80}; clear"
    let g:neoterm_position = 'vertical'
@@ -4099,7 +4073,7 @@ Plug 'bfredl/nvim-miniyank'
 
  " FastFold {{{
 
-   Plug  'Konfekt/FastFold' 
+   call dein#add( 'Konfekt/FastFold' )
    "Update folds manually using zuz
    let g:fastfold_savehook = 0
 
@@ -4107,7 +4081,7 @@ Plug 'bfredl/nvim-miniyank'
 
  " vim-foldfocus {{{
 
-   Plug  'vasconcelloslf/vim-foldfocus', {'on_func': ['FoldFocus']} 
+   call dein#add( 'vasconcelloslf/vim-foldfocus', {'on_func': ['FoldFocus']} )
    nnoremap <leader>z<cr> :call FoldFocus('vnew')<CR>
    nnoremap <leader>zz<cr>  :call FoldFocus('e')<CR>
 
@@ -4115,7 +4089,7 @@ Plug 'bfredl/nvim-miniyank'
 
  " searchfold.vim {{{
 
-   Plug  'khalidchawtany/searchfold.vim' , {'on':  ['<Plug>SearchFold']} 
+   call dein#add( 'khalidchawtany/searchfold.vim' , {'on_map':  ['<Plug>SearchFold']} )
 
    " Search and THEN Fold the search term containig lines using <leader>z
    " or the the inverse using <leader>iz or restore original fold using <leader>Z
@@ -4128,8 +4102,8 @@ Plug 'bfredl/nvim-miniyank'
 
  " foldsearch {{{
 
-  Plug  'khalidchawtany/foldsearch',
-       \ { 'on': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe']} 
+  call dein#add( 'khalidchawtany/foldsearch',
+       \ { 'on_cmd': ['Fw', 'Fs', 'Fp', 'FS', 'Fl', 'Fc', 'Fi', 'Fd', 'Fe']} )
          " \ [
          " \ '<leader>fs', '<leader>fw', '<leader>fl', '<leader>fS',
          " \ '<leader>fi', '<leader>fd', '<leader>fe'
@@ -4145,27 +4119,27 @@ Plug 'bfredl/nvim-miniyank'
 
  " dbext.vim {{{
 
-   Plug  'vim-scripts/dbext.vim' 
+   call dein#add( 'vim-scripts/dbext.vim' )
    let g:dbext_default_profile_mysql_local = 'type=MYSQL:user=root:passwd=root:dbname=younesdb:extra=-t'
 
  "}}} _dbext.vim
 
  " pipe-mysql.vim {{{
-   Plug  'NLKNguyen/pipe-mysql.vim' 
+   call dein#add( 'NLKNguyen/pipe-mysql.vim' )
  "}}} _pipe-mysql.vim
 
  "}}}
  " ----------------------------------------------------------------------------
  " neovim-qt {{{
-   "Plug  'equalsraf/neovim-gui-shim' 
+   "call dein#add( 'equalsraf/neovim-gui-shim' )
  " }}}
  " ----------------------------------------------------------------------------
  " Nyaovim {{{
  " ----------------------------------------------------------------------------
  if exists('g:nyaovim_version')
-   Plug  'rhysd/nyaovim-popup-tooltip' 
-   Plug  'rhysd/nyaovim-mini-browser' 
-   Plug  'rhysd/nyaovim-markdown-preview' 
+   call dein#add( 'rhysd/nyaovim-popup-tooltip' )
+   call dein#add( 'rhysd/nyaovim-mini-browser' )
+   call dein#add( 'rhysd/nyaovim-markdown-preview' )
  endif
 "}}}
  " ----------------------------------------------------------------------------
@@ -4173,8 +4147,8 @@ Plug 'bfredl/nvim-miniyank'
  " ----------------------------------------------------------------------------
 
  " vim-startify {{{
-  Plug  'mhinz/vim-startify' 
-  let g:startify_disable_at_vimenter = 0
+  call dein#add( 'mhinz/vim-startify' )
+	let g:startify_disable_at_vimenter = 0
   nnoremap <F1> :Startify<cr>
   let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
   let g:startify_files_number = 5
@@ -4197,7 +4171,7 @@ Plug 'bfredl/nvim-miniyank'
 
  " goyo.vim {{{
 
-   Plug  'junegunn/goyo.vim',      { 'on': 'Goyo'} 
+   call dein#add( 'junegunn/goyo.vim',      { 'on_cmd': 'Goyo'} )
 
    autocmd! User GoyoEnter Limelight
    autocmd! User GoyoLeave Limelight!
@@ -4205,32 +4179,32 @@ Plug 'bfredl/nvim-miniyank'
  "}}} _goyo.vim
  " limelight.vim {{{
 
-   Plug  'junegunn/limelight.vim', { 'on': 'Limelight'} 
+   call dein#add( 'junegunn/limelight.vim', { 'on_cmd': 'Limelight'} )
    let g:limelight_conceal_guifg="#C2B294"
 
  "}}} _limelight.vim
  " vim-lambdify {{{
 
- "Plug  'calebsmith/vim-lambdify', {'for': ['javascript']} 
- Plug  'calebsmith/vim-lambdify', {'lazy': 1} 
+ "call dein#add( 'calebsmith/vim-lambdify', {'on_ft': ['javascript']} )
+ call dein#add( 'calebsmith/vim-lambdify', {'lazy': 1} )
 
  "}}} _vim-lambdify
  " vim-css-color {{{
 
-   "Plug  'ap/vim-css-color',            { 'for':['css','scss','sass','less','styl']} 
-   Plug  'ap/vim-css-color' 
+   "call dein#add( 'ap/vim-css-color',            { 'on_ft':['css','scss','sass','less','styl']} )
+   call dein#add( 'ap/vim-css-color' )
    au BufWinEnter *.vim call css_color#init('hex', '', 'vimHiGuiRgb,vimComment,vimLineComment,vimString')
    au BufWinEnter *.blade.php call css_color#init('css', 'extended', 'htmlString,htmlCommentPart,phpStringSingle')
 
  "}}} _vim-css-color
  "vim-stylus {{{
-  "Plug 'wavded/vim-stylus', {'for': 'stylus'}
-  Plug 'wavded/vim-stylus'
+  "call dein#add('wavded/vim-stylus', {'on_ft': 'stylus'})
+  call dein#add('wavded/vim-stylus')
   autocmd BufNewFile,BufRead *.styl setlocal filetype=stylus
  "}}}_vim-stylus
  " vim-better-whitespace {{{
 
-   Plug  'ntpeters/vim-better-whitespace' 
+   call dein#add( 'ntpeters/vim-better-whitespace' )
    let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'leaderGuide']
    autocmd FileType unite DisableWhitespace
    autocmd FileType vimfiler DisableWhitespace
@@ -4239,12 +4213,12 @@ Plug 'bfredl/nvim-miniyank'
 
  " vim-noscrollbar {{{
 
- Plug 'gcavallanti/vim-noscrollbar'
+ call dein#add('gcavallanti/vim-noscrollbar')
 
  "}}} _vim-noscrollbar
  " vim-indentLine {{{
 
-    Plug  'Yggdroot/indentLine', {'lazy': 1} 
+    call dein#add( 'Yggdroot/indentLine', {'lazy': 1} )
     let g:indentLine_char = ''
     " let g:indentLine_color_term=""
     " let g:indentLine_color_gui=""
@@ -4256,24 +4230,24 @@ Plug 'bfredl/nvim-miniyank'
  "}}}
  " vim-indent-guides {{{
 
- Plug 'nathanaelkane/vim-indent-guides', {'lazy' : 1}
+ call dein#add('nathanaelkane/vim-indent-guides', {'lazy' : 1})
 
  "}}} _vim-indent-guides
 
  " rainbow parentheses {{{
 
-   Plug  'junegunn/rainbow_parentheses.vim', {'on':  ['RainbowParentheses']} 
+   call dein#add( 'junegunn/rainbow_parentheses.vim', {'on_cmd':  ['RainbowParentheses']} )
    nnoremap <leader>xp :RainbowParentheses!!<CR>
 
  "}}}
-   Plug  'ryanoasis/vim-devicons' 
-   Plug  'reedes/vim-thematic' 
+   call dein#add( 'ryanoasis/vim-devicons' )
+   call dein#add( 'reedes/vim-thematic' )
 
 
  "Golden Ratio
  " golden-ratio {{{
 
-   Plug  'roman/golden-ratio' 
+   call dein#add( 'roman/golden-ratio' )
    nnoremap cog :<c-u>GoldenRatioToggle<cr>
 
  "}}} _golden-ratio
@@ -4285,19 +4259,19 @@ Plug 'bfredl/nvim-miniyank'
  "}}} _GoldenView.Vim
  " vim-eighties {{{
 
-   "Plug  'justincampbell/vim-eighties' 
+   "call dein#add( 'justincampbell/vim-eighties' )
 
  "}}} _vim-eighties
 
  " visual-split.vim {{{
 
-   Plug  'wellle/visual-split.vim'  ", {'on': ['VSResize', 'VSSplit', 'VSSplitAbove', 'VSSplitBelow']}
+   call dein#add( 'wellle/visual-split.vim' ) ", {'on': ['VSResize', 'VSSplit', 'VSSplitAbove', 'VSSplitBelow']}
 
  "}}} _visual-split.vim
 
    " Plug 'tpope/vim-flagship'
  " lightline {{{
-   Plug  'itchyny/lightline.vim' 
+   call dein#add( 'itchyny/lightline.vim' )
 
 
          "\   'fileformat': 'LightLineFileformat',
@@ -4357,8 +4331,8 @@ Plug 'bfredl/nvim-miniyank'
           "return fileformat
         endfunction
 
-   Plug  'shinchu/lightline-gruvbox.vim' 
-   Plug  'khalidchawtany/lightline-material.vim' 
+   call dein#add( 'shinchu/lightline-gruvbox.vim' )
+   call dein#add( 'khalidchawtany/lightline-material.vim' )
    "let g:lightline.colorscheme = 'gruvbox'
    "let g:lightline.colorscheme = 'wombat'
    let g:lightline.colorscheme = 'material'
@@ -4446,17 +4420,17 @@ Plug 'bfredl/nvim-miniyank'
    " Plug 'ap/vim-buftabline'
 
  "colorschemes
-   Plug  'mswift42/vim-themes' 
-   Plug  'tomasr/molokai' 
-   Plug 'kristijanhusak/vim-hybrid-material'
-	 Plug 'jdkanani/vim-material-theme'
-	 "Plug 'wutzara/vim-materialtheme'
-   Plug 'khalidchawtany/vim-materialtheme'
-   Plug 'joshdick/onedark.vim'
-   Plug  'KabbAmine/yowish.vim' 
-   Plug  'romainl/Apprentice' 
+   call dein#add( 'mswift42/vim-themes' )
+   call dein#add( 'tomasr/molokai' )
+   call dein#add('kristijanhusak/vim-hybrid-material')
+   call dein#add('jdkanani/vim-material-theme')
+   call dein#add('wutzara/vim-materialtheme')
+   call dein#add('khalidchawtany/vim-materialtheme')
+   call dein#add('joshdick/onedark.vim')
+   call dein#add( 'KabbAmine/yowish.vim' )
+   call dein#add( 'romainl/Apprentice' )
  " gruvbox {{{
-   Plug  'morhetz/gruvbox' 
+   call dein#add( 'morhetz/gruvbox' )
 
    let g:gruvbox_contrast_dark='medium'          "soft, medium, hard"
    let g:gruvbox_contrast_light='medium'         "soft, medium, hard"
@@ -4464,17 +4438,17 @@ Plug 'bfredl/nvim-miniyank'
  "}}}
  " vim-lucius {{{
 
-  Plug  'jonathanfilip/vim-lucius' 
+  call dein#add( 'jonathanfilip/vim-lucius' )
 
  "}}} _vim-lucius
  " vim-github-colorscheme {{{
 
-   Plug 'endel/vim-github-colorscheme'
+   call dein#add('endel/vim-github-colorscheme')
 
  "}}} _vim-github-colorscheme
  " neovim-colors-solarized-truecolor-only {{{
 
-   Plug  'frankier/neovim-colors-solarized-truecolor-only' 
+   call dein#add( 'frankier/neovim-colors-solarized-truecolor-only' )
 
  "}}} _neovim-colors-solarized-truecolor-only
 
@@ -4486,17 +4460,16 @@ Plug 'bfredl/nvim-miniyank'
  " vim-follow-my-lead {{{
 
    ",fml
-   Plug  'ktonga/vim-follow-my-lead', {'on': ['<Plug>(FollowMyLead)']} 
+   call dein#add( 'ktonga/vim-follow-my-lead', {'on_map': ['<Plug>(FollowMyLead)']} )
    nnoremap <leader>fml <Plug>(FollowMyLead)
    let g:fml_all_sources=1 "1 for all sources, 0(Default) for $MYVIMRC.
 
  "}}} _vim-follow-my-lead
  " vim-leader-guide {{{
-    "Plug 'hecal3/vim-leader-guide'
-    Plug 'khalidchawtany/vim-leader-guide'
+    "call dein#add('hecal3/vim-leader-guide')
+    call dein#add('khalidchawtany/vim-leader-guide')
 
-		"XXXXX
-    "call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
+    call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
     nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
     vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
@@ -4566,7 +4539,21 @@ Plug 'bfredl/nvim-miniyank'
 
  "}}}
  " ----------------------------------------------------------------------------
-call plug#end()
+
+" DEIN END{{{
+" Required:
+call dein#end()
+
+" Required:
+filetype plugin indent on
+
+" If you want to install not installed plugins on startup.
+"if dein#check_install()
+"  call dein#install()
+"endif
+
+"End dein Scripts-------------------------
+"}}} _DEIN END
 "}}}
 " ============================================================================
 " COMMANDS {{{

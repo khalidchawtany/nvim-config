@@ -29,7 +29,7 @@ _$1.$2 = Decimal.Parse(dt.Rows[0]["$2"].ToString());
 $0
 endsnippet
 
-snippet ofd "Row(Cell) to Decimal property assignment"
+snippet ofd "Row(Cell) to DateTime property assignment"
 _$1.$2 = DateTime.Parse(dt.Rows[0]["$2"].ToString());
 $0
 endsnippet
@@ -45,6 +45,20 @@ for line in snip.v.text.splitlines():
   snip += 'private const string CN_' + line + ' = "' + line + '";'
 `
 endsnippet
+
+
+
+
+snippet p2p "Set object Properties from the params"
+`!p
+for line in snip.v.text.splitlines():
+  line = (line.strip()).split(" ")[1]
+  snip += '_o.' + line + ' = ' + line + ';'
+`
+endsnippet
+
+
+
 #}}}
 
 
@@ -148,6 +162,30 @@ public void TestFixtureTearDown()
 	${VISUAL}$0
 }
 endsnippet
+
+
+
+snippet tohp "Test Object has Property"
+`!p
+
+lines = snip.v.text.splitlines()
+first_line = lines[0]
+for line in lines[1:]:
+  line = (line.strip()).split(" ")[1]
+  snip +='''[Test]
+	public void {0}Has{1}()
+	{{
+		Assert.That(_{2}.{1}, Is.EqualTo(_{1}));
+	}}
+'''.format(camelize(first_line), line, first_line)
+`
+endsnippet
+
+
+
+
+
+
 #}}}
 
 snippet region "Region"
