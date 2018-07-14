@@ -1,14 +1,20 @@
-  set updatetime=500
+set updatetime=500
 
-  "Keep diffme function state
-  let $diff_me=0
+"Keep diffme function state
+let $diff_me=0
 
-  " Specify path to your Uncrustify configuration file.
-  let g:uncrustify_cfg_file_path =
-        \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
+" Specify path to your Uncrustify configuration file.
+let g:uncrustify_cfg_file_path =
+      \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
 
-set background=dark
-colorscheme materialtheme
+"set background=dark
+"colorscheme materialtheme
+set background=light
+colorscheme PaperColor
+
+let g:lightline.colorscheme = 'material'
+"set background=light
+"colorscheme PaperColor
 
 "set rulerformat to include line:col filename +|''
 "set rulerformat=%<%(%p%%\ %)%l%<%(:%c\ %)%=%t%<\ %M
@@ -142,7 +148,7 @@ set noswapfile
 "Dont warn me about swap files existence
 "set shortmess+=A
 
-" set shortmess=atI                    " Don’t show the intro message when starting Vim
+"set shortmess=atI                    " Don’t show the intro message when starting Vim
 
 "prevent completion message flickers
 set shortmess+=c
@@ -187,7 +193,7 @@ set whichwrap+=h,l,<,>,[,]
 set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:×
 " set listchars=tab:▸\ ,extends:❯,precedes:❮,trail:.,eol:¬,nbsp:␣
 " set listchars=tab:•·,trail:·,extends:❯,precedes:❮,nbsp:×
-set list
+set nolist
 
 "Set the fillchar of the inactive window to something I can see
 set fillchars=stlnc:\-
@@ -249,9 +255,9 @@ function! MyFoldText()
 
   let sub =  ' ' . sub . "                                                                                                                                                                                  "
   if exists("&columns")
-  let sub = strpart( sub, 0, eval("&columns")-strlen(info)-7)
+    let sub = strpart( sub, 0, eval("&columns")-strlen(info)-7)
   else
-  let sub = strpart( sub, 0, 80-strlen(info)-7)
+    let sub = strpart( sub, 0, 80-strlen(info)-7)
   endif
   return  sub . info
 endfunction
@@ -269,9 +275,8 @@ syntax on
 set virtualedit=all
 set mouse=                            " Let the term control mouse selection
 set hidden
-set laststatus=2                      " force status line display
-set laststatus=0
-set list
+"set laststatus=2                      " force status line display
+set laststatus=0                      " force status line display
 set foldlevelstart=2
 set showtabline=0                     " hide tabline
 set noerrorbells visualbell t_vb=     " Disable error bells
@@ -289,8 +294,6 @@ endif
 
 "set cpoptions+=ces$                    " CW wrap W with $ instead of delete
 set cpo+=n                             " Draw color for lines that has number only
-
-set showmode                          " Show the current mode
 
 set display+=lastline
 

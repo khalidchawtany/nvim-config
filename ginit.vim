@@ -1,14 +1,17 @@
 "source ~/.config/nvim/plugged/neovim-gui-shim/plugin/nvim_gui_shim.vim
 
 "GuiFont sauce code pro light:h17
-GuiFont! Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline:h15
+"GuiFont! Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline:h18
+GuiFont! Source Code Pro for PowerLine:h20
 "GuiFont Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline:h17
 "GuiFont FuraMonoForPowerline Nerd Font:h16
 
 let g:gui_fonts = [
+      \ 'Source Code Pro for PowerLine:h20',
       \ 'Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline',
       \ 'FuraMonoForPowerline Nerd Font',
       \ 'Envy Code R',
+      \ 'DejaVu Sans Mono:h18',
       \ 'LiterationMonoPowerline Nerd Font',
       \ 'PT Mono for Powerline',
       \ 'Ubuntu Mono for Powerline',
@@ -27,7 +30,7 @@ command! PrevFont call ToggleFont(-1)
 nnoremap c]f :<c-u>NextFont<cr>
 nnoremap c[f :<c-u>PrevFont<cr>
 
-let g:linespace = 10
+let g:linespace = 15
 call rpcnotify(0, 'Gui', 'Linespace', g:linespace)
 
 command! Bigger :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', ''))
@@ -36,13 +39,11 @@ command! Smaller :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$
 nnoremap <silent> <D-=> :silent! Bigger<cr>
 nnoremap <silent> <D--> :silent! Smaller<cr>
 
-nnoremap <silent> <M-–> :let g:linespace=g:linespace-1<cr>:call rpcnotify(0, 'Gui', 'Linespace', g:linespace)<cr>:redraw!<cr>
-nnoremap <silent> <M-≠> :let g:linespace=g:linespace+1<cr>:call rpcnotify(0, 'Gui', 'Linespace', g:linespace)<cr>:redraw!<cr>
+nnoremap <silent> <M-D--> :let g:linespace=g:linespace-1<cr>:call rpcnotify(0, 'Gui', 'Linespace', g:linespace)<cr>:redraw!<cr>
+nnoremap <silent> <M-D-=> :let g:linespace=g:linespace+1<cr>:call rpcnotify(0, 'Gui', 'Linespace', g:linespace)<cr>:redraw!<cr>
 
-nnoremap <silent> <c-w><c-bs> :call GuiWindowMaximized((g:GuiWindowMaximized + 1) % 2)<cr>
-nnoremap <silent> <M-cr> :call GuiWindowMaximized((g:GuiWindowMaximized + 1) % 2)<cr>
-nnoremap <silent> <D-cr> :call GuiWindowFullScreen((g:GuiWindowFullScreen + 1) % 2)<cr>
-nnoremap <silent> <c-w><c-cr> :call GuiWindowFullScreen((g:GuiWindowFullScreen + 1) % 2)<cr>
+nnoremap <silent> <c-w>m :call GuiWindowMaximized((g:GuiWindowMaximized + 1) % 2)<cr>
+nnoremap <silent> <c-w>f :call GuiWindowFullScreen((g:GuiWindowFullScreen + 1) % 2)<cr>
 let g:WindowFrameless=1
 nnoremap <silent> <c-w><bs>   :let g:WindowFrameless=(g:WindowFrameless + 1) % 2<cr>:call rpcnotify(0, 'Gui', 'WindowFrameless', g:WindowFrameless)<cr>
 
@@ -82,11 +83,10 @@ for i in [1,2,3,4,5,6,7,8,9]
   execute "tnoremap <silent> <D-" . i . "> <c-\\><c-n>:tabnext " . i . "<cr>"
 endfor
 
+"Fix the lldb path
+" ln -s /usr/local/Cellar/llvm/HEAD-f63894b/lib/liblldb.4.0.0.dylib /usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/_lldb.so
+let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.
 call GuiWindowMaximized(1)<cr>
-
-"Fix the lldb path
-" ln -s /usr/local/Cellar/llvm/HEAD-f63894b/lib/liblldb.4.0.0.dylib /usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/_lldb.so
-let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"

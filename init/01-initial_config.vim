@@ -6,7 +6,11 @@ scriptencoding utf-8
   let localleader = "\\"
   let g:loaclleader = "\\"
 
-  set termguicolors
+  if $TERM_PROGRAM == 'Apple_Terminal' 
+    set notermguicolors
+  else
+    set termguicolors
+  endif
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
   let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 
@@ -101,8 +105,6 @@ if exists('&inccommand')
   nnoremap <leader>ci :call CycleIncCommand()<CR>
 endif
 
-" Listchars
-set list
 
 if &list
   " Some fun characters:

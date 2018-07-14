@@ -2,9 +2,9 @@ let PMN = 'Dein'
 
 "BlackList {{{
 let s:PM_BL = [
-\ 'neoterm',
 \'lldb.nvim',
-\'phpcd.vim'
+\'phpcd.vim',
+\'deoplete.nvim'
 \ ]
 "}}}}
 "WhiteList {{{
@@ -30,10 +30,10 @@ let s:PM_WL = [
     let g:dein#enable_notification=1
 
     " Required:
-    set runtimepath^=/Volumes/Home/.config/nvim/dein/repos/github.com/Shougo/dein.vim
+    set runtimepath^=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim
 
     " Required:
-    call dein#begin(expand('/Volumes/Home/.config/nvim/dein'))
+    call dein#begin(expand('~/.config/nvim/dein'))
 
     " Let dein manage dein
     " Required:
