@@ -7,12 +7,15 @@ endfunction
 "}}}
 
 
-let g:projects = ["~/Projects/PHP/my-react-app-backend/",
-      \ "~/Projects/React/my-react-app/",
-      \ "~/Projects/PHP/koga/www/",
+let g:projects = [
+      \ "~/Development/Applications/Oni",
       \ "~/Projects/PHP/Knights/",
-      \ "~/Development/Applications/Oni"] 
-
+      \ "~/Projects/PHP/create_laravel_package/blog/",
+      \ "~/Projects/PHP/create_laravel_package/blog/packages/knights/datatables/" ,
+      \ "~/Projects/PHP/koga/www/",
+      \ "~/Projects/PHP/my-react-app-backend/",
+      \ "~/Projects/React/my-react-app/"
+      \]
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
@@ -32,4 +35,12 @@ if exists('g:gui_oni')
   set nowrap
   nnoremap  <leader>eg :e ~/.config/oni/_config.js<cr>
 endif
+
+
+
+
+"hi FoldColumn ctermfg=4 ctermbg=248 guifg=#00008B guibg=#e0e0e0
+hi FoldColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
+hi SignColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
+hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 

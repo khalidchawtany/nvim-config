@@ -1,12 +1,10 @@
 "source ~/.config/nvim/plugged/neovim-gui-shim/plugin/nvim_gui_shim.vim
 
-"GuiFont sauce code pro light:h17
-"GuiFont! Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline:h18
-GuiFont! Source Code Pro for PowerLine:h20
-"GuiFont Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline:h17
-"GuiFont FuraMonoForPowerline Nerd Font:h16
+"GuiFont! Source Code Pro for PowerLine:h18
+GuiFont! Operator Mono:h20
 
 let g:gui_fonts = [
+      \ 'Operator Mono:h17',
       \ 'Source Code Pro for PowerLine:h20',
       \ 'Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline',
       \ 'FuraMonoForPowerline Nerd Font',
@@ -30,11 +28,14 @@ command! PrevFont call ToggleFont(-1)
 nnoremap c]f :<c-u>NextFont<cr>
 nnoremap c[f :<c-u>PrevFont<cr>
 
-let g:linespace = 15
+let g:linespace = 8
 call rpcnotify(0, 'Gui', 'Linespace', g:linespace)
 
-command! Bigger :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', ''))
-command! Smaller :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)-1', ''))
+"command! Bigger :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', ''))
+"command! Smaller :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)-1', ''))
+
+command! Bigger :let g:gui_fonts[g:current_gui_font_index]=substitute(g:gui_fonts[g:current_gui_font_index], '\d\+$', '\=submatch(0)+1', '') | call rpcnotify(0, 'Gui', 'Font', g:gui_fonts[g:current_gui_font_index])
+command! Smaller :let g:gui_fonts[g:current_gui_font_index]=substitute(g:gui_fonts[g:current_gui_font_index], '\d\+$', '\=submatch(0)-1', '') | call rpcnotify(0, 'Gui', 'Font', g:gui_fonts[g:current_gui_font_index])
 
 nnoremap <silent> <D-=> :silent! Bigger<cr>
 nnoremap <silent> <D--> :silent! Smaller<cr>
@@ -52,6 +53,8 @@ set mouse=a
 set nottimeout
 hi PmenuSel guibg=white guifg=#B34826
 
+//Don't use gui tabline
+call rpcnotify(0, "Gui", "Option", "Tabline", "false")
 
 
 "Make c-^ consitent between terminal and GUI
@@ -72,6 +75,9 @@ inoremap <D-P> <c-\><c-n>:set paste<cr>"+p:set nopaste<cr>li
 
 vnoremap <D-C> "+y
 vnoremap <D-Y> "+y
+tnoremap <D-v> <C-\><C-N>"+pA
+nnoremap <D-v> <C-\><C-N>"+pA
+vnoremap <D-c> "+y
 
 "Prevent neovim-qt to map HYPER
 Map NOIV <M-C-D-Space> <nop>
@@ -83,10 +89,11 @@ for i in [1,2,3,4,5,6,7,8,9]
   execute "tnoremap <silent> <D-" . i . "> <c-\\><c-n>:tabnext " . i . "<cr>"
 endfor
 
+
 "Fix the lldb path
 " ln -s /usr/local/Cellar/llvm/HEAD-f63894b/lib/liblldb.4.0.0.dylib /usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/_lldb.so
 let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.
-call GuiWindowMaximized(1)<cr>
+"call GuiWindowMaximized(2)<cr>

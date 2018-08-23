@@ -4231,7 +4231,7 @@ Plug 'bfredl/nvim-miniyank'
  " vim-better-whitespace {{{
 
    Plug  'ntpeters/vim-better-whitespace' 
-   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'leaderGuide']
+   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help' ]
    autocmd FileType unite DisableWhitespace
    autocmd FileType vimfiler DisableWhitespace
 
@@ -4245,7 +4245,7 @@ Plug 'bfredl/nvim-miniyank'
  " vim-indentLine {{{
 
     Plug  'Yggdroot/indentLine', {'lazy': 1} 
-    let g:indentLine_char = ''
+    "let g:indentLine_char = ''
     " let g:indentLine_color_term=""
     " let g:indentLine_color_gui=""
     let g:indentLine_fileType=[] "Means all filetypes
@@ -4254,11 +4254,6 @@ Plug 'bfredl/nvim-miniyank'
 
 
  "}}}
- " vim-indent-guides {{{
-
- Plug 'nathanaelkane/vim-indent-guides', {'lazy' : 1}
-
- "}}} _vim-indent-guides
 
  " rainbow parentheses {{{
 

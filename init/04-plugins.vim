@@ -1157,11 +1157,16 @@ let g:_did_vimrc_plugins = 1
  "}}}
  " emmet {{{
 
- if PM( 'mattn/emmet-vim', {'on_ft':['html','js','ts','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']} )
+ if PM( 'mattn/emmet-vim', {'on_ft':['html','js', 'jsx','ts','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']} )
 
    "let g:user_emmet_mode='a'         "enable all function in all mode.
    let g:user_emmet_mode='i'         "enable all function in insert mode
    let g:user_emmet_leader_key="<c-'><c-;>"
+   let g:user_emmet_settings = {
+         \  'javascript.jsx' : {
+         \      'extends' : 'jsx',
+         \  },
+         \}
  endif
 
  "}}}
@@ -1204,6 +1209,11 @@ let g:_did_vimrc_plugins = 1
 
  "}}}"Always match html tag
 
+ "React Dev
+   call PM('pangloss/vim-javascript')
+   call PM('mxw/vim-jsx')
+
+
  " vim-ragtag {{{
 
  if PM( 'tpope/vim-ragtag', {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
@@ -1239,8 +1249,22 @@ let g:_did_vimrc_plugins = 1
    call PM( 'pgdouyon/vim-accio', {'on_cmd': ['Accio']} )
 
  "}}} _vim-accio
- " syntastic {{{
+ 
+ " asyncrun {{{
+if PM('skywind3000/asyncrun.vim')
+  autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
+endif
+ "}}} _asyncrun 
 
+ " ale {{{
+ if PM( 'w0rp/ale' )
+   let g:ale_sign_error = '●' " Less aggressive than the default '>>'
+   let g:ale_sign_warning = '.'
+   let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
+ endif
+ "}}} _ale
+
+ " syntastic {{{
  if PM( 'scrooloose/syntastic', {'on_cmd': ['SyntasticCheck']} )
 
    let g:syntastic_scala_checkers=['']
@@ -2903,6 +2927,14 @@ endif
  " ----------------------------------------------------------------------------
  call PM('dzhou121/neovim-fzf-shim')
  "}}} _gonvim
+ " gonvim-fuzzy {{{
+ " ----------------------------------------------------------------------------
+ call PM('dzhou121/gonvim-fuzzy')
+ "GonvimFuzzyFiles   - For Files
+ "GonvimFuzzyBLines  - For Lines in the Current File
+ "GonvimFuzzyAg      - For runing FZF_AG ( searches current directory )
+ "GonvimFuzzyBuffers - For searching opened Buffers
+ "}}} _gonvim-fuzzy
  " ----------------------------------------------------------------------------
  " Nyaovim {{{
  " ----------------------------------------------------------------------------
@@ -2940,9 +2972,11 @@ endif
          \ 'component_type': {
          \   'syntastic': 'error',
          \ },
-         \ 'subseparator': { 'left': '', 'right': '' },
-         \ 'separator': { 'left': '', 'right': '' },
+         \ 'subseparator': { 'left': '', 'right': '' },
+         \ 'separator': { 'left': '', 'right': '' },
          \ }
+"\ 'subseparator': { 'left': '', 'right': '' },
+"\ 'separator': { 'left': '', 'right': '' },
 
    "\ 'component_expand': {
    "\   'syntastic': 'SyntasticStatuslineFlag',
@@ -3145,6 +3179,7 @@ endif
 
  "}}} _vim-indent-guides
 
+ call PM('nightsense/snow')
  call PM( 'ryanoasis/vim-devicons' )
  call PM( 'reedes/vim-thematic' )
 

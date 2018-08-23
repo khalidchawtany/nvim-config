@@ -7,21 +7,15 @@ let $diff_me=0
 let g:uncrustify_cfg_file_path =
       \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
 
-"set background=dark
 "colorscheme materialtheme
 set background=light
-colorscheme PaperColor
-
-let g:lightline.colorscheme = 'material'
-"set background=light
 "colorscheme PaperColor
+colorscheme macvim-light
+
 
 "set rulerformat to include line:col filename +|''
 "set rulerformat=%<%(%p%%\ %)%l%<%(:%c\ %)%=%t%<\ %M
 set rulerformat=%l:%<%c%=%p%%\ %R\ %m
-
-" set background=light
-" colorscheme gruvbox
 
 " Enhance command-line completion
 set wildmenu
