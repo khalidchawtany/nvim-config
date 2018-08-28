@@ -44,3 +44,7 @@ hi FoldColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
 hi SignColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
 hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
+
+
+nmap <expr> <leader>- expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
+

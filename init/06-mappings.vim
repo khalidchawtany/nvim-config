@@ -352,3 +352,5 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
 
   "noremap <F4> :call DiffMe()<CR>
 
+
+
