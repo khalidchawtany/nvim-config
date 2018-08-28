@@ -1,4 +1,4 @@
-let PMN = 'Plug'
+let PMN = 'Dein'
 
 "BlackList {{{
 let s:PM_BL = [
