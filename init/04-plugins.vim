@@ -2152,7 +2152,6 @@ if PM( 'Shougo/unite.vim')
  call Map_FZF  ( "silent! FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
  call Map_FZF  ( "silent! FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
  call Map_FZF  ( "silent! FzfFiles! "    , "p"   , ''                                                                               , 2  )
- call Map_FZF  ( "silent! FzfBuffers"   , "b"     , ""                                                                               , 0  )
  call Map_FZF  ( "silent! FzfAg!"       , "a"     , ""                                                                               , 3  )
  call Map_FZF  ( "silent! FzfLines!"    , "L"     , ""                                                                               , 2  )
  call Map_FZF  ( "silent! FzfBLines!"   , "l"     , ""                                                                               , 2  )
@@ -2167,6 +2166,8 @@ if PM( 'Shougo/unite.vim')
  call Map_FZF  ( "silent! FzfMarks!"    , "'"     , ""                                                                               , 0  )
  call Map_FZF  ( "silent! FzfWindows!"  , "w"     , ""                                                                               , 0  )
  call Map_FZF  ( "silent! FzfHelptags!" , "k"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfHistory!" , "h"     , ""                                                                               , 0  )
+   nnoremap <silent> <c-p><c-f> <cmd>FzfHistory!<cr>
 
  "The last param is <bang>0 to make it fullscreen
  nnoremap <silent> <c-p>p :silent! call fzf#vim#files(getcwd(), {'options': '--reverse -q'.shellescape(expand('<cword>'))}, 1)<cr>
@@ -2186,7 +2187,7 @@ if PM( 'Shougo/unite.vim')
 
    "Get all files including git ignore
    nnoremap <silent> <c-p><space> :call fzf#run({"source":"ag -all -l  \"\" \| sort -u " , "sink":"edit"})<cr>
-   nnoremap <silent> <c-p><c-space> :call fzf#run({"source":"ag -all -l  \"\" \| sort -u " , "sink":"edit"})<cr>
+   nnoremap <silent> <c-p><c-space> <cmd>FzfHistory!<cr>
 
    function GetDirectories()
      call fzf#run({"source":"ag -l --nocolor -g \"\" | awk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq" , "sink":"Dirvish"})
@@ -2283,7 +2284,7 @@ endfunction
      return  filter(split(ls, '\n'), 'v:val !~ "term://"')
    endfunction
 
-   function! s:bufopen(e,b)
+   function! s:bufopen(e)
        let bufferNumber = matchstr(a:e, '^[ 0-9]*')
        if bufferNumber == ''
            let g:bufopen_cmd = get({'ctrl-s': 'split |',
@@ -2295,6 +2296,7 @@ endfunction
            " execute 'buffer' matchstr(a:e, '^[ 0-9]*')
        endif
    endfunction
+
 
    " nnoremap <silent> <c-p><c-o> :call fzf#run({
    "       \   'source':  reverse(<sid>buflist()),
