@@ -2311,6 +2311,23 @@ endfunction
 
    "}}} _open_buffers -term
 
+   "FzfNeighbor {{{
+   function! s:fzf_neighbouring_files()
+       let current_file =expand("%")
+       let cwd = fnamemodify(current_file, ':p:h')
+       let command = 'ag -g "" -f ' . cwd . ' --depth 0'
+
+       call fzf#run({
+                   \ 'source': command,
+                   \ 'sink':   'e',
+                   \ 'options': '-m -x +s',
+                   \ 'window':  'enew' })
+   endfunction
+
+   command! FZFNeigh call s:fzf_neighbouring_files()
+   nnoremap <silent> <c-p><c-n> <cmd>FZFNeigh<cr>
+   "}}} _FzfNeighbor
+
    "Ag {{{
    function! s:ag_to_qf(line)
        let parts = split(a:line, ':')
@@ -2321,7 +2338,7 @@ endfunction
    function! s:ag_handler(lines)
        if len(a:lines) < 2 | return | endif
 
-       let cmd = get({'ctrl-x': 'split',
+       let cmd = get({'ctrl-s': 'split',
                    \ 'ctrl-v': 'vertical split',
                    \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
        let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
@@ -2347,6 +2364,7 @@ endfunction
                \            '--color hl:68,hl+:110',
                \ 'down':    '50%'
                \ })
+   nnoremap <silent> <c-p><c-q> <cmd>FZFNeigh<cr>
    "}}} _Ag
 
    "open_terms {{{
@@ -2360,7 +2378,6 @@ endfunction
 
    function! s:termtabopen(e)
      let l:term_buffer_id = str2nr(matchstr(a:e, '^[ 0-9]*'))
-     echomsg l:term_buffer_id
      let l:buffers_parent_tab = -1
       for i in range(tabpagenr('$'))
          if (index(tabpagebuflist(i + 1), l:term_buffer_id) >= 0)
