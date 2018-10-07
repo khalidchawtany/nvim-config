@@ -43,13 +43,13 @@ let g:_did_vimrc_plugins = 1
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
    LMap N <leader>gs <SID>Status  :call fugitive#detect(getcwd()) \| Gstatus<cr>
-   LMap N <leader>gc <SID>Commit  :execute ":Gcommit"<cr>
-   LMap N <leader>gp <SID>Pull    :execute ":Gpull"<cr>
-   LMap N <leader>gu <SID>Push    :execute ":Gpush"<cr>
-   LMap N <leader>gr <SID>Read    :execute ":Gread"<cr>
-   LMap N <leader>gw <SID>Write   :execute ":Gwrite"<cr>
-   LMap N <leader>gdv <SID>V-Diff :execute ":Gvdiff"<cr>
-   LMap N <leader>gds <SID>S-Diff :execute ":Gdiff"<cr>
+   LMap N <leader>gc <SID>Commit  :call fugitive#detect(getcwd()) \| execute ":Gcommit"<cr>
+   LMap N <leader>gp <SID>Pull    :call fugitive#detect(getcwd()) \| execute ":Gpull"<cr>
+   LMap N <leader>gu <SID>Push    :call fugitive#detect(getcwd()) \| execute ":Gpush"<cr>
+   LMap N <leader>gr <SID>Read    :call fugitive#detect(getcwd()) \| execute ":Gread"<cr>
+   LMap N <leader>gw <SID>Write   :call fugitive#detect(getcwd()) \| execute ":Gwrite"<cr>
+   LMap N <leader>gdv <SID>V-Diff :call fugitive#detect(getcwd()) \| execute ":Gvdiff"<cr>
+   LMap N <leader>gds <SID>S-Diff :call fugitive#detect(getcwd()) \| execute ":Gdiff"<cr>
 
  endif
  "}}} _vim-fugitive
@@ -2081,10 +2081,10 @@ if PM( 'Shougo/unite.vim')
           \   ['i', '<plug>(fzf-complete-buffer-line)'],
           \   ['i', '<plug>(fzf-complete-file)']
           \ ],
-          \   'on_cmd': ['Files', 'GitFiles', 'Buffers', 'Colors', 'Ag', 'Lines',
-          \               'BLines', 'Tags', 'BTags', 'Maps', 'Marks', 'Windows',
-          \               'Locate', 'History', 'History:', 'History/', 'Snippets',
-          \               'Commits', 'BCommits', 'Commands', 'Helptags']
+          \   'on_cmd': ['FzfFiles', 'FzfGitFiles', 'FzfBuffers', 'FzfColors', 'FzfAg', 'FzfLines',
+          \              'FzfBLines', 'FzfTags', 'FzfBTags', 'FzfMaps', 'FzfMarks', 'FzfWindows',
+          \              'FzfLocate', 'FzfHistory', 'FzfHistory:', 'FzfHistory/', 'FzfSnippets',
+          \              'FzfCommits', 'FzfBCommits', 'FzfCommands', 'FzfHelptags']
           \ })
 
    " [Buffers] Jump to the existing window if possible
@@ -2285,16 +2285,13 @@ endfunction
    endfunction
 
    function! s:bufopen(e)
-       let bufferNumber = matchstr(a:e, '^[ 0-9]*')
-       if bufferNumber == ''
            let g:bufopen_cmd = get({'ctrl-s': 'split |',
                        \ 'ctrl-v': 'vertical split |',
-                       \ 'ctrl-t': 'tabnew | '}, a:e, '')
+                       \ 'ctrl-t': 'tabnew | '}, a:e[0], '')
 
-       else
+           let bufferNumber = matchstr(a:e[1], '^[ 0-9]*')
            execute g:bufopen_cmd 'buffer' bufferNumber
            " execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-       endif
    endfunction
 
 
@@ -2306,7 +2303,7 @@ endfunction
    "       \ })<CR>
    nnoremap <silent> <c-p><c-o> :call fzf#run({
          \   'source':  reverse(<sid>buflist()),
-         \   'sink':    function('<sid>bufopen'),
+         \   'sink*':    function('<sid>bufopen'),
          \   'options': '+m --reverse --expect=ctrl-t,ctrl-v,ctrl-s',
          \   'window':    '-tabnew'
          \ })<CR>
@@ -3139,9 +3136,9 @@ endif
    call PM( 'vim-scripts/pyte')
    call PM( 'trevordmiller/nova-vim')
    if PM( 'khalidchawtany/lightline-material.vim' )
-     let g:lightline.colorscheme = 'gruvbox'
-     "let g:lightline.colorscheme = 'wombat'
-     "let g:lightline.colorscheme = 'material'
+     " let g:lightline.colorscheme = 'gruvbox'
+     " let g:lightline.colorscheme = 'wombat'
+     " let g:lightline.colorscheme = 'material'
    endif " PM()
 
    function! LightLineModified()
@@ -3352,7 +3349,7 @@ set termguicolors     " enable true colors support
 let ayucolor="dark"   " for dark version of theme
 let ayucolor="mirage" " for mirage version of theme
 let ayucolor="light"  " for light version of theme
-colorscheme ayu
+
  " IndentLine {{
 let g:indentLine_char = '?'
 let g:indentLine_first_char = '?'
@@ -3372,7 +3369,6 @@ call PM('mhartington/oceanic-next')
 let g:airline_theme='oceanicnext'
 let g:oceanic_next_terminal_bold = 0
 let g:oceanic_next_terminal_italic = 1
-colorscheme OceanicNext
 
 call PM('lifepillar/vim-wwdc17-theme')
 call PM('sonobre/briofita_vim')

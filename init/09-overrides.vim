@@ -48,7 +48,7 @@ hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
 nmap <expr> <leader>- expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
 
-command! SetLightLine :let g:lightline.colorscheme = "PaperColor" |  call lightline#init() | call lightline#update()
+command! SetLightLine :let g:lightline.colorscheme = "palenight" |  call lightline#init() | call lightline#update()
 
 
 
