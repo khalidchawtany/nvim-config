@@ -19,7 +19,7 @@ let g:projects = [
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
-nnoremap <c-p><c-\> :call fzf#run({"source": g:projects , "sink":"CdP"})<cr>
+nnoremap <c-p><c-\> <cmd>call fzf#run({"source": g:projects , "sink":"CdP"})<cr>
 
 
 function! RegenerateHelpTags()
@@ -47,4 +47,31 @@ hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
 
 nmap <expr> <leader>- expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
+
+command! SetLightLine :let g:lightline.colorscheme = "PaperColor" |  call lightline#init() | call lightline#update()
+
+
+
+ function! s:term_gf()
+    let procid = matchstr(bufname(""), '\(://.*/\)\@<=\(\d\+\)')
+    let proc_cwd = resolve('/proc/'.procid.'/cwd')
+    exe 'lcd '.proc_cwd
+    exe 'e <cfile>'
+endfunction
+
+au TermOpen * nmap <buffer> gf :call <SID>term_gf()<cr>
+
+
+nmap <leader>zf <cmd>g/function\\|.edatagrid({\\|{field:/normal 0maf{%zf'a<cr>
+nmap <leader>zi <cmd>set fdm=indent<cr><cmd>set fdm=manual<cr>
+
+" let g:terminal_color_2 = '#62AA0D' "path color
+" let g:terminal_color_7 = '#000000' "foreground color
+" let g:terminal_color_foreground = '#000000' "foreground color
+" let g:terminal_color_11 = 'darkorange' "Prompt icons
+" let g:terminal_color_10 = 'green' "git branch color
+" let g:terminal_color_13='#87638D' "git stash color
+" let g:terminal_color_3='#CCAF14' " git log hash colors
+" let g:terminal_color_4='#4B79B3' " >la directory colors
+" let g:terminal_color_6='#2FA8AA'
 

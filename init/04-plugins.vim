@@ -80,6 +80,11 @@ let g:_did_vimrc_plugins = 1
    LMap N <leader>gm <SID>Magit :Magit<cr>
  endif
  "}}} _vimagit
+ "gina{{{
+ if PM('lambdalisue/gina.vim', {'on_cmd': ['Gina'], 'on_map': ['\<leader>gn'], 'rev': 'next'} )
+   LMap N <leader>gn <SID>Gina :Gina<cr>
+ endif
+ "}}} _gina
 
  " DirDiff.vim {{{
 
@@ -153,6 +158,20 @@ let g:_did_vimrc_plugins = 1
  "}}} _calendar-vim
 
  " Multi-edits
+
+ " ag.vim {{{
+ if PM('rking/ag.vim')
+     call PM('Chun-Yang/vim-action-ag')
+ endif
+ "}}} _ag.vim
+
+ "ack.vim {{{
+ if PM('mileszs/ack.vim')
+     if executable('ag')
+         let g:ackprg = 'ag --vimgrep'
+     endif
+ endif
+ "}}} _ack.vim
  " vim-fnr {{{
 
    "Requires pseudocl
@@ -192,10 +211,10 @@ let g:_did_vimrc_plugins = 1
    call PM( 'pelodelfuego/vim-swoop', {'on_cmd': ['Swoop'], 'on_func':['Swoop', 'SwoopSelection', 'SwoopMulti', 'SwoopMultiSelection']} )
    let g:swoopUseDefaultKeyMap = 0
 
-   " nmap <Leader>ml :call SwoopMulti()<CR>
-   " vmap <Leader>ml :call SwoopMultiSelection()<CR>
-   " nmap <Leader>l :call Swoop()<CR>
-   " vmap <Leader>l :call SwoopSelection()<CR>
+   nnoremap <Leader>sm :call SwoopMulti()<CR>
+   vnoremap <Leader>sm :call SwoopMultiSelection()<CR>
+   nnoremap <Leader>ss :call Swoop()<CR>
+   vnoremap <Leader>ss :call SwoopSelection()<CR>
 
    function! Multiple_cursors_before()
      if exists('*SwoopFreezeContext') != 0
@@ -218,6 +237,7 @@ let g:_did_vimrc_plugins = 1
  " inline_edit.vim {{{
 
    call PM( 'AndrewRadev/inline_edit.vim', { 'on_cmd': ['InlineEdit']} )
+   xnoremap <leader>ei <cmd>InlineEdit<cr>
 
  "}}} _inline_edit.vim
  " vim-multiple-cursors {{{
@@ -333,10 +353,16 @@ let g:_did_vimrc_plugins = 1
 
  "}}} _vim-rectinsert
 
+ " vim-expand-region {{{
+
+call PM('terryma/vim-expand-region')
+"
+ "}}} _vim-expand-region
+
  " Isolate
  " NrrwRgn {{{
 
- call PM( 'chrisbra/NrrwRgn', {
+ if PM( 'chrisbra/NrrwRgn', {
        \ 'on_cmd':
        \   [
        \    'NR', 'NarrowRegion', 'NW', 'NarrowWindow', 'WidenRegion',
@@ -346,72 +372,77 @@ let g:_did_vimrc_plugins = 1
        \ 'on_map': ['<Plug>NrrwrgnDo']
        \ })
 
- nmap <leader>nr <Plug>NrrwrgnDo
+    map <leader>nr <Plug>NrrwrgnDo
+
+ endif
 
  "}}} _NrrwRgn
 
  " Yank
  " vim-peekaboo {{{
 
-   call PM( 'junegunn/vim-peekaboo' )
+   if PM( 'junegunn/vim-peekaboo' )
 
-   " Default peekaboo window
-   let g:peekaboo_window = 'vertical botright 30new'
+    " Default peekaboo window
+    let g:peekaboo_window = 'vertical botright 30new'
 
-   " Delay opening of peekaboo window (in ms. default: 0)
-   let g:peekaboo_delay = 200
+    " Delay opening of peekaboo window (in ms. default: 0)
+    let g:peekaboo_delay = 200
 
-   " Compact display; do not display the names of the register groups
-   let g:peekaboo_compact = 1
+    " Compact display; do not display the names of the register groups
+    let g:peekaboo_compact = 1
+
+   endif
 
  "}}} _vim-peekaboo
  " UnconditionalPaste {{{
 
-   call PM( 'vim-scripts/UnconditionalPaste', {'on_map': ['<Plug>UnconditionalPaste']} )
-   Map n gPP  <Plug>UnconditionalPasteGPlusBefore
-   Map n gPp  <Plug>UnconditionalPasteGPlusAfter
-   Map n gpP  <Plug>UnconditionalPastePlusBefore
-   Map n gpp  <Plug>UnconditionalPastePlusAfter
-   Map n gUP  <Plug>UnconditionalPasteRecallUnjoinBefore
-   Map n gUp  <Plug>UnconditionalPasteRecallUnjoinAfter
-   Map n guP  <Plug>UnconditionalPasteUnjoinBefore
-   Map n gup  <Plug>UnconditionalPasteUnjoinAfter
-   Map n gQP  <Plug>UnconditionalPasteRecallQueriedBefore
-   Map n gQp  <Plug>UnconditionalPasteRecallQueriedAfter
-   Map n gqP  <Plug>UnconditionalPasteQueriedBefore
-   Map n gqp  <Plug>UnconditionalPasteQueriedAfter
-   Map n gQBP <Plug>UnconditionalPasteRecallDelimitedBefore
-   Map n gQBp <Plug>UnconditionalPasteRecallDelimitedAfter
-   Map n gqbP <Plug>UnconditionalPasteDelimitedBefore
-   Map n gqbp <Plug>UnconditionalPasteDelimitedAfter
-   Map n gBP  <Plug>UnconditionalPasteJaggedBefore
-   Map n gBp  <Plug>UnconditionalPasteJaggedAfter
-   Map n gsP  <Plug>UnconditionalPasteSpacedBefore
-   Map n gsp  <Plug>UnconditionalPasteSpacedAfter
-   Map n g#P  <Plug>UnconditionalPasteCommentedBefore
-   Map n g#p  <Plug>UnconditionalPasteCommentedAfter
-   Map n g>P  <Plug>UnconditionalPasteShiftedBefore
-   Map n g>p  <Plug>UnconditionalPasteShiftedAfter
-   Map n g[[P <Plug>UnconditionalPasteLessIndentBefore
-   Map n g[[p <Plug>UnconditionalPasteLessIndentAfter
-   Map n g]]P <Plug>UnconditionalPasteMoreIndentBefore
-   Map n g]]p <Plug>UnconditionalPasteMoreIndentAfter
-   Map n g]p  <Plug>UnconditionalPasteIndentedAfter
-   Map n g[p  <Plug>UnconditionalPasteIndentedBefore
-   Map n g[P  <Plug>UnconditionalPasteIndentedBefore
-   Map n g]P  <Plug>UnconditionalPasteIndentedBefore
-   Map n g,"P <Plug>UnconditionalPasteCommaDoubleQuoteBefore
-   Map n g,"p <Plug>UnconditionalPasteCommaDoubleQuoteAfter
-   Map n g,'P <Plug>UnconditionalPasteCommaSingleQuoteBefore
-   Map n g,'p <Plug>UnconditionalPasteCommaSingleQuoteAfter
-   Map n g,P  <Plug>UnconditionalPasteCommaBefore
-   Map n g,p  <Plug>UnconditionalPasteCommaAfter
-   Map n gbP  <Plug>UnconditionalPasteBlockBefore
-   Map n gbp  <Plug>UnconditionalPasteBlockAfter
-   Map n glP  <Plug>UnconditionalPasteLineBefore
-   Map n glp  <Plug>UnconditionalPasteLineAfter
-   Map n gcP  <Plug>UnconditionalPasteCharBefore
-   Map n gcp  <Plug>UnconditionalPasteCharAfter
+   if PM( 'vim-scripts/UnconditionalPaste', {'on_map': ['<Plug>UnconditionalPaste']} )
+    Map n gPP  <Plug>UnconditionalPasteGPlusBefore
+    Map n gPp  <Plug>UnconditionalPasteGPlusAfter
+    Map n gpP  <Plug>UnconditionalPastePlusBefore
+    Map n gpp  <Plug>UnconditionalPastePlusAfter
+    Map n gUP  <Plug>UnconditionalPasteRecallUnjoinBefore
+    Map n gUp  <Plug>UnconditionalPasteRecallUnjoinAfter
+    Map n guP  <Plug>UnconditionalPasteUnjoinBefore
+    Map n gup  <Plug>UnconditionalPasteUnjoinAfter
+    Map n gQP  <Plug>UnconditionalPasteRecallQueriedBefore
+    Map n gQp  <Plug>UnconditionalPasteRecallQueriedAfter
+    Map n gqP  <Plug>UnconditionalPasteQueriedBefore
+    Map n gqp  <Plug>UnconditionalPasteQueriedAfter
+    Map n gQBP <Plug>UnconditionalPasteRecallDelimitedBefore
+    Map n gQBp <Plug>UnconditionalPasteRecallDelimitedAfter
+    Map n gqbP <Plug>UnconditionalPasteDelimitedBefore
+    Map n gqbp <Plug>UnconditionalPasteDelimitedAfter
+    Map n gBP  <Plug>UnconditionalPasteJaggedBefore
+    Map n gBp  <Plug>UnconditionalPasteJaggedAfter
+    Map n gsP  <Plug>UnconditionalPasteSpacedBefore
+    Map n gsp  <Plug>UnconditionalPasteSpacedAfter
+    Map n g#P  <Plug>UnconditionalPasteCommentedBefore
+    Map n g#p  <Plug>UnconditionalPasteCommentedAfter
+    Map n g>P  <Plug>UnconditionalPasteShiftedBefore
+    Map n g>p  <Plug>UnconditionalPasteShiftedAfter
+    Map n g[[P <Plug>UnconditionalPasteLessIndentBefore
+    Map n g[[p <Plug>UnconditionalPasteLessIndentAfter
+    Map n g]]P <Plug>UnconditionalPasteMoreIndentBefore
+    Map n g]]p <Plug>UnconditionalPasteMoreIndentAfter
+    Map n g]p  <Plug>UnconditionalPasteIndentedAfter
+    Map n g[p  <Plug>UnconditionalPasteIndentedBefore
+    Map n g[P  <Plug>UnconditionalPasteIndentedBefore
+    Map n g]P  <Plug>UnconditionalPasteIndentedBefore
+    Map n g,"P <Plug>UnconditionalPasteCommaDoubleQuoteBefore
+    Map n g,"p <Plug>UnconditionalPasteCommaDoubleQuoteAfter
+    Map n g,'P <Plug>UnconditionalPasteCommaSingleQuoteBefore
+    Map n g,'p <Plug>UnconditionalPasteCommaSingleQuoteAfter
+    Map n g,P  <Plug>UnconditionalPasteCommaBefore
+    Map n g,p  <Plug>UnconditionalPasteCommaAfter
+    Map n gbP  <Plug>UnconditionalPasteBlockBefore
+    Map n gbp  <Plug>UnconditionalPasteBlockAfter
+    Map n glP  <Plug>UnconditionalPasteLineBefore
+    Map n glp  <Plug>UnconditionalPasteLineAfter
+    Map n gcP  <Plug>UnconditionalPasteCharBefore
+    Map n gcp  <Plug>UnconditionalPasteCharAfter
+   endif
 
  "}}} _UnconditionalPaste
 
@@ -430,7 +461,7 @@ let g:_did_vimrc_plugins = 1
  " vim-exchange {{{
 
    call PM( 'tommcdo/vim-exchange', {'on_cmd':  ['ExchangeClear'] , 'on_map': ['<Plug>(Exchange']} )
-   xmap c<cr><cr>     <Plug>(Exchange)
+   xmap c<cr><cr> <Plug>(Exchange)
    nmap c<cr>l    <Plug>(ExchangeLine)
    nmap c<cr>c    <Plug>(ExchangeClear)
    nmap c<cr><bs> <Plug>(ExchangeClear)
@@ -552,28 +583,6 @@ let g:_did_vimrc_plugins = 1
  "}}} _vim-tag-comment
 
  " Comments
- " nerdcommenter {{{
-
- if PM( 'scrooloose/nerdcommenter', {'on_map': [ '<Plug>NERDCommenter' ]} )
-   "call s:SetUpForNewFiletype(&filetype, 1)
-
-   Map nx  <leader>c<Space>     <Plug>NERDCommenterToggle
-   Map nx  <leader>ca           <Plug>NERDCommenterAltDelims
-   Map nx  <leader>cb           <Plug>NERDCommenterAlignBoth
-   Map nx  <leader>ci           <Plug>NERDCommenterInvert
-   Map nx  <leader>cl           <Plug>NERDCommenterAlignLeft
-   Map nx  <leader>cm           <Plug>NERDCommenterMinimal
-   Map nx  <leader>cn           <Plug>NERDCommenterNested
-   Map nx  <leader>cs           <Plug>NERDCommenterSexy
-   Map nx  <leader>cu           <Plug>NERDCommenterUncomment
-   Map nx  <leader>cy           <Plug>NERDCommenterYank
-   Map nx  <leader>cc           <Plug>NERDCommenterComment
-   Map n   <leader>cA           <Plug>NERDCommenterAppend
-   Map n   <leader>c$           <Plug>NERDCommenterToEOL
-
- endif
-
- "}}} _nerdcommenter
  " vim-commentary {{{
  call PM ('tpope/vim-commentary',
        \ {
@@ -585,14 +594,13 @@ let g:_did_vimrc_plugins = 1
        \ ],
        \ 'on_cmd': [ 'Commentary' ]
        \ })
- xmap gc  <Plug>Commentary
- nmap gc  <Plug>Commentary
- omap gc  <Plug>Commentary
- nmap gcc <Plug>CommentaryLine
- nmap cgc <Plug>ChangeCommentary
- nmap gcu <Plug>Commentary<Plug>Commentary
+ xmap <leader>cc  <Plug>Commentary
+ nmap <leader>cc  <Plug>Commentary
+ omap <leader>cc  <Plug>Commentary
+ nmap <leader>cc <Plug>CommentaryLine
+ nmap <leader>ce <Plug>ChangeCommentary
+ nmap <leader>cu <Plug>Commentary<Plug>Commentary
  " }}} _vim-commentary
-   " Plug 'tomtom/tcomment_vim'
 
  " Auto-manipulators
  " vim-endwise {{{
@@ -648,6 +656,14 @@ let g:_did_vimrc_plugins = 1
        call submode#enter_with('j/k', 'n', '', '<C-w>k', '<C-w>+')
        call submode#map('j/k', 'n', '', 'j', '<C-w>-')
        call submode#map('j/k', 'n', '', 'k', '<C-w>+')
+     "}}} _Window resize
+     " horizontal navigation {{{
+       call submode#enter_with('H-Scroll', 'n', '', 'zl', 'zl')
+       call submode#enter_with('H-Scroll', 'n', '', 'zh', 'zh')
+       call submode#map('H-Scroll', 'n', '', 'l', 'zl')
+       call submode#map('H-Scroll', 'n', '', 'h', 'zh')
+       call submode#map('H-Scroll', 'n', '', 'k', '10zl')
+       call submode#map('H-Scroll', 'n', '', 'j', '10zh')
      "}}} _Window resize
      " colorscheme chooser {{{
       call submode#enter_with('Colorscheme', 'n', '', 'c]c', ':<C-U>exe "NextColorScheme"<cr>')
@@ -764,6 +780,9 @@ let g:_did_vimrc_plugins = 1
    imap <c-l>e <C-O><Plug>CapsLockEnable
    imap <c-l>d <C-O><Plug>CapsLockDisable
  "}}} _vim-capslock
+ "vim-confirmquit {{{
+ call PM('Carpetsmoker/confirm_quit.vim')
+ "}}} _vim-confirmquit
 
  " vim-repeat {{{
 
@@ -775,6 +794,10 @@ let g:_did_vimrc_plugins = 1
    call PM( 'tpope/vim-obsession', {'on_cmd':['Obsession']} )
 
  "}}} _vim-obsession
+
+ call PM('Asheq/close-buffers.vim')
+ nnoremap <c-;>wh <cmd>CloseHiddenBuffers<cr>
+ nnoremap <c-;><c-w><c-h> <cmd>CloseHiddenBuffers<cr>
 
  " vim-autoswap {{{
 
@@ -1249,12 +1272,12 @@ let g:_did_vimrc_plugins = 1
    call PM( 'pgdouyon/vim-accio', {'on_cmd': ['Accio']} )
 
  "}}} _vim-accio
- 
+
  " asyncrun {{{
 if PM('skywind3000/asyncrun.vim')
   autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
 endif
- "}}} _asyncrun 
+ "}}} _asyncrun
 
  " ale {{{
  if PM( 'w0rp/ale' )
@@ -1357,7 +1380,7 @@ if PM( 'roxma/nvim-completion-manager',
          \ })
 
   call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
-  autocmd FileType php LanguageClientStart
+  "autocmd FileType php LanguageClientStart
 
   "inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
  " requires phpactor
@@ -1627,6 +1650,7 @@ endif
      Map vo iF <Plug>(textobj-function-I)
      Map vo aF <Plug>(textobj-function-A)
   " }}} _vim-textobj-function
+  call PM('thinca/vim-textobj-function-javascript')
 
   " vim-textobj-between {{{
   "ibX, abX                     for between two chars
@@ -1638,6 +1662,7 @@ endif
   " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
   call PlugTextObj( 'rhysd/vim-textobj-anyblock', '<cr>', 0 )
+  call PM('rhysd/vim-textobj-anyblock')
   let g:textobj_anyblock_no_default_key_mappings =1
   "}}}
 
@@ -1646,19 +1671,15 @@ endif
 
   " vim-textobj-delimited {{{
     "id, ad, iD, aD   for Delimiters takes numbers d2id
-  if PM( 'machakann/vim-textobj-delimited', {'on_map': ['<Plug>(textobj-delimited-']} )
-    Map vo id <Plug>(textobj-delimited-forward-i)
+  if PM( 'machakann/vim-textobj-delimited')
     Map vo id <Plug>(textobj-delimited-forward-i)
     Map vo ad <Plug>(textobj-delimited-forward-a)
-    Map vo ad <Plug>(textobj-delimited-forward-a)
     Map vo iD <Plug>(textobj-delimited-backward-i)
-    Map vo iD <Plug>(textobj-delimited-backward-i)
-    Map vo aD <Plug>(textobj-delimited-backward-a)
     Map vo aD <Plug>(textobj-delimited-backward-a)
   endif
   "}}} _vim-textobj-delimited
 
-  if PM( 'saaguero/vim-textobj-pastedtext', {'on_map': ['<Plug>(textobj-pastedtext-text)']} )
+  if PM( 'saaguero/vim-textobj-pastedtext')
     "gb              for pasted text
     Map vo gb <Plug>(textobj-pastedtext-text)
   endif
@@ -1683,7 +1704,6 @@ endif
     Map vo iI <Plug>(textobj-indent-same-i)
     Map vo aI <plug>(textobj-indent-same-a)
   "}}} _vim-textobj-indent
-
 
   " vim-textobj-fold {{{
     "iz, az          for folds
@@ -1859,7 +1879,7 @@ endif
 
  " unite.vim {{{
 
-if PM( 'Shougo/unite.vim') 
+if PM( 'Shougo/unite.vim')
       "\ {
       "\ 'on_cmd': ['Unite', 'UniteWithCursorWord'],
       "\ 'on_func': ['unite#custom#', 'unite#custom#source'],
@@ -2032,6 +2052,8 @@ if PM( 'Shougo/unite.vim')
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
 
+       let g:fzf_command_prefix = 'Fzf'
+
    if !has('nvim') && has('gui_running')
      let g:fzf_launcher = "fzf_iterm %s"
    endif
@@ -2039,7 +2061,7 @@ if PM( 'Shougo/unite.vim')
     "let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
     "let g:fzf_layout = { 'window': '-tabnew' }
 
-    let $FZF_DEFAULT_OPTS="--history=/Volumes/MacOS/Users/juju/.fzf_history --reverse --bind '::jump,;:jump-accept'"
+    let $FZF_DEFAULT_OPTS="--history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'"
 
     "let $FZF_DEFAULT_COMMAND='ag -l -g ""'
     "Use rg instead of ag {{{
@@ -2129,29 +2151,29 @@ if PM( 'Shougo/unite.vim')
 "call Map_FZF  ( "COMMAND"   , "KEY"   , "OPTIONS"                                                                        , cw )
  call Map_FZF  ( "silent! FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
  call Map_FZF  ( "silent! FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
- call Map_FZF  ( "silent! Files! "    , "p"   , ''                                                                               , 2  )
- call Map_FZF  ( "silent! Buffers"   , "b"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Ag!"       , "a"     , ""                                                                               , 3  )
- call Map_FZF  ( "silent! Lines!"    , "L"     , ""                                                                               , 2  )
- call Map_FZF  ( "silent! BLines!"   , "l"     , ""                                                                               , 2  )
- call Map_FZF  ( "silent! BTags!"    , "t"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Tags!"     , "]"     , ""                                                                               , 0  )
-"call Map_FZF  ( "silent! Locate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
- call Map_FZF  ( "silent! GitFiles"  , "v"     , ''                                                                               , 0  )
- call Map_FZF  ( "silent! Commits!"  , "g"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! BCommits!" , "G"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Snippets!" , "s"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Marks!"    , "<c-'>" , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Marks!"    , "'"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Windows!"  , "w"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! Helptags!" , "k"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfFiles! "    , "p"   , ''                                                                               , 2  )
+ call Map_FZF  ( "silent! FzfBuffers"   , "b"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfAg!"       , "a"     , ""                                                                               , 3  )
+ call Map_FZF  ( "silent! FzfLines!"    , "L"     , ""                                                                               , 2  )
+ call Map_FZF  ( "silent! FzfBLines!"   , "l"     , ""                                                                               , 2  )
+ call Map_FZF  ( "silent! FzfBTags!"    , "t"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfTags!"     , "]"     , ""                                                                               , 0  )
+"call Map_FZF  ( "silent! FzfLocate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
+ call Map_FZF  ( "silent! FzfGitFiles"  , "v"     , ''                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfCommits!"  , "g"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfBCommits!" , "G"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfSnippets!" , "s"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfMarks!"    , "<c-'>" , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfMarks!"    , "'"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfWindows!"  , "w"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfHelptags!" , "k"     , ""                                                                               , 0  )
 
  "The last param is <bang>0 to make it fullscreen
  nnoremap <silent> <c-p>p :silent! call fzf#vim#files(getcwd(), {'options': '--reverse -q'.shellescape(expand('<cword>'))}, 1)<cr>
 
 
    "nmap <c-p><c-i> <plug>(fzf-maps-n)
-   nnoremap <silent> <c-p><c-m> :Maps!<cr>
+   nnoremap <silent> <c-p><c-m> :FzfMaps!<cr>
    xmap <silent> <c-p><c-m> <plug>(fzf-maps-x)
    omap <silent> <c-p><c-m> <plug>(fzf-maps-o)
 
@@ -2246,7 +2268,7 @@ endfunction
    nnoremap <silent> <c-p><c-i> :call fzf#run({
          \   'source':  reverse(<sid>tablist()),
          \   'sink':    function('<sid>tabopen'),
-         \   'options': " --revese --preview-window right:50%  --preview 'echo {}'  --bind ?:toggle-preview",
+         \   'options': " --preview-window right:50%  --preview 'echo {}'  --bind ?:toggle-preview",
          \   'window':    '-tabnew'
          \ })<cr>
 
@@ -2261,19 +2283,71 @@ endfunction
      return  filter(split(ls, '\n'), 'v:val !~ "term://"')
    endfunction
 
-   function! s:bufopen(e)
-     execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+   function! s:bufopen(e,b)
+       let bufferNumber = matchstr(a:e, '^[ 0-9]*')
+       if bufferNumber == ''
+           let g:bufopen_cmd = get({'ctrl-s': 'split |',
+                       \ 'ctrl-v': 'vertical split |',
+                       \ 'ctrl-t': 'tabnew | '}, a:e, '')
+
+       else
+           execute g:bufopen_cmd 'buffer' bufferNumber
+           " execute 'buffer' matchstr(a:e, '^[ 0-9]*')
+       endif
    endfunction
 
+   " nnoremap <silent> <c-p><c-o> :call fzf#run({
+   "       \   'source':  reverse(<sid>buflist()),
+   "       \   'sink':    function('<sid>bufopen'),
+   "       \   'options': '+m --reverse',
+   "       \   'window':    '-tabnew'
+   "       \ })<CR>
    nnoremap <silent> <c-p><c-o> :call fzf#run({
          \   'source':  reverse(<sid>buflist()),
          \   'sink':    function('<sid>bufopen'),
-         \   'options': '+m --reverse',
+         \   'options': '+m --reverse --expect=ctrl-t,ctrl-v,ctrl-s',
          \   'window':    '-tabnew'
          \ })<CR>
-         "\   'down':    len(<sid>buflist()) + 2
 
    "}}} _open_buffers -term
+
+   "Ag {{{
+   function! s:ag_to_qf(line)
+       let parts = split(a:line, ':')
+       return {'filename': parts[0], 'lnum': parts[1], 'col': parts[2],
+                   \ 'text': join(parts[3:], ':')}
+   endfunction
+
+   function! s:ag_handler(lines)
+       if len(a:lines) < 2 | return | endif
+
+       let cmd = get({'ctrl-x': 'split',
+                   \ 'ctrl-v': 'vertical split',
+                   \ 'ctrl-t': 'tabe'}, a:lines[0], 'e')
+       let list = map(a:lines[1:], 's:ag_to_qf(v:val)')
+
+       let first = list[0]
+       execute cmd escape(first.filename, ' %#\')
+       execute first.lnum
+       execute 'normal!' first.col.'|zz'
+
+       if len(list) > 1
+           call setqflist(list)
+           copen
+           wincmd p
+       endif
+   endfunction
+
+   command! -nargs=* AgCustom call fzf#run({
+               \ 'source':  printf('ag --nogroup --column --color "%s"',
+               \                   escape(empty(<q-args>) ? '^(?=.)' : <q-args>, '"\')),
+               \ 'sink*':    function('<sid>ag_handler'),
+               \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --delimiter : --nth 4.. '.
+               \            '--multi --bind=ctrl-a:select-all,ctrl-d:deselect-all '.
+               \            '--color hl:68,hl+:110',
+               \ 'down':    '50%'
+               \ })
+   "}}} _Ag
 
    "open_terms {{{
    function! s:termlist()
@@ -2322,7 +2396,7 @@ endfunction
  " ranger.vim {{{
 
    call PM( 'francoiscabrol/ranger.vim' )
-   call PM( 'rbgrouleff/bclose.vim' )
+   call PM( 'rbgrouleff/bclose.vim' ) "used by dirvish to close the buffer
    let g:ranger_map_keys = 0
    nnoremap <leader>ar :call OpenRanger()<CR>
 
@@ -2334,9 +2408,9 @@ endfunction
     augroup my_dirvish_events
       autocmd!
 
-      "autocmd FileType dirvish nnoremap <buffer> <leader>r :Rename <c-r>=getline('.')<cr><space>
-      "autocmd FileType dirvish nnoremap <buffer> <leader>m :Move   <c-r>=shellescape(getline('%'))<cr>
-      "autocmd FileType dirvish nnoremap <buffer> <leader>c :saveas <c-r>=@%<cr><space>
+      autocmd FileType dirvish nnoremap <buffer> <leader>r :Rename <c-r>=getline('.')<cr><space>
+      autocmd FileType dirvish nnoremap <buffer> <leader>m :Move   <c-r>=shellescape(getline('%'))<cr>
+      autocmd FileType dirvish nnoremap <buffer> <leader>c :saveas <c-r>=@%<cr><space>
 
       " Map t to "open in new tab".
       autocmd FileType dirvish
@@ -2349,7 +2423,10 @@ endfunction
       endif
 
       " Map CTRL-R to reload the Dirvish buffer.
-      autocmd FileType dirvish nnoremap <buffer> <C-R> :<C-U>Dirvish %<CR>
+      autocmd FileType dirvish nnoremap <buffer> <C-R> <Cmd>Dirvish %<CR>
+
+      "autocmd FileType dirvish nmap <buffer> q <Plug>BW
+      autocmd FileType dirvish nnoremap <buffer> q <Cmd>Bclose<CR>
 
       " Map `gh` to hide dot-prefixed files.
       " To "toggle" this, just press `R` to reload.
@@ -2444,6 +2521,13 @@ endfunction
       \     "abc_turtle/app/*.php": {"type": "m"},
       \     "abc_turtle/resources/bread/*.php": {"type": "b"},
       \     "abc_turtle/resources/views/*s/": {"type": "v"}
+      \   },
+      \   "knights/": {
+      \     "knights/app/Http/Controllers/*Controller.php": {"type": "c"},
+      \     "knights/app/*.php": {"type": "m"},
+      \     "knights/vendor/Kjdion84/Laraback/src/Commands/BreadCommand.php": {"type": "b"},
+      \     "/Users/juju/Projects/PHP/knights/vendor/kjdion84/laraback/resources/bread/stubs/" : {"type": "p"},
+      \     "knights/resources/views/*s/": {"type": "v"}
       \   }
       \ }
     nnoremap <leader>pc :execute ":Ec ".expand("%:t:r")<cr>
@@ -2471,7 +2555,19 @@ call PM('kopischke/vim-stay')
 
  " nvim-miniyank {{{
 
-call PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
+if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
+    let g:miniyank_filename = $HOME."/.config/nvim/.cache/miniyank.mpack"
+    map p <Plug>(miniyank-autoput)
+    map P <Plug>(miniyank-autoPut)
+    map [p <Plug>(miniyank-cycle)
+
+    map ]p <Plug>(miniyank-startput)
+    map ]P <Plug>(miniyank-startPut)
+
+    map <Leader><Leader>c <Plug>(miniyank-tochar)
+    map <Leader><Leader>l <Plug>(miniyank-toline)
+    map <Leader><Leader>b <Plug>(miniyank-toblock)
+endif
 
  "}}} _nvim-miniyank
 
@@ -2764,7 +2860,7 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
    "let g:undotree_WindowLayout = 2
    nnoremap <leader>ut :UndotreeToggle<cr>
    nnoremap <leader>us :UndotreeShow<cr>
- endif 
+ endif
 
  "}}} _undotree
  " Gundo.vim {{{
@@ -2807,6 +2903,9 @@ endif
          \["asset", "\.[js|css|scss|sass|less|stylus]$"],
          \["org", "\.[org]$"],
          \["config", "config\/"],
+         \["route", "route\/"],
+         \["v-cmd", "vendor\/\.\*\/Commands\/\.\*.php"],
+         \["v-bread", "vendor\/\.\*\/bread\/\.\*.php"],
          \["term", "term"]
          \]
  "let g:vim_drawer_spaces = [ ["controller", "Controller\.php"], ["model", "app\/"], ["view", "\.blade\.php$"], ["asset", "\.[js|css|scss|sass|less|stylus]$"], ["org", "\.[org]$"], ["config", "config\/"], ["term", "term"] ]
@@ -2920,7 +3019,7 @@ endif
  " ----------------------------------------------------------------------------
  " neovim-qt {{{
  " ----------------------------------------------------------------------------
-   call PM( 'equalsraf/neovim-gui-shim' )
+    " call PM( 'equalsraf/neovim-gui-shim' )
  " }}}
  " ----------------------------------------------------------------------------
  " gonvim {{{
@@ -3035,6 +3134,9 @@ endif
    endfunction
 
    function! LightLineFilename()
+     if exists('b:fname')
+         return b:fname
+     endif
      let fname = expand('%:t')
      if fname == 'zsh'
        return "  "
@@ -3106,6 +3208,8 @@ endif
 
  endif " PM()
  "}}}
+
+ call PM('gcmt/taboo.vim')
 
  " vim-startify {{{
  if PM( 'mhinz/vim-startify' )
@@ -3205,40 +3309,78 @@ endif
  endif
 
  "colorschemes
-   call PM('kristijanhusak/vim-hybrid-material')
-   call PM('jdkanani/vim-material-theme')
-   call PM('khalidchawtany/vim-materialtheme')
-   call PM('gkjgh/cobalt')
-   call PM('ajmwagar/vim-dues')
-   call PM('rakr/vim-one')
-   call PM('kudabux/vim-srcery-drk')
-   call PM('1995parham/tomorrow-night-vim')
-   call PM('prognostic/plasticine')
-   call PM('sjl/badwolf')
-   call PM('jakwings/vim-colors')
-   call PM('vim-scripts/Shades-of-Amber')
-   call PM('preocanin/greenwint')
-   call PM('lu-ren/SerialExperimentsLain')
-   call PM('aunsira/macvim-light')
-   call PM('NewProggie/NewProggie-Color-Scheme')
-   call PM('LanFly/vim-colors')
-   call PM('nightsense/seabird')
-   call PM('ayu-theme/ayu-vim')
-   call PM('lifepillar/vim-wwdc17-theme')
-   call PM('sonobre/briofita_vim')
-   call PM('jakwings/vim-colors')
-   call PM('dim13/xedit.vim')
-   call PM('aunsira/macvim-light')
+call PM('nightsense/snow')
+call PM('kristijanhusak/vim-hybrid-material')
+call PM('jdkanani/vim-material-theme')
+call PM('khalidchawtany/vim-materialtheme')
+call PM('gkjgh/cobalt')
+call PM('ajmwagar/vim-dues')
+call PM('rakr/vim-one')
+call PM('kudabux/vim-srcery-drk')
+call PM('1995parham/tomorrow-night-vim')
+call PM('prognostic/plasticine')
+call PM('sjl/badwolf')
+call PM('jakwings/vim-colors')
+call PM('vim-scripts/Shades-of-Amber')
+call PM('preocanin/greenwint')
+call PM('lu-ren/SerialExperimentsLain')
+call PM('aunsira/macvim-light')
+call PM('NewProggie/NewProggie-Color-Scheme')
+call PM('LanFly/vim-colors')
+call PM('nightsense/seabird')
+call PM('ayu-theme/ayu-vim')
+set termguicolors     " enable true colors support
+let ayucolor="dark"   " for dark version of theme
+let ayucolor="mirage" " for mirage version of theme
+let ayucolor="light"  " for light version of theme
+colorscheme ayu
+ " IndentLine {{
+let g:indentLine_char = '?'
+let g:indentLine_first_char = '?'
+let g:indentLine_showFirstIndentLevel = 1
+let g:indentLine_setColors = 0
+" }}
+call PM('arcticicestudio/nord-vim')
+
+call PM('joshdick/onedark.vim')
+let g:onedark_terminal_italics = 1
+
+call PM('drewtempelmeyer/palenight.vim')
+let g:lightline.colorscheme = 'palenight'
+let g:palenight_terminal_italics=1
+
+call PM('mhartington/oceanic-next')
+let g:airline_theme='oceanicnext'
+let g:oceanic_next_terminal_bold = 0
+let g:oceanic_next_terminal_italic = 1
+colorscheme OceanicNext
+
+call PM('lifepillar/vim-wwdc17-theme')
+call PM('sonobre/briofita_vim')
+call PM('jakwings/vim-colors')
+call PM('aunsira/macvim-light')
+call PM('kamwitsta/flatwhite-vim')
+call PM('rakr/vim-one')
+let g:one_allow_italics = 1 " I love italic for comments
+call PM('rakr/vim-two-firewatch')
+let g:two_firewatch_italics=1
+call PM('endel/vim-github-colorscheme')
+call PM('rakr/vim-colors-rakr')
+call PM('mswift42/vim-themes')
+call PM('vim-scripts/summerfruit256.vim')
+call PM('andbar-ru/vim-unicon')
+call PM('reedes/vim-colors-pencil')
+let g:pencil_terminal_italics = 1
  "}}}
  " ----------------------------------------------------------------------------
  " Presenters :) {{{
  " ----------------------------------------------------------------------------
 
  " vim-leader-guide {{{
-    if PM('hecal3/vim-leader-guide') 
+    if PM('hecal3/vim-leader-guide')
 
       "nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
-      nnoremap <leader> <cmd> LeaderGuide '<Space>'<CR>
+      nnoremap <leader> <cmd>LeaderGuide '<Space>'<CR>
       vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
       let g:leaderGuide_max_size = 10
@@ -3246,7 +3388,7 @@ endif
       au FileType leaderGuide set norelativenumber
 
       "let g:leaderGuide_run_map_on_popup = 0
-      let g:leaderGuide_flatten=0
+      let g:leaderGuide_flatten=1
 
       let g:lmap =  {}
       let g:lmap.a   = { 'name' : 'Tabularize' }

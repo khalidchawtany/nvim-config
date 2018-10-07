@@ -13,7 +13,7 @@ Map iovxnct  ◊Ú  <C-'><C-;>
 nnoremap <leader>tl :tabs<cr>
 nnoremap <leader>tn :tabnew<cr>
 nnoremap <leader>tt :tabnew \| e term://zsh<cr>
-nnoremap <leader>th :tab help<space> 
+nnoremap <leader>th :tab help<space>
 
 " Utils {{{
 "===============================================================================
@@ -258,7 +258,7 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
   nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
 
   " <c-y>f Copy the full path of the current file to the clipboard
-  nnoremap <silent> ycf :let @+=expand("%:p")<cr>:echo "Copied current file
+  nnoremap <silent> <leader>cp :let @+=expand("%:p")<cr>:echo "Copied current file
         \ path '".expand("%:p")."' to clipboard"<cr>
 
   " rename current buffers file
@@ -323,9 +323,23 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
   "===============================================================================
 
   " Laravel
-  nnoremap <c-;>lv :e ./app/views/<cr>
-  nnoremap <c-;>lc :e ./app/views/partials/<cr>
-  nnoremap <c-;>lp :e ./public/<cr>
+
+  function! EditIfExists(path)
+      if !empty(glob(a:path))
+          execute ":edit" a:path "<cr>"
+      else
+          echo "path does not exist!"
+      endif
+  endfunction
+
+  nnoremap <leader>lv :e <c-r>=FindGitDirOrRoot()<cr>/resources/views/<cr>
+  " nnoremap <leader>lv call EditIfExists(<c-r>=FindGitDirOrRoot()<cr>/resources/views/)
+  nnoremap <leader>lm :e <c-r>=FindGitDirOrRoot()<cr>/database/migrations/<cr>
+  nnoremap <leader>lf :e <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>
+  nnoremap <leader>ls :e <c-r>=FindGitDirOrRoot()<cr>/database/seeds/<cr>
+  nnoremap <leader>lc :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
+  nnoremap <leader>la :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
+  nnoremap <leader>lp :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
 
   " Java
   "nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
@@ -354,3 +368,5 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
 
 
 
+  nnoremap gr *yiw:%s//<c-r>"/g<left><left>
+  vnoremap gr y:%s/<c-r>"/<c-r>"/g<left><left>

@@ -1,7 +1,7 @@
-"source ~/.config/nvim/plugged/neovim-gui-shim/plugin/nvim_gui_shim.vim
+let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-GuiFont! Operator Mono:h20
+GuiFont! Operator Mono:h17
 
 let g:gui_fonts = [
       \ 'Operator Mono:h17',
@@ -28,7 +28,7 @@ command! PrevFont call ToggleFont(-1)
 nnoremap c]f :<c-u>NextFont<cr>
 nnoremap c[f :<c-u>PrevFont<cr>
 
-let g:linespace = 8
+let g:linespace = 10
 call rpcnotify(0, 'Gui', 'Linespace', g:linespace)
 
 "command! Bigger :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', ''))
@@ -51,10 +51,19 @@ nnoremap <silent> <c-w><bs>   :let g:WindowFrameless=(g:WindowFrameless + 1) % 2
 
 set mouse=a
 set nottimeout
-hi PmenuSel guibg=white guifg=#B34826
 
-//Don't use gui tabline
-call rpcnotify(0, "Gui", "Option", "Tabline", "false")
+if &background == "light"
+    hi PmenuSel guibg=darkorange guifg=#B34826
+else
+    hi PmenuSel guibg=darkorange guifg=#B34826
+endif
+
+"Don't use gui tabline and Popup menu
+" call rpcnotify(0, "Gui", "Option", "Tabline", "false")
+" call rpcnotify(0, 'Gui', 'Option', 'Popupmenu', 0) 
+GuiTabline 0
+GuiPopupmenu 0
+
 
 
 "Make c-^ consitent between terminal and GUI
@@ -66,6 +75,8 @@ tnoremap <D-V> <c-\><c-n>"+pi
 cnoremap <D-V> <c-r>+
 vnoremap <D-V> "+p
 
+nnoremap <D-S> <cmd>w<cr>
+
 inoremap <D-V> <c-\><c-n>:set paste<cr>"+p:set nopaste<cr>li
 nnoremap <D-P> <c-\><c-n>"+p
 tnoremap <D-P> <c-\><c-n>"+pi
@@ -75,7 +86,7 @@ inoremap <D-P> <c-\><c-n>:set paste<cr>"+p:set nopaste<cr>li
 
 vnoremap <D-C> "+y
 vnoremap <D-Y> "+y
-tnoremap <D-v> <C-\><C-N>"+pA
+" tnoremap <D-v> <C-\><C-N>"+pA
 nnoremap <D-v> <C-\><C-N>"+pA
 vnoremap <D-c> "+y
 
@@ -96,4 +107,4 @@ let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.
-"call GuiWindowMaximized(2)<cr>
+call GuiWindowMaximized(2)<cr>

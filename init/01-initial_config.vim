@@ -79,7 +79,7 @@ set linebreak
 set expandtab
 
 " Folding
-set foldmethod=marker
+set foldmethod=manual
 set foldlevel=0
 set modelines=1
 

@@ -7,10 +7,8 @@ let $diff_me=0
 let g:uncrustify_cfg_file_path =
       \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
 
-"colorscheme materialtheme
-set background=light
-"colorscheme PaperColor
-colorscheme macvim-light
+set background=dark
+colorscheme palenight
 
 
 "set rulerformat to include line:col filename +|''
@@ -165,7 +163,7 @@ set expandtab
 "TODO: tpope sets smarttab
 set nosmarttab
 
-set shiftwidth=2
+set shiftwidth=4
 set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
 
 set guifont=Sauce\ Code\ Powerline\ Light:h18
