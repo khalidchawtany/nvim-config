@@ -284,6 +284,8 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
 
   nnoremap <c-k><c-d> :silent! call Preserve("normal gg=G")<cr>
 
+  nnoremap cos :set scrollbind!<cr>
+
   "toggle showcmd
   nnoremap co: :set showcmd!<cr>
   nnoremap co; :set showcmd!<cr>

@@ -42,7 +42,8 @@ let g:_did_vimrc_plugins = 1
    autocmd BufReadPost fugitive://* set bufhidden=delete
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-   LMap N <leader>gs <SID>Status  :call fugitive#detect(getcwd()) \| Gstatus<cr>
+   LMap N <leader>gs <SID>Status  :call fugitive#detect(getcwd()) \| :Gstatus<cr>
+   LMap N <leader>g<leader> <SID>TabStatus  :call fugitive#detect(getcwd()) \| :Gtabedit :<cr>
    LMap N <leader>gc <SID>Commit  :call fugitive#detect(getcwd()) \| execute ":Gcommit"<cr>
    LMap N <leader>gp <SID>Pull    :call fugitive#detect(getcwd()) \| execute ":Gpull"<cr>
    LMap N <leader>gu <SID>Push    :call fugitive#detect(getcwd()) \| execute ":Gpush"<cr>
@@ -379,6 +380,11 @@ call PM('terryma/vim-expand-region')
  "}}} _NrrwRgn
 
  " Yank
+ "markbar {{{
+if PM('Yilin-Yang/vim-markbar')
+    nmap <leader>'' <Plug>ToggleMarkbar
+endif
+"}}} _markbar
  " vim-peekaboo {{{
 
    if PM( 'junegunn/vim-peekaboo' )
@@ -795,9 +801,23 @@ call PM('terryma/vim-expand-region')
 
  "}}} _vim-obsession
 
- call PM('Asheq/close-buffers.vim')
- nnoremap <c-;>wh <cmd>CloseHiddenBuffers<cr>
- nnoremap <c-;><c-w><c-h> <cmd>CloseHiddenBuffers<cr>
+ "close-buffers.vim {{{
+ if PM('Asheq/close-buffers.vim')
+     nnoremap <c-;>wh <cmd>CloseHiddenBuffers<cr>
+     nnoremap <c-;><c-w><c-h> <cmd>CloseHiddenBuffers<cr>
+ endif
+ "}}} _close-buffers.vim
+
+
+ "chromatica {{{
+ if PM('arakashic/chromatica.nvim')
+     let test#strategy = "neovim"
+ endif
+ "}}} _chromatica
+
+ "nvim-palette {{{
+ call PM('teto/nvim-palette', { 'do': ':UpdateRemotePlugins'})
+ "}}} _nvim-palette
 
  " vim-autoswap {{{
 
@@ -848,6 +868,9 @@ call PM('terryma/vim-expand-region')
  " ----------------------------------------------------------------------------
  " languages {{{
  " ----------------------------------------------------------------------------
+
+ " Advanced Syntax Highlighting
+call PM('sheerun/vim-polyglot')
 
  "GoDot
  if PM('quabug/vim-gdscript', {'on_ft': ['gdscript']})
@@ -1281,9 +1304,81 @@ endif
 
  " ale {{{
  if PM( 'w0rp/ale' )
+
+   augroup ALE_HIGHLIGHT
+       autocmd!
+       autocmd VimEnter *  highlight ALEVirtualTextError  gui=underline,italic guifg=red
+             \| highlight ALEVirtualTextInfo  gui=underline,italic guifg=white
+             \| highlight ALEVirtualTextStyleError  gui=underline,italic guifg=orange
+             \| highlight ALEVirtualTextStyleWarning  gui=underline,italic guifg=yellow
+             \| highlight ALEVirtualTextWarning  gui=underline,italic guifg=yellow
+   augroup END
+
+
+   " let g:ale_fix_on_save = 0
    let g:ale_sign_error = '‚óè' " Less aggressive than the default '>>'
-   let g:ale_sign_warning = '.'
+   let g:ale_sign_warning = '‚óè'
    let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
+   let g:ale_set_loclist = 1
+   let g:ale_set_quickfix = 1
+   let g:ale_virtualtext_cursor = 1
+   let g:ale_virtualtext_prefix = ' '
+   let g:ale_list_window_size = 5
+   let g:ale_warn_about_trailing_blank_lines = 1
+   let g:ale_warn_about_trailing_whitespace = 1
+   let g:ale_statusline_format = ['E•%d', 'W•%d', 'OK']
+   let g:ale_echo_msg_format = '[%linter%] %code% %s'
+   let g:ale_javascript_prettier_use_local_config = 1
+   let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf'
+   " Auto update the option when textwidth is dynamically set or changed in a ftplugin file
+   au! OptionSet textwidth let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi'
+
+   let g:ale_linter_aliases = {
+       \ 'mail': 'markdown',
+       \ 'html': ['html', 'css']
+       \}
+
+   let g:ale_linters = {
+       \ 'javascript': ['eslint', 'flow'],
+       \}
+
+   let g:ale_fixers = {
+       \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
+       \   'markdown'  : [ 'prettier' ],
+       \   'javascript': [ 'prettier' ],
+       \   'css'       : [ 'prettier' ],
+       \   'json'      : [ 'prettier' ],
+       \   'scss'      : [ 'prettier' ],
+       \   'yaml'      : [ 'prettier' ],
+       \   'graphql'   : [ 'prettier' ],
+       \   'html'      : [ 'prettier' ],
+       \   'reason'    : [ 'refmt' ],
+       \   'python'    : [ 'black' ],
+       \}
+
+   " Don't auto fix (format) files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
+   let g:ale_pattern_options_enabled = 1
+   let g:ale_pattern_options = {
+       \   '\.min\.(js\|css)$': {
+       \       'ale_linters': [],
+       \       'ale_fixers': []
+       \   },
+       \   'jquery.*': {
+       \       'ale_linters': [],
+       \       'ale_fixers': []
+       \   },
+       \   'node_modules/.*': {
+       \       'ale_linters': [],
+       \       'ale_fixers': []
+       \   },
+       \   'package.json': {
+       \       'ale_fixers': []
+       \   },
+       \   'Sites/personal/forks/.*': {
+       \       'ale_fixers': []
+       \   },
+   \}
+
  endif
  "}}} _ale
 
@@ -1300,7 +1395,14 @@ endif
  "}}} _syntastic
  " vim-test {{{
 
-   call PM( 'janko-m/vim-test', {'on_cmd': [ 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' ]} )
+ if PM('janko-m/vim-test')  ", {'on_cmd': [ 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' ]})
+     " these "Ctrl mappings" work well when Caps Lock is mapped to Ctrl
+     nnoremap <silent> t<C-n> :TestNearest<CR>
+     nnoremap <silent> t<C-f> :TestFile<CR>
+     nnoremap <silent> t<C-s> :TestSuite<CR>
+     nnoremap <silent> t<C-l> :TestLast<CR>
+     nnoremap <silent> t<C-g> :TestVisit<CR>
+ endif
 
  "}}} _vim-test
 
@@ -1373,6 +1475,41 @@ endif
  " AutoCompletion {{{
  " ----------------------------------------------------------------------------
 
+if PM('ncm2/ncm2')
+
+    call PM('roxma/nvim-yarp')
+    " enable ncm2 for all buffers
+    autocmd BufEnter * call ncm2#enable_for_buffer()
+
+    " IMPORTANTE: :help Ncm2PopupOpen for more information
+    set completeopt=noinsert,menuone,noselect
+
+    " When the <Enter> key is pressed while the popup menu is visible, it only
+    " hides the menu. Use this mapping to close the menu and also start a new
+    " line.
+    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+
+
+    " Use <TAB> to select the popup menu:
+    " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+    " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
+    inoremap <c-c> <ESC>
+
+     " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
+    " found' messages
+    set shortmess+=c
+
+    " NOTE: you need to install completion sources to get completions. Check
+    " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
+    call PM('ncm2/ncm2-bufword')
+    call PM('ncm2/ncm2-tmux')
+    call PM('ncm2/ncm2-path')
+
+endif
+
+
 if PM( 'roxma/nvim-completion-manager',
          \ {
          \ 'if': '!exists("g:gui_oni") && exists("g:gui_oni")',
@@ -1385,7 +1522,7 @@ if PM( 'roxma/nvim-completion-manager',
   "inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
  " requires phpactor
  call PM('phpactor/phpactor' ,  {'build': 'composer install'})
- call PM('roxma/ncm-phpactor')
+ call PM('roxma/ncm2-phpactor')
 
  call PM('othree/csscomplete.vim')
  call PM('calebeby/ncm-css')
@@ -2064,7 +2201,6 @@ if PM( 'Shougo/unite.vim')
     let $FZF_DEFAULT_OPTS="--history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'"
 
     "let $FZF_DEFAULT_COMMAND='ag -l -g ""'
-    "Use rg instead of ag {{{
     let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules}/*" --glob "!*{.jpg,png}" 2> /dev/null'
 
     command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/null', 1, <bang>0)
@@ -2159,8 +2295,8 @@ if PM( 'Shougo/unite.vim')
  call Map_FZF  ( "silent! FzfTags!"     , "]"     , ""                                                                               , 0  )
 "call Map_FZF  ( "silent! FzfLocate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
  call Map_FZF  ( "silent! FzfGitFiles"  , "v"     , ''                                                                               , 0  )
- call Map_FZF  ( "silent! FzfCommits!"  , "g"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfBCommits!" , "G"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfCommits!"  , "G"     , ""                                                                               , 0  )
+ call Map_FZF  ( "silent! FzfBCommits!" , "g"     , ""                                                                               , 0  )
  call Map_FZF  ( "silent! FzfSnippets!" , "s"     , ""                                                                               , 0  )
  call Map_FZF  ( "silent! FzfMarks!"    , "<c-'>" , ""                                                                               , 0  )
  call Map_FZF  ( "silent! FzfMarks!"    , "'"     , ""                                                                               , 0  )
@@ -2214,10 +2350,10 @@ if PM( 'Shougo/unite.vim')
    let g:fzf_action = {
          \ 'ctrl-m': 'e!',
          \ 'ctrl-t': 'tabedit!',
-         \ 'ctrl-x': 'split',
-         \ 'ctrl-o': 'PrintPathInNextLine',
-         \ 'ctrl-i': 'PrintPath',
+         \ 'ctrl-s': 'split',
          \ 'ctrl-v': 'vsplit' }
+         " \ 'ctrl-i': 'PrintPath',
+         " \ 'ctrl-o': 'PrintPathInNextLine',
 
    command! FZFMru call fzf#run({
          \ 'source':  reverse(s:all_files()),
@@ -2435,7 +2571,7 @@ endfunction
 
       if PM_ISS('vim-fugitive')
         " Enable :Gstatus and friends.
-        autocmd FileType dirvish call fugitive#detect(@%)
+        " autocmd FileType dirvish call fugitive#detect(@%)
       endif
 
       " Map CTRL-R to reload the Dirvish buffer.
@@ -2905,7 +3041,9 @@ endif
 
  "}}} _history-traverse
 
- call PM('thameera/vimv')
+ "Batch rename
+ call PM('qpkorr/vim-renamer')
+
 
  " vim_drawer {{{
  if PM('samuelsimoes/vim-drawer', {
@@ -2987,6 +3125,25 @@ endif
  "}}} _nvimux
 
  "}}} _Navigation
+
+ if PM('khalidchawtany/fze')
+     nnoremap     <C-;>rf <cmd>Fze<cr>
+ endif
+
+ "ctrlsf.vim {{{
+ if PM('dyng/ctrlsf.vim')
+     nmap     <C-;>ff <Plug>CtrlSFPrompt
+     vmap     <C-;>ff <Plug>CtrlSFVwordPath
+     vmap     <C-;>fF <Plug>CtrlSFVwordExec
+     nmap     <C-;>fn <Plug>CtrlSFCwordPath
+     nmap     <C-;>fp <Plug>CtrlSFPwordPath
+     nnoremap <C-;>fo :CtrlSFOpen<CR>
+     nnoremap <C-;>ft :CtrlSFToggle<CR>
+     inoremap <C-;>ft <Esc>:CtrlSFToggle<CR>
+ endif
+ "}}} _ctrlsf.vim
+
+ " }}} _Navigation
  " ----------------------------------------------------------------------------
  " Folds {{{
  " ----------------------------------------------------------------------------
@@ -3067,8 +3224,7 @@ endif
  " lightline {{{
  if PM( 'itchyny/lightline.vim' )
 
-   "\   'fileformat': 'LightLineFileformat',
-   "\   'filetype': 'LightLineFiletype',
+   call PM( 'NovaDev94/lightline-onedark' )
 
    let g:lightline = {
          \ 'active': {
@@ -3126,20 +3282,11 @@ endif
      "return fileformat
    endfunction
 
-   call PM( 'shinchu/lightline-gruvbox.vim' )
-   call PM( 'cocopon/iceberg.vim')
-   call PM( 'yankcrime/direwolf')
-   call PM( 'rakr/vim-one')
-   call PM( 'vim-scripts/summerfruit256.vim')
-   call PM( 'NLKNguyen/papercolor-theme')
-   call PM( 'junegunn/seoul256.vim')
-   call PM( 'vim-scripts/pyte')
-   call PM( 'trevordmiller/nova-vim')
-   if PM( 'khalidchawtany/lightline-material.vim' )
-     " let g:lightline.colorscheme = 'gruvbox'
-     " let g:lightline.colorscheme = 'wombat'
-     " let g:lightline.colorscheme = 'material'
-   endif " PM()
+   let g:lightline.colorscheme = 'onedark'
+   " let g:lightline.colorscheme = 'material'
+   " let g:lightline.colorscheme = 'gruvbox'
+   " let g:lightline.colorscheme = 'wombat'
+   " let g:lightline.colorscheme = 'nova'
 
    function! LightLineModified()
      return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'
@@ -3222,10 +3369,9 @@ endif
    let g:vimfiler_force_overwrite_statusline = 0
    let g:vimshell_force_overwrite_statusline = 0
 
+
  endif " PM()
  "}}}
-
- call PM('gcmt/taboo.vim')
 
  " vim-startify {{{
  if PM( 'mhinz/vim-startify' )
@@ -3325,25 +3471,14 @@ endif
  endif
 
  "colorschemes
+call PM( 'rakr/vim-one')
+call PM( 'NLKNguyen/papercolor-theme')
+call PM( 'trevordmiller/nova-vim')
 call PM('nightsense/snow')
 call PM('kristijanhusak/vim-hybrid-material')
 call PM('jdkanani/vim-material-theme')
 call PM('khalidchawtany/vim-materialtheme')
-call PM('gkjgh/cobalt')
-call PM('ajmwagar/vim-dues')
-call PM('rakr/vim-one')
-call PM('kudabux/vim-srcery-drk')
-call PM('1995parham/tomorrow-night-vim')
-call PM('prognostic/plasticine')
-call PM('sjl/badwolf')
-call PM('jakwings/vim-colors')
-call PM('vim-scripts/Shades-of-Amber')
-call PM('preocanin/greenwint')
-call PM('lu-ren/SerialExperimentsLain')
 call PM('aunsira/macvim-light')
-call PM('NewProggie/NewProggie-Color-Scheme')
-call PM('LanFly/vim-colors')
-call PM('nightsense/seabird')
 call PM('ayu-theme/ayu-vim')
 set termguicolors     " enable true colors support
 let ayucolor="dark"   " for dark version of theme
@@ -3358,11 +3493,7 @@ let g:indentLine_setColors = 0
 " }}
 call PM('arcticicestudio/nord-vim')
 
-call PM('joshdick/onedark.vim')
-let g:onedark_terminal_italics = 1
-
 call PM('drewtempelmeyer/palenight.vim')
-let g:lightline.colorscheme = 'palenight'
 let g:palenight_terminal_italics=1
 
 call PM('mhartington/oceanic-next')

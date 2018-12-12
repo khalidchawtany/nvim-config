@@ -366,3 +366,28 @@ endsnippet
 snippet "(\S.*);die" "die postfix code" br
 die(`!p snip.rv = match.group(1)`);
 endsnippet
+
+
+snippet tc "Test Case"
+<?php
+
+namespace Tests\Feature;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+class ${1:`!p
+snip.rv = snip.basename or "untitled"`} extends TestCase
+{
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function ${2:testExample}()
+    {
+				$0
+    }
+}
+endsnippet

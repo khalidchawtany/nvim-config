@@ -270,7 +270,7 @@ set hidden
 "set laststatus=2                      " force status line display
 set laststatus=0                      " force status line display
 set foldlevelstart=2
-set showtabline=0                     " hide tabline
+set showtabline=1                     " hide tabline
 set noerrorbells visualbell t_vb=     " Disable error bells
 set nostartofline                     " Don’t reset cursor to start of line when moving around
 set ruler                             " Show the cursor position
