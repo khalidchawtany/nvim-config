@@ -815,9 +815,6 @@ endif
  endif
  "}}} _chromatica
 
- "nvim-palette {{{
- call PM('teto/nvim-palette', { 'do': ':UpdateRemotePlugins'})
- "}}} _nvim-palette
 
  " vim-autoswap {{{
 
@@ -1020,6 +1017,22 @@ call PM('sheerun/vim-polyglot')
  call PM( 'chrisbra/csv.vim', {'on_ft': ['csv']} )
 
  " PHP
+
+ call PM('joonty/vdebug')
+ call PM('StanAngeloff/php.vim')
+ call PM('stephpy/vim-php-cs-fixer')
+ call PM('nishigori/vim-php-dictionary', {'on_ft': 'php'})
+ call PM('phpactor/phpactor' ,  {'build': 'composer install'})
+ autocmd FileType php setlocal omnifunc=phpactor#Complete
+ let g:phpactorOmniError = v:true
+ if PM('adoy/vim-php-refactoring-toolbox')
+     let g:vim_php_refactoring_use_default_mapping = 0
+ endif
+ if PM('tobyS/vmustache')
+     call PM('tobyS/pdv', {'on_ft': 'php'})
+ endif
+
+
  " phpcomplete.vim {{{
 
    "Plug 'shawncplus/phpcomplete.vim'
@@ -1478,16 +1491,22 @@ endif
 if PM('ncm2/ncm2')
 
     call PM('roxma/nvim-yarp')
+    call PM('ncm2/ncm2-bufword')
+    call PM('ncm2/ncm2-tmux')
+    call PM('ncm2/ncm2-path')
+    call PM('ncm2/ncm2-ultisnips')
+    call PM('phpactor/ncm2-phpactor', { 'rev': 'develop'})
+    " call PM('khalidchawtany/ncm2-phpactor')
+    call PM('ncm2/ncm2-go')
+    call PM('ncm2/ncm2-tern')
+    call PM('ncm2/ncm2-cssomni')
+    call PM('fgrsnau/ncm2-otherbuf', { 'rev': 'ncm2' })
+
     " enable ncm2 for all buffers
     autocmd BufEnter * call ncm2#enable_for_buffer()
 
     " IMPORTANTE: :help Ncm2PopupOpen for more information
     set completeopt=noinsert,menuone,noselect
-
-    " When the <Enter> key is pressed while the popup menu is visible, it only
-    " hides the menu. Use this mapping to close the menu and also start a new
-    " line.
-    inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 
 
     " Use <TAB> to select the popup menu:
@@ -1503,31 +1522,9 @@ if PM('ncm2/ncm2')
 
     " NOTE: you need to install completion sources to get completions. Check
     " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-    call PM('ncm2/ncm2-bufword')
-    call PM('ncm2/ncm2-tmux')
-    call PM('ncm2/ncm2-path')
-
 endif
 
-
-if PM( 'roxma/nvim-completion-manager',
-         \ {
-         \ 'if': '!exists("g:gui_oni") && exists("g:gui_oni")',
-         \ 'on_if': '!exists("g:gui_oni")'
-         \ })
-
   call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
-  "autocmd FileType php LanguageClientStart
-
-  "inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
- " requires phpactor
- call PM('phpactor/phpactor' ,  {'build': 'composer install'})
- call PM('roxma/ncm2-phpactor')
-
- call PM('othree/csscomplete.vim')
- call PM('calebeby/ncm-css')
-
- call PM('jsfaint/gen_tags.vim')
 
  if PM('autozimu/LanguageClient-neovim',
        \ {
@@ -1548,82 +1545,6 @@ if PM( 'roxma/nvim-completion-manager',
    nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
    nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
  endif
-endif
-
- "deoplete
- " deoplete.nvim {{{
-
- if PM( 'Shougo/deoplete.nvim',
-       \ {
-       \ 'on_event': ['InsertEnter', 'VimEnter'],
-       \ 'on_if': 'has("nvim")' ,
-       \ 'hook_post_source' :
-       \ "
-       \        call deoplete#custom#set('member', 'file', 9999)
-       \     |  call deoplete#custom#set('member', 'rank', 9998)
-       \     |  call deoplete#custom#set('buffer', 'rank', 9997)
-       \     |  call deoplete#custom#set('ultisnips', 'rank', 9996)
-       \     |  call deoplete#custom#set('omni', 'rank', 9995)
-       \ "
-       \ })
-       "\    call deoplete#custom#set('_', 'matchers', ['matcher_full_fuzzy'])
-       "\  | call deoplete#custom#set('_', 'sorters', ['sorter_word'])
-
-   let g:deoplete#auto_complete_delay=0
-
-   "let g:deoplete#omni_patterns = {} //This disables all features
-   let g:deoplete#enable_fuzzy_completion = 1
-   let g:deoplete#auto_completion_start_length = 1
-   let g:deoplete#enable_at_startup = 1
-   let g:deoplete#enable_ignore_case = 1
-   let g:deoplete#enable_smart_case = 1
-   let g:deoplete#enable_camel_case = 1
-   "let g:deoplete#enable_refresh_always = 1
-   let g:deoplete#max_abbr_width = 0
-   let g:deoplete#max_menu_width = 0
-   let g:deoplete#omni#input_patterns = get(g:,'deoplete#omni#input_patterns',{})
-		let g:deoplete#omni#input_patterns.ruby =  ['[^. *\t]\.\w*', '[a-zA-Z_]\w*::']
-		let g:deoplete#omni#input_patterns.java = '[^. *\t]\.\w*'
-   let g:deoplete#ignore_sources = {}
-   let g:deoplete#ignore_sources._ = ['javacomplete2']
-   "inoremap <expr><C-h> deoplete#mappings#smart_close_popup()."\<C-h>"
-   "inoremap <expr><BS> deoplete#mappings#smart_close_popup()."\<C-h>"
-   set isfname-==
-
-   "My Settings
-   "let g:deoplete#omni#input_patterns.php = [ '[^. \t0-9]\.\w*', '[^. \t0-9]\->\w*', '[^. \t0-9]\::\w*', ]
-   "let g:deoplete#sources = {}
-   "let g:deoplete#sources._ = ['buffer', 'ultisnips', 'file']
-   "let g:deoplete#sources.php = ['buffer', 'ultisnips', 'file',  'omni', 'member', 'tag']
-   let g:deoplete#delimiters = ['/', '.', '::', ':', '#', '->']
-
- endif
- "}}} _deoplete.nvim
- " neoinclude.vim {{{
-
-   call PM( 'Shougo/neoinclude.vim' , { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
-
- "}}} _neoinclude.vim
- " neco-syntax {{{
-
-  "Slows down PHP files so much
-   "call PM( 'Shougo/neco-syntax' )
-
- "}}} _neco-syntax
- " neco-vim {{{
-
-   call PM( 'Shougo/neco-vim' , { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
-
- "}}} _neco-vim
- " echodoc.vim {{{
-
-   call PM( 'Shougo/echodoc.vim', { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
-
- "}}} _echodoc.vim
- " neco-look {{{
- call PM('ujihisa/neco-look', { 'on_event': 'VimEnter', 'on_if': 'has("nvim")' })
- "}}} _neco-look
-
 
  " Command line
  " ambicmd {{{

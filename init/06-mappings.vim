@@ -10,17 +10,16 @@ Map iovxnct  ⌂   <M-cr>
 Map iovxnct  Ặ   <s-cr>
 Map iovxnct  ◊Ú  <C-'><C-;>
 
-nnoremap <leader>tl :tabs<cr>
-nnoremap <leader>tn :tabnew<cr>
-nnoremap <leader>tt :tabnew \| e term://zsh<cr>
-nnoremap <leader>th :tab help<space>
+LMap N <leader>tl <Plug>tab-list :tabs<cr>
+LMap N <leader>tn <Plug>tab-new :tabnew<cr>
+LMap N <leader>tt <Plug>tab-terminal :tabnew \| e term://zsh<cr>
+LMap N <leader>th <Plug>tab-help :tab help<space>
+LMap N <leader>tm0 <Plug>tab-move-first :tabmove 0<cr>
 
 " Utils {{{
 "===============================================================================
 
 nnoremap c* *Ncgn
-
-nnoremap <leader>tm0 :tabmove 0<cr>
 
 nnoremap <Leader><Leader> <c-^>
 
@@ -37,8 +36,8 @@ function! s:ToggleSearchPattern()
 endfunction
 nnoremap <silent> co/ :<C-u>call <SID>ToggleSearchPattern()<CR>
 
-nnoremap <leader>ha :call HighlightAllOfWord(1)<cr>
-nnoremap <leader>hA :call HighlightAllOfWord(0)<cr>
+LMap N <leader>ha <Plug>highlight-word-on  :call HighlightAllOfWord(1)<cr>
+LMap N <leader>hA <Plug>highlight-word-off :call HighlightAllOfWord(0)<cr>
 
 nnoremap <silent> <BS> :syntax sync minlines=1000<cr>:nohlsearch \| echo "" \|redraw! \| diffupdate \| normal \<Plug>(FastFoldUpdate) \| silent! call clever_f#reset() <cr>
 
@@ -157,42 +156,33 @@ nnoremap <C-g>k i<Esc>-y$ddgi<c-r>0<Esc>
 " Uppercase from insert mode while you are at the end of a word
 inoremap <C-u> <esc>mzgUiw`za
 
-"Remove ^M from a file
 LMap N <leader>e<cr> <SID>remove-ctrl-M :e ++ff=dos<cr>
 
-"Retab file
-LMap N <leader>e<Tab> <SID>Retab :retab<cr>
+LMap N <leader>e<Tab> <SID>retab :retab<cr>
 
-"Strip whitespace
-LMap N <leader>e<Space> <SID>remove-whitespace :call StripWhitespace()<cr>
+LMap N <leader>e<Space> <SID>strip-whitespace :call StripWhitespace()<cr>
 
 " Underline {{{
 
 " underline the current line
-nnoremap <leader>U= :t.\|s/./=<cr>:nohls<cr>
-nnoremap <leader>U- :t.\|s/./-<cr>:nohls<cr>
-nnoremap <leader>U~ :t.\|s/./\\~<cr>:nohls<cr>
-
-"only underline from H to L
-nnoremap <leader>u= "zyy"zp<c-v>$r=
-nnoremap <leader>u- "zyy"zp<c-v>$r-
-nnoremap <leader>u~ "zyy"zp<c-v>$r~
+LMap N <leader>u= <Plug>underline-= :t.\|s/./=/g<cr>:nohls<cr>
+LMap N <leader>u- <Plug>underline-- :t.\|s/./-/g<cr>:nohls<cr>
+LMap N <leader>u~ <Plug>underline-~ :t.\|s/./\\~/g<cr>:nohls<cr>
 
 "}}}
 
 " Better copy/cut/paste {{{
-noremap <leader>d "_d
-noremap <leader>y "+y
-nnoremap <leader>+ o<esc>"+p
-"noremap <leader>= "+p
-LMap N <leader>= <SID>Paste_from_clip "+p
+LMap n <leader>d <Plug>delete-to-blackhole "_d
+LMap n <leader>y <Plug>copy-to-+ "+y
+LMap N <leader>+ <Plug>add-line-below o<esc>"+p
+LMap N <leader>= <SID>paste-from-clip "+p
 "}}}
 
 " Indentation {{{
 " indent visually without coming back to normal mode
 vmap > >gv
 vmap < <gv
-nmap <leader>ii :call IndentToNextBraceInLineAbove()<cr>
+LMap n <leader>ii <Plug>indent-to-next-brace-above :call IndentToNextBraceInLineAbove()<cr>
 "}}}
 
 " Move visual block
@@ -211,18 +201,17 @@ nnoremap <c-g>si `[v`]
 " Writting and Quitting {{{
 "===============================================================================
 
-nnoremap <leader>qq :q<cr>
 LMap N <leader>qq    <SID>Quit           :q<cr>
-LMap N <leader>qa    <SID>Quit_All       :qall<cr>
-LMap N <leader>qQ    <SID>Forcr_Quit_All :qall!<cr>
+LMap N <leader>qa    <SID>quit-all       :qall<cr>
+LMap N <leader>qQ    <SID>quit-all-force :qall!<cr>
 
-LMap N <leader>wq    <SID>Write_Quit     :wq<cr>
-LMap N <leader>ww    <SID>Write          :w<cr>
-LMap N <leader>wa    <SID>Write_All      :wall<cr>
-LMap N <leader>wu    <SID>Update         :update<cr>
+LMap N <leader>wq    <SID>write-quit     :wq<cr>
+LMap N <leader>ww    <SID>write          :w<cr>
+LMap N <leader>wa    <SID>write-all      :wall<cr>
+LMap N <leader>wu    <SID>update-file         :update<cr>
 
 " save as root
-LMap N <leader>ws    <SID>SudoWrite      :w !sudo tee % > /dev/null<CR>
+LMap N <leader>ws    <SID>write-sudo      :w !sudo tee % > /dev/null<CR>
 
 "}}}
 
@@ -230,9 +219,9 @@ LMap N <leader>ws    <SID>SudoWrite      :w !sudo tee % > /dev/null<CR>
 
 autocmd Filetype netrw nnoremap q :quit<cr>
 
-LMap N <leader>ev    <SID>Vimrc           :e ~/.config/nvim/init<cr>
-LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/ginit.vim \| else \| e ~/.gvimrc \| endif<cr>
-  LMap N <leader>e<BS> <SID>Discard_changes :e! \| echo "changes discarded"<cr>
+  LMap N <leader>ev    <SID>Vimrc           :e ~/.config/nvim/init<cr>
+  LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/ginit.vim \| else \| e ~/.gvimrc \| endif<cr>
+  LMap N <leader>e<BS> <SID>discard-changes :e! \| echo "changes discarded"<cr>
 
   "CD into:
   "current buffer file dir
@@ -254,26 +243,20 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
   nnoremap go <C-^>
 
   " edit in the path of current file
-  nnoremap <leader>ef :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
-  nnoremap <leader>ep :e <c-r>=escape(getcwd(), ' ').'/'<cr>
+  LMap N <leader>ef <Plug>edit-in-% :e <C-R>=escape(expand('%:p:h'), ' ').'/'<CR>
+  LMap N <leader>ep <Plug>edit-in-cwd :e <c-r>=escape(getcwd(), ' ').'/'<cr>
 
   " <c-y>f Copy the full path of the current file to the clipboard
-  nnoremap <silent> <leader>cp :let @+=expand("%:p")<cr>:echo "Copied current file
-        \ path '".expand("%:p")."' to clipboard"<cr>
+  LMap !N <leader>fp <Plug>copy-file-path :let @+=expand("%:p")<cr>:echo "Copied current file  path '".expand("%:p")."' to clipboard"<cr>
 
   " rename current buffers file
-  nnoremap <Leader>fr :call RenameFile()<cr>
+  LMap N <leader>fr <Plug>rename-file :call RenameFile()<cr>
 
-  " Edit todo list for project
-  nnoremap <leader>tp :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
+  LMap N <leader>tp <Plug>todo-project :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
+  LMap N <leader>tp <Plug>todo-global :e ~/org/todo.org<cr>
 
-  " Edit GLOBAL todo list
-  nnoremap <leader>to :e ~/org/todo.org<cr>
-
-  " evaluate selected vimscript | line | whole vimrc (init.vim)
-  vnoremap <Leader>s; "vy:@v<CR>
-  nnoremap <Leader>s; "vyy:@v<CR>
-  nnoremap <silent> <leader>sv :unlet g:VIMRC_SOURCED<cr>:so $MYVIMRC<CR>
+  LMap NV <Leader>s; <Plug>source-selection "vy:@v<CR>
+  LMap NV <Leader>sv <Plug>source-vimrc "vy:@v<CR>
   "}}}
 
   " Toggles {{{
@@ -334,18 +317,18 @@ LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/gi
       endif
   endfunction
 
-  nnoremap <leader>lv :e <c-r>=FindGitDirOrRoot()<cr>/resources/views/<cr>
-  " nnoremap <leader>lv call EditIfExists(<c-r>=FindGitDirOrRoot()<cr>/resources/views/)
-  nnoremap <leader>lm :e <c-r>=FindGitDirOrRoot()<cr>/database/migrations/<cr>
-  nnoremap <leader>lf :e <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>
-  nnoremap <leader>ls :e <c-r>=FindGitDirOrRoot()<cr>/database/seeds/<cr>
-  nnoremap <leader>lc :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
-  nnoremap <leader>la :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
-  nnoremap <leader>lp :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
+  LMap N <leader>lv <Plug>laravel-edit-views :e <c-r>=FindGitDirOrRoot()<cr>/resources/views/<cr>
+  " LMap N <leader>lv <Plug>laravel-views call EditIfExists(<c-r>=FindGitDirOrRoot()<cr>/resources/views/)
+  LMap N <leader>lm <Plug>laravel-edit-migrations :e <c-r>=FindGitDirOrRoot()<cr>/database/migrations/<cr>
+  LMap N <leader>lf <Plug>laravel-edit-factories :e <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>
+  LMap N <leader>ls <Plug>laravel-edit-seeds :e <c-r>=FindGitDirOrRoot()<cr>/database/seeds/<cr>
+  LMap N <leader>lc <Plug>laravel-edit-controllers :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
+  LMap N <leader>la <Plug>laravel-edit-app :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
+  LMap N <leader>lp <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
 
   " Java
   "nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
-  nnoremap  <leader>ej :call ExecuteJava()<cr>
+  LMap N  <leader>ej <Plug>execute-java :call ExecuteJava()<cr>
   function! ExecuteJava()
     write
     exe "tab term cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")

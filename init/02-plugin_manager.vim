@@ -61,7 +61,7 @@ let s:PM_WL = [
     let g:plug_timeout=60
 
     call plug#begin('~/.config/nvim/plugged')
-    let g:DeinToVimPlug = {'build':'do', 'on_ft':'for', 'on_cmd':'on','on_map':'on'}
+    let g:DeinToVimPlug = {'build':'do', 'rev': 'branch', 'on_ft':'for', 'on_cmd':'on','on_map':'on'}
 
     "This is same as calling Plug command
     function! PM ( plugin, ...) "{{{

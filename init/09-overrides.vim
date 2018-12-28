@@ -14,13 +14,16 @@ let g:projects = [
       \ "~/Projects/PHP/create_laravel_package/blog/packages/knights/datatables/" ,
       \ "~/Projects/PHP/koga/www/",
       \ "~/Projects/PHP/my-react-app-backend/",
-      \ "~/Projects/React/my-react-app/"
+      \ "~/Projects/React/my-react-app/",
+      \ "~/Research/Math_Miran/mathjs",
+      \ "~/Research/Math_Miran/react-math",
+      \ "~/Research/Math_Miran/react-popmotion-animation-example",
+      \ "~/Research/Math_Miran/Math"
       \]
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
 nnoremap <c-p><c-\> <cmd>call fzf#run({"source": g:projects , "sink":"CdP"})<cr>
-
 
 function! RegenerateHelpTags()
   silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt
@@ -46,7 +49,8 @@ hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
 
 
-nmap <expr> <leader>- expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
+LMap nExpr <leader>- <Plug>NerdTreeCurFile  expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
+" nmap <expr> <leader>- expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
 
 command! SetLightLine :let g:lightline.colorscheme = "onedark" |  call lightline#init() | call lightline#update()
 
@@ -62,8 +66,8 @@ endfunction
 au TermOpen * nmap <buffer> gf :call <SID>term_gf()<cr>
 
 
-nmap <leader>zf <cmd>g/function\\|.edatagrid({\\|{field:/normal 0maf{%zf'a<cr>
-nmap <leader>zi <cmd>set fdm=indent<cr><cmd>set fdm=manual<cr>
+LMap n <leader>zf <Plug>format-functions <cmd>g/function\\|.edatagrid({\\|{field:/normal 0maf{%zf'a<cr>
+LMap n <leader>zi <Plug>format-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<cr>
 
 " let g:terminal_color_2 = '#62AA0D' "path color
 " let g:terminal_color_7 = '#000000' "foreground color
@@ -82,6 +86,10 @@ nmap <leader>zi <cmd>set fdm=indent<cr><cmd>set fdm=manual<cr>
 
  if exists('veonim')
 
+let g:vn_font = 'Operator Mono'
+let g:vn_font_size = 28
+let g:vn_line_height = '1.5'
+
 " extensions for web dev
 VeonimExt 'veonim/ext-css'
 VeonimExt 'veonim/ext-json'
@@ -89,9 +97,6 @@ VeonimExt 'veonim/ext-html'
 VeonimExt 'vscode:extension/sourcegraph.javascript-typescript'
 
 
-let g:vn_font = 'Menlo'
-let g:vn_font_size = 18
-let g:vn_line_height = '1.5'
 
 set guicursor=n:block-CursorNormal,i:hor10-CursorInsert,v:block-CursorVisual
 hi! CursorNormal guibg=#f3a082
@@ -150,3 +155,4 @@ nno <silent> <d-o> :Veonim buffer-prev<cr>
 nno <silent> <d-i> :Veonim buffer-next<cr>
 
 endif
+ autocmd FileType php setlocal omnifunc=phpactor#Complete
