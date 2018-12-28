@@ -161,15 +161,22 @@ function! LMap(mode, key, pluginfo, ...) abort"{{{
     let ops = ops . ' ' .op
   endfor
 
-  "echomsg a:mode "-" a:key "-" a:pluginfo "-" ops
+  " echomsg a:mode "~" a:key "~" a:pluginfo "~" ops
 
+  let mode=a:mode
   let silent=""
-  for c in split(a:mode, '\zs')
+  let expr=""
+  let isExpr = a:mode[-4:]=='Expr'
+  if isExpr
+      let mode = a:mode[0:-5]
+  endif
+  for c in split(mode, '\zs')
     let cc = tolower(c)."map"
     if c == "!"                       | let silent="<silent>"      | continue | endif
+    if isExpr                         | let expr="<expr>"                     | endif
     if type(c)==1 && tolower(c) !=# c | let c=tolower(c)."noremap" | else     | let c=tolower(c)."map" | endif
     if stridx(c, "t") == 0 && !has("nvim") | continue | endif
-    execute c silent a:pluginfo ops
+    execute c silent expr a:pluginfo ops
     execute cc silent a:key a:pluginfo
     let silent=""
   endfor
