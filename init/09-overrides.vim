@@ -23,7 +23,7 @@ let g:projects = [
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
-nnoremap <c-p><c-\> <cmd>call fzf#run({"source": g:projects , "sink":"CdP"})<cr>
+LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "sink":"CdP"})<cr>
 
 function! RegenerateHelpTags()
   silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt

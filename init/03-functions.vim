@@ -132,7 +132,7 @@ inoremap <silent> <C-g> <C-[>:call InsertSpaces()<CR>A
 "}}}
 
 " The following function takes a command such as the following
-" >>   LMap !NV key <plug-name> command
+" >>   Map !NV key <plug-name> command
 "      !       -indiucates that the mapping is silent 
 "      CAPS    -capital letters indicate noremap
 function! Map(mode, key, ...) abort"{{{
@@ -155,6 +155,12 @@ endfunction
 command! -nargs=* Map call Map(<f-args>)
 
 "}}}
+" The following function takes a command such as the following, this applies the
+" plug and SID for showing with leader guide
+" >>   LMap !NVExpr key <plug|SID-name> command
+"      !       -indiucates that the mapping is silent 
+"      Expr    -indiucates that the mapping is expression 
+"      CAPS    -capital letters indicate noremap
 function! LMap(mode, key, pluginfo, ...) abort"{{{
   let ops=""
   for op in a:000

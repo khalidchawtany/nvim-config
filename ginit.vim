@@ -1,10 +1,10 @@
 let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-GuiFont! Operator Mono:h17
+GuiFont! Operator Mono:h18
 
 let g:gui_fonts = [
-      \ 'Operator Mono:h17',
+      \ 'Operator Mono:h18',
       \ 'Source Code Pro for PowerLine:h20',
       \ 'Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline',
       \ 'FuraMonoForPowerline Nerd Font',

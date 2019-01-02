@@ -6,7 +6,7 @@ scriptencoding utf-8
   let localleader = "\\"
   let g:loaclleader = "\\"
 
-  if $TERM_PROGRAM == 'Apple_Terminal' 
+  if $TERM_PROGRAM == 'Apple_Terminal'
     set notermguicolors
   else
     set termguicolors

@@ -82,8 +82,8 @@ let g:_did_vimrc_plugins = 1
  endif
  "}}} _vimagit
  "gina{{{
- if PM('lambdalisue/gina.vim', {'on_cmd': ['Gina'], 'on_map': ['\<leader>gn'], 'rev': 'next'} )
-   LMap N <leader>gn <SID>Gina :Gina<cr>
+ if PM('lambdalisue/gina.vim', {'on_cmd': ['Gina'], 'on_map': ['\<leader>gn']} )
+   LMap N <leader>gn <SID>Gina :Gina status<cr>
  endif
  "}}} _gina
 
@@ -106,8 +106,6 @@ let g:_did_vimrc_plugins = 1
  call PM( 'chrisbra/Recover.vim' )
 
  "}}} _Recover-With-Diff
-
- call PM('rickhowe/diffchar.vim')
 
  "}}}
  " ----------------------------------------------------------------------------
@@ -212,10 +210,10 @@ let g:_did_vimrc_plugins = 1
    call PM( 'pelodelfuego/vim-swoop', {'on_cmd': ['Swoop'], 'on_func':['Swoop', 'SwoopSelection', 'SwoopMulti', 'SwoopMultiSelection']} )
    let g:swoopUseDefaultKeyMap = 0
 
-   nnoremap <Leader>sm :call SwoopMulti()<CR>
-   vnoremap <Leader>sm :call SwoopMultiSelection()<CR>
-   nnoremap <Leader>ss :call Swoop()<CR>
-   vnoremap <Leader>ss :call SwoopSelection()<CR>
+   LMap N <Leader>sm <Plug>swoop-multi :call SwoopMulti()<CR>
+   LMap V <Leader>sm <Plug>swoop-multi :call SwoopMulti()<CR>
+   LMap N <Leader>ss <Plug>swoop :call Swoop()<CR>
+   LMap V <Leader>ss <Plug>swoop :call Swoop()<CR>
 
    function! Multiple_cursors_before()
      if exists('*SwoopFreezeContext') != 0
@@ -243,7 +241,6 @@ let g:_did_vimrc_plugins = 1
  "}}} _inline_edit.vim
  " vim-multiple-cursors {{{
 
- "TODO: Set some mapping
    call PM( 'terryma/vim-multiple-cursors' )
 
    let g:multi_cursor_use_default_mapping=0
@@ -255,86 +252,6 @@ let g:_did_vimrc_plugins = 1
     let g:multi_cursor_quit_key='<Esc>'
 
  "}}} _vim-multiple-cursors
- " vim-markmultiple {{{
-
- call PM( 'adinapoli/vim-markmultiple', {'on_func':['MarkMultiple']} )
- let g:mark_multiple_trigger = "<C-n>"
-
- nnoremap <C-N>  :call MarkMultiple()<CR>
- xnoremap <C-N>  :call MarkMultiple()<CR>
-
- "if effect remains on screen clear with "call MarkMultipleClean()"
- "Map <c-bs>
- Map  NV <c-bs> :call\ MarkMultipleClean()<cr>
-
- "}}} _vim-markmultiple
- " multichange.vim {{{
-
- call PM( 'AndrewRadev/multichange.vim' )
- let g:multichange_mapping        = 'sm'
- let g:multichange_motion_mapping = 'm'
-
- "}}} _multichange.vim
- " vim-multiedit {{{
-
- call PM( 'hlissner/vim-multiedit' , { 'on_cmd': [
-       \   'MultieditAddMark', 'MultieditAddRegion',
-       \   'MultieditRestore', 'MultieditHop', 'Multiedit',
-       \   'MultieditClear', 'MultieditReset'
-       \ ] } )
-
-   let g:multiedit_no_mappings = 1
-   let g:multiedit_auto_reset = 1
-
-   "Force multiedit key bindings and make it faster :)
-   au VimEnter * call BindMultieditKeys()
-   "au User vim-multiedit call BindMultieditKeys()
-
-   function! BindMultieditKeys()
-
-     " Insert a disposable marker after the cursor
-     nnoremap <leader>ma :MultieditAddMark a<CR>
-
-     " Insert a disposable marker before the cursor
-     nnoremap <leader>mi :MultieditAddMark i<CR>
-
-     " Make a new line and insert a marker
-     nnoremap <leader>mo o<Esc>:MultieditAddMark i<CR>
-     nnoremap <leader>mO O<Esc>:MultieditAddMark i<CR>
-
-     " Insert a marker at the end/start of a line
-     nnoremap <leader>mA $:MultieditAddMark a<CR>
-     nnoremap <leader>mI ^:MultieditAddMark i<CR>
-
-     " Make the current selection/word an edit region
-     vnoremap <leader>m :MultieditAddRegion<CR>
-     nnoremap <leader>mm viw:MultieditAddRegion<CR>
-
-     " Restore the regions from a previous edit session
-     nnoremap <leader>mu :MultieditRestore<CR>
-
-     " Move cursor between regions n times
-     noremap ]gc :MultieditHop 1<CR>
-     noremap [gc :MultieditHop -1<CR>
-
-     " Start editing!
-     nnoremap <leader>ms :Multiedit<CR>
-
-     " Clear the word and start editing
-     nnoremap <leader>mc :Multiedit!<CR>
-
-     " Unset the region under the cursor
-     nnoremap <silent> <leader>md :MultieditClear<CR>
-
-     " Unset all regions
-     nnoremap <silent> <leader>mr :MultieditReset<CR>
-
-     nmap <silent> <leader>mn <leader>mm/<C-r>=expand("<cword>")<CR><CR>
-     nmap <silent> <leader>mp <leader>mm?<C-r>=expand("<cword>")<CR><CR>
-
-   endfunction
-
- "}}} _vim-multiedit
  " vim-abolish {{{
 
    call PM( 'tpope/vim-abolish',           { 'on_cmd': ['S','Subvert', 'Abolish']} )
@@ -348,16 +265,12 @@ let g:_did_vimrc_plugins = 1
    " RengBang \(\d\+\) Start# Increment# Select# %03d => 001, 002
 
  "}}} _vim-rengbang
- " vim-rectinsert {{{
-
-   call PM( 'deris/vim-rectinsert',        { 'on_cmd': ['RectInsert', 'RectReplace'] } )
-
- "}}} _vim-rectinsert
 
  " vim-expand-region {{{
 
+ "select something and press +,_
 call PM('terryma/vim-expand-region')
-"
+
  "}}} _vim-expand-region
 
  " Isolate
@@ -373,7 +286,7 @@ call PM('terryma/vim-expand-region')
        \ 'on_map': ['<Plug>NrrwrgnDo']
        \ })
 
-    map <leader>nr <Plug>NrrwrgnDo
+    LMap N <leader>rn <Plug>narrow-region <Plug>NrrwrgnDo
 
  endif
 
@@ -786,9 +699,6 @@ endif
    imap <c-l>e <C-O><Plug>CapsLockEnable
    imap <c-l>d <C-O><Plug>CapsLockDisable
  "}}} _vim-capslock
- "vim-confirmquit {{{
- call PM('Carpetsmoker/confirm_quit.vim')
- "}}} _vim-confirmquit
 
  " vim-repeat {{{
 
@@ -2206,24 +2116,24 @@ if PM( 'Shougo/unite.vim')
 
 
 "call Map_FZF  ( "COMMAND"   , "KEY"   , "OPTIONS"                                                                        , cw )
- call Map_FZF  ( "silent! FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
- call Map_FZF  ( "silent! FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
- call Map_FZF  ( "silent! FzfFiles! "    , "p"   , ''                                                                               , 2  )
- call Map_FZF  ( "silent! FzfAg!"       , "a"     , ""                                                                               , 3  )
- call Map_FZF  ( "silent! FzfLines!"    , "L"     , ""                                                                               , 2  )
- call Map_FZF  ( "silent! FzfBLines!"   , "l"     , ""                                                                               , 2  )
- call Map_FZF  ( "silent! FzfBTags!"    , "t"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfTags!"     , "]"     , ""                                                                               , 0  )
-"call Map_FZF  ( "silent! FzfLocate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
- call Map_FZF  ( "silent! FzfGitFiles"  , "v"     , ''                                                                               , 0  )
- call Map_FZF  ( "silent! FzfCommits!"  , "G"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfBCommits!" , "g"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfSnippets!" , "s"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfMarks!"    , "<c-'>" , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfMarks!"    , "'"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfWindows!"  , "w"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfHelptags!" , "k"     , ""                                                                               , 0  )
- call Map_FZF  ( "silent! FzfHistory!" , "h"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
+ call Map_FZF  ( "FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
+ call Map_FZF  ( "FzfFiles! "    , "p"   , ''                                                                               , 2  )
+ call Map_FZF  ( "FzfAg!"       , "a"     , ""                                                                               , 3  )
+ call Map_FZF  ( "FzfLines!"    , "L"     , ""                                                                               , 2  )
+ call Map_FZF  ( "FzfBLines!"   , "l"     , ""                                                                               , 2  )
+ call Map_FZF  ( "FzfBTags!"    , "t"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfTags!"     , "]"     , ""                                                                               , 0  )
+"call Map_FZF  ( "FzfLocate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
+ call Map_FZF  ( "FzfGitFiles"  , "v"     , ''                                                                               , 0  )
+ call Map_FZF  ( "FzfCommits!"  , "G"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfBCommits!" , "g"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfSnippets!" , "s"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfMarks!"    , "<c-'>" , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfMarks!"    , "'"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfWindows!"  , "w"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfHelptags!" , "k"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfHistory!" , "h"     , ""                                                                               , 0  )
    nnoremap <silent> <c-p><c-f> <cmd>FzfHistory!<cr>
 
  "The last param is <bang>0 to make it fullscreen
@@ -2243,7 +2153,8 @@ if PM( 'Shougo/unite.vim')
    imap <silent> <c-x><c-\> <plug>(fzf-complete-file)
 
    "Get all files including git ignore
-   nnoremap <silent> <c-p><space> :call fzf#run({"source":"ag -all -l  \"\" \| sort -u " , "sink":"edit"})<cr>
+   LMap N! <c-p><space> <Plug>FzfAllFiles :call fzf#run({"source":"ag -all -l  \"\" \| sort -u " , "sink":"edit"})<cr>
+   " nnoremap <silent> <c-p><space> :call fzf#run({"source":"ag -all -l  \"\" \| sort -u " , "sink":"edit"})<cr>
    nnoremap <silent> <c-p><c-space> <cmd>FzfHistory!<cr>
 
    function GetDirectories()
@@ -2251,8 +2162,8 @@ if PM( 'Shougo/unite.vim')
     "find . -type d   -not -iwholename \"./.phpcd*\" -not -iwholename \"./node_modules*\" -not -iwholename \".\" -not -iwholename \"./vendor*\" -not -iwholename \"./.git*\"
     "ag -l --nocolor -g "" | awk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq
    endfunction
-   nnoremap <silent> <c-p>[ :call fzf#run({"source":"find . -type d", "sink":"NERDTree"})<cr>
-   nnoremap <silent> <silent> <c-p><c-[> :cal GetDirectories()<cr>
+   LMap N! <c-p>[ <Plug>FzfDirs :call fzf#run({"source":"find . -type d", "sink":"NERDTree"})<cr>
+   LMap N! <c-p><c-[> <Plug>FzfAllDirs :cal GetDirectories()<cr>
 
    " Replace the default dictionary completion with fzf-based fuzzy completion
    " inoremap <expr> <c-x><c-k> fzf#complete('cat /usr/share/dict/words')
@@ -2323,12 +2234,14 @@ endfunction
      tmap <silent> <c-p><c-i> <c-\><c-n><c-p><c-i>
    endif
 
-   nnoremap <silent> <c-p><c-i> :call fzf#run({
+   command! FzfTabs :call fzf#run({
          \   'source':  reverse(<sid>tablist()),
          \   'sink':    function('<sid>tabopen'),
          \   'options': " --preview-window right:50%  --preview 'echo {}'  --bind ?:toggle-preview",
          \   'window':    '-tabnew'
-         \ })<cr>
+         \ })
+
+   LMap N! <c-p><c-i> <plug>FzfTabs :FzfTabs<cr>
 
    "}}} _Tabs
 
@@ -2358,7 +2271,7 @@ endfunction
    "       \   'options': '+m --reverse',
    "       \   'window':    '-tabnew'
    "       \ })<CR>
-   nnoremap <silent> <c-p><c-o> :call fzf#run({
+   LMap N! <c-p><c-o> <Plug>FzfBuffers :call fzf#run({
          \   'source':  reverse(<sid>buflist()),
          \   'sink*':    function('<sid>bufopen'),
          \   'options': '+m --reverse --expect=ctrl-t,ctrl-v,ctrl-s',
@@ -2447,7 +2360,7 @@ endfunction
         execute 'buffer' l:term_buffer_id
       endif
    endfunction
-   nnoremap <silent> <c-p><c-;> :call fzf#run({
+   LMap N! <c-p><c-;> <Plug>FzfTerm :call fzf#run({
          \   'source':  reverse(<sid>termlist()),
          \   'sink':    function('<sid>termtabopen'),
          \   'options': '+m --reverse',
@@ -2462,7 +2375,7 @@ endfunction
  " }}}
  " neovim-fuzzy {{{
  if PM('cloudhead/neovim-fuzzy', {'on_cmd': ['FuzzyOpen']})
-  nnoremap <c-p><c-e> :silent! FuzzyOpen<cr>
+  nnoremap <c-p><c-e> <cmd>FuzzyOpen<cr>
  endif " PM()
  " }}} _neovim-fuzzy
 
@@ -2653,29 +2566,32 @@ endif
  " vim-oblique {{{
 if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
 
- let g:oblique#enable_cmap=0
- "let g:oblique#clear_highlight=0
+  let g:oblique#enable_cmap=0
+  "let g:oblique#clear_highlight=0
 
- Map nx  #  <Plug>(Oblique-#)
- Map nx  *  <Plug>(Oblique-*)
- Map nox /  <Plug>(Oblique-/)
- Map nox ?  <Plug>(Oblique-?)
- Map n   g# <Plug>(Oblique-g#)
- Map n   g* <Plug>(Oblique-g*)
- Map nox z/ <Plug>(Oblique-F/)
- Map nox z? <Plug>(Oblique-F?)
+  Map nx  #  <Plug>(Oblique-#)
+  Map nx  *  <Plug>(Oblique-*)
+  Map nox /  <Plug>(Oblique-/)
+  Map nox ?  <Plug>(Oblique-?)
+  Map n   g# <Plug>(Oblique-g#)
+  Map n   g* <Plug>(Oblique-g*)
+  Map nox z/ <Plug>(Oblique-F/)
+  Map nox z? <Plug>(Oblique-F?)
 
- "Make n/N move forward/backwards regardless of search direction
- "Map nx  n  <Plug>(Oblique-n)
- "Map nx  N  <Plug>(Oblique-N)
- "noremap <expr> n 'Nn'[v:searchforward]
- "noremap <expr> N 'nN'[v:searchforward]
- nmap <expr>n ['<Plug>(Oblique-N)','<Plug>(Oblique-n)'][v:searchforward]
- nmap <expr>N ['<Plug>(Oblique-n)','<Plug>(Oblique-N)'][v:searchforward]
+  "Make n/N move forward/backwards regardless of search direction
+  "Map nx  n  <Plug>(Oblique-n)
+  "Map nx  N  <Plug>(Oblique-N)
+  "noremap <expr> n 'Nn'[v:searchforward]
+  "noremap <expr> N 'nN'[v:searchforward]
+  nmap <expr>n ['<Plug>(Oblique-N)','<Plug>(Oblique-n)'][v:searchforward]
+  nmap <expr>N ['<Plug>(Oblique-n)','<Plug>(Oblique-N)'][v:searchforward]
 
- autocmd! User Oblique       AnzuUpdateSearchStatusOutput
- autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput
- autocmd! User ObliqueRepeat AnzuUpdateSearchStatusOutput
+  autocmd! User Oblique        normal! zz
+  autocmd! User ObliqueStar    normal! zz
+  autocmd! User ObliqueRepeat  normal! zz
+  autocmd! User Oblique        AnzuUpdateSearchStatusOutput
+  autocmd! User ObliqueStar    AnzuUpdateSearchStatusOutput
+  autocmd! User ObliqueRepeat  AnzuUpdateSearchStatusOutput
 
  endif
 
@@ -3443,6 +3359,93 @@ let g:pencil_terminal_italics = 1
  " Presenters :) {{{
  " ----------------------------------------------------------------------------
 
+ " vim-which-key {{{
+    if PM('liuchengxu/vim-which-key')
+        let g:mapleader = "\<Space>"
+        let g:maplocalleader = ','
+        nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+        nnoremap <silent> <localleader> :<c-u>WhichKey  ','<CR>
+
+         let g:which_key_map =  {}
+
+          " You can pass a descriptive text to an existing mapping. {{{
+         let g:which_key_map.f = { 'name' : '+file' }
+
+         nnoremap <silent> <leader>fs :update<CR>
+         let g:which_key_map.f.s = 'save-file'
+
+         nnoremap <silent> <leader>fd :e $MYVIMRC<CR>
+         let g:which_key_map.f.d = 'open-vimrc'
+
+         nnoremap <silent> <leader>oq  :copen<CR>
+         nnoremap <silent> <leader>ol  :lopen<CR>
+         let g:which_key_map.o = {
+                     \ 'name' : '+open',
+                     \ 'q' : 'open-quickfix'    ,
+                     \ 'l' : 'open-locationlist',
+                     \ }
+         "}}}
+         " Create menus not based on existing mappings:{{{
+         " Provide commands(ex-command, <Plug>/<C-W>/<C-d> mapping, etc.) and descriptions for existing mappings
+         let g:which_key_map.b = {
+                     \ 'name' : '+buffer' ,
+                     \ '1' : ['b1'        , 'buffer 1']        ,
+                     \ '2' : ['b2'        , 'buffer 2']        ,
+                     \ 'd' : ['bd'        , 'delete-buffer']   ,
+                     \ 'f' : ['bfirst'    , 'first-buffer']    ,
+                     \ 'h' : ['Startify'  , 'home-buffer']     ,
+                     \ 'l' : ['blast'     , 'last-buffer']     ,
+                     \ 'n' : ['bnext'     , 'next-buffer']     ,
+                     \ 'p' : ['bprevious' , 'previous-buffer'] ,
+                     \ '?' : ['Buffers'   , 'fzf-buffer']      ,
+                     \ }
+
+         let g:which_key_map.l = {
+                     \ 'name' : '+lsp'                                            ,
+                     \ 'f' : ['LanguageClient#textDocument_formatting()'     , 'formatting']       ,
+                     \ 'h' : ['LanguageClient#textDocument_hover()'          , 'hover']            ,
+                     \ 'r' : ['LanguageClient#textDocument_references()'     , 'references']       ,
+                     \ 'R' : ['LanguageClient#textDocument_rename()'         , 'rename']           ,
+                     \ 's' : ['LanguageClient#textDocument_documentSymbol()' , 'document-symbol']  ,
+                     \ 'S' : ['LanguageClient#workspace_symbol()'            , 'workspace-symbol'] ,
+                     \ 'g' : {
+                     \ 'name': '+goto',
+                     \ 'd' : ['LanguageClient#textDocument_definition()'     , 'definition']       ,
+                     \ 't' : ['LanguageClient#textDocument_typeDefinition()' , 'type-definition']  ,
+                     \ 'i' : ['LanguageClient#textDocument_implementation()'  , 'implementation']  ,
+                     \ },
+                     \ }
+         " }}}
+         "To make the guide pop up Register the description dictionary for the prefix first (assuming Space is your leader key):
+         call which_key#register('<Space>', "g:which_key_map")
+         nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
+         vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+
+         "Hide statusline
+         autocmd! FileType which_key
+         " autocmd  FileType which_key set laststatus=0 noshowmode noruler
+         "             \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+
+         let g:which_key_map_fzf = {}
+         let g:which_key_map_fzf['<c-p>'] = {
+                     \ 'name' : '+buffer' ,
+                     \ '1' : ['b1'        , 'buffer 1']        ,
+                     \ '2' : ['b2'        , 'buffer 2']        ,
+                     \ 'd' : ['bd'        , 'delete-buffer']   ,
+                     \ 'f' : ['bfirst'    , 'first-buffer']    ,
+                     \ 'h' : ['Startify'  , 'home-buffer']     ,
+                     \ 'l' : ['blast'     , 'last-buffer']     ,
+                     \ 'n' : ['bnext'     , 'next-buffer']     ,
+                     \ 'p' : ['bprevious' , 'previous-buffer'] ,
+                     \ '?' : ['Buffers'   , 'fzf-buffer']      ,
+                     \ }
+         call which_key#register('<c-p>', "g:which_key_map_fzf")
+         nnoremap <silent> <c-p> :<c-u>WhichKey '<c-p>'<CR>
+         vnoremap <silent> <c-p> :<c-u>WhichKeyVisual '<c-p>'<CR>
+
+    endif
+ " }}}vim-which-key
  " vim-leader-guide {{{
     if PM('hecal3/vim-leader-guide')
 
@@ -3450,15 +3453,19 @@ let g:pencil_terminal_italics = 1
       nnoremap <leader> <cmd>LeaderGuide '<Space>'<CR>
       vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
 
+
       let g:leaderGuide_max_size = 10
       let g:leaderGuide_submode_mappings = { '<C-C>': 'win_close', '<C-F>': 'page_down', '<C-B>': 'page_up'}
       au FileType leaderGuide set norelativenumber
 
-      "let g:leaderGuide_run_map_on_popup = 0
+      " let g:leaderGuide_run_map_on_popup = 0
       let g:leaderGuide_flatten=1
 
       let g:lmap =  {}
       let g:lmap.a   = { 'name' : 'Tabularize' }
+      let g:lmap.b   = { 'name' : 'Buffer' }
+      let g:lmap.c = { 'name' : 'Comments' }
+      let g:lmap.c   = { 'name' : 'Comment' }
       let g:lmap.e   = { 'name' : 'Edit' }
       let g:lmap.g   = { 'name' : 'Git' }
       let g:lmap.h   = { 'name' : 'Help' }
@@ -3471,10 +3478,9 @@ let g:pencil_terminal_italics = 1
       let g:lmap.r   = { 'name' : 'Replace' }
       let g:lmap.w   = { 'name' : 'Write' }
 
-      let g:leaderGuide_sort_horizontal=1
+      let g:leaderGuide_sort_horizontal=0
 
       " If you use NERDCommenter:
-      let g:lmap.c = { 'name' : 'Comments' }
       " Define some descriptions
       let g:lmap.c.c = ['call feedkeys("\<Plug>NERDCommenterComment")','Comment']
       let g:lmap.c[' '] = ['call feedkeys("\<Plug>NERDCommenterToggle")','Toggle']
@@ -3492,6 +3498,10 @@ let g:pencil_terminal_italics = 1
       let g:leaderGuide_displayfunc = [function("s:my_displayfunc")]
 
       call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
+
+      " let g:fzfmap = {}
+      nmap <c-p> <cmd>LeaderGuide '<c-p>'<CR>
+      " call leaderGuide#register_prefix_descriptions("FZF", "g:fzfmap")
     endif
  " _vim-leader-guide }}}
 

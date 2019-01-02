@@ -255,8 +255,9 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N <leader>tp <Plug>todo-project :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
   LMap N <leader>tp <Plug>todo-global :e ~/org/todo.org<cr>
 
-  LMap NV <Leader>s; <Plug>source-selection "vy:@v<CR>
-  LMap NV <Leader>sv <Plug>source-vimrc "vy:@v<CR>
+  LMap N <Leader>s; <Plug>source-selection "vyy:@v<CR>
+  LMap V <Leader>s; <Plug>source-selection "vy:@v<CR>
+  LMap NV <Leader>sv <Plug>source-vimrc :unlet g:VIMRC_SOURCED<cr>:so $MYVIMRC<CR>
   "}}}
 
   " Toggles {{{
