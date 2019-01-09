@@ -31,6 +31,3 @@ endfunction
 call s:source('init')
 
 " vim:foldmethod=marker:foldlevel=0
-let g:vn_font = 'Operator Mono'
-let g:vn_font_size = 18
-let g:vn_line_height = '1.8'
