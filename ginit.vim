@@ -5,15 +5,10 @@ GuiFont! Operator Mono:h18
 
 let g:gui_fonts = [
       \ 'Operator Mono:h18',
-      \ 'Source Code Pro for PowerLine:h20',
-      \ 'Sauce Code Pro Light Plus Nerd File Types Plus Font Awesome Plus Pomicons for Powerline',
-      \ 'FuraMonoForPowerline Nerd Font',
-      \ 'Envy Code R',
-      \ 'DejaVu Sans Mono:h18',
-      \ 'LiterationMonoPowerline Nerd Font',
-      \ 'PT Mono for Powerline',
-      \ 'Ubuntu Mono for Powerline',
-      \ 'FuraMonoForPowerLine Nerd Font'
+      \ 'Monaco:h18',
+      \ 'Source Code Pro for PowerLine:h18',
+      \ 'PT Mono:18',
+      \ 'Fura Mono Nerd Font:18'
       \ ]
 
 let g:current_gui_font_index = 0
