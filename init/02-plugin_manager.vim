@@ -44,12 +44,19 @@ let s:PM_WL = [
       "Use this to not cause recache: You can have disarmed list
       "let list=['02', '03', '03', '16', '17', '17', '28', '29', '29']
       "let unduplist=filter(copy(list), 'index(list, v:val, v:key+1)==-1')
-      if !PM_ISS(a:plugin) | return 0 | endif
+
+      let options = {}
       if len(a:000) > 0
-        call dein#add( a:plugin, a:1 )
-      else
-        call dein#add( a:plugin )
+          let options = a:1
       endif
+
+      " to debug without recache
+      let options.merged=0
+
+      if !PM_ISS(a:plugin) | return 0 | endif
+
+      call dein#add( a:plugin, options )
+
       return 1
     endfunction "}}}
 
