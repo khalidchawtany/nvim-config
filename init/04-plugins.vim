@@ -1824,11 +1824,11 @@ endif
  " denite.vim{{{
    if PM( 'Shougo/denite.nvim' )
     " Change mappings.
-    call denite#custom#map('_', "<C-j>", '<denite:move_to_next_line>')
-    call denite#custom#map('_', "<C-k>", '<denite:move_to_prev_line>')
-    call denite#custom#map('_', "<C-;>", '<denite:input_command_line>')
-    call denite#custom#var('file_rec', 'command',
-          \ ['rg', '--threads', '2', '--files', '--glob', '!.git'])
+    " call denite#custom#map('_', "<C-j>", '<denite:move_to_next_line>')
+    " call denite#custom#map('_', "<C-k>", '<denite:move_to_prev_line>')
+    " call denite#custom#map('_', "<C-;>", '<denite:input_command_line>')
+    " call denite#custom#var('file_rec', 'command',
+    "       \ ['rg', '--threads', '2', '--files', '--glob', '!.git'])
   endif
 
  " }}} _dnite.vim
@@ -3422,7 +3422,7 @@ let g:pencil_terminal_italics = 1
                      \ }
          " }}}
          "To make the guide pop up Register the description dictionary for the prefix first (assuming Space is your leader key):
-         call which_key#register('<Space>', "g:which_key_map")
+         " call which_key#register('<Space>', "g:which_key_map")
          nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
          vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
@@ -3445,7 +3445,7 @@ let g:pencil_terminal_italics = 1
                      \ 'p' : ['bprevious' , 'previous-buffer'] ,
                      \ '?' : ['Buffers'   , 'fzf-buffer']      ,
                      \ }
-         call which_key#register('<c-p>', "g:which_key_map_fzf")
+         " call which_key#register('<c-p>', "g:which_key_map_fzf")
          nnoremap <silent> <c-p> :<c-u>WhichKey '<c-p>'<CR>
          vnoremap <silent> <c-p> :<c-u>WhichKeyVisual '<c-p>'<CR>
 
@@ -3502,7 +3502,7 @@ let g:pencil_terminal_italics = 1
       endfunction
       let g:leaderGuide_displayfunc = [function("s:my_displayfunc")]
 
-      call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
+      " call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
 
       " let g:fzfmap = {}
       nmap <c-p> <cmd>LeaderGuide '<c-p>'<CR>
