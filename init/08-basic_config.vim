@@ -166,7 +166,6 @@ set nosmarttab
 set shiftwidth=4
 set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
 
-set guifont=Sauce\ Code\ Powerline\ Light:h18
 set textwidth=80
 set wrap                              " Wrap long lines
 set breakindent                       " proper indenting for long lines
