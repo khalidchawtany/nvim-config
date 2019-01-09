@@ -286,7 +286,7 @@ call PM('terryma/vim-expand-region')
        \ 'on_map': ['<Plug>NrrwrgnDo']
        \ })
 
-    LMap N <leader>rn <Plug>narrow-region <Plug>NrrwrgnDo
+    LMap NVX <leader>rn <Plug>narrow-region <Plug>NrrwrgnDo
 
  endif
 
@@ -547,6 +547,9 @@ endif
  " Utils {{{
  " ----------------------------------------------------------------------------
  call PM('wincent/replay', {'lazy': 1})
+
+ call PM('chrisbra/matchit')
+
 
  " pipe.vim {{{
 
@@ -2963,9 +2966,11 @@ endif
 
  "}}} _Navigation
 
+ "fze {{{
  if PM('khalidchawtany/fze')
      nnoremap     <C-;>rf <cmd>Fze<cr>
  endif
+ "}}} _fxe
 
  "ctrlsf.vim {{{
  if PM('dyng/ctrlsf.vim')
