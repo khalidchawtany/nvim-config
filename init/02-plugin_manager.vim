@@ -45,9 +45,16 @@ let s:PM_WL = [
       "let list=['02', '03', '03', '16', '17', '17', '28', '29', '29']
       "let unduplist=filter(copy(list), 'index(list, v:val, v:key+1)==-1')
 
+      let debug = 0
       let options = {}
       if len(a:000) > 0
           let options = a:1
+
+          if debug
+              if has_key(options, 'on_cmd')
+                  echom string(options['on_cmd'])
+              endif
+          endif
       endif
 
       " to debug without recache
