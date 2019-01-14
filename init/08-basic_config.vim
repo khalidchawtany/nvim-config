@@ -269,7 +269,7 @@ set hidden
 "set laststatus=2                      " force status line display
 set laststatus=0                      " force status line display
 set foldlevelstart=2
-set showtabline=1                     " hide tabline
+set showtabline=2                     " hide tabline
 set noerrorbells visualbell t_vb=     " Disable error bells
 set nostartofline                     " Don’t reset cursor to start of line when moving around
 set ruler                             " Show the cursor position
@@ -300,9 +300,4 @@ let g:netrw_liststyle=3               "Make netrw look like NerdTree
 
 highlight! ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
 let w:my_colorcol_hi_id = matchadd('ColorColumn', '\%81v', 100)
-"call matchadd('ColorColumn', '\%81v', 100)
-augroup ColorColumn
-  au!
-  autocmd FileType dirvish silent! call matchdelete(w:my_colorcol_hi_id)
-augroup END
 

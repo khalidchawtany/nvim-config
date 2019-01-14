@@ -9,6 +9,7 @@ endfunction
 
 let g:projects = [
       \ "~/Development/Applications/Oni",
+      \ "~/Projects/PHP/karaba/",
       \ "~/Projects/PHP/Knights/",
       \ "~/Projects/PHP/create_laravel_package/blog/",
       \ "~/Projects/PHP/create_laravel_package/blog/packages/knights/datatables/" ,
@@ -49,8 +50,6 @@ hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
 
 
-LMap nExpr <leader>- <Plug>NerdTreeCurFile  expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
-" nmap <expr> <leader>- expand('%')==''? "\<c-;>\<c-l>\<c-d>" : "\<c-;>\<c-l>\<c-f>"
 
 command! SetLightLine :let g:lightline.colorscheme = "onedark" |  call lightline#init() | call lightline#update()
 
@@ -86,10 +85,10 @@ LMap n <leader>zi <Plug>format-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual
 
  if exists('veonim')
 
-     set linespace=25
+     set linespace=20
      " set guifont=FuraMono\ Nerd\ Font:h20
-     set guifont=FuraCode\ Nerd\ Font:h20
-     set guifont=RobotoMono\ Nerd\ Font:h20
+     " set guifont=FuraCode\ Nerd\ Font:h18
+     set guifont=RobotoMono\ Nerd\ Font:h18
 
 
      " extensions for web dev

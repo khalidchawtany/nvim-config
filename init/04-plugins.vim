@@ -92,20 +92,6 @@ let g:_did_vimrc_plugins = 1
    call PM( 'vim-scripts/DirDiff.vim', {'on_cmd': ['DirDiff']} )
 
  "}}} _DirDiff.vim
- " vim-diff-enhanced {{{
-
- if PM( 'chrisbra/vim-diff-enhanced' )
-   " started In Diff-Mode set diffexpr (plugin not loaded yet)
-   if &diff
-     let &diffexpr='EnhancedDiff#Diff("git diff", "--diff-algorithm=patience")'
-   endif
- endif
- "}}} _vim-diff-enhanced
- " Recover-With-Diff{{{
-
- call PM( 'chrisbra/Recover.vim' )
-
- "}}} _Recover-With-Diff
 
  "}}}
  " ----------------------------------------------------------------------------
@@ -294,7 +280,7 @@ call PM('terryma/vim-expand-region')
 
  " Yank
  "markbar {{{
-if PM('Yilin-Yang/vim-markbar')
+if PM('Yilin-Yang/vim-markbar', {'on_map': ['<Plug>ToggleMarkbar']})
     nmap <leader>'' <Plug>ToggleMarkbar
 endif
 "}}} _markbar
@@ -429,7 +415,7 @@ endif
                            \   'on_map' :[
                            \      '<Plug>Dsurround' , '<Plug>Csurround',
                            \      '<Plug>Ysurround' , '<Plug>YSurround',
-                           \      '<Plug>Yssurround', '<Plug>YSsurround',
+                           \      '<Plug>Yssurround',
                            \      '<Plug>YSsurround', '<Plug>VgSurround',
                            \      '<Plug>VSurround' , '<Plug>ISurround',
                            \      ['i', '<Plug>Isurround'],
@@ -444,7 +430,7 @@ endif
    nmap y<cr><cr> <Plug>Yssurround
    nmap ySS <Plug>YSsurround
    xmap S <Plug>VSurround
-   xmap gS <Plug>VgSurround
+   xmap gSS <Plug>VgSurround
    "Original mappings
    "=================
    "nmap ds  <Plug>Dsurround
@@ -547,6 +533,8 @@ endif
  " Utils {{{
  " ----------------------------------------------------------------------------
  call PM('wincent/replay', {'lazy': 1})
+
+ call PM('tweekmonster/startuptime.vim')
 
  call PM('chrisbra/matchit')
 
@@ -668,7 +656,58 @@ endif
  "}}}
 
  " vim-unimpaired {{{
- call PM( 'tpope/vim-unimpaired' )
+ if PM( 'tpope/vim-unimpaired', {'on_map': ['<Plug>unimpaired']})
+    Map x!  [e            <Plug>unimpairedMoveSelectionUp
+    Map n!  [e            <Plug>unimpairedMoveUp
+    Map n!  [<Space>      <Plug>unimpairedBlankUp
+    Map no! [n            <Plug>unimpairedContextPrevious
+    Map n!  [f            <Plug>unimpairedDirectoryPrevious
+    Map n!  [<C-T>        <Plug>unimpairedTPPrevious
+    Map n!  [T            <Plug>unimpairedTFirst
+    Map n!  [t            <Plug>unimpairedTPrevious
+    Map n!  [<C-Q>        <Plug>unimpairedQPFile
+    Map n!  [Q            <Plug>unimpairedQFirst
+    Map n!  [q            <Plug>unimpairedQPrevious
+    Map n!  [<C-L>        <Plug>unimpairedLPFile
+    Map n!  [L            <Plug>unimpairedLFirst
+    Map n!  [l            <Plug>unimpairedLPrevious
+    Map n!  [B            <Plug>unimpairedBFirst
+    Map n!  [b            <Plug>unimpairedBPrevious
+    Map n!  [A            <Plug>unimpairedAFirst
+    Map n!  [a            <Plug>unimpairedAPrevious
+    Map x!  ]e            <Plug>unimpairedMoveSelectionDown
+    Map n!  ]e            <Plug>unimpairedMoveDown
+    Map n!  ]<Space>      <Plug>unimpairedBlankDown
+    Map no! ]n            <Plug>unimpairedContextNext
+    Map n!  ]f            <Plug>unimpairedDirectoryNext
+    Map n!  ]<C-T>        <Plug>unimpairedTPNext
+    Map n!  ]T            <Plug>unimpairedTLast
+    Map n!  ]t            <Plug>unimpairedTNext
+    Map n!  ]<C-Q>        <Plug>unimpairedQNFile
+    Map n!  ]Q            <Plug>unimpairedQLast
+    Map n!  ]q            <Plug>unimpairedQNext
+    Map n!  ]<C-L>        <Plug>unimpairedLNFile
+    Map n!  ]L            <Plug>unimpairedLLast
+    Map n!  ]l            <Plug>unimpairedLNext
+    Map n!  ]B            <Plug>unimpairedBLast
+    Map n!  ]b            <Plug>unimpairedBNext
+    Map n!  ]A            <Plug>unimpairedALast
+    Map n!  ]a            <Plug>unimpairedANext
+    Map n!  [xx           <Plug>unimpaired_line_xml_encode
+    Map nx! [x            <Plug>unimpaired_xml_encode
+    Map n!  [uu           <Plug>unimpaired_line_url_encode
+    Map nx! [u            <Plug>unimpaired_url_encode
+    Map n!  [yy           <Plug>unimpaired_line_string_encode
+    Map nx! [y            <Plug>unimpaired_string_encode
+    Map n!  [P            <Plug>unimpairedPutAbove
+    Map n!  ]xx           <Plug>unimpaired_line_xml_decode
+    Map nx! ]x            <Plug>unimpaired_xml_decode
+    Map n!  ]uu           <Plug>unimpaired_line_url_decode
+    Map nx! ]u            <Plug>unimpaired_url_decode
+    Map n!  ]yy           <Plug>unimpaired_line_string_decode
+    Map nx! ]y            <Plug>unimpaired_string_decode
+    Map n!  ]P            <Plug>unimpairedPutBelow
+ endif
  "}}} _vim-unimpaired
  " vim-man {{{
    call PM( 'bruno-/vim-man', {'on_cmd': ['Man', 'SMan', 'VMan', 'Mangrep']} )
@@ -746,7 +785,7 @@ endif
  "}}} _vim-scriptease
  " vim-debugger {{{
  call PM('haya14busa/vim-debugger',
-       \ {'on_cmd': ['DebugOn', 'Debugger', 'debug', 'StackTrace', 'CallStack', 'CallStackReport']})
+       \ {'on_cmd': ['DebugOn', 'Debugger', 'Debug', 'StackTrace', 'CallStack', 'CallStackReport']})
  " }}} _vim-debugger
  " vim-scripts/Decho {{{
  call PM('vim-scripts/Decho', {
@@ -931,7 +970,38 @@ call PM('sheerun/vim-polyglot')
 
  " PHP
 
- call PM('joonty/vdebug')
+ if PM('joonty/vdebug', {'on_cmd': ['VdebugStart']})
+
+     let g:vdebug_keymap = {
+                 \    "run":               "<leader>dr",
+                 \    "run_to_cursor":     "<leader>dc",
+                 \    "step_over":         "<leader>do",
+                 \    "step_into":         "<leader>di",
+                 \    "step_out":          "<leader>dO",
+                 \    "close":             "<leader>dq",
+                 \    "detach":            "<leader>dD",
+                 \    "set_breakpoint":    "<leader>db",
+                 \    "get_context":       "<leader>dg",
+                 \    "eval_under_cursor": "<leader>de",
+                 \    "eval_visual":       "<Leader>dv",
+                 \}
+     nnoremap <leader>dd <cmd>VdebugStart<cr>
+
+     " Allows Vdebug to bind to all interfaces.
+     let g:vdebug_options = {
+                 \ 'break_on_open':      0,
+                 \ 'max_children':       128,
+                 \ 'watch_window_style': 'compact',
+                 \ 'ide_key':            'nvim',
+                 \ 'server':             '127.0.0.1',
+                 \ 'port':               '9001'
+                 \}
+
+     " Need to set as empty for this to work with Vagrant boxes.
+     " let g:vdebug_options['server'] = ""
+
+ endif
+
  call PM('StanAngeloff/php.vim')
  call PM('stephpy/vim-php-cs-fixer')
  call PM('nishigori/vim-php-dictionary', {'on_ft': 'php'})
@@ -1336,9 +1406,6 @@ endif
    call PM( 'kopischke/vim-fetch' )              "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
 
-
- call PM('joonty/vdebug')
-
  "}}}
  " ----------------------------------------------------------------------------
  " Snippets {{{
@@ -1456,6 +1523,7 @@ endif
 
    nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
    nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+   nnoremap <silent> <leader>ll :call LanguageClient_contextMenu()<CR>
    nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
  endif
 
@@ -1652,7 +1720,7 @@ endif
 
   if PM( 'saaguero/vim-textobj-pastedtext')
     "gb              for pasted text
-    Map vo gb <Plug>(textobj-pastedtext-text)
+    " Map vo gb <Plug>(textobj-pastedtext-text)
   endif
 
     call PlugTextObj ("Julian/vim-textobj-brace", "j")                          "ij, aj          for all kinds of brces
@@ -1690,9 +1758,9 @@ endif
   " vim-textobj-lastpat {{{
 
     "i/, a/, i?, a?  for Searched pattern
-  if PM( 'kana/vim-textobj-lastpat' , {'on_map': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-n)']} )
-    Map vo i/ <Plug>(textobj-lastpat-n)
-    Map vo i? <Plug>(textobj-lastpat-N)
+  if PM( 'kana/vim-textobj-lastpat' , {'on_map': ['<Plug>(textobj-lastpat-n)', '<Plug>(textobj-lastpat-N)']} )
+      Map vo i/ <Plug>(textobj-lastpat-n)
+      Map vo i? <Plug>(textobj-lastpat-N)
   endif
 
   "}}} _vim-textobj-lastpat
@@ -1811,7 +1879,7 @@ endif
  " Navigation {{{
  " ----------------------------------------------------------------------------
  "{{{ vim-CtrlSpace
- if PM('vim-ctrlspace/vim-ctrlspace')
+ if PM('vim-ctrlspace/vim-ctrlspace', {'on_cmd': ['CtrlSpace']})
    nnoremap <silent> <C-Space><Space> :CtrlSpace<cr>
    let g:CtrlSpaceSymbols = { "File": "◯", "CTab": "▣", "Tabs": "▢" }
    if executable("ag")
@@ -1848,178 +1916,6 @@ endif
 
  "}}} _neomru.vim
 
- " unite.vim {{{
-
-if PM( 'Shougo/unite.vim')
-      "\ {
-      "\ 'on_cmd': ['Unite', 'UniteWithCursorWord'],
-      "\ 'on_func': ['unite#custom#', 'unite#custom#source'],
-      "\ })
-
-   "Plug 'Shougo/unite.vim'
-   call PM( 'Shougo/unite-outline' )
-   call PM( 'Shougo/unite-build' )
-   call PM( 'Shougo/unite-help' )
-   call PM( 'Shougo/unite-sudo' )
-   call PM( 'Shougo/unite-session' )
-   "Plug 'Shougo/neoyank.vim'   "Breaks a lazyloading on some plugins like sort-motion
-   call PM( 'tsukkee/unite-tag' )
-   " unite-bookmark-file {{{
-
-  if PM( 'liquidz/unite-bookmark-file' )
-   ":Unite bookmark/file
-   let g:unite_bookmark_file = '~/.config/nvim/.cache/unite-bookmark-file'
- endif
-
-   "}}} _unite-bookmark-file
-   call PM( 'ujihisa/unite-colorscheme' )
-   call PM( 'ujihisa/unite-locate' )
-   call PM( 'sgur/unite-everything' )
-   call PM( 'tacroe/unite-mark' )
-   call PM( 'tacroe/unite-alias' )
-   call PM( 'hakobe/unite-script' )
-   call PM( 'soh335/unite-qflist' )
-   call PM( 'thinca/vim-unite-history' )
-   call PM( 'sgur/unite-qf' )
-   call PM( 'oppara/vim-unite-cake' )
-   call PM( 't9md/vim-unite-ack' )
-   call PM( 'Sixeight/unite-grep' )
-   call PM( 'kannokanno/unite-todo' )
-   call PM( 'osyo-manga/unite-fold' )
-   call PM( 'osyo-manga/unite-highlight' )
-   " unite-fasd.vim {{{
-
-  if PM( 'critiqjo/unite-fasd.vim' )
-   " Path to fasd script (must be set)
-   let g:unite_fasd#fasd_path = '/usr/local/bin/fasd'
-   " Path to fasd cache -- defaults to '~/.fasd'
-   let g:unite_fasd#fasd_cache = '~/.fasd'
-   " Allow `fasd -A` on `BufRead`
-   let g:unite_fasd#read_only = 0
-   "Unite fasd OR Unite fasd:mru
-  endif
-
-   "}}} _unite-fasd.vim
-
-   autocmd! User unite.vim  call SetUpUniteMenus()
-   "au VimEnter * call SetUpUniteMenus()
-   function! SetUpUniteMenus()
-
-     " Enable fuzzy matching and sorting in all Unite functions
-     call unite#filters#matcher_default#use(['matcher_fuzzy'])
-     " call unite#filters#sorter_default#use(['sorter_rank'])
-     call unite#filters#sorter_default#use(['sorter_selecta'])
-
-     let g:unite_source_menu_menus = {} " Useful when building interfaces at appropriate places
-
-     " More Unite menus {{{
-     " Interface for OS interaction
-     let g:unite_source_menu_menus.osinteract = {
-           \ 'description' : 'OS interaction and configs',
-           \}
-     let g:unite_source_menu_menus.osinteract.command_candidates = [
-           \[' alternate file', 'A'],
-           \[' generate tags in buffer dir', 'cd %:p:h | Dispatch! ctags .'],
-           \[' cd to buffer directory', 'cd %:p:h'],
-           \[' cd to project directory', 'Rooter'],
-           \[' create .projections.json', 'cd %:p:h | e .projections.json'],
-           \[' Battery status', 'Unite -buffer-name=ubattery output:echo:system("~/battery")'],
-           \[' Scratch notes', 'Unite -buffer-name=unotes -start-insert junkfile'],
-           \[' Source vimrc', 'so $MYVIMRC'],
-           \[' Edit vimrc', 'e $MYVIMRC'],
-           \]
-     nnoremap <silent> <c-;><c-;><c-l> :Unite -silent -buffer-name=osinteract -quick-match menu:osinteract<CR>
-     "}}}
-
-   endfunction
-
-   nnoremap <silent> <leader>p<space> :Unite -auto-resize outline<cr>
-   nnoremap <silent> <leader>po :Unite -auto-resize buffer<cr>
-
-   let g:unite_data_directory=$HOME.'/.config/nvim/.cache/unite'
-
-   let g:unite_force_overwrite_statusline = 0
-   let g:unite_winheight = 10
-   let g:unite_data_directory='~/.config/nvim/.cache/unite'
-   let g:unite_enable_start_insert=1
-   let g:unite_source_history_yank_enable=1
-   let g:unite_prompt='» '
-   let g:unite_split_rule = 'botright'
-
-   if executable('ag')
-     let g:unite_source_grep_command='ag'
-     let g:unite_source_grep_default_opts='--nocolor --nogroup -S -C4'
-     let g:unite_source_grep_recursive_opt=''
-     let g:unite_source_rec_async_command=['ag --nocolor --nogroup --ignore ".hg" --ignore ".svn" --ignore ".git" --ignore ".bzr" --hidden -g ""']
-   endif
-
-   " Custom mappings for the unite buffer
-   autocmd FileType unite call s:unite_settings()
-   function! s:unite_settings()
-     " Play nice with supertab
-     let b:SuperTabDisabled=1
-     " Enable navigation with control-j and control-k in insert mode
-     imap <buffer> <C-j>    <Plug>(unite_select_next_line)
-     imap <buffer> <C-k>    <Plug>(unite_select_previous_line)
-     imap <buffer> <esc>    <esc> <Plug>(unite_all_exit)
-     nmap <buffer> <bs>     <Plug>(unite_delete_backward_path)
-     nmap <silent> <buffer> <esc> <Plug>(unite_all_exit) " Close Unite view
-   endfunction
-
-   function! Open_current_file_dir(args)
-     let [args, options] = unite#helper#parse_options_args(a:args)
-     let path = expand('%:h')
-     let options.path = path
-     call unite#start(args, options)
-   endfunction
-
-   nnoremap <c-;><c-;>cd :call Open_current_file_dir('-no-split file')<cr>
-
-   " Execute help.
-   nnoremap <c-;><c-;>h  :<C-u>Unite -start-insert help<CR>
-   " Execute help by cursor keyword.
-   nnoremap <silent> <c-;><c-;><C-h>  :<C-u>UniteWithCursorWord help<CR>
-
-   "call unite#custom#source('buffer,file,file_rec',
-   "\ 'sorters', 'sorter_length')
-
-   "CtrlP & NerdTree combined
-   nnoremap <silent> <c-;><c-;>F :Unite -auto-resize file/async  file_rec/async<cr>
-   nnoremap <silent> <c-;><c-;>f :Unite -auto-resize file_rec/async<cr>
-   nnoremap <silent> <c-;><c-;><c-f> :Unite -auto-resize file_rec/async<cr>
-
-   nnoremap <silent> <c-;><c-;>d :Unite -auto-resize directory_rec/async<cr>
-   nnoremap <silent> <c-;><c-;>o :Unite -auto-resize file_mru<cr>
-
-   nnoremap <silent> <c-;><c-;>l :Unite -auto-resize outline<cr>
-
-   "Grep commands
-   nnoremap <silent> <c-;><c-;>g :Unite -auto-resize grep:.<cr>
-   nnoremap <silent> <c-;><c-;><c-g> :Unite -auto-resize grep:/<cr>
-   "Content search like Ag anc Ack
-   nnoremap <c-;><c-;>/ :Unite grep:.<cr>
-
-   "Hostory & YankRing
-   let g:unite_source_history_yank_enable = 1
-   nnoremap <c-;><c-;>y :Unite history/yank<cr>
-   nnoremap <c-;><c-;>: :Unite history/command<cr>
-   nnoremap <c-;><c-;>/ :Unite history/search<cr>
-
-   nnoremap <c-;><c-;>? :Unite mapping<cr>
-
-   "LustyJuggler
-   nnoremap <c-;><c-;>b :Unite -quick-match buffer<cr>
-   nnoremap <c-;><c-;><c-b> :Unite buffer<cr>
-
-   "LustyJuggler
-   nnoremap <c-;><c-;>t :Unite -quick-match tab<cr>
-   nnoremap <c-;><c-;><c-t> :Unite tab<cr>
-
-   "Line Search
-   nnoremap <c-;><c-;>l :Unite line<cr>
-   nnoremap <c-;><c-;>L :Unite -quick-match line<cr>
- endif
- "}}} _unite.vim
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
 
@@ -2053,9 +1949,10 @@ if PM( 'Shougo/unite.vim')
           \ ],
           \   'on_cmd': ['FzfFiles', 'FzfGitFiles', 'FzfBuffers', 'FzfColors', 'FzfAg', 'FzfLines',
           \              'FzfBLines', 'FzfTags', 'FzfBTags', 'FzfMaps', 'FzfMarks', 'FzfWindows',
-          \              'FzfLocate', 'FzfHistory', 'FzfHistory:', 'FzfHistory/', 'FzfSnippets',
+          \              'FzfLocate', 'FzfHistory', 'FzfSnippets',
           \              'FzfCommits', 'FzfBCommits', 'FzfCommands', 'FzfHelptags']
           \ })
+ " 'FzfHistory:', 'FzfHistory/',
 
    " [Buffers] Jump to the existing window if possible
    let g:fzf_buffers_jump = 1
@@ -2160,13 +2057,13 @@ if PM( 'Shougo/unite.vim')
    " nnoremap <silent> <c-p><space> :call fzf#run({"source":"ag -all -l  \"\" \| sort -u " , "sink":"edit"})<cr>
    nnoremap <silent> <c-p><c-space> <cmd>FzfHistory!<cr>
 
-   function GetDirectories()
-     call fzf#run({"source":"ag -l --nocolor -g \"\" | awk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq" , "sink":"Dirvish"})
+   function! s:get_directories()
+     call fzf#run({"source":"ag -l --nocolor -g \"\" | gawk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq" , "sink":"Defx"})
     "find . -type d   -not -iwholename \"./.phpcd*\" -not -iwholename \"./node_modules*\" -not -iwholename \".\" -not -iwholename \"./vendor*\" -not -iwholename \"./.git*\"
     "ag -l --nocolor -g "" | awk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq
    endfunction
-   LMap N! <c-p>[ <Plug>FzfDirs :call fzf#run({"source":"find . -type d", "sink":"NERDTree"})<cr>
-   LMap N! <c-p><c-[> <Plug>FzfAllDirs :cal GetDirectories()<cr>
+   nnoremap <silent> <c-p>[ :call fzf#run({"source":"find . -type d", "sink":"Defx"})<cr>
+   nnoremap <silent> <c-p><c-[> :cal <SID>get_directories()<cr>
 
    " Replace the default dictionary completion with fzf-based fuzzy completion
    " inoremap <expr> <c-x><c-k> fzf#complete('cat /usr/share/dict/words')
@@ -2274,7 +2171,7 @@ endfunction
    "       \   'options': '+m --reverse',
    "       \   'window':    '-tabnew'
    "       \ })<CR>
-   LMap N! <c-p><c-o> <Plug>FzfBuffers :call fzf#run({
+   nnoremap <silent> <c-p><c-o> <cmd>call fzf#run({
          \   'source':  reverse(<sid>buflist()),
          \   'sink*':    function('<sid>bufopen'),
          \   'options': '+m --reverse --expect=ctrl-t,ctrl-v,ctrl-s',
@@ -2363,7 +2260,7 @@ endfunction
         execute 'buffer' l:term_buffer_id
       endif
    endfunction
-   LMap N! <c-p><c-;> <Plug>FzfTerm :call fzf#run({
+   nnoremap <silent> <c-p><c-;> <cmd>call fzf#run({
          \   'source':  reverse(<sid>termlist()),
          \   'sink':    function('<sid>termtabopen'),
          \   'options': '+m --reverse',
@@ -2382,110 +2279,107 @@ endfunction
  endif " PM()
  " }}} _neovim-fuzzy
 
- " ranger.vim {{{
+ "defx.nvim {{{
 
-   call PM( 'francoiscabrol/ranger.vim' )
-   call PM( 'rbgrouleff/bclose.vim' ) "used by dirvish to close the buffer
-   let g:ranger_map_keys = 0
-   nnoremap <leader>ar :call OpenRanger()<CR>
+ if PM('Shougo/defx.nvim', {'hook_post_source': "call SetDefXOPtions()"})
 
- "}}} _ranger.vim
- " vim-dirvish {{{
+     function! SetDefXOPtions()
+         call defx#custom#option('_', {
+                     \ 'columns': 'mark:filename:type:size:time',
+                     \ })
+         call defx#custom#column('filename', {
+                     \ 'min_width': 40,
+                     \ 'max_width': 40,
+                     \ })
 
-  if PM( 'justinmk/vim-dirvish' )         " {-} file browser
-   ":'<,'>Shdo mv {} {}-copy.txt
-    augroup my_dirvish_events
-      autocmd!
+         call defx#custom#column('mark', {
+                     \ 'directory_icon': '▸',
+                     \ 'readonly_icon': '✗',
+                     \ 'selected_icon': '✓',
+                     \ })
+     endfunction
 
-      autocmd FileType dirvish nnoremap <buffer> <leader>r :Rename <c-r>=getline('.')<cr><space>
-      autocmd FileType dirvish nnoremap <buffer> <leader>m :Move   <c-r>=shellescape(getline('%'))<cr>
-      autocmd FileType dirvish nnoremap <buffer> <leader>c :saveas <c-r>=@%<cr><space>
+     nnoremap <silent> - :Defx  `expand('%:p:h')` -search=`expand('%:p')`<cr>
 
-      " Map t to "open in new tab".
-      autocmd FileType dirvish
-        \  nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-        \ |xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+	" nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+	" Defx -split=vertical -winwidth=50 -direction=topleft
 
-      if PM_ISS('vim-fugitive')
-        " Enable :Gstatus and friends.
-        " autocmd FileType dirvish call fugitive#detect(@%)
-      endif
+  function! s:isdir(dir)
+      return !empty(a:dir) && (isdirectory(a:dir) ||
+                  \ (!empty($SYSTEMDRIVE) && isdirectory('/'.tolower($SYSTEMDRIVE[0]).a:dir)))
+  endfunction
 
-      " Map CTRL-R to reload the Dirvish buffer.
-      autocmd FileType dirvish nnoremap <buffer> <C-R> <Cmd>Dirvish %<CR>
+   autocmd BufEnter * if <SID>isdir(expand('%'))
+               \ | exe 'Defx' expand('%')
+               \ | endif
 
-      "autocmd FileType dirvish nmap <buffer> q <Plug>BW
-      autocmd FileType dirvish nnoremap <buffer> q <Cmd>Bclose<CR>
-
-      " Map `gh` to hide dot-prefixed files.
-      " To "toggle" this, just press `R` to reload.
-      autocmd FileType dirvish nnoremap <buffer>
-        \ gh :keeppatterns g@\v/\.[^\/]+/?$@d<cr>
-    augroup END
-
-  else
-    nnoremap - :e %:h<cr>
-  endif
-
- "}}} _vim-dirvish
- " vim-vinegar {{{
-
-   call PM( 'tpope/vim-vinegar' )
-
- "}}} _vim-vinegar
- " NERDTree {{{
-
-  if PM( 'scrooloose/nerdtree', {'on_cmd':  ['NERDTreeToggle', 'NERDTreeCWD', 'NERDTreeFind', 'NERDTree'] } )
-   "call PM('tiagofumo/vim-nerdtree-syntax-highlight', { 'depends': 'nerdtree' })
-   "Plug 'scrooloose/nerdtree'
-  "Plug 'jistr/vim-nerdtree-tabs'
-
-   "let g:loaded_netrw       = 1 "Disable Netrw
-   "let g:loaded_netrwPlugin = 1 "Disable Netrw
-
-   "let g:nerdtree_tabs_open_on_gui_startup = 0
-   let g:nerdtree_tabs_open_on_gui_startup = !$NVIM_TUI_ENABLE_TRUE_COLOR
-
-   let NERDTreeQuitOnOpen=1
-   let NERDTreeWinSize = 23
-
-   " Don't display these kinds of files
-   let NERDTreeIgnore=[ '\.ncb$', '\.suo$', '\.vcproj\.RIMNET', '\.obj$',
-         \ '\.ilk$', '^BuildLog.htm$', '\.pdb$', '\.idb$',
-         \ '\.embed\.manifest$', '\.embed\.manifest.res$',
-         \ '\.intermediate\.manifest$', '^mt.dep$', '^.OpenIDE$', '^.git$', '^TestResult.xml$', '^.paket$', '^paket.dependencies$','^paket.lock$', '^paket.template$', '^.agignore$', '^.AutoTest.config$',
-         \ '^.gitignore$', '^.idea$' , '^tags$']
-
-   let NERDTreeShowHidden=1
-   let NERDTreeShowBookmarks=1
-
-   " nnoremap <c-;><c-l> :NERDTreeTabsToggle<cr>
-   nnoremap <c-;><c-l><c-l> :NERDTreeToggle<cr>
-   nnoremap <c-;><c-l><c-d> :NERDTreeCWD<cr>
-   nnoremap <c-;><c-l><c-f> :NERDTreeFind<cr>
-
-   function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
-     exec 'autocmd FileType nerdtree highlight ' . a:extension .' ctermbg='. a:bg .' ctermfg='. a:fg .' guibg='. a:guibg .' guifg='. a:guifg
-     exec 'autocmd FileType nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
-   endfunction
-
-   call NERDTreeHighlightFile('jade', 'green', 'none', 'green', 'none')
-   call NERDTreeHighlightFile('md', 'blue', 'none', '#6699CC', 'none')
-   call NERDTreeHighlightFile('config', 'yellow', 'none', '#d8a235', 'none')
-   call NERDTreeHighlightFile('conf', 'yellow', 'none', '#d8a235', 'none')
-   call NERDTreeHighlightFile('json', 'green', 'none', '#d8a235', 'none')
-   call NERDTreeHighlightFile('html', 'yellow', 'none', '#d8a235', 'none')
-   call NERDTreeHighlightFile('css', 'cyan', 'none', '#5486C0', 'none')
-   call NERDTreeHighlightFile('scss', 'cyan', 'none', '#5486C0', 'none')
-   call NERDTreeHighlightFile('coffee', 'Red', 'none', 'red', 'none')
-   call NERDTreeHighlightFile('js', 'Red', 'none', '#ffa500', 'none')
-   call NERDTreeHighlightFile('ts', 'Blue', 'none', '#6699cc', 'none')
-   call NERDTreeHighlightFile('ds_store', 'Gray', 'none', '#686868', 'none')
-   call NERDTreeHighlightFile('gitconfig', 'black', 'none', '#686868', 'none')
-   call NERDTreeHighlightFile('gitignore', 'Gray', 'none', '#7F7F7F', 'none')
-
+     autocmd FileType defx call s:defx_my_settings()
+     function! s:defx_my_settings() abort
+         " Define mappings
+         nnoremap <silent><buffer><expr> <CR>
+                     \ defx#do_action('open')
+         nnoremap <silent><buffer><expr> c
+                     \ defx#do_action('copy')
+         nnoremap <silent><buffer><expr> m
+                     \ defx#do_action('move')
+         nnoremap <silent><buffer><expr> p
+                     \ defx#do_action('paste')
+         nnoremap <silent><buffer><expr> l
+                     \ defx#do_action('open')
+         nnoremap <silent><buffer><expr> E
+                     \ defx#do_action('open', 'vsplit')
+         nnoremap <silent><buffer><expr> P
+                     \ defx#do_action('open', 'pedit')
+         nnoremap <silent><buffer><expr> K
+                     \ defx#do_action('new_directory')
+         nnoremap <silent><buffer><expr> N
+                     \ defx#do_action('new_file')
+         nnoremap <silent><buffer><expr> M
+                     \ defx#do_action('new_multiple_files')
+         nnoremap <silent><buffer><expr> C
+                     \ defx#do_action('toggle_columns',
+                     \                'mark:filename:type:size:time')
+         nnoremap <silent><buffer><expr> S
+                     \ defx#do_action('toggle_sort', 'Time')
+         nnoremap <silent><buffer><expr> d
+                     \ defx#do_action('remove')
+         nnoremap <silent><buffer><expr> r
+                     \ defx#do_action('rename')
+         nnoremap <silent><buffer><expr> !
+                     \ defx#do_action('execute_command')
+         nnoremap <silent><buffer><expr> x
+                     \ defx#do_action('execute_system')
+         nnoremap <silent><buffer><expr> yy
+                     \ defx#do_action('yank_path')
+         nnoremap <silent><buffer><expr> .
+                     \ defx#do_action('toggle_ignored_files')
+         nnoremap <silent><buffer><expr> ;
+                     \ defx#do_action('repeat')
+         nnoremap <silent><buffer><expr> h
+                     \ defx#do_action('cd', ['..'])
+         nnoremap <silent><buffer><expr> -
+                     \ defx#do_action('cd', ['..'])
+         nnoremap <silent><buffer><expr> ~
+                     \ defx#do_action('cd')
+         nnoremap <silent><buffer><expr> q
+                     \ defx#do_action('quit')
+         nnoremap <silent><buffer><expr> <Space>
+                     \ defx#do_action('toggle_select') . 'j'
+         nnoremap <silent><buffer><expr> *
+                     \ defx#do_action('toggle_select_all')
+         nnoremap <silent><buffer><expr> j
+                     \ line('.') == line('$') ? 'gg' : 'j'
+         nnoremap <silent><buffer><expr> k
+                     \ line('.') == 1 ? 'G' : 'k'
+         nnoremap <silent><buffer><expr> <C-l>
+                     \ defx#do_action('redraw')
+         nnoremap <silent><buffer><expr> <C-g>
+                     \ defx#do_action('print')
+         nnoremap <silent><buffer><expr> cd
+                     \ defx#do_action('change_vim_cwd')
+     endfunction
  endif
- "}}}
+ "}}} _defx.nvim
 
  " vim-projectionist {{{
 
@@ -2538,6 +2432,7 @@ endfunction
 
  " vim-stay {{{
 
+ "Restore cursor when reopoening files
 call PM('kopischke/vim-stay')
 
  "}}} _vim-stay
@@ -2679,7 +2574,7 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  "}}}
  " vim-easymotion {{{
 
-  if PM( 'Lokaltog/vim-easymotion', {'on_map': ['<Plug>(easymotion-']} )
+  if PM( 'Lokaltog/vim-easymotion')
 
    map s         <Plug>(easymotion-prefix)
    map s;        <Plug>(easymotion-s2)
@@ -2876,7 +2771,7 @@ endif
    nnoremap ]h :HisTravForward<cr>
    nnoremap [h :HisTravBack<cr>
 
-   let g:history_ft_ignore = ['netrw', 'NERDTree']
+   let g:history_ft_ignore = ['netrw']
  endif
 
  "}}} _history-traverse
@@ -3147,9 +3042,7 @@ endif
        return "  "
      endif
      return fname == '__Tagbar__' ? g:lightline.fname :
-           \ fname =~ '__Gundo\|NERD_tree' ? '' :
-           \ &ft == 'vimfiler' ? vimfiler#get_status_string() :
-           \ &ft == 'unite' ? unite#get_status_string() :
+           \ fname =~ '__Gundo' ? '' :
            \ &ft == 'vimshell' ? vimshell#get_status_string() :
            \ ('' != LightLineReadonly() ? LightLineReadonly() . ' ' : '') .
            \ ('' != fname ? fname : '[No Name]') .
@@ -3158,7 +3051,7 @@ endif
 
    function! LightLineFugitive()
      try
-       if expand('%:t') !~? 'Tagbar\|Gundo\|NERD' && &ft !~? 'vimfiler' && exists('*fugitive#head')
+       if expand('%:t') !~? 'Tagbar\|Gundo' && &ft !~? 'vimfiler' && exists('*fugitive#head')
          let mark = ' '  " edit here for cool mark     
          let _ = fugitive#head()
          return strlen(_) ? mark._ : ''
@@ -3296,6 +3189,7 @@ endif
 
  if PM( 'roman/golden-ratio' )
    nnoremap cog :<c-u>GoldenRatioToggle<cr>
+  let g:golden_ratio_exclude_nonmodifiable = 1
  endif
 
  "}}} _golden-ratio
@@ -3365,7 +3259,9 @@ let g:pencil_terminal_italics = 1
  " ----------------------------------------------------------------------------
 
  " vim-which-key {{{
-    if PM('liuchengxu/vim-which-key')
+ if PM('liuchengxu/vim-which-key', {
+             \     'hook_post_source': 'call which_key#register("<Space>", "g:which_key_map")'
+             \})
         let g:mapleader = "\<Space>"
         let g:maplocalleader = ','
         nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
@@ -3451,8 +3347,11 @@ let g:pencil_terminal_italics = 1
 
     endif
  " }}}vim-which-key
+
  " vim-leader-guide {{{
-    if PM('hecal3/vim-leader-guide')
+    if PM('hecal3/vim-leader-guide', {
+       \     'hook_post_source': 'call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")'
+       \ })
 
       "nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
       nnoremap <leader> <cmd>LeaderGuide '<Space>'<CR>
@@ -3502,19 +3401,14 @@ let g:pencil_terminal_italics = 1
       endfunction
       let g:leaderGuide_displayfunc = [function("s:my_displayfunc")]
 
+      " Moved this hook_post
       " call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
 
-      " let g:fzfmap = {}
-      nmap <c-p> <cmd>LeaderGuide '<c-p>'<CR>
-      " call leaderGuide#register_prefix_descriptions("FZF", "g:fzfmap")
     endif
  " _vim-leader-guide }}}
 
  "}}}
  " ----------------------------------------------------------------------------
-
-
-
 
 "call function(string(PM).'End')
 call PM_END()
