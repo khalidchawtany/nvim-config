@@ -3024,38 +3024,6 @@ endif
 
  "}}}
 
- " neovim-qt {{{
-
-    " call PM( 'equalsraf/neovim-gui-shim' )
-
- " }}}
-
- " gonvim {{{
-
- call PM('dzhou121/neovim-fzf-shim')
-
- "}}} _gonvim
-
- " gonvim-fuzzy {{{
-
- call PM('dzhou121/gonvim-fuzzy')
- "GonvimFuzzyFiles   - For Files
- "GonvimFuzzyBLines  - For Lines in the Current File
- "GonvimFuzzyAg      - For runing FZF_AG ( searches current directory )
- "GonvimFuzzyBuffers - For searching opened Buffers
-
- "}}} _gonvim-fuzzy
-
- " Nyaovim {{{
-
- if exists('g:nyaovim_version')
-   call PM( 'rhysd/nyaovim-popup-tooltip' )
-   call PM( 'rhysd/nyaovim-mini-browser' )
-   call PM( 'rhysd/nyaovim-markdown-preview' )
- endif
-
-"}}}
-
  " Themeing {{{
 
  call PM('tpope/vim-flagship', {'lazy':1})
