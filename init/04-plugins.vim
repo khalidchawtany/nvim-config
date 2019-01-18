@@ -512,17 +512,18 @@ endif
 
  call PM('chrisbra/matchit')
 
+ " vim-fetch {{{
+   call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
+ "}}} _vim-fetch
  " pipe.vim {{{
 
    "Pipe !command output to vim
    call PM( 'NLKNguyen/pipe.vim' )
 
  "}}} _pipe.vim
-
  "vim-signature {{{
    call PM('kshenoy/vim-signature')
  "}}} _vim-signature'
-
  " vim-submode {{{
    "call PM( 'kana/vim-submode' )
    if PM( 'khalidchawtany/vim-submode' )
@@ -627,7 +628,6 @@ endif
    endfunction
  endif "PM()
  "}}}
-
  " vim-unimpaired {{{
  call PM( 'tpope/vim-unimpaired')
  "}}} _vim-unimpaired
@@ -650,7 +650,6 @@ endif
 
  "}}} _vim-eunuch
  "call PM( 'duggiefresh/vim-easydir' )
-
  " vim-capslock {{{
 
  call PM( 'tpope/vim-capslock' ,{
@@ -663,7 +662,6 @@ endif
    imap <c-l>e <C-O><Plug>CapsLockEnable
    imap <c-l>d <C-O><Plug>CapsLockDisable
  "}}} _vim-capslock
-
  " vim-repeat {{{
 
  call PM( 'tpope/vim-repeat' )
@@ -674,28 +672,22 @@ endif
    call PM( 'tpope/vim-obsession', {'on_cmd':['Obsession']} )
 
  "}}} _vim-obsession
-
  "close-buffers.vim {{{
  if PM('Asheq/close-buffers.vim')
      nnoremap <c-;>wh <cmd>CloseHiddenBuffers<cr>
      nnoremap <c-;><c-w><c-h> <cmd>CloseHiddenBuffers<cr>
  endif
  "}}} _close-buffers.vim
-
-
  "chromatica {{{
  if PM('arakashic/chromatica.nvim')
      let test#strategy = "neovim"
  endif
  "}}} _chromatica
-
-
  " vim-autoswap {{{
 
    call PM( 'gioele/vim-autoswap' )
 
  "}}} _vim-autoswap
-
  " vim-scriptease {{{
 
  call PM( 'tpope/vim-scriptease', {
@@ -718,8 +710,9 @@ endif
     " call Dfunc("YourFunctionName([arg1<".a:arg1."> arg2<".a:arg2.">])")
     " call Dret("YourFunctionName [returnvalue]")
  "}}} _vim-scripts/Decho
-
+ "vCoolor.vim {{{
  call PM( 'KabbAmine/vCoolor.vim')
+ "}}} _vCoolor.vim
  " investigate.vim {{{
 
  if PM( 'keith/investigate.vim', {'on_map': ['gK']} )
@@ -729,29 +722,33 @@ endif
  endif
 
  "}}} _investigate.vim
-
+ "vim-highlightedyank {{{
  if PM('machakann/vim-highlightedyank')
    map y <Plug>(highlightedyank)
    let g:highlightedyank_highlight_duration = 750
    highlight link HighlightedyankRegion Visual
  endif
+ "}}} _vim-highlightedyank
  "}}}
 
  " languages {{{
 
  " Advanced Syntax Highlighting
+ "vim-polyglot {{{
 call PM('sheerun/vim-polyglot')
+"}}} _vim-polyglot
 
  "GoDot
+ "vim-gdscript {{{
  if PM('quabug/vim-gdscript', {'on_ft': ['gdscript']})
    au BufRead,BufNewFile *.gd	set filetype=gdscript
  endif
+ "}}} _vim-gdscript
 
  "Python
+ "braceless.vim {{{
  call PM( 'tweekmonster/braceless.vim', {'on_ft': ['python']} )
-
- " Java
- " Plug 'tpope/vim-classpath'
+ "}}} _braceless.vim
 
  "C#
  " omnisharp {{{
@@ -864,6 +861,7 @@ call PM('sheerun/vim-polyglot')
 
  endif
  "}}}
+
  " vim-csharp {{{
 
    call PM( 'OrangeT/vim-csharp', {'on_ft': ['cs']} )
@@ -890,7 +888,7 @@ call PM('sheerun/vim-polyglot')
  call PM( 'chrisbra/csv.vim', {'on_ft': ['csv']} )
 
  " PHP
-
+ "vdebug {{{
  if PM('joonty/vdebug', {'on_cmd': ['VdebugStart']})
 
      let g:vdebug_keymap = {
@@ -922,20 +920,28 @@ call PM('sheerun/vim-polyglot')
      " let g:vdebug_options['server'] = ""
 
  endif
-
+ "}}} _vdebug
+ "php.vim {{{
  call PM('StanAngeloff/php.vim')
+ "}}} _php.vim
+ "vim-php-cs-fixer {{{
  call PM('stephpy/vim-php-cs-fixer')
 
  command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
  autocmd FileType php nnoremap <buffer> <c-k><c-d> <esc>:w<cr>:Silent php-cs-fixer fix %:p --level=symfony<cr>
-
+ "}}} _vim-php-cs-fixer
+ "vim-php-dictionary {{{
  call PM('nishigori/vim-php-dictionary', {'on_ft': 'php'})
+ "}}} _vim-php-dictionary
+ "vim-php-namespace {{{
  if PM('arnaud-lb/vim-php-namespace', {'for': 'php'})
      " TODO:
      " nnoremap <Leader>u :PHPImportClass<cr>
      " nnoremap <Leader>e :PHPExpandFQCNAbsolute<cr>
      " nnoremap <Leader>E :PHPExpandFQCN<cr>
  endif
+ "}}} _vim-php-namespace
+ "phpactor {{{
  if PM('phpactor/phpactor' ,  {'build': 'composer install'})
      "TODO:
      " " context-aware menu with all functions (ALT-m)
@@ -956,6 +962,8 @@ call PM('sheerun/vim-polyglot')
      autocmd FileType php setlocal omnifunc=phpactor#Complete
      let g:phpactorOmniError = v:true
  endif
+ "}}} _phpactor
+ "vim-php-refactoring-toolbox {{{
  if PM('adoy/vim-php-refactoring-toolbox')
      let g:vim_php_refactoring_use_default_mapping = 0
      let g:vim_php_refactoring_default_property_visibility = 'private'
@@ -975,26 +983,14 @@ call PM('sheerun/vim-polyglot')
      nnoremap <leader>rsg :call PhpCreateSettersAndGetters()<CR>
 
  endif
+ "}}} _vim-php-refactoring-toolbox
+ "pdv {{{
  if PM('tobyS/pdv', {'on_ft': 'php'})
      call PM('tobyS/vmustache')
      nnoremap <leader>doc <cmd>call pdv#DocumentWithSnip()<cr>
 
  endif
-
-
- " phpcomplete.vim {{{
-
-   "Plug 'shawncplus/phpcomplete.vim'
-
- "}}} _phpcomplete.vim
- " phpcomplete-extended {{{
-
-    "Plug 'm2mdas/phpcomplete-extended'
-    "let g:phpcomplete_index_composer_command = "composer"
-    "autocmd  FileType  php setlocal omnifunc=phpcomplete_extended#CompletePHP
-
- "}}}
-  "Plug 'm2mdas/phpcomplete-extended-laravel'
+ "}}} _pdv
  " pdv {{{
 
    "call PM( 'tobyS/vmustache', {'on_ft': ['PHP']} )
@@ -1073,45 +1069,6 @@ call PM('sheerun/vim-polyglot')
        \ })
  "}}} _noahfredrerick/vim-composer
 
- "let g:loaded_matchit=1
- "let g:loaded_matchparen=1
- function OptimizePHPSyntax()
-   "syn clear phpHereDoc
-   "syn clear phpNowDoc
-   "syn clear phpParent
-   ""syn clear phpFloat
-   ""syn clear phpOperator
-   ""syn clear phpComparison
-   ""syn clear phpRelation
- endfunction
-
- augroup php_and_family
-   au!
-   au BufWinEnter *.php call OptimizePHPSyntax()
- augroup END
-
- "Go
- call PM( 'fatih/vim-go', {'on_ft': ['go']} )
-
- if PM_ISS('deoplete.nvim')
-   call PM( 'zchee/deoplete-go', {
-         \ 'on_ft': ['go'],
-         \ 'build': 'sh -c "/usr/bin/make"',
-         \ 'on_event': 'VimEnter',
-         \ 'on_if': 'has("nvim")'
-         \ } )
- endif
-
- "Rust
- " vim-racer {{{
-
- if PM( 'racer-rust/vim-racer', {'on_ft': ['rust']} )
-   let g:racer_cmd = "/Volumes/Home/.cargo/bin/racer"
-   let $RUST_SRC_PATH="/Volumes/Home/Development/Applications/rust/src/"
- endif
-
- "}}} _vim-racer
-
  " blade
  " vim-blade {{{
 
@@ -1123,7 +1080,9 @@ call PM('sheerun/vim-polyglot')
    call PM('jwalton512/vim-blade')
 
  "}}}
+ "blade.vim {{{
    call PM('johnhamelink/blade.vim', {'on_if': '0'})
+   "}}} _blade.vim
 
  " Web Dev
  " breeze.vim {{{
@@ -1178,7 +1137,6 @@ call PM('sheerun/vim-polyglot')
  endif
 
  "}}}
-
  " pear-tree {{{
  if PM('tmsvg/pear-tree')
      " Default rules for matching:
@@ -1219,7 +1177,6 @@ call PM('sheerun/vim-polyglot')
      " <Plug>(PearTreeJNR)
  endif
  " }}} _pear-tree
-
  " vim-closetag {{{
  "This plugin uses > of the clos tag to work in insert mode
  "<table|   => press > to have <table>|<table>
@@ -1235,7 +1192,6 @@ call PM('sheerun/vim-polyglot')
  "Ctrl+_ to close next unimpared tag
  call PM( 'vim-scripts/closetag.vim' , {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
  "}}}
-
  " MatchTagAlways {{{
  if PM( 'Valloric/MatchTagAlways' , {'on_if': 0, 'on_ft':['html', 'php','xhtml','xml','blade', 'js', 'vim']} )
    let g:mta_filetypes = {
@@ -1253,11 +1209,13 @@ call PM('sheerun/vim-polyglot')
 
  "}}}"Always match html tag
 
-
  "React Dev
+ "vim-javascript {{{
    call PM('pangloss/vim-javascript')
+   "}}} _vim-javascript
+   "vim-jsx {{{
    call PM('mxw/vim-jsx')
-
+   "}}} _vim-jsx
  " vim-ragtag {{{
 
  if PM( 'tpope/vim-ragtag', {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
@@ -1383,10 +1341,6 @@ endif
  endif
 
  "}}} _vim-test
-
- " vim-fetch {{{
-   call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
- "}}} _vim-fetch
 
  "}}}
 
@@ -1604,7 +1558,9 @@ if PM('ncm2/ncm2')
 endif
 "}}} _ncm2
 
+"LanguageServer-php-neovim {{{
 call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
+"}}} _LanguageServer-php-neovim
 
  if PM('autozimu/LanguageClient-neovim',
        \ {
@@ -1629,10 +1585,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
  " Command line
  " ambicmd {{{
-
- "XXXXX
  if PM( 'thinca/vim-ambicmd', {'on': []} )
-
    "Prevent ambicmd original mapping
    let g:vim_ambicmd_mapped = 1
 
@@ -1648,7 +1601,6 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  else
        nnoremap ; :
  endif
-
 "}}}
 
 "}}}
@@ -1692,8 +1644,9 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
  " text-objects {{{
 
+ "vim-indentwise {{{
  call PM( 'jeetsukumaran/vim-indentwise' ) " Use ]- ]+ ]= to move between indents
-
+ "}}} _vim-indentwise
  " vim-swap {{{
  if PM( 'machakann/vim-swap', {'on_map': ['<Plug>(swap-'] } )
    let g:swap_no_default_key_mappings = 1
@@ -1761,7 +1714,6 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  call PM( 'wellle/targets.vim' )
 
 "}}} _targets.vim
-
  " CamelCaseMotion {{{
 
    call PM( 'bkad/CamelCaseMotion' )
@@ -1772,41 +1724,50 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
  "}}} _CamelCaseMotion
 
+ "vim-textobj-user {{{
   call PM( 'kana/vim-textobj-user' )
+  "}}} _vim-textobj-user
 
+  "vim-textobj-sentence {{{
   call PM( 'reedes/vim-textobj-sentence' )            "is, as, ), (,   For real english sentences
                                                                              "also adds g) and g( for
                                                                              "sentence navigation
+  "}}} _vim-textobj-sentence
+  "vim-textobj-line {{{
   call PlugTextObj( 'kana/vim-textobj-line', 'll' )                        "il, al          for line
+  "}}} _vim-textobj-line
+  "vim-textobj-number {{{
   call PlugTextObj( 'haya14busa/vim-textobj-number', 'n' )                 "in, an          for numbers
+  "}}} _vim-textobj-number
+  "vim-textobj-functioncall {{{
   call PlugTextObj( 'machakann/vim-textobj-functioncall', 'C' )
   let g:textobj_functioncall_no_default_key_mappings =1
-
+  "}}} _vim-textobj-functioncall
   " vim-textobj-function {{{
      call PlugTextObj( 'kana/vim-textobj-function', 'f' )
      let g:textobj_function_no_default_key_mappings =1
      Map vo iF <Plug>(textobj-function-I)
      Map vo aF <Plug>(textobj-function-A)
   " }}} _vim-textobj-function
+  "vim-textobj-function-javascript {{{
   call PM('thinca/vim-textobj-function-javascript')
-
+  "}}} _vim-textobj-function-javascript
   " vim-textobj-between {{{
   "ibX, abX                     for between two chars
   "changed to isX, asX          for between two chars
   call PlugTextObj( 'thinca/vim-textobj-between', 's' )
   let g:textobj_between_no_default_key_mappings =1
  "}}}
-
   " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
   call PlugTextObj( 'rhysd/vim-textobj-anyblock', '<cr>', 0 )
   call PM('rhysd/vim-textobj-anyblock')
   let g:textobj_anyblock_no_default_key_mappings =1
   "}}}
-
+  "vim-textobj-blockwise {{{
   "Don't try to lazyload this (Dein lazyloaded delimited :) )
   call PM( 'osyo-manga/vim-textobj-blockwise' ) "<c-v>iw, cIw    for block selection
-
+  "}}} _vim-textobj-blockwise
   " vim-textobj-delimited {{{
     "id, ad, iD, aD   for Delimiters takes numbers d2id
   if PM( 'machakann/vim-textobj-delimited')
@@ -1816,33 +1777,37 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     Map vo aD <Plug>(textobj-delimited-backward-a)
   endif
   "}}} _vim-textobj-delimited
-
+  "vim-textobj-pastedtext {{{
   if PM( 'saaguero/vim-textobj-pastedtext')
     "gb              for pasted text
     " Map vo gb <Plug>(textobj-pastedtext-text)
   endif
-
-    call PlugTextObj ("Julian/vim-textobj-brace", "j")                          "ij, aj          for all kinds of brces
-
+  "}}} _vim-textobj-pastedtext
+  "vim-textobj-brace {{{
+    call PlugTextObj ('Julian/vim-textobj-brace', 'j')                          'ij, aj          for all kinds of brces
+    "}}} _vim-textobj-brace
+    "vim-textobj-syntax {{{
     call PlugTextObj( 'kana/vim-textobj-syntax', 'y' )                          "iy, ay          for Syntax
+    "}}} _vim-textobj-syntax
+    "vim-textobj-url {{{
     call PlugTextObj( 'mattn/vim-textobj-url', 'u')                             "iu, au          for URL
+    "}}} _vim-textobj-url
+    "vim-textobj-comment {{{
     call PlugTextObj( 'glts/vim-textobj-comment', 'c' )
     Map vo aC <Plug>(textobj-comment-big-a)
-
+    "}}} _vim-textobj-comment
   " vim-textobj-indblock {{{
     "io, ao, iO, aO  for indented blocks
     call PlugTextObj( 'glts/vim-textobj-indblock', 'o' )
     Map vo iO <Plug>(textobj-indblock-i)
     Map vo aO <Plug>(textobj-indblock-a)
   "}}} _vim-textobj-indblock
-"
   " vim-textobj-indent {{{
     "ii, ai, iI, aI  for Indent
     call PlugTextObj( 'kana/vim-textobj-indent', 'i' )
     Map vo iI <Plug>(textobj-indent-same-i)
     Map vo aI <plug>(textobj-indent-same-a)
   "}}} _vim-textobj-indent
-
   " vim-textobj-fold {{{
     "iz, az          for folds
     call PlugTextObj ("kana/vim-textobj-fold", "z")
@@ -1990,6 +1955,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
      endif
  endif
  "}}} _vim-CtrlSpace
+
  " File
  " denite.vim{{{
    if PM( 'Shougo/denite.nvim' )
@@ -2002,7 +1968,9 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
   endif
 
  " }}} _dnite.vim
+ "cpsm {{{
  call PM('nixprime/cpsm')
+ "}}} _cpsm
  " neomru.vim {{{
 
   if PM( 'Shougo/neomru.vim' )
@@ -2541,6 +2509,7 @@ endfunction
    call PM( 'tpope/vim-dotenv', {'on_cmd':['Dotenv']} )
 
  "}}} _vim-dotenv
+
  " Content
  " vim-stay {{{
 
@@ -2850,6 +2819,7 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  endif
 
  "}}}
+
  " History
  " undotree {{{
 
@@ -2864,6 +2834,7 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  " Gundo.vim {{{
    call PM('sjl/gundo.vim')
  " }}} _gundo.vom
+
  " Buffers
  " vim-bufsurf {{{
 
@@ -2884,8 +2855,11 @@ endif
  endif
 
  "}}} _history-traverse
+
  "Batch rename
+ "vim-renamer {{{
  call PM('qpkorr/vim-renamer')
+ "}}} _vim-renamer
  " vim_drawer {{{
  if PM('samuelsimoes/vim-drawer', {
        \ 'on_cmd': ['VimDrawer'],
@@ -2919,6 +2893,7 @@ endif
  endif
 
  "}}} _zoomwintab.vim
+
  " Finder
  " gtfo {{{
 
@@ -2931,6 +2906,7 @@ endif
  endif
 
  "}}}
+
  " tmux
  " tmux-navigator {{{
 
@@ -2949,6 +2925,7 @@ endif
  endif
 
  "}}}
+
  " terminal
  " nvimux {{{
   if PM('hkupty/nvimux' ,{'on_event': 'VimEnter', 'on_if': 'has("nvim")'})
@@ -3026,7 +3003,9 @@ endif
 
  " Themeing {{{
 
+ "vim-flagship {{{
  call PM('tpope/vim-flagship', {'lazy':1})
+ "}}} _vim-flagship
  " lightline {{{
  if PM( 'itchyny/lightline.vim' )
 
@@ -3234,13 +3213,15 @@ endif
  " vim-indentLine {{{
 
  if PM( 'Yggdroot/indentLine', {'lazy': 1} )
-   let g:indentLine_char = ''
-   " let g:indentLine_color_term=""
-   " let g:indentLine_color_gui=""
-   let g:indentLine_fileType=[] "Means all filetypes
-   let g:indentLine_fileTypeExclude=[]
-   let g:indentLine_bufNameExclude=[]
-
+     let g:indentLine_first_char = '?'
+     let g:indentLine_showFirstIndentLevel = 1
+     let g:indentLine_setColors = 0
+     let g:indentLine_char = ''
+     " let g:indentLine_color_term=""
+     " let g:indentLine_color_gui=""
+     let g:indentLine_fileType=[] "Means all filetypes
+     let g:indentLine_fileTypeExclude=[]
+     let g:indentLine_bufNameExclude=[]
  endif
 
  "}}}
@@ -3250,11 +3231,13 @@ endif
 
  "}}} _vim-indent-guides
 
- call PM('nightsense/snow')
+ "vim-devicons {{{
  call PM( 'ryanoasis/vim-devicons' )
+ "}}} _vim-devicons
+ "vim-thematic {{{
  call PM( 'reedes/vim-thematic' )
+ "}}} _vim-thematic
 
- "Golden Ratio
  " golden-ratio {{{
 
  if PM( 'roman/golden-ratio' )
@@ -3263,67 +3246,68 @@ endif
  endif
 
  "}}} _golden-ratio
+ "
  " visual-split.vim {{{
 
    call PM( 'wellle/visual-split.vim' ) ", {'on': ['VSResize', 'VSSplit', 'VSSplitAbove', 'VSSplitBelow']}
 
  "}}} _visual-split.vim
 
+ "vim-colorscheme-switcher {{{
  if PM('xolox/vim-colorscheme-switcher')
    call PM('xolox/vim-misc')
    nnoremap c]c :<c-u>NextColorScheme<cr>
    nnoremap c[c :<c-u>PrevColorScheme<cr>
    nnoremap c\c :<c-u>RandomColorScheme<cr>
  endif
+ "}}} _vim-colorscheme-switcher
 
- "colorschemes
-call PM( 'rakr/vim-one')
-call PM( 'NLKNguyen/papercolor-theme')
-call PM( 'trevordmiller/nova-vim')
-call PM('nightsense/snow')
-call PM('kristijanhusak/vim-hybrid-material')
-call PM('jdkanani/vim-material-theme')
-call PM('khalidchawtany/vim-materialtheme')
-call PM('aunsira/macvim-light')
-call PM('ayu-theme/ayu-vim')
-set termguicolors     " enable true colors support
-let ayucolor="dark"   " for dark version of theme
-let ayucolor="mirage" " for mirage version of theme
-let ayucolor="light"  " for light version of theme
+ "colorschemes {{{
+ call PM( 'rakr/vim-one')
+ call PM('nightsense/snow')
+ call PM( 'NLKNguyen/papercolor-theme')
+ call PM( 'trevordmiller/nova-vim')
+ call PM('nightsense/snow')
+ call PM('kristijanhusak/vim-hybrid-material')
+ call PM('jdkanani/vim-material-theme')
+ call PM('khalidchawtany/vim-materialtheme')
+ call PM('aunsira/macvim-light')
+ call PM('ayu-theme/ayu-vim')
+ set termguicolors     " enable true colors support
+ let ayucolor="dark"   " for dark version of theme
+ let ayucolor="mirage" " for mirage version of theme
+ let ayucolor="light"  " for light version of theme
 
- " IndentLine {{
-let g:indentLine_char = '?'
-let g:indentLine_first_char = '?'
-let g:indentLine_showFirstIndentLevel = 1
-let g:indentLine_setColors = 0
-" }}
-call PM('arcticicestudio/nord-vim')
 
-call PM('drewtempelmeyer/palenight.vim')
-let g:palenight_terminal_italics=1
+ call PM('arcticicestudio/nord-vim')
 
-call PM('mhartington/oceanic-next')
-let g:airline_theme='oceanicnext'
-let g:oceanic_next_terminal_bold = 0
-let g:oceanic_next_terminal_italic = 1
+ call PM('drewtempelmeyer/palenight.vim')
+ let g:palenight_terminal_italics=1
 
-call PM('lifepillar/vim-wwdc17-theme')
-call PM('sonobre/briofita_vim')
-call PM('jakwings/vim-colors')
-call PM('aunsira/macvim-light')
-call PM('kamwitsta/flatwhite-vim')
-call PM('rakr/vim-one')
-let g:one_allow_italics = 1 " I love italic for comments
-call PM('rakr/vim-two-firewatch')
-let g:two_firewatch_italics=1
-call PM('endel/vim-github-colorscheme')
-call PM('rakr/vim-colors-rakr')
-call PM('mswift42/vim-themes')
-call PM('vim-scripts/summerfruit256.vim')
-call PM('andbar-ru/vim-unicon')
-call PM('reedes/vim-colors-pencil')
-let g:pencil_terminal_italics = 1
- "}}}
+ call PM('mhartington/oceanic-next')
+ let g:airline_theme='oceanicnext'
+ let g:oceanic_next_terminal_bold = 0
+ let g:oceanic_next_terminal_italic = 1
+
+ call PM('lifepillar/vim-wwdc17-theme')
+ call PM('sonobre/briofita_vim')
+ call PM('jakwings/vim-colors')
+ call PM('aunsira/macvim-light')
+ call PM('kamwitsta/flatwhite-vim')
+ call PM('rakr/vim-one')
+ let g:one_allow_italics = 1 " I love italic for comments
+ call PM('rakr/vim-two-firewatch')
+ let g:two_firewatch_italics=1
+ call PM('endel/vim-github-colorscheme')
+ call PM('rakr/vim-colors-rakr')
+ call PM('mswift42/vim-themes')
+ call PM('vim-scripts/summerfruit256.vim')
+ call PM('andbar-ru/vim-unicon')
+ call PM('reedes/vim-colors-pencil')
+ let g:pencil_terminal_italics = 1
+ "}}} _colorscheme
+
+"}}} _Themeing
 
  " Presenters :) {{{
 
