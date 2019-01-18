@@ -5,8 +5,8 @@ let s:PM_BL = [
 \'lldb.nvim',
 \'ncm2',
 \'phpcd.vim',
-\'deoplete.nvim',
-\'vim-which-key'
+\'vim-which-key',
+\'deoplete.nvim'
 \ ]
 "}}}}
 "WhiteList {{{

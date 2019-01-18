@@ -51,9 +51,19 @@ hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
 
 
-command! SetLightLine :let g:lightline.colorscheme = "onedark" |  call lightline#init() | call lightline#update()
+command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
+let g:colorschemes = {
+            \ 'light': {'togglebg': 'dark','colorscheme': 'PaperColor', 'lightline': 'one'},
+            \ 'dark':  {'togglebg': 'light','colorscheme': 'palenight',  'lightline': 'onedark'}
+            \ }
 
+command! ToggleDarkAndLight
+            \  exe 'set background='.g:colorschemes[&background].togglebg
+            \| exe 'colorscheme' g:colorschemes[&background].colorscheme
+            \| exe 'LightLineColorScheme' g:colorschemes[&background].lightline
+
+ nnoremap cob <cmd>ToggleDarkAndLight<cr>
 
  function! s:term_gf()
     let procid = matchstr(bufname(""), '\(://.*/\)\@<=\(\d\+\)')

@@ -42,7 +42,7 @@ let g:_did_vimrc_plugins = 1
    autocmd BufReadPost fugitive://* set bufhidden=delete
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-   LMap N <leader>gs <SID>Status  :call fugitive#detect(getcwd()) \| :Gstatus<cr>
+   LMap N <leader>gs <SID>Status  :call fugitive#detect(expand('%:p')) \| :Gstatus<cr>
    LMap N <leader>g<leader> <SID>TabStatus  :call fugitive#detect(getcwd()) \| :Gtabedit :<cr>
    LMap N <leader>gc <SID>Commit  :call fugitive#detect(getcwd()) \| execute ":Gcommit"<cr>
    LMap N <leader>gp <SID>Pull    :call fugitive#detect(getcwd()) \| execute ":Gpull"<cr>
@@ -507,27 +507,6 @@ endif
  nmap <leader>cu <Plug>Commentary<Plug>Commentary
  " }}} _vim-commentary
 
- " Auto-manipulators
- " vim-endwise {{{
-   "Plug 'tpope/vim-endwise', {'on': []}
-
-   ""Lazy load endwise
-   "augroup load_endwise
-     "autocmd!
-     "autocmd InsertEnter * call plug#load('vim-endwise') | autocmd! load_endwise
-   "augroup END
-
- "}}} _vim-endwise
- " vim-closer {{{
-
-   call PM( 'rstacruz/vim-closer' )
-
- "}}} _vim-closer
- " delimitmate {{{
- "XXXX
- call PM( 'Raimondi/delimitMate', {'on_event': ['InsertEnter']} )
-   " au FileType blade let b:delimitMate_autoclose = 0
- "}}}
  "}}}
  " ----------------------------------------------------------------------------
  " Utils {{{
@@ -537,7 +516,6 @@ endif
  call PM('tweekmonster/startuptime.vim')
 
  call PM('chrisbra/matchit')
-
 
  " pipe.vim {{{
 
@@ -656,58 +634,7 @@ endif
  "}}}
 
  " vim-unimpaired {{{
- if PM( 'tpope/vim-unimpaired', {'on_map': ['<Plug>unimpaired']})
-    Map x!  [e            <Plug>unimpairedMoveSelectionUp
-    Map n!  [e            <Plug>unimpairedMoveUp
-    Map n!  [<Space>      <Plug>unimpairedBlankUp
-    Map no! [n            <Plug>unimpairedContextPrevious
-    Map n!  [f            <Plug>unimpairedDirectoryPrevious
-    Map n!  [<C-T>        <Plug>unimpairedTPPrevious
-    Map n!  [T            <Plug>unimpairedTFirst
-    Map n!  [t            <Plug>unimpairedTPrevious
-    Map n!  [<C-Q>        <Plug>unimpairedQPFile
-    Map n!  [Q            <Plug>unimpairedQFirst
-    Map n!  [q            <Plug>unimpairedQPrevious
-    Map n!  [<C-L>        <Plug>unimpairedLPFile
-    Map n!  [L            <Plug>unimpairedLFirst
-    Map n!  [l            <Plug>unimpairedLPrevious
-    Map n!  [B            <Plug>unimpairedBFirst
-    Map n!  [b            <Plug>unimpairedBPrevious
-    Map n!  [A            <Plug>unimpairedAFirst
-    Map n!  [a            <Plug>unimpairedAPrevious
-    Map x!  ]e            <Plug>unimpairedMoveSelectionDown
-    Map n!  ]e            <Plug>unimpairedMoveDown
-    Map n!  ]<Space>      <Plug>unimpairedBlankDown
-    Map no! ]n            <Plug>unimpairedContextNext
-    Map n!  ]f            <Plug>unimpairedDirectoryNext
-    Map n!  ]<C-T>        <Plug>unimpairedTPNext
-    Map n!  ]T            <Plug>unimpairedTLast
-    Map n!  ]t            <Plug>unimpairedTNext
-    Map n!  ]<C-Q>        <Plug>unimpairedQNFile
-    Map n!  ]Q            <Plug>unimpairedQLast
-    Map n!  ]q            <Plug>unimpairedQNext
-    Map n!  ]<C-L>        <Plug>unimpairedLNFile
-    Map n!  ]L            <Plug>unimpairedLLast
-    Map n!  ]l            <Plug>unimpairedLNext
-    Map n!  ]B            <Plug>unimpairedBLast
-    Map n!  ]b            <Plug>unimpairedBNext
-    Map n!  ]A            <Plug>unimpairedALast
-    Map n!  ]a            <Plug>unimpairedANext
-    Map n!  [xx           <Plug>unimpaired_line_xml_encode
-    Map nx! [x            <Plug>unimpaired_xml_encode
-    Map n!  [uu           <Plug>unimpaired_line_url_encode
-    Map nx! [u            <Plug>unimpaired_url_encode
-    Map n!  [yy           <Plug>unimpaired_line_string_encode
-    Map nx! [y            <Plug>unimpaired_string_encode
-    Map n!  [P            <Plug>unimpairedPutAbove
-    Map n!  ]xx           <Plug>unimpaired_line_xml_decode
-    Map nx! ]x            <Plug>unimpaired_xml_decode
-    Map n!  ]uu           <Plug>unimpaired_line_url_decode
-    Map nx! ]u            <Plug>unimpaired_url_decode
-    Map n!  ]yy           <Plug>unimpaired_line_string_decode
-    Map nx! ]y            <Plug>unimpaired_string_decode
-    Map n!  ]P            <Plug>unimpairedPutBelow
- endif
+ call PM( 'tpope/vim-unimpaired')
  "}}} _vim-unimpaired
  " vim-man {{{
    call PM( 'bruno-/vim-man', {'on_cmd': ['Man', 'SMan', 'VMan', 'Mangrep']} )
@@ -1004,15 +931,60 @@ call PM('sheerun/vim-polyglot')
 
  call PM('StanAngeloff/php.vim')
  call PM('stephpy/vim-php-cs-fixer')
+
+ command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
+ autocmd FileType php nnoremap <buffer> <c-k><c-d> <esc>:w<cr>:Silent php-cs-fixer fix %:p --level=symfony<cr>
+
  call PM('nishigori/vim-php-dictionary', {'on_ft': 'php'})
- call PM('phpactor/phpactor' ,  {'build': 'composer install'})
- autocmd FileType php setlocal omnifunc=phpactor#Complete
- let g:phpactorOmniError = v:true
+ if PM('arnaud-lb/vim-php-namespace', {'for': 'php'})
+     " TODO:
+     " nnoremap <Leader>u :PHPImportClass<cr>
+     " nnoremap <Leader>e :PHPExpandFQCNAbsolute<cr>
+     " nnoremap <Leader>E :PHPExpandFQCN<cr>
+ endif
+ if PM('phpactor/phpactor' ,  {'build': 'composer install'})
+     "TODO:
+     " " context-aware menu with all functions (ALT-m)
+     " nnoremap <m-m> :call phpactor#ContextMenu()<cr>
+
+     " nnoremap gd :call phpactor#GotoDefinition()<CR>
+     " nnoremap gr :call phpactor#FindReferences()<CR>
+
+     " " Extract method from selection
+     " vmap <silent><Leader>em :<C-U>call phpactor#ExtractMethod()<CR>
+     " " extract variable
+     " vnoremap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
+     " nnoremap <silent><Leader>ee :call phpactor#ExtractExpression(v:false)<CR>
+     " " extract interface
+     " nnoremap <silent><Leader>rei :call phpactor#ClassInflect()<CR>
+
+
+     autocmd FileType php setlocal omnifunc=phpactor#Complete
+     let g:phpactorOmniError = v:true
+ endif 
  if PM('adoy/vim-php-refactoring-toolbox')
      let g:vim_php_refactoring_use_default_mapping = 0
+     let g:vim_php_refactoring_default_property_visibility = 'private'
+     let g:vim_php_refactoring_default_method_visibility = 'private'
+     let g:vim_php_refactoring_auto_validate_visibility = 1
+     let g:vim_php_refactoring_phpdoc = "pdv#DocumentCurrentLine"
+
+     let g:vim_php_refactoring_use_default_mapping = 0
+     nnoremap <leader>rlv :call PhpRenameLocalVariable()<CR>
+     nnoremap <leader>rcv :call PhpRenameClassVariable()<CR>
+     nnoremap <leader>rrm :call PhpRenameMethod()<CR>
+     nnoremap <leader>reu :call PhpExtractUse()<CR>
+     vnoremap <leader>rec :call PhpExtractConst()<CR>
+     nnoremap <leader>rep :call PhpExtractClassProperty()<CR>
+     nnoremap <leader>rnp :call PhpCreateProperty()<CR>
+     nnoremap <leader>rdu :call PhpDetectUnusedUseStatements()<CR>
+     nnoremap <leader>rsg :call PhpCreateSettersAndGetters()<CR>
+
  endif
- if PM('tobyS/vmustache')
-     call PM('tobyS/pdv', {'on_ft': 'php'})
+ if PM('tobyS/pdv', {'on_ft': 'php'})
+     call PM('tobyS/vmustache')
+     nnoremap <leader>doc <cmd>call pdv#DocumentWithSnip()<cr>
+
  endif
 
 
@@ -1212,13 +1184,53 @@ call PM('sheerun/vim-polyglot')
  endif
 
  "}}}
+
+ " pear-tree {{{
+ if PM('tmsvg/pear-tree')
+     " Default rules for matching:
+     let g:pear_tree_pairs = {
+                 \ '(': {'closer': ')'},
+                 \ '[': {'closer': ']'},
+                 \ '{': {'closer': '}'},
+                 \ "'": {'closer': "'"},
+                 \ '"': {'closer': '"'}
+                 \ }
+     " See pear-tree/ftplugin/ for filetype-specific matching rules
+
+     " Pear Tree is enabled for all filetypes by default
+     let g:pear_tree_ft_disabled = []
+
+     " Pair expansion is dot-repeatable by default
+     let g:pear_tree_repeatable_expand = 1
+
+     " Smart pairs are disabled by default
+     let g:pear_tree_smart_openers = 0
+     let g:pear_tree_smart_closers = 0
+     let g:pear_tree_smart_backspace = 0
+
+     " If enabled, smart pair functions timeout after 60ms
+     let g:pear_tree_timeout = 60
+
+     " Default mappings:
+     imap <BS> <Plug>(PearTreeBackspace)
+     imap <CR> <Plug>(PearTreeExpand)
+     imap <Esc> <Plug>(PearTreeFinishExpansion)
+     " Pear Tree also makes <Plug> mappings for each opening and closing string.
+     "     :help <Plug>(PearTreeOpener)
+     "     :help <Plug>(PearTreeCloser)
+
+     " Not mapped by default:
+     " <Plug>(PearTreeJump)
+     " <Plug>(PearTreeExpandOne)
+     " <Plug>(PearTreeJNR)
+ endif
+ " }}} _pear-tree
+ 
  " vim-hyperstyle {{{
-
-   call PM( 'rstacruz/vim-hyperstyle', {'on_ft': ['css']} )
-
+   " call PM( 'rstacruz/vim-hyperstyle', {'on_ft': ['css']} )
  "}}} _vim-hyperstyle
+ 
  " vim-closetag {{{
-
  "This plugin uses > of the clos tag to work in insert mode
  "<table|   => press > to have <table>|<table>
  "press > again to have <table>|<table>
@@ -1233,8 +1245,8 @@ call PM('sheerun/vim-polyglot')
  "Ctrl+_ to close next unimpared tag
  call PM( 'vim-scripts/closetag.vim' , {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
  "}}}
- " MatchTagAlways {{{
 
+ " MatchTagAlways {{{
  if PM( 'Valloric/MatchTagAlways' , {'on_if': 0, 'on_ft':['html', 'php','xhtml','xml','blade', 'js', 'vim']} )
    let g:mta_filetypes = {
          \ 'html' : 1,
@@ -1251,10 +1263,31 @@ call PM('sheerun/vim-polyglot')
 
  "}}}"Always match html tag
 
+ " Auto-manipulators
+ " vim-endwise {{{
+   "Plug 'tpope/vim-endwise', {'on': []}
+
+   ""Lazy load endwise
+   "augroup load_endwise
+     "autocmd!
+     "autocmd InsertEnter * call plug#load('vim-endwise') | autocmd! load_endwise
+   "augroup END
+
+ "}}} _vim-endwise
+ " vim-closer {{{
+
+   " call PM( 'rstacruz/vim-closer' )
+
+ "}}} _vim-closer
+ " delimitmate {{{
+ "XXXX
+ call PM( 'Raimondi/delimitMate', {'on_event': ['InsertEnter']} )
+   " au FileType blade let b:delimitMate_autoclose = 0
+ "}}}
+
  "React Dev
    call PM('pangloss/vim-javascript')
    call PM('mxw/vim-jsx')
-
 
  " vim-ragtag {{{
 
@@ -1336,7 +1369,21 @@ endif
 
    let g:ale_linters = {
        \ 'javascript': ['eslint', 'flow'],
+       \ 'php': ['langserver', 'phpcs'],
        \}
+
+   let g:ale_completion_enabled=1
+   let g:ale_php_langserver_use_global=1
+   let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/php-language-server.php'
+
+   let g:ale_php_phpcs_use_global=1
+   " let g:ale_php_phpcs_standard = 'laravel'
+   let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcs'
+ 
+   let g:ale_php_phpcbf_use_global=1
+   let g:ale_php_phpcbf_standard='PSR2'
+   let g:ale_php_phpcs_standard='phpcs.xml.dist'
+   let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcbf'
 
    let g:ale_fixers = {
        \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
@@ -1350,6 +1397,7 @@ endif
        \   'html'      : [ 'prettier' ],
        \   'reason'    : [ 'refmt' ],
        \   'python'    : [ 'black' ],
+       \   'php'       : [ 'phpcbf', 'php_cs_fixer', 'remove_trailing_lines', 'trim_whitespace' ],
        \}
 
    " Don't auto fix (format) files inside `node_modules`, `forks` directory, minified files and jquery (for legacy codebases)
@@ -1364,6 +1412,10 @@ endif
        \       'ale_fixers': []
        \   },
        \   'node_modules/.*': {
+       \       'ale_linters': [],
+       \       'ale_fixers': []
+       \   },
+       \   'vendor/.*': {
        \       'ale_linters': [],
        \       'ale_fixers': []
        \   },
@@ -1468,6 +1520,125 @@ endif
  " AutoCompletion {{{
  " ----------------------------------------------------------------------------
 
+ "coc.nvim {{{
+ if PM('neoclide/coc.nvim', {'build': 'npm install'})
+     " Use tab for trigger completion with characters ahead and navigate.
+     " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+     inoremap <silent><expr> <TAB>
+                 \ pumvisible() ? "\<C-n>" :
+                 \ <SID>check_back_space() ? "\<TAB>" :
+                 \ coc#refresh()
+     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+     function! s:check_back_space() abort
+         let col = col('.') - 1
+         return !col || getline('.')[col - 1]  =~# '\s'
+     endfunction
+
+     " Use <c-space> for trigger completion.
+     inoremap <silent><expr> <c-space> coc#refresh()
+
+     " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+     " Coc only does snippet and additional edit on confirm.
+     inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+     " Use `[c` and `]c` for navigate diagnostics
+     nmap <silent> [d <Plug>(coc-diagnostic-prev)
+     nmap <silent> ]d <Plug>(coc-diagnostic-next)
+
+     " Remap keys for gotos
+     nmap <silent> gd <Plug>(coc-definition)
+     nmap <silent> gy <Plug>(coc-type-definition)
+     nmap <silent> gi <Plug>(coc-implementation)
+     nmap <silent> gr <Plug>(coc-references)
+
+     " Use K for show documentation in preview window
+     nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+     function! s:show_documentation()
+         if &filetype == 'vim'
+             execute 'h '.expand('<cword>')
+         else
+             call CocAction('doHover')
+         endif
+     endfunction
+
+     " Highlight symbol under cursor on CursorHold
+     autocmd CursorHold * silent call CocActionAsync('highlight')
+
+     " Remap for rename current word
+     nmap <leader>rn <Plug>(coc-rename)
+
+     " Remap for format selected region
+     vmap <leader>f  <Plug>(coc-format-selected)
+     nmap <leader>f  <Plug>(coc-format-selected)
+
+     augroup mygroup
+         autocmd!
+         " Setup formatexpr specified filetype(s).
+         autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+         " Update signature help on jump placeholder
+         autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+     augroup end
+
+     " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+     vmap <leader>a  <Plug>(coc-codeaction-selected)
+     nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+     " Remap for do codeAction of current line
+     nmap <leader>ac  <Plug>(coc-codeaction)
+     " Fix autofix problem of current line
+     nmap <leader>qf  <Plug>(coc-fix-current)
+
+     " Use `:Format` for format current buffer
+     command! -nargs=0 Format :call CocAction('format')
+
+     " Use `:Fold` for fold current buffer
+     command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+
+     " Add diagnostic info for https://github.com/itchyny/lightline.vim
+     let g:lightline = {
+                 \ 'colorscheme': 'wombat',
+                 \ 'active': {
+                 \   'left': [ [ 'mode', 'paste' ],
+                 \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
+                 \ },
+                 \ 'component_function': {
+                 \   'cocstatus': 'coc#status'
+                 \ },
+                 \ }
+
+
+
+     " Shortcuts for denite interface
+     " Show extension list
+     nnoremap <silent> <space>e  :<C-u>Denite coc-extension<cr>
+     " Show symbols of current buffer
+     nnoremap <silent> <space>o  :<C-u>Denite coc-symbols<cr>
+     " Search symbols of current workspace
+     nnoremap <silent> <space>t  :<C-u>Denite coc-workspace<cr>
+     " Show diagnostics of current workspace
+     nnoremap <silent> <space>a  :<C-u>Denite coc-diagnostic<cr>
+     " Show available commands
+     nnoremap <silent> <space>c  :<C-u>Denite coc-command<cr>
+     " Show available services
+     nnoremap <silent> <space>s  :<C-u>Denite coc-service<cr>
+     " Show links of current buffer
+     nnoremap <silent> <space>l  :<C-u>Denite coc-link<cr>
+ endif
+ "}}} _coc.nvim
+
+ "deoplete {{{
+ if PM('Shougo/deoplete.nvim')
+     let g:deoplete#enable_at_startup = 1
+     call PM('kristijanhusak/deoplete-phpactor')
+     let g:deoplete#sources = {}
+     let g:deoplete#sources.php = ['omni', 'phpactor', 'ultisnips', 'buffer']
+ endif
+ "}}} _deoplete
+
+ "ncm2 {{{
 if PM('ncm2/ncm2')
 
     call PM('roxma/nvim-yarp')
@@ -1503,6 +1674,7 @@ if PM('ncm2/ncm2')
     " NOTE: you need to install completion sources to get completions. Check
     " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
 endif
+"}}} _ncm2
 
   call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
 
@@ -1521,10 +1693,10 @@ endif
    " Automatically start language servers.
    let g:LanguageClient_autoStart = 1
 
-   nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-   nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+   nnoremap <silent> <leader>lk :call LanguageClient_textDocument_hover()<CR>
+   nnoremap <silent> <leader>ld :call LanguageClient_textDocument_definition()<CR>
    nnoremap <silent> <leader>ll :call LanguageClient_contextMenu()<CR>
-   nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+   nnoremap <silent> <leader>lr :call LanguageClient_textDocument_rename()<CR>
  endif
 
  " Command line
@@ -1880,11 +2052,15 @@ endif
  " ----------------------------------------------------------------------------
  "{{{ vim-CtrlSpace
  if PM('vim-ctrlspace/vim-ctrlspace', {'on_cmd': ['CtrlSpace']})
-   nnoremap <silent> <C-Space><Space> :CtrlSpace<cr>
-   let g:CtrlSpaceSymbols = { "File": "◯", "CTab": "▣", "Tabs": "▢" }
-   if executable("ag")
-     let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
-   endif
+
+     " let g:CtrlSpaceSaveWorkspaceOnExit = 1
+
+     nnoremap <silent> <C-Space><C-Space> :CtrlSpace<cr>
+
+     let g:CtrlSpaceSymbols = { "File": "◯", "CTab": "▣", "Tabs": "▢" }
+     if executable("ag")
+         let g:CtrlSpaceGlobCommand = 'ag -l --nocolor -g ""'
+     endif
  endif
  "}}} _vim-CtrlSpace
 
@@ -1928,7 +2104,10 @@ endif
     "let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
     "let g:fzf_layout = { 'window': '-tabnew' }
 
-    let $FZF_DEFAULT_OPTS="--history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'"
+                " \  --color=bg+:#ff0000,bg:#002b36,spinner:#000000,hl:#ff00ff
+                " \  --color=fg:#839496,header:#586e75,info:#cb4b16,pointer:#719e07
+                " \  --color=marker:#719e07,fg+:#839496,prompt:#719e07,hl+:#719e07
+    let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
 
     "let $FZF_DEFAULT_COMMAND='ag -l -g ""'
     let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules}/*" --glob "!*{.jpg,png}" 2> /dev/null'
@@ -1954,6 +2133,14 @@ endif
           \ })
  " 'FzfHistory:', 'FzfHistory/',
 
+ if PM('pbogut/fzf-mru.vim')
+     " only show MRU files from within your cwd
+     let g:fzf_mru_relative = 1
+
+     nnoremap <leader><Enter> :FZFMru<cr>
+     " to enable found references displayed in fzf
+     let g:LanguageClient_selectionUI = 'fzf'
+ endif
    " [Buffers] Jump to the existing window if possible
    let g:fzf_buffers_jump = 1
 
@@ -2037,7 +2224,7 @@ endif
    nnoremap <silent> <c-p><c-f> <cmd>FzfHistory!<cr>
 
  "The last param is <bang>0 to make it fullscreen
- nnoremap <silent> <c-p>p :silent! call fzf#vim#files(getcwd(), {'options': '--reverse -q'.shellescape(expand('<cword>'))}, 1)<cr>
+ nnoremap <silent> <c-p>p :silent! call fzf#vim#files(getcwd(), {'options': '--reverse -q '.shellescape(expand('<cword>'))}, 1)<cr>
 
 
    "nmap <c-p><c-i> <plug>(fzf-maps-n)
@@ -2282,6 +2469,10 @@ endfunction
  "defx.nvim {{{
 
  if PM('Shougo/defx.nvim', {'hook_post_source': "call SetDefXOPtions()"})
+     if PM('kristijanhusak/defx-icons')
+         " :Defx -columns=icons:filename:type
+         let g:defx_icons_enable_syntax_highlight = 0
+     endif
 
      function! SetDefXOPtions()
          call defx#custom#option('_', {
@@ -2289,7 +2480,7 @@ endfunction
                      \ })
          call defx#custom#column('filename', {
                      \ 'min_width': 40,
-                     \ 'max_width': 40,
+                     \ 'max_width': 80,
                      \ })
 
          call defx#custom#column('mark', {
@@ -2309,13 +2500,15 @@ endfunction
                   \ (!empty($SYSTEMDRIVE) && isdirectory('/'.tolower($SYSTEMDRIVE[0]).a:dir)))
   endfunction
 
-   autocmd BufEnter * if <SID>isdir(expand('%'))
+   autocmd BufEnter * if <SID>isdir(expand('%')) && !exists('b:defx')
                \ | exe 'Defx' expand('%')
                \ | endif
 
      autocmd FileType defx call s:defx_my_settings()
      function! s:defx_my_settings() abort
          " Define mappings
+         nnoremap ; :
+         nnoremap : ;
          nnoremap <silent><buffer><expr> <CR>
                      \ defx#do_action('open')
          nnoremap <silent><buffer><expr> c
@@ -2572,6 +2765,13 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  endif
 
  "}}}
+ " sneak.vim {{{
+ if PM('justinmk/vim-sneak')
+     let g:sneak#label = 1
+      " Map nox ss <Plug>Sneak_s
+      " Map nox SS <Plug>Sneak_S
+ endif
+ " }}} _sneak.vim
  " vim-easymotion {{{
 
   if PM( 'Lokaltog/vim-easymotion')
@@ -3020,6 +3220,7 @@ endif
    endfunction
 
    let g:lightline.colorscheme = 'onedark'
+   " let g:lightline.colorscheme = 'one'
    " let g:lightline.colorscheme = 'material'
    " let g:lightline.colorscheme = 'gruvbox'
    " let g:lightline.colorscheme = 'wombat'

@@ -1,14 +1,14 @@
 let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-GuiFont! Operator Mono:h18
+GuiFont! Operator Mono:h17
 
 let g:gui_fonts = [
-      \ 'Operator Mono:h18',
-      \ 'Monaco:h18',
-      \ 'Source Code Pro for PowerLine:h18',
-      \ 'PT Mono:18',
-      \ 'Fura Mono Nerd Font:18'
+      \ 'Operator Mono:h17',
+      \ 'Monaco:h17',
+      \ 'Source Code Pro for PowerLine:h17',
+      \ 'PT Mono:17',
+      \ 'Fura Mono Nerd Font:17'
       \ ]
 
 let g:current_gui_font_index = 0
@@ -94,6 +94,11 @@ for i in [1,2,3,4,5,6,7,8,9]
   execute "vnoremap <silent> <D-" . i . ">       <c-u>:tabnext " . i . "<cr>"
   execute "tnoremap <silent> <D-" . i . "> <c-\\><c-n>:tabnext " . i . "<cr>"
 endfor
+
+let i = 0
+execute "nnoremap <silent> <D-" . i . ">            :tabnext 10<cr>"
+execute "vnoremap <silent> <D-" . i . ">       <c-u>:tabnext 10<cr>"
+execute "tnoremap <silent> <D-" . i . "> <c-\\><c-n>:tabnext 10<cr>"
 
 
 "Fix the lldb path
