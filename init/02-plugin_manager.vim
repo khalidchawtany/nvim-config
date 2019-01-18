@@ -47,20 +47,24 @@ let s:PM_WL = [
       "let list=['02', '03', '03', '16', '17', '17', '28', '29', '29']
       "let unduplist=filter(copy(list), 'index(list, v:val, v:key+1)==-1')
 
-      let debug = 0
+      let debug = 0   " to show debugging of on_commands
+      let merged = 0  " to debug without recache
       let options = {}
       if len(a:000) > 0
           let options = a:1
 
-          if debug
-              if has_key(options, 'on_cmd')
-                  echom string(options['on_cmd'])
-              endif
+          if debug && has_key(options, 'on_cmd')
+              echom string(options['on_cmd'])
+          endif
+
+          " force some plugins to force merge themselves
+          " unless we are debuggin
+          if has_key(options, 'merged') && options.merged == 1 && debug == 0
+              let merged = 1
           endif
       endif
 
-      " to debug without recache
-      let options.merged=0
+      let options.merged = merged
 
       if !PM_ISS(a:plugin) | return 0 | endif
 

@@ -4,10 +4,7 @@ endif
 
 let g:_did_vimrc_plugins = 1
 
-
- " ----------------------------------------------------------------------------
 " Libraries {{{
- " ----------------------------------------------------------------------------
 
  " vital.vim {{{
 
@@ -17,9 +14,9 @@ let g:_did_vimrc_plugins = 1
  "}}} _vital.vim
 
 "}}}
- " ----------------------------------------------------------------------------
+
  " Version Control & Diff {{{
- " ----------------------------------------------------------------------------
+
  " vim-fugitive {{{
 
  if PM( 'tpope/vim-fugitive'
@@ -86,7 +83,6 @@ let g:_did_vimrc_plugins = 1
    LMap N <leader>gn <SID>Gina :Gina status<cr>
  endif
  "}}} _gina
-
  " DirDiff.vim {{{
 
    call PM( 'vim-scripts/DirDiff.vim', {'on_cmd': ['DirDiff']} )
@@ -94,9 +90,8 @@ let g:_did_vimrc_plugins = 1
  "}}} _DirDiff.vim
 
  "}}}
- " ----------------------------------------------------------------------------
+
  " Content Editor {{{
- " ----------------------------------------------------------------------------
 
  " Org
  " vim-speeddating {{{
@@ -508,9 +503,9 @@ endif
  " }}} _vim-commentary
 
  "}}}
- " ----------------------------------------------------------------------------
+
  " Utils {{{
- " ----------------------------------------------------------------------------
+
  call PM('wincent/replay', {'lazy': 1})
 
  call PM('tweekmonster/startuptime.vim')
@@ -741,9 +736,8 @@ endif
    highlight link HighlightedyankRegion Visual
  endif
  "}}}
- " ----------------------------------------------------------------------------
+
  " languages {{{
- " ----------------------------------------------------------------------------
 
  " Advanced Syntax Highlighting
 call PM('sheerun/vim-polyglot')
@@ -961,7 +955,7 @@ call PM('sheerun/vim-polyglot')
 
      autocmd FileType php setlocal omnifunc=phpactor#Complete
      let g:phpactorOmniError = v:true
- endif 
+ endif
  if PM('adoy/vim-php-refactoring-toolbox')
      let g:vim_php_refactoring_use_default_mapping = 0
      let g:vim_php_refactoring_default_property_visibility = 'private'
@@ -1225,11 +1219,7 @@ call PM('sheerun/vim-polyglot')
      " <Plug>(PearTreeJNR)
  endif
  " }}} _pear-tree
- 
- " vim-hyperstyle {{{
-   " call PM( 'rstacruz/vim-hyperstyle', {'on_ft': ['css']} )
- "}}} _vim-hyperstyle
- 
+
  " vim-closetag {{{
  "This plugin uses > of the clos tag to work in insert mode
  "<table|   => press > to have <table>|<table>
@@ -1263,27 +1253,6 @@ call PM('sheerun/vim-polyglot')
 
  "}}}"Always match html tag
 
- " Auto-manipulators
- " vim-endwise {{{
-   "Plug 'tpope/vim-endwise', {'on': []}
-
-   ""Lazy load endwise
-   "augroup load_endwise
-     "autocmd!
-     "autocmd InsertEnter * call plug#load('vim-endwise') | autocmd! load_endwise
-   "augroup END
-
- "}}} _vim-endwise
- " vim-closer {{{
-
-   " call PM( 'rstacruz/vim-closer' )
-
- "}}} _vim-closer
- " delimitmate {{{
- "XXXX
- call PM( 'Raimondi/delimitMate', {'on_event': ['InsertEnter']} )
-   " au FileType blade let b:delimitMate_autoclose = 0
- "}}}
 
  "React Dev
    call PM('pangloss/vim-javascript')
@@ -1296,34 +1265,6 @@ call PM('sheerun/vim-polyglot')
  endif
 
  "}}} _vim-ragtag
-
- " Compilers
- " vimproc.vim {{{
-
-   call PM( 'Shougo/vimproc.vim', {'build': 'sh -c "/usr/bin/make"'} )
-
- "}}} _vimproc.vim
- " vim-dispatch {{{
-
-   call PM( 'tpope/vim-dispatch' )
-
- "}}} _vim-dispatch
- " neomake {{{
-
- if PM( 'benekastah/neomake', {'on_cmd': ['Neomake']} )
-
-   " autocmd! BufWritePost * Neomake
-   " let g:neomake_airline = 0
-   let g:neomake_error_sign = { 'text': '✘', 'texthl': 'ErrorSign' }
-   let g:neomake_warning_sign = { 'text': ':(', 'texthl': 'WarningSign' }
- endif
-
- "}}} _neomake
- " vim-accio {{{
-
-   call PM( 'pgdouyon/vim-accio', {'on_cmd': ['Accio']} )
-
- "}}} _vim-accio
 
  " asyncrun {{{
 if PM('skywind3000/asyncrun.vim')
@@ -1379,7 +1320,7 @@ endif
    let g:ale_php_phpcs_use_global=1
    " let g:ale_php_phpcs_standard = 'laravel'
    let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcs'
- 
+
    let g:ale_php_phpcbf_use_global=1
    let g:ale_php_phpcbf_standard='PSR2'
    let g:ale_php_phpcs_standard='phpcs.xml.dist'
@@ -1430,17 +1371,6 @@ endif
  endif
  "}}} _ale
 
- " syntastic {{{
- if PM( 'scrooloose/syntastic', {'on_cmd': ['SyntasticCheck']} )
-
-   let g:syntastic_scala_checkers=['']
-   let g:syntastic_always_populate_loc_list = 1
-   let g:syntastic_check_on_open = 1
-   let g:syntastic_error_symbol = "✗"
-   let g:syntastic_warning_symbol = "⚠"
- endif
-
- "}}} _syntastic
  " vim-test {{{
 
  if PM('janko-m/vim-test')  ", {'on_cmd': [ 'TestNearest', 'TestFile', 'TestSuite', 'TestLast', 'TestVisit' ]})
@@ -1455,13 +1385,12 @@ endif
  "}}} _vim-test
 
  " vim-fetch {{{
-   call PM( 'kopischke/vim-fetch' )              "Fixes how vim handles FN(LN:CN)
+   call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
 
  "}}}
- " ----------------------------------------------------------------------------
+
  " Snippets {{{
- " ----------------------------------------------------------------------------
 
  " xptemplate {{{
 
@@ -1516,9 +1445,8 @@ endif
  "}}} _vim-snippets
 
  "}}}
- " ----------------------------------------------------------------------------
+
  " AutoCompletion {{{
- " ----------------------------------------------------------------------------
 
  "coc.nvim {{{
  if PM('neoclide/coc.nvim', {'build': 'npm install'})
@@ -1676,7 +1604,7 @@ if PM('ncm2/ncm2')
 endif
 "}}} _ncm2
 
-  call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
+call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
 
  if PM('autozimu/LanguageClient-neovim',
        \ {
@@ -1724,9 +1652,8 @@ endif
 "}}}
 
 "}}}
- " ----------------------------------------------------------------------------
+
  " Operators {{{
- " ----------------------------------------------------------------------------
 
  " operator-usr {{{
 
@@ -1762,9 +1689,9 @@ endif
  "}}}
 
  "}}}
- " ----------------------------------------------------------------------------
+
  " text-objects {{{
- " ----------------------------------------------------------------------------
+
  call PM( 'jeetsukumaran/vim-indentwise' ) " Use ]- ]+ ]= to move between indents
 
  " vim-swap {{{
@@ -2047,9 +1974,9 @@ endif
 
   "}}}
  "}}}
- " ----------------------------------------------------------------------------
+
  " Navigation {{{
- " ----------------------------------------------------------------------------
+
  "{{{ vim-CtrlSpace
  if PM('vim-ctrlspace/vim-ctrlspace', {'on_cmd': ['CtrlSpace']})
 
@@ -2063,7 +1990,6 @@ endif
      endif
  endif
  "}}} _vim-CtrlSpace
-
  " File
  " denite.vim{{{
    if PM( 'Shougo/denite.nvim' )
@@ -2076,9 +2002,7 @@ endif
   endif
 
  " }}} _dnite.vim
-
  call PM('nixprime/cpsm')
-
  " neomru.vim {{{
 
   if PM( 'Shougo/neomru.vim' )
@@ -2091,7 +2015,6 @@ endif
  endif
 
  "}}} _neomru.vim
-
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
 
@@ -2465,7 +2388,6 @@ endfunction
   nnoremap <c-p><c-e> <cmd>FuzzyOpen<cr>
  endif " PM()
  " }}} _neovim-fuzzy
-
  "defx.nvim {{{
 
  if PM('Shougo/defx.nvim', {'hook_post_source': "call SetDefXOPtions()"})
@@ -2573,7 +2495,6 @@ endfunction
      endfunction
  endif
  "}}} _defx.nvim
-
  " vim-projectionist {{{
 
   if PM( 'tpope/vim-projectionist')
@@ -2620,18 +2541,14 @@ endfunction
    call PM( 'tpope/vim-dotenv', {'on_cmd':['Dotenv']} )
 
  "}}} _vim-dotenv
-
  " Content
-
  " vim-stay {{{
 
  "Restore cursor when reopoening files
 call PM('kopischke/vim-stay')
 
  "}}} _vim-stay
-
  " nvim-miniyank {{{
-
 if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
     let g:miniyank_filename = $HOME."/.config/nvim/.cache/miniyank.mpack"
     map p <Plug>(miniyank-autoput)
@@ -2647,13 +2564,11 @@ if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
 endif
 
  "}}} _nvim-miniyank
-
  " vim-pseudocl {{{
 
    call PM( 'junegunn/vim-pseudocl' ) "Required by oblique & fnr
 
  "}}} _vim-pseudocl
-
  " vim-oblique {{{
 if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
 
@@ -2692,7 +2607,6 @@ if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
    nmap  g;r <Plug>(Scalpel)
   endif
  "}}} _scalpel
-
  " vim-anzu {{{
 
  if PM( 'osyo-manga/vim-anzu', {'on_cmd': ['AnzuUpdateSearchStatusOutput']} )
@@ -2750,7 +2664,6 @@ if PM('ddrscott/vim-side-search', {'on_cmd':['SideSearch']})
 endif
 
  "}}}_vim-side-search
-
  " Clever-f {{{
 
 if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_func': [ 'clever_f#reset' ] \ })
@@ -2922,7 +2835,6 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  endif
 
  "}}} _vim-easymotion
-
  " vim-easymotion-segments {{{
   if PM( 'aykamko/vim-easymotion-segments', {'on_map': ['<Plug>(easymotion-']} )
    map su    <Plug>(easymotion-segments-LF)
@@ -2938,7 +2850,6 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  endif
 
  "}}}
-
  " History
  " undotree {{{
 
@@ -2953,7 +2864,6 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
  " Gundo.vim {{{
    call PM('sjl/gundo.vim')
  " }}} _gundo.vom
-
  " Buffers
  " vim-bufsurf {{{
 
@@ -2964,7 +2874,6 @@ if PM( 'ton/vim-bufsurf') ", {'on_cmd': ['BufSurfBack', 'BufSurfForward', 'BufSu
 endif
 
  "}}} _vim-bufsurf
-
  " history-traverse {{{
 
  if PM( 'ckarnell/history-traverse', {'on_cmd': ['HisTravForward', 'HisTravBack']})
@@ -2975,11 +2884,8 @@ endif
  endif
 
  "}}} _history-traverse
-
  "Batch rename
  call PM('qpkorr/vim-renamer')
-
-
  " vim_drawer {{{
  if PM('samuelsimoes/vim-drawer', {
        \ 'on_cmd': ['VimDrawer'],
@@ -3013,7 +2919,6 @@ endif
  endif
 
  "}}} _zoomwintab.vim
-
  " Finder
  " gtfo {{{
 
@@ -3026,7 +2931,6 @@ endif
  endif
 
  "}}}
-
  " tmux
  " tmux-navigator {{{
 
@@ -3045,7 +2949,6 @@ endif
  endif
 
  "}}}
-
  " terminal
  " nvimux {{{
   if PM('hkupty/nvimux' ,{'on_event': 'VimEnter', 'on_if': 'has("nvim")'})
@@ -3058,15 +2961,11 @@ endif
     "let g:nvimux_quickterm_size = '80'
   endif
  "}}} _nvimux
-
- "}}} _Navigation
-
  "fze {{{
  if PM('khalidchawtany/fze')
      nnoremap     <C-;>rf <cmd>Fze<cr>
  endif
  "}}} _fxe
-
  "ctrlsf.vim {{{
  if PM('dyng/ctrlsf.vim')
      nmap     <C-;>ff <Plug>CtrlSFPrompt
@@ -3081,9 +2980,8 @@ endif
  "}}} _ctrlsf.vim
 
  " }}} _Navigation
- " ----------------------------------------------------------------------------
+
  " Folds {{{
- " ----------------------------------------------------------------------------
 
  " vim-foldfocus {{{
 
@@ -3109,9 +3007,8 @@ endif
  "}}} _searchfold.vim
 
  "}}}
- " ----------------------------------------------------------------------------
+
  "Database {{{
- " ----------------------------------------------------------------------------
 
  " dbext.vim {{{
 
@@ -3126,36 +3023,40 @@ endif
  "}}} _pipe-mysql.vim
 
  "}}}
- " ----------------------------------------------------------------------------
+
  " neovim-qt {{{
- " ----------------------------------------------------------------------------
+
     " call PM( 'equalsraf/neovim-gui-shim' )
+
  " }}}
- " ----------------------------------------------------------------------------
+
  " gonvim {{{
- " ----------------------------------------------------------------------------
+
  call PM('dzhou121/neovim-fzf-shim')
+
  "}}} _gonvim
+
  " gonvim-fuzzy {{{
- " ----------------------------------------------------------------------------
+
  call PM('dzhou121/gonvim-fuzzy')
  "GonvimFuzzyFiles   - For Files
  "GonvimFuzzyBLines  - For Lines in the Current File
  "GonvimFuzzyAg      - For runing FZF_AG ( searches current directory )
  "GonvimFuzzyBuffers - For searching opened Buffers
+
  "}}} _gonvim-fuzzy
- " ----------------------------------------------------------------------------
+
  " Nyaovim {{{
- " ----------------------------------------------------------------------------
+
  if exists('g:nyaovim_version')
    call PM( 'rhysd/nyaovim-popup-tooltip' )
    call PM( 'rhysd/nyaovim-mini-browser' )
    call PM( 'rhysd/nyaovim-markdown-preview' )
  endif
+
 "}}}
- " ----------------------------------------------------------------------------
+
  " Themeing {{{
- " ----------------------------------------------------------------------------
 
  call PM('tpope/vim-flagship', {'lazy':1})
  " lightline {{{
@@ -3455,9 +3356,8 @@ call PM('andbar-ru/vim-unicon')
 call PM('reedes/vim-colors-pencil')
 let g:pencil_terminal_italics = 1
  "}}}
- " ----------------------------------------------------------------------------
+
  " Presenters :) {{{
- " ----------------------------------------------------------------------------
 
  " vim-which-key {{{
  if PM('liuchengxu/vim-which-key', {
@@ -3609,7 +3509,6 @@ let g:pencil_terminal_italics = 1
  " _vim-leader-guide }}}
 
  "}}}
- " ----------------------------------------------------------------------------
 
 "call function(string(PM).'End')
 call PM_END()
