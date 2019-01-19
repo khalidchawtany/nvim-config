@@ -59,12 +59,12 @@ let s:PM_WL = [
 
           " force some plugins to force merge themselves
           " unless we are debuggin
-          if has_key(options, 'merged') && options.merged == 1 && debug == 0
+          if ! debug && has_key(options, 'merged') && options.merged == 1
               let merged = 1
           endif
       endif
 
-      let options.merged = merged
+      " let options.merged = merged
 
       if !PM_ISS(a:plugin) | return 0 | endif
 

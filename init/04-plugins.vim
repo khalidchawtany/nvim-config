@@ -101,8 +101,7 @@ let g:_did_vimrc_plugins = 1
  "}}} _vim-speeddating
  " vim-orgmode {{{
 
-   "call PM( 'jceb/vim-orgmode', {'on_ft': 'org'} )
-   if PM( 'jceb/vim-orgmode', {'on_ft': 'org'} )
+   if PM( 'jceb/vim-orgmode', {'on_ft': 'org', 'merged': 1} )
      let g:org_agenda_files=['~/org/index.org']
      let g:org_todo_keywords=['TODO', 'FEEDBACK', 'VERIFY', 'WIP', '|', 'DONE', 'DELEGATED']
      let g:org_heading_shade_leading_stars = 1   "Hide the star noise
@@ -125,17 +124,6 @@ let g:_did_vimrc_plugins = 1
  endif
 
  "}}} _vim-table-mode
- " calendar.vim {{{
-
-   call PM( 'itchyny/calendar.vim', {'on_cmd': ['Calendar'] } )
-   let g:calendar_date_month_name = 1
-
- "}}} _calendar.vim
- " calendar-vim {{{
-
-   call PM( 'mattn/calendar-vim', {'on_cmd': ['CalendarH', 'CalendarT'], 'on_func':['calendar#show'] } )
-
- "}}} _calendar-vim
 
  " Multi-edits
 
@@ -369,18 +357,6 @@ endif
 
  "}}} _vim-exchange
 
- " EasyAlign {{{
-
-   call PM( 'junegunn/vim-easy-align',          {'on_cmd':  ['EasyAlign'], 'on_map':[ '<Plug>(EasyAlign)']} )
-
-   " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-   vmap <Enter> <Plug>(EasyAlign)
-   vnoremap g<Enter> :EasyAlign */[(,)]\+/<left><left><left><left>
-   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-   nmap g<cr> <Plug>(EasyAlign)
-   let g:easy_align_ignore_comment = 0 " align comments
-
- "}}}
  " tabular {{{
 
    call PM( 'godlygeek/tabular', {'on_cmd': ['Tabularize']} )
@@ -403,6 +379,18 @@ endif
    vnoremap <leader>aa :Tabularize
 
  "}}} _tabular
+ " EasyAlign {{{
+
+   call PM( 'junegunn/vim-easy-align',          {'on_cmd':  ['EasyAlign'], 'on_map':[ '<Plug>(EasyAlign)']} )
+
+   " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+   vmap <Enter> <Plug>(EasyAlign)
+   vnoremap g<Enter> :EasyAlign */[(,)]\+/<left><left><left><left>
+   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+   nmap g<cr> <Plug>(EasyAlign)
+   let g:easy_align_ignore_comment = 0 " align comments
+
+ "}}}
  " vim-surround {{{
  " ----------------------------------------------------------------------------
  call PM( 't9md/vim-surround_custom_mapping' )
@@ -988,19 +976,9 @@ call PM('sheerun/vim-polyglot')
  if PM('tobyS/pdv', {'on_ft': 'php'})
      call PM('tobyS/vmustache')
      nnoremap <leader>doc <cmd>call pdv#DocumentWithSnip()<cr>
-
+     nnoremap <buffer>dos <C-p> :call pdv#DocumentWithSnip()<CR>
+     " let g:pdv_template_dir = $HOME ."/.config/nvim/plugged/pdv/templates_snip"
  endif
- "}}} _pdv
- " pdv {{{
-
-   "call PM( 'tobyS/vmustache', {'on_ft': ['PHP']} )
-   call PM( 'tobyS/vmustache' )
-   "call PM( 'tobyS/pdv', {'on_ft': ['PHP']} )
-   if PM( 'tobyS/pdv' )
-     let g:pdv_template_dir = $HOME ."/.config/nvim/plugged/pdv/templates_snip"
-     nnoremap <buffer> <C-p> :call pdv#DocumentWithSnip()<CR>
-   endif
-
  "}}} _pdv
 
  " phpcd.vim {{{
@@ -1072,17 +1050,9 @@ call PM('sheerun/vim-polyglot')
  " blade
  " vim-blade {{{
 
-   "call PM( 'xsbeats/vim-blade', {'on_ft':['blade'] } )
-   "call PM( 'xsbeats/vim-blade' )
-   ""au BufNewFile,BufRead *.blade.php set filetype=html
-   "au BufNewFile,BufRead *.blade.php set filetype=blade
-
    call PM('jwalton512/vim-blade')
 
  "}}}
- "blade.vim {{{
-   call PM('johnhamelink/blade.vim', {'on_if': '0'})
-   "}}} _blade.vim
 
  " Web Dev
  " breeze.vim {{{
@@ -1784,7 +1754,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
   endif
   "}}} _vim-textobj-pastedtext
   "vim-textobj-brace {{{
-    call PlugTextObj ('Julian/vim-textobj-brace', 'j')                          'ij, aj          for all kinds of brces
+    call PlugTextObj ('Julian/vim-textobj-brace', 'j')                          "ij, aj          for all kinds of brces
     "}}} _vim-textobj-brace
     "vim-textobj-syntax {{{
     call PlugTextObj( 'kana/vim-textobj-syntax', 'y' )                          "iy, ay          for Syntax
@@ -1958,31 +1928,21 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
  " File
  " denite.vim{{{
-   if PM( 'Shougo/denite.nvim' )
+   if PM( 'Shougo/denite.nvim', {'hook_post_source': 'call SetDeniteMappings()'} )
     " Change mappings.
-    " call denite#custom#map('_', "<C-j>", '<denite:move_to_next_line>')
-    " call denite#custom#map('_', "<C-k>", '<denite:move_to_prev_line>')
-    " call denite#custom#map('_', "<C-;>", '<denite:input_command_line>')
-    " call denite#custom#var('file_rec', 'command',
-    "       \ ['rg', '--threads', '2', '--files', '--glob', '!.git'])
+    function! SetDeniteMappings()
+        call denite#custom#map('_', "<C-j>", '<denite:move_to_next_line>')
+        call denite#custom#map('_', "<C-k>", '<denite:move_to_prev_line>')
+        call denite#custom#map('_', "<C-;>", '<denite:input_command_line>')
+        call denite#custom#var('file_rec', 'command',
+                    \ ['rg', '--threads', '2', '--files', '--glob', '!.git'])
+    endfunction
   endif
 
  " }}} _dnite.vim
  "cpsm {{{
  call PM('nixprime/cpsm')
  "}}} _cpsm
- " neomru.vim {{{
-
-  if PM( 'Shougo/neomru.vim' )
-   "call unite#custom#source(  'neomru/file', 'matchers',  ['matcher_project_files', 'matcher_fuzzy'])
-   "nnoremap <silent> <leader>pr :Unite neomru/file<cr>
-   "nnoremap <silent> [unite]d \ :<C-u>Unite -buffer-name=files -default-action=lcd neomru/directory<CR>
-
-   command! ProjectFiles call unite#custom#source( 'neomru/file', 'matchers', ['matcher_project_files', 'matcher_fuzzy'])
-   nnoremap <silent> <leader>pr :ProjectFiles<cr>
- endif
-
- "}}} _neomru.vim
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
 
@@ -2938,11 +2898,6 @@ endif
     "let g:nvimux_quickterm_size = '80'
   endif
  "}}} _nvimux
- "fze {{{
- if PM('khalidchawtany/fze')
-     nnoremap     <C-;>rf <cmd>Fze<cr>
- endif
- "}}} _fxe
  "ctrlsf.vim {{{
  if PM('dyng/ctrlsf.vim')
      nmap     <C-;>ff <Plug>CtrlSFPrompt
@@ -2955,6 +2910,12 @@ endif
      inoremap <C-;>ft <Esc>:CtrlSFToggle<CR>
  endif
  "}}} _ctrlsf.vim
+
+ "fze {{{
+ if PM('khalidchawtany/fze')
+     nnoremap     <C-;>rf <cmd>Fze<cr>
+ endif
+ "}}} _fxe
 
  " }}} _Navigation
 

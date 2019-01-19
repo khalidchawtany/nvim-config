@@ -74,9 +74,3 @@ LMap n <leader>zi <Plug>format-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual
 " let g:terminal_color_4='#4B79B3' " >la directory colors
 " let g:terminal_color_6='#2FA8AA'
 
-
-
-
-
-
- autocmd FileType php setlocal omnifunc=phpactor#Complete
