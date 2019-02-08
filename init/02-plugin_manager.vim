@@ -4,11 +4,11 @@ let PMN = 'Dein'
 let s:PM_BL = [
 \'lldb.nvim',
 \'vim-which-key',
-\'coc.nvim',
 \'deoplete.nvim',
 \'phpcd.vim'
+\'ncm2',
 \ ]
-"\'ncm2',
+" \'coc.nvim',
 "}}}}
 "WhiteList {{{
 let s:PM_WL = [

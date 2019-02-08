@@ -1,24 +1,28 @@
 {
- "phpls.enable": true,
  "coc.preferences.diagnostic.virtualText": true,
-  "coc.preferences.autoTrigger": "always",
-  "coc.preferences.triggerAfterInsertEnter": false,
-  "coc.preferences.timeout": 2000,
-  "coc.preferences.noselect": true,
-    "coc.preferences.formatOnType": false,
-    "coc.preferences.jumpCommand": "edit",
-    "coc.preferences.snippetIndicator": "⭐︎",
-  "coc.preferences.diagnostic.enable": true,
-  "coc.preferences.diagnostic.signOffset": 1000,
-  "coc.preferences.diagnostic.errorSign": ">>",
-  "coc.preferences.diagnostic.warningSign": "?",
-  "coc.preferences.diagnostic.infoSign": ">>",
-  "coc.preferences.diagnostic.hintSign": ">>",
-   "languageserver": {
+ "coc.preferences.autoTrigger": "always",
+ "coc.preferences.triggerAfterInsertEnter": false,
+ "coc.preferences.triggerSignatureHelp":true,
+ "coc.preferences.minTriggerInputLength": 2,
+ "coc.preferences.timeout": 2000,
+ "coc.preferences.triggerCompletionWait": 200,
+ "coc.preferences.noselect": true,
+ "coc.preferences.formatOnType": false,
+ "coc.preferences.jumpCommand": "edit",
+ "coc.preferences.snippetIndicator": "⭐︎",
+ "coc.preferences.diagnostic.enable": true,
+ "coc.preferences.diagnostic.signOffset": 1000,
+ "coc.preferences.diagnostic.errorSign": ">>",
+ "coc.preferences.diagnostic.warningSign": "?",
+ "coc.preferences.diagnostic.infoSign": ">>",
+ "coc.preferences.diagnostic.hintSign": ">>",
+ "snippets.priority": 9,
+ "phpls.enable": false,
+ "languageserver": {
     "phplang": {
       "command": "php",
       "args": ["/Users/juju/.composer/vendor/felixfbecker/language-server/bin/php-language-server.php"],
       "filetypes": ["php"]
     }
-   }
+ }
 }
