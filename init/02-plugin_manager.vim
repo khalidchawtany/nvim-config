@@ -3,11 +3,12 @@ let PMN = 'Dein'
 "BlackList {{{
 let s:PM_BL = [
 \'lldb.nvim',
-\'ncm2',
-\'phpcd.vim',
 \'vim-which-key',
-\'deoplete.nvim'
+\'coc.nvim',
+\'deoplete.nvim',
+\'phpcd.vim'
 \ ]
+"\'ncm2',
 "}}}}
 "WhiteList {{{
 let s:PM_WL = [

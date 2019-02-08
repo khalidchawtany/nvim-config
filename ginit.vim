@@ -1,10 +1,13 @@
 let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-GuiFont! Operator Mono:h17
+GuiFont! Operator Mono Lig:h17
+
+" Support ligature
+call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)
 
 let g:gui_fonts = [
-      \ 'Operator Mono:h17',
+      \ 'Operator Mono Lig:h17',
       \ 'Monaco:h17',
       \ 'Source Code Pro for PowerLine:h17',
       \ 'PT Mono:17',

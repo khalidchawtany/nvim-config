@@ -39,7 +39,7 @@ nnoremap <silent> co/ :<C-u>call <SID>ToggleSearchPattern()<CR>
 LMap N <leader>ha <Plug>highlight-word-on  :call HighlightAllOfWord(1)<cr>
 LMap N <leader>hA <Plug>highlight-word-off :call HighlightAllOfWord(0)<cr>
 
-nnoremap <silent> <BS> :syntax sync minlines=1000<cr>:nohlsearch \| echo "" \|redraw! \| diffupdate \| normal \<Plug>(FastFoldUpdate) \| silent! call clever_f#reset() <cr>
+nnoremap <silent><nowait> <BS> :GitGutterAll<cr>:syntax sync minlines=1000<cr>:nohlsearch \| echo "" \|redraw! \| diffupdate \| normal \<Plug>(FastFoldUpdate) \| silent! call clever_f#reset()  <cr>
 
 nnoremap <F12> :call ToggleMouseFunction()<cr>
 
@@ -253,7 +253,7 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N <leader>fr <Plug>rename-file :call RenameFile()<cr>
 
   LMap N <leader>tp <Plug>todo-project :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
-  LMap N <leader>tp <Plug>todo-global :e ~/org/todo.org<cr>
+  LMap N <leader>to <Plug>todo-global :e ~/org/todo.org<cr>
 
   LMap N <Leader>s; <Plug>source-selection "vyy:@v<CR>
   LMap V <Leader>s; <Plug>source-selection "vy:@v<CR>
@@ -318,14 +318,16 @@ autocmd Filetype netrw nnoremap q :quit<cr>
       endif
   endfunction
 
+  LMap N <leader>la <Plug>laravel-edit-app :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
+  LMap N <leader>lo <Plug>laravel-edit-observes :e <c-r>=FindGitDirOrRoot()<cr>/app/Observers/<cr>
+  LMap N <leader>lp <Plug>laravel-edit-providers :e <c-r>=FindGitDirOrRoot()<cr>/app/Providers/<cr>
+  LMap N <leader>lP <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
   LMap N <leader>lv <Plug>laravel-edit-views :e <c-r>=FindGitDirOrRoot()<cr>/resources/views/<cr>
-  " LMap N <leader>lv <Plug>laravel-views call EditIfExists(<c-r>=FindGitDirOrRoot()<cr>/resources/views/)
   LMap N <leader>lm <Plug>laravel-edit-migrations :e <c-r>=FindGitDirOrRoot()<cr>/database/migrations/<cr>
   LMap N <leader>lf <Plug>laravel-edit-factories :e <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>
   LMap N <leader>ls <Plug>laravel-edit-seeds :e <c-r>=FindGitDirOrRoot()<cr>/database/seeds/<cr>
   LMap N <leader>lc <Plug>laravel-edit-controllers :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
-  LMap N <leader>la <Plug>laravel-edit-app :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
-  LMap N <leader>lp <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
+  LMap N <leader>lr <Plug>laravel-edit-requests :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Requests/<cr>
 
   " Java
   "nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
@@ -354,5 +356,6 @@ autocmd Filetype netrw nnoremap q :quit<cr>
 
 
 
+  "rename text under curser or visually selected
   nnoremap gr *yiw:%s//<c-r>"/g<left><left>
   vnoremap gr y:%s/<c-r>"/<c-r>"/g<left><left>

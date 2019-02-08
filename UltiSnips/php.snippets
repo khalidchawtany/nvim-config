@@ -45,13 +45,29 @@ Route::get('$1',function()
 endsnippet
 
 snippet sfun "Function"
-public static function $1(){
+public static function $1()
+{
+		$0
+}
+endsnippet
+
+snippet psfun "Function"
+private static function $1()
+{
 		$0
 }
 endsnippet
 
 snippet fun "Function"
-public function $1(){
+public function $1()
+{
+	$0
+}
+endsnippet
+
+snippet pfun "Function"
+private function $1($2)
+{
 	$0
 }
 endsnippet
@@ -59,7 +75,6 @@ endsnippet
 snippet lvm "la4 make view"
 return View::make('${VISUAL:ViewFile}');
 endsnippet
-
 
 snippet tr "la4 translate sledction" i
 {{ trans('kur.`!p
@@ -136,11 +151,9 @@ snippet printf
 printf("${1:%s}\n"${1/([^%]|%%)*(%.)?.*/(?2:, :\);)/}$2${1/([^%]|%%)*(%.)?.*/(?2:\);)/}
 endsnippet
 
-
 snippet  ca
 array(${1:'on'=>'post'$2}${1/([^,])*(,)?.*/(?2: :\);)/}$3${1/([^,])*(,)?.*/(?2:\);)/}
 endsnippet
-
 
 global !p
 def ins1(t1, t2):
@@ -153,8 +166,7 @@ def ${1:${VISUAL:foo}}
 $0
 endsnippet
 
-
-snippet bn "test Python" !b
+snippet bn "test Python"
 `!p snip.rv=snip.basename`
 endsnippet
 
@@ -175,7 +187,6 @@ snippet div "Wrap in a DIV"
 	${VISUAL}
 </div>
 endsnippet
-
 
 snippet path "test Python" !b
 `!p snip.rv=path`
@@ -233,7 +244,6 @@ if not snip.c:
 	snip.rv = uuid.uuid4().hex`
 endsnippet
 
-
 global !p
 def complete(t, opts):
 #if text of the tabstop is not empty
@@ -248,20 +258,13 @@ snippet tp2 "test Python Status Autocomplete" b
 status $1`!p snip.rv = complete(t[1], ['Opt_First', 'Opt_Second', 'Opt_Third'])`
 endsnippet
 
-
 snippet '^ tp3' "test Python Regular Expression Trigger" r
 status $1`!p snip.rv = complete(t[1], ['Opt_First', 'Opt_Second', 'Opt_Third'])`
 endsnippet
 
-
 snippet 'tp4 (\d+) (\w+)' "test Python Interpolation With RegEx trigger" r
 `!p snip.rv=int(match.group(1))*match.group(2)`
 endsnippet
-
-
-
-
-
 
 ################################################################################
 #                               POSTFIX SNIPPETS                               #
@@ -363,10 +366,12 @@ snippet "(\S.*);dump" "var_dump postfix code" br
 var_dump(`!p snip.rv = match.group(1)`);
 endsnippet
 
+snippet "(\S.*);dd" "dd() postfix code" br
+var_dump(`!p snip.rv = match.group(1)`);
+
 snippet "(\S.*);die" "die postfix code" br
 die(`!p snip.rv = match.group(1)`);
 endsnippet
-
 
 snippet tc "Test Case"
 <?php

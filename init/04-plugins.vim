@@ -37,6 +37,7 @@ let g:_did_vimrc_plugins = 1
          \   nnoremap <buffer> .. :edit %:h<CR> |
          \ endif
    autocmd BufReadPost fugitive://* set bufhidden=delete
+   " autocmd BufEnter * if &ft=="fugitive" | call feedkeys("o") | endif
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
    LMap N <leader>gs <SID>Status  :call fugitive#detect(expand('%:p')) \| :Gstatus<cr>
@@ -267,22 +268,6 @@ if PM('Yilin-Yang/vim-markbar', {'on_map': ['<Plug>ToggleMarkbar']})
     nmap <leader>'' <Plug>ToggleMarkbar
 endif
 "}}} _markbar
- " vim-peekaboo {{{
-
-   if PM( 'junegunn/vim-peekaboo' )
-
-    " Default peekaboo window
-    let g:peekaboo_window = 'vertical botright 30new'
-
-    " Delay opening of peekaboo window (in ms. default: 0)
-    let g:peekaboo_delay = 200
-
-    " Compact display; do not display the names of the register groups
-    let g:peekaboo_compact = 1
-
-   endif
-
- "}}} _vim-peekaboo
  " UnconditionalPaste {{{
 
    if PM( 'vim-scripts/UnconditionalPaste', {'on_map': ['<Plug>UnconditionalPaste']} )
@@ -913,42 +898,83 @@ call PM('sheerun/vim-polyglot')
  call PM('StanAngeloff/php.vim')
  "}}} _php.vim
  "vim-php-cs-fixer {{{
- call PM('stephpy/vim-php-cs-fixer')
-
- command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
- autocmd FileType php nnoremap <buffer> <c-k><c-d> <esc>:w<cr>:Silent php-cs-fixer fix %:p --level=symfony<cr>
+ if PM('stephpy/vim-php-cs-fixer')
+     command! -nargs=1 Silent execute ':silent !'.<q-args> | execute ':redraw!'
+     autocmd FileType php nnoremap <buffer> <c-k><c-d> <esc>:w<cr>:Silent php-cs-fixer fix %:p --level=symfony<cr>
+ endif
  "}}} _vim-php-cs-fixer
  "vim-php-dictionary {{{
- call PM('nishigori/vim-php-dictionary', {'on_ft': 'php'})
+ call PM('nishigori/vim-php-dictionary', {'on_ft': 'php', 'rev': 'php7.1'})
  "}}} _vim-php-dictionary
  "vim-php-namespace {{{
  if PM('arnaud-lb/vim-php-namespace', {'for': 'php'})
-     " TODO:
-     " nnoremap <Leader>u :PHPImportClass<cr>
-     " nnoremap <Leader>e :PHPExpandFQCNAbsolute<cr>
-     " nnoremap <Leader>E :PHPExpandFQCN<cr>
- endif
+     let g:php_namespace_sort_after_insert = 1
+     augroup vim_php_namespace
+         autocmd!
+         autocmd FileType php nnoremap <Leader>pu :call PhpInsertUse()<CR>
+                           \| nnoremap <Leader>pic  :PHPImportClass<cr>
+                           \| nnoremap <Leader>pe   :PHPExpandFQCNAbsolute<cr>
+                           \| nnoremap <Leader>pR   :PHPExpandFQCN<cr>
+                           \| nnoremap <Leader>pE   :call PhpExpandClass()<CR>
+                           \| nnoremap <Leader>ps    :call PhpSortUse()<CR>
+     augroup END
+endif
  "}}} _vim-php-namespace
  "phpactor {{{
- if PM('phpactor/phpactor' ,  {'build': 'composer install'})
+ if PM('phpactor/phpactor' ,  {'build': 'composer install'}) ", 'rev': 'develop'})
+     " let g:phpactorBranch = "develop"
+     let g:phpactorOmniError = v:true
+     let g:phpactorOmniAutoClassImport = v:true
+
      "TODO:
-     " " context-aware menu with all functions (ALT-m)
-     " nnoremap <m-m> :call phpactor#ContextMenu()<cr>
+     " context-aware menu with all functions (ALT-m)
+     nnoremap <D-M> :call phpactor#ContextMenu()<cr>
 
      " nnoremap gd :call phpactor#GotoDefinition()<CR>
-     " nnoremap gr :call phpactor#FindReferences()<CR>
+     " nnoremap gu :call phpactor#FindReferences()<CR>
+
+     " Extract method from selection
+     vnoremap <silent><Leader>em :<C-U>call phpactor#ExtractMethod()<CR>
+     " extract variable
+     vnoremap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
+     nnoremap <silent><Leader>ee :call phpactor#ExtractExpression(v:false)<CR>
+     " extract interface
+     nnoremap <silent><Leader>rei :call phpactor#ClassInflect()<CR>
+
+     autocmd FileType php setlocal omnifunc=phpactor#Complete
+
+     " " Include use statement
+     " nmap <Leader>u :call phpactor#UseAdd()<CR>
+
+     " " Invoke the context menu
+     " nmap <Leader>mm :call phpactor#ContextMenu()<CR>
+
+     " " Invoke the navigation menu
+     " nmap <Leader>nn :call phpactor#Navigate()<CR>
+
+     " " Goto definition of class or class member under the cursor
+     " nmap <Leader>o :call phpactor#GotoDefinition()<CR>
+
+     " " Show brief information about the symbol under the cursor
+     " nmap <Leader>K :call phpactor#Hover()<CR>
+
+     " " Transform the classes in the current file
+     " nmap <Leader>tt :call phpactor#Transform()<CR>
+
+     " " Generate a new class (replacing the current file)
+     " nmap <Leader>cc :call phpactor#ClassNew()<CR>
+
+     " " Extract expression (normal mode)
+     " nmap <silent><Leader>ee :call phpactor#ExtractExpression(v:false)<CR>
+
+     " " Extract expression from selection
+     " vmap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
 
      " " Extract method from selection
      " vmap <silent><Leader>em :<C-U>call phpactor#ExtractMethod()<CR>
-     " " extract variable
-     " vnoremap <silent><Leader>ee :<C-U>call phpactor#ExtractExpression(v:true)<CR>
-     " nnoremap <silent><Leader>ee :call phpactor#ExtractExpression(v:false)<CR>
-     " " extract interface
-     " nnoremap <silent><Leader>rei :call phpactor#ClassInflect()<CR>
 
 
-     autocmd FileType php setlocal omnifunc=phpactor#Complete
-     let g:phpactorOmniError = v:true
+
  endif
  "}}} _phpactor
  "vim-php-refactoring-toolbox {{{
@@ -977,7 +1003,7 @@ call PM('sheerun/vim-polyglot')
      call PM('tobyS/vmustache')
      nnoremap <leader>doc <cmd>call pdv#DocumentWithSnip()<cr>
      nnoremap <buffer>dos <C-p> :call pdv#DocumentWithSnip()<CR>
-     " let g:pdv_template_dir = $HOME ."/.config/nvim/plugged/pdv/templates_snip"
+     let g:pdv_template_dir = $HOME ."/.config/nvim/dein/repos/github.com/tobyS/pdv/templates_snip"
  endif
  "}}} _pdv
 
@@ -996,7 +1022,7 @@ call PM('sheerun/vim-polyglot')
 
    if PM_ISS('deoplete.nvim')
      let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
-     let g:deoplete#ignore_sources.php = ['phpcd', 'omni', 'javacomplete2', 'look']
+     let g:deoplete#ignore_sources.php = ['phpactor','omni', 'javacomplete2', 'look']
      let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
      let g:deoplete#omni#input_patterns.php =  '\w+|[^. \t]->\w*|\w+::\w*'
    endif
@@ -1197,6 +1223,7 @@ call PM('sheerun/vim-polyglot')
  " asyncrun {{{
 if PM('skywind3000/asyncrun.vim')
   autocmd BufWritePost *.js AsyncRun -post=checktime ./node_modules/.bin/eslint --fix %
+ " let g:asyncrun_open = 10
 endif
  "}}} _asyncrun
 
@@ -1306,12 +1333,28 @@ endif
      nnoremap <silent> t<C-n> :TestNearest<CR>
      nnoremap <silent> t<C-f> :TestFile<CR>
      nnoremap <silent> t<C-s> :TestSuite<CR>
+     nnoremap <silent> t<C-t> :TestSuite<CR>
+     nnoremap <silent> t<C-cr> :TestSuite<CR>
      nnoremap <silent> t<C-l> :TestLast<CR>
+     nnoremap <silent> t<C-space> :TestLast<CR>
      nnoremap <silent> t<C-g> :TestVisit<CR>
+
+     " let test#strategy = {
+     "             \ 'nearest': 'asyncrun',
+     "             \ 'file':    'asyncrun',
+     "             \ 'suite':   'asyncrun',
+     "             \}
+
+     if PM('reinh/vim-makegreen')
+     endif
+
  endif
 
  "}}} _vim-test
 
+ if PM('kassio/neoterm')
+     nnoremap <leader>tl :<c-u>exec v:count.'Tclear'<cr>
+ endif
  "}}}
 
  " Snippets {{{
@@ -1350,6 +1393,7 @@ endif
 
    let g:UltiSnipsEnableSnipMate = 0
 
+   " this is handles by ncm2-snippet
    let g:UltiSnipsExpandTrigger = "<c-cr>"            "ctrl+enter
    let g:UltiSnipsJumpForwardTrigger = "<c-cr>"       "ctrl+enter
    let g:UltiSnipsJumpBackwardTrigger = "<M-cr>"      "alt+enter
@@ -1381,6 +1425,7 @@ endif
                  \ <SID>check_back_space() ? "\<TAB>" :
                  \ coc#refresh()
      inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+     inoremap <silent><expr> <c-space> coc#refresh()
 
      function! s:check_back_space() abort
          let col = col('.') - 1
@@ -1392,7 +1437,8 @@ endif
 
      " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
      " Coc only does snippet and additional edit on confirm.
-     inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+     " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+     inoremap <expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
      " Use `[c` and `]c` for navigate diagnostics
      nmap <silent> [d <Plug>(coc-diagnostic-prev)
@@ -1498,35 +1544,49 @@ if PM('ncm2/ncm2')
     call PM('ncm2/ncm2-tmux')
     call PM('ncm2/ncm2-path')
     call PM('ncm2/ncm2-ultisnips')
-    call PM('phpactor/ncm2-phpactor', { 'rev': 'develop'})
+    inoremap <silent> <expr> <C-CR> ncm2_ultisnips#expand_or("\<Plug>ExpandUltisnips", 'n')
+    inoremap <silent> <Plug>ExpandUltisnips :<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>
+    call PM('phpactor/ncm2-phpactor')
     " call PM('khalidchawtany/ncm2-phpactor')
     call PM('ncm2/ncm2-go')
-    call PM('ncm2/ncm2-tern')
+    call PM('ncm2/ncm2-tern', {'build': 'npm install'})
     call PM('ncm2/ncm2-cssomni')
     call PM('fgrsnau/ncm2-otherbuf', { 'rev': 'ncm2' })
+    call PM('ncm2/ncm2-vim')
+    call PM('Shougo/neco-vim')
+    call PM('ncm2/ncm2-syntax')
+    call PM('Shougo/neco-syntax')
 
+
+    call PM('ncm2/ncm2-html-subscope')
     " enable ncm2 for all buffers
     autocmd BufEnter * call ncm2#enable_for_buffer()
 
     " IMPORTANTE: :help Ncm2PopupOpen for more information
     set completeopt=noinsert,menuone,noselect
 
-
-    " Use <TAB> to select the popup menu:
-    " inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-    " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
     " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
     inoremap <c-c> <ESC>
 
-     " suppress the annoying 'match x of y', 'The only match' and 'Pattern not
-    " found' messages
-    set shortmess+=c
-
     " NOTE: you need to install completion sources to get completions. Check
     " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-endif
-"}}} _ncm2
+
+    " call ncm2#override_source('LC', {'scope_blacklist': ["php"]})
+    "echo keys(ncm2#_s('sources'))
+    ":call ncm2#override_source('LanguageClient_python', {'enable': 0})
+    ":echo ncm2#_s('sources')['LanguageClient_python']
+     call ncm2#override_source('LanguageClient_php', {'priority': 0})
+
+     let g:ncm2#matcher = 'abbrfuzzy'
+
+     " use a sorter that's more friendly for fuzzy match
+     " let g:ncm2#sorter = 'abbrfuzzy'
+     let g:ncm2#matcher = 'substrfuzzy'
+
+     au User Ncm2PopupOpen set completeopt=noinsert,menuone,noselect
+     au User Ncm2PopupClose set completeopt=menuone
+ endif
+ "}}} _ncm2
 
 "LanguageServer-php-neovim {{{
 call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
@@ -1542,15 +1602,16 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
          \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
          \ 'javascript': ['javascript-typescript-stdio'],
          \ 'javascript.jsx': ['javascript-typescript-stdio'],
+         \ 'typescript': ['javascript-typescript-stdio']
          \ }
 
    " Automatically start language servers.
    let g:LanguageClient_autoStart = 1
 
-   nnoremap <silent> <leader>lk :call LanguageClient_textDocument_hover()<CR>
-   nnoremap <silent> <leader>ld :call LanguageClient_textDocument_definition()<CR>
-   nnoremap <silent> <leader>ll :call LanguageClient_contextMenu()<CR>
-   nnoremap <silent> <leader>lr :call LanguageClient_textDocument_rename()<CR>
+   nnoremap <silent> gk :call LanguageClient_textDocument_hover()<CR>
+   nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+   nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
+   nnoremap <silent> gR :call LanguageClient_textDocument_rename()<CR>
  endif
 
  " Command line
@@ -1961,7 +2022,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
 
     "let $FZF_DEFAULT_COMMAND='ag -l -g ""'
-    let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules}/*" --glob "!*{.jpg,png}" 2> /dev/null'
+    let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/null'
 
     command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/null', 1, <bang>0)
 
@@ -2072,7 +2133,15 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  call Map_FZF  ( "FzfWindows!"  , "w"     , ""                                                                               , 0  )
  call Map_FZF  ( "FzfHelptags!" , "k"     , ""                                                                               , 0  )
  call Map_FZF  ( "FzfHistory!" , "h"     , ""                                                                               , 0  )
-   nnoremap <silent> <c-p><c-f> <cmd>FzfHistory!<cr>
+
+ function! GetFunctions()
+     let query = ''
+     if &ft == 'php'
+         let query = 'function'
+     endif
+     exe ':FzfBLines!' query
+ endfunction
+ nnoremap <silent> <c-p><c-f> <cmd>call GetFunctions()<cr>
 
  "The last param is <bang>0 to make it fullscreen
  nnoremap <silent> <c-p>p :silent! call fzf#vim#files(getcwd(), {'options': '--reverse -q '.shellescape(expand('<cword>'))}, 1)<cr>
@@ -3028,8 +3097,8 @@ endif
      "return fileformat
    endfunction
 
-   let g:lightline.colorscheme = 'onedark'
-   " let g:lightline.colorscheme = 'one'
+   " let g:lightline.colorscheme = 'onedark'
+   let g:lightline.colorscheme = 'one'
    " let g:lightline.colorscheme = 'material'
    " let g:lightline.colorscheme = 'gruvbox'
    " let g:lightline.colorscheme = 'wombat'
@@ -3122,7 +3191,14 @@ endif
  if PM( 'mhinz/vim-startify' )
    let g:startify_disable_at_vimenter = 0
    nnoremap <F1> :Startify<cr>
-   let g:startify_list_order = ['files', 'dir', 'bookmarks', 'sessions']
+   let g:startify_lists = [
+               \ { 'type': 'files',     'header': ['   MRU']            },
+               \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+               \ { 'type': 'sessions',  'header': ['   Sessions']       },
+               \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+               \ { 'type': 'commands',  'header': ['   Commands']       },
+               \ ]
+
    let g:startify_files_number = 5
 
    "Make bookmarks for fast nav

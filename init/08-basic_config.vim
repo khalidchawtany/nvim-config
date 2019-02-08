@@ -7,8 +7,8 @@ let $diff_me=0
 let g:uncrustify_cfg_file_path =
       \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
 
-set background=dark
-colorscheme palenight
+set background=light
+colorscheme PaperColor
 
 
 "set rulerformat to include line:col filename +|''
@@ -33,7 +33,7 @@ set formatoptions-=t                  " Stop autowrapping my code
 
 "don't autoselect first item in omnicomplete,show if only one item(for preview)
 "set completeopt=longest,menuone,preview
-set completeopt=noinsert,menuone,noselect
+set completeopt=noinsert,menuone
 
 set pumheight=15                      " limit completion menu height
 
@@ -203,7 +203,7 @@ set history=1000
 
 "Show the left side fold indicator
 set foldcolumn=1
-set foldmethod=marker
+set foldmethod=manual
 " These commands open folds
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo
 
@@ -299,5 +299,5 @@ set splitright                        " put vertical splits to the right
 let g:netrw_liststyle=3               "Make netrw look like NerdTree
 
 highlight! ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
-let w:my_colorcol_hi_id = matchadd('ColorColumn', '\%81v', 100)
+let w:my_colorcol_hi_id = matchadd('ColorColumn', '\%101v', 100)
 

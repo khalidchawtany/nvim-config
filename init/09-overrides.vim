@@ -61,8 +61,22 @@ endfunction
 au TermOpen * nmap <buffer> gf :call <SID>term_gf()<cr>
 
 
-LMap n <leader>zf <Plug>format-functions <cmd>g/function\\|.edatagrid({\\|{field:/normal 0maf{%zf'a<cr>
-LMap n <leader>zi <Plug>format-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<cr>
+function! FoldFunction()
+    set foldmethod=manual
+    if &ft == 'blade'
+        execute "g/function\\|.edatagrid({\\|{ field:\\|\<div\\|\<style\\|\@can(/normal 0maf{%zf'a"
+    endif
+    if &ft == 'php'
+        execute "g/protected \\$fillable = \\[/normal 0f[zf%"
+        execute "g/protected \\$dates = \\[/normal 0f[zf%"
+        execute "g/function/normal 0maf{%zf'a"
+        execute "g/\\/\\*\\*/normal mazf%'a"
+        normal zM
+    endif
+endfunction
+
+LMap n <leader>zf <Plug>fold-functions <cmd>call FoldFunction()<cr>
+LMap n <leader>zi <Plug>fold-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<cr>
 
 " let g:terminal_color_2 = '#62AA0D' "path color
 " let g:terminal_color_7 = '#000000' "foreground color
