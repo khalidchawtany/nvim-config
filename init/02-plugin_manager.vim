@@ -5,7 +5,7 @@ let s:PM_BL = [
 \'lldb.nvim',
 \'vim-which-key',
 \'deoplete.nvim',
-\'phpcd.vim'
+\'phpcd.vim',
 \'ncm2',
 \ ]
 " \'coc.nvim',
@@ -54,6 +54,12 @@ let s:PM_WL = [
       if len(a:000) > 0
           let options = a:1
 
+          if has_key(options, 'platform')
+              if !has(options['platform'])
+                  return
+              endif
+          endif
+
           if debug && has_key(options, 'on_cmd')
               echom string(options['on_cmd'])
           endif
@@ -94,6 +100,13 @@ let s:PM_WL = [
       " on_map => on
       let options = {}
       if len(a:000) > 0
+
+         if has_key(options, 'platform')
+             if !has(options['platform'])
+                 return
+             endif
+         endif
+
         "Copy relevant values from passed args to options, changing option name|key.  
         for [key, value] in items(g:DeinToVimPlug)
           if has_key(a:1, key)
