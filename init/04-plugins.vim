@@ -1416,6 +1416,8 @@ endif
 
  " AutoCompletion {{{
 
+ au filetype php set iskeyword+=$
+
  "coc.nvim {{{
  if PM('neoclide/coc.nvim', {'build': 'npm install'})
      " Use tab for trigger completion with characters ahead and navigate.
@@ -1425,7 +1427,6 @@ endif
                  \ <SID>check_back_space() ? "\<TAB>" :
                  \ coc#refresh()
      inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-     inoremap <silent><expr> <c-space> coc#refresh()
 
      function! s:check_back_space() abort
          let col = col('.') - 1
@@ -1437,8 +1438,8 @@ endif
 
      " Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
      " Coc only does snippet and additional edit on confirm.
-     " inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-     inoremap <expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
+     inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+     " inoremap <expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR>"
 
      " Use `[c` and `]c` for navigate diagnostics
      nmap <silent> [d <Plug>(coc-diagnostic-prev)
@@ -1497,7 +1498,7 @@ endif
 
      " Add diagnostic info for https://github.com/itchyny/lightline.vim
      let g:lightline = {
-                 \ 'colorscheme': 'wombat',
+                 \ 'colorscheme': 'onedark',
                  \ 'active': {
                  \   'left': [ [ 'mode', 'paste' ],
                  \             [ 'cocstatus', 'readonly', 'filename', 'modified' ] ]
@@ -1589,6 +1590,7 @@ if PM('ncm2/ncm2')
  "}}} _ncm2
 
 "LanguageServer-php-neovim {{{
+ let $PHPLS_ALLOW_XDEBUG=0
 call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
 "}}} _LanguageServer-php-neovim
 
@@ -2048,8 +2050,8 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  if PM('pbogut/fzf-mru.vim')
      " only show MRU files from within your cwd
      let g:fzf_mru_relative = 1
-
-     nnoremap <leader><Enter> :FZFMru<cr>
+     nnoremap <c-p><c-u> :FZFMru<cr>
+     nnoremap <c-p>u     :execute "FZFMru " expand('<cword>')<cr>
      " to enable found references displayed in fzf
      let g:LanguageClient_selectionUI = 'fzf'
  endif
@@ -2117,7 +2119,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 "call Map_FZF  ( "COMMAND"   , "KEY"   , "OPTIONS"                                                                        , cw )
  call Map_FZF  ( "FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
  call Map_FZF  ( "FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
- call Map_FZF  ( "FzfFiles! "    , "p"   , ''                                                                               , 2  )
+ call Map_FZF  ( "FzfFiles! "    , "e"   , ''                                                                               , 2  )
  call Map_FZF  ( "FzfAg!"       , "a"     , ""                                                                               , 3  )
  call Map_FZF  ( "FzfLines!"    , "L"     , ""                                                                               , 2  )
  call Map_FZF  ( "FzfBLines!"   , "l"     , ""                                                                               , 2  )
@@ -2381,13 +2383,51 @@ endfunction
 
  " }}}
  " neovim-fuzzy {{{
- if PM('cloudhead/neovim-fuzzy', {'on_cmd': ['FuzzyOpen']})
-  nnoremap <c-p><c-e> <cmd>FuzzyOpen<cr>
+ " cloudhead/neovim-fuzzy
+ if PM('bosr/fzy.vim', { 'rev': 'dev', 'on_cmd': ['FuzzyOpen', 'FuzzyOpenFiles']})
+     nnoremap <c-p><c-p> <cmd>FuzzyOpenFiles<cr>
+     let g:fuzzy_winheight = 14
+     let g:fuzzy_bufferpos = 'tab'
+     " <Esc>     close fzy pane
+     " <Enter>   open selected file with default open command
+     " <Ctrl-S>  open selected file in new horizontal split
+     " <Ctrl-V>  open selected file in new vertical split
+     " <Ctrl-T>  open selected file in new tab
+     " <Ctrl-N>  next entry
+     " <Ctrl-P>  previous entry
+
+    autocmd FileType fuzzy tnoremap <silent> <buffer> <Esc> <C-\><C-n>:FuzzyKill<CR>
+    autocmd FileType fuzzy tnoremap <silent> <buffer> <C-T> <C-\><C-n>:FuzzyOpenFileInTab<CR>
+    autocmd FileType fuzzy tnoremap <silent> <buffer> <C-S> <C-\><C-n>:FuzzyOpenFileInSplit<CR>
+    autocmd FileType fuzzy tnoremap <silent> <buffer> <C-V> <C-\><C-n>:FuzzyOpenFileInVSplit<CR>
+    autocmd FileType fuzzy tnoremap <silent> <buffer> <C-space> <C-\><C-n>:FuzzySwitch<CR>
+
+     " let g:fuzzy_opencmd = 'vsplit'
  endif " PM()
  " }}} _neovim-fuzzy
+
+ "vim-dirvish {{{
+ if PM('justinmk/vim-dirvish', {'platform' : 'win64'})
+     if PM('kristijanhusak/vim-dirvish-git')
+         " let g:dirvish_git_indicators = {
+         "             \ 'Modified'  : '?',
+         "             \ 'Staged'    : '?',
+         "             \ 'Untracked' : '?',
+         "             \ 'Renamed'   : '?',
+         "             \ 'Unmerged'  : '?',
+         "             \ 'Ignored'   : '?',
+         "             \ 'Unknown'   : '?'
+         "             \ }
+         " autocmd vimrc FileType dirvish nmap <silent><buffer><C-n> <Plug>(dirvish_git_next_file)
+         " autocmd vimrc FileType dirvish nmap <silent><buffer><C-p> <Plug>(dirvish_git_prev_file)
+     endif
+     call PM('fsharpasharp/vim-dirvinist')
+ endif
+ " }}} _vim-dirvish
+
  "defx.nvim {{{
 
- if PM('Shougo/defx.nvim', {'hook_post_source': "call SetDefXOPtions()"})
+ if PM('Shougo/defx.nvim', {'platform':'mac', 'hook_post_source': "call SetDefXOPtions()"})
      if PM('kristijanhusak/defx-icons')
          " :Defx -columns=icons:filename:type
          let g:defx_icons_enable_syntax_highlight = 0
@@ -2590,12 +2630,12 @@ if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
   nmap <expr>n ['<Plug>(Oblique-N)','<Plug>(Oblique-n)'][v:searchforward]
   nmap <expr>N ['<Plug>(Oblique-n)','<Plug>(Oblique-N)'][v:searchforward]
 
-  autocmd! User Oblique        normal! zz
-  autocmd! User ObliqueStar    normal! zz
-  autocmd! User ObliqueRepeat  normal! zz
-  autocmd! User Oblique        AnzuUpdateSearchStatusOutput
-  autocmd! User ObliqueStar    AnzuUpdateSearchStatusOutput
-  autocmd! User ObliqueRepeat  AnzuUpdateSearchStatusOutput
+  autocmd! User Oblique       AnzuUpdateSearchStatusOutput | normal! zz
+  autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput | normal! zz
+  autocmd! User ObliqueRepeat AnzuUpdateSearchStatusOutput | normal! zz
+  " autocmd! User Oblique        AnzuUpdateSearchStatusOutput
+  " autocmd! User ObliqueStar    AnzuUpdateSearchStatusOutput
+  " autocmd! User ObliqueRepeat  AnzuUpdateSearchStatusOutput
 
  endif
 
@@ -3097,8 +3137,8 @@ endif
      "return fileformat
    endfunction
 
-   " let g:lightline.colorscheme = 'onedark'
-   let g:lightline.colorscheme = 'one'
+   let g:lightline.colorscheme = 'onedark'
+   " let g:lightline.colorscheme = 'one'
    " let g:lightline.colorscheme = 'material'
    " let g:lightline.colorscheme = 'gruvbox'
    " let g:lightline.colorscheme = 'wombat'
@@ -3218,6 +3258,12 @@ endif
   endif
  "}}}
 
+ "colortuner {{{
+ if PM('zefei/vim-colortuner', {'on_cmd' :['Colortuner']})
+     let g:colortuner_preferred_schemes = ['papercolor', 'palenight']
+ endif
+ "}}} _colortuner
+
  " vim-css-color {{{
 
    if PM( 'ap/vim-css-color', { 'on_ft':['css','scss','sass','less','styl']} )
@@ -3300,23 +3346,32 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
- call PM( 'rakr/vim-one')
+ call PM('jacoborus/tender.vim')
+ call PM('rakr/vim-one')
  call PM('nightsense/snow')
- call PM( 'NLKNguyen/papercolor-theme')
- call PM( 'trevordmiller/nova-vim')
+ call PM('NLKNguyen/papercolor-theme')
+ call PM('trevordmiller/nova-vim')
  call PM('nightsense/snow')
  call PM('kristijanhusak/vim-hybrid-material')
  call PM('jdkanani/vim-material-theme')
  call PM('khalidchawtany/vim-materialtheme')
  call PM('aunsira/macvim-light')
+ call PM('arcticicestudio/nord-vim')
+ call PM('lifepillar/vim-wwdc17-theme')
+ call PM('sonobre/briofita_vim')
+ call PM('jakwings/vim-colors')
+ call PM('aunsira/macvim-light')
+ call PM('endel/vim-github-colorscheme')
+ call PM('rakr/vim-colors-rakr')
+ call PM('mswift42/vim-themes')
+ call PM('vim-scripts/summerfruit256.vim')
+ call PM('andbar-ru/vim-unicon')
+ call PM('kamwitsta/flatwhite-vim')
+
  call PM('ayu-theme/ayu-vim')
- set termguicolors     " enable true colors support
  let ayucolor="dark"   " for dark version of theme
  let ayucolor="mirage" " for mirage version of theme
  let ayucolor="light"  " for light version of theme
-
-
- call PM('arcticicestudio/nord-vim')
 
  call PM('drewtempelmeyer/palenight.vim')
  let g:palenight_terminal_italics=1
@@ -3326,20 +3381,12 @@ endif
  let g:oceanic_next_terminal_bold = 0
  let g:oceanic_next_terminal_italic = 1
 
- call PM('lifepillar/vim-wwdc17-theme')
- call PM('sonobre/briofita_vim')
- call PM('jakwings/vim-colors')
- call PM('aunsira/macvim-light')
- call PM('kamwitsta/flatwhite-vim')
  call PM('rakr/vim-one')
  let g:one_allow_italics = 1 " I love italic for comments
+
  call PM('rakr/vim-two-firewatch')
  let g:two_firewatch_italics=1
- call PM('endel/vim-github-colorscheme')
- call PM('rakr/vim-colors-rakr')
- call PM('mswift42/vim-themes')
- call PM('vim-scripts/summerfruit256.vim')
- call PM('andbar-ru/vim-unicon')
+
  call PM('reedes/vim-colors-pencil')
  let g:pencil_terminal_italics = 1
  "}}} _colorscheme

@@ -43,9 +43,8 @@ nnoremap <silent> <M-D-=> :let g:linespace=g:linespace+1<cr>:call rpcnotify(0, '
 
 nnoremap <silent> <c-w>m :call GuiWindowMaximized((g:GuiWindowMaximized + 1) % 2)<cr>
 nnoremap <silent> <c-w>f :call GuiWindowFullScreen((g:GuiWindowFullScreen + 1) % 2)<cr>
-let g:WindowFrameless=1
+let g:WindowFrameless=0
 nnoremap <silent> <c-w><bs>   :let g:WindowFrameless=(g:WindowFrameless + 1) % 2<cr>:call rpcnotify(0, 'Gui', 'WindowFrameless', g:WindowFrameless)<cr>
-
 
 set mouse=a
 set nottimeout
@@ -110,4 +109,4 @@ let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.
-call GuiWindowMaximized(2)<cr>
+" call GuiWindowMaximized(2)<cr>

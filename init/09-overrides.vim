@@ -64,7 +64,9 @@ au TermOpen * nmap <buffer> gf :call <SID>term_gf()<cr>
 function! FoldFunction()
     set foldmethod=manual
     if &ft == 'blade'
-        execute "g/function\\|.edatagrid({\\|{ field:\\|\<div\\|\<style\\|\@can(/normal 0maf{%zf'a"
+        execute "g/<div\\|\<style/normal lma%zf'a"
+        execute "g/columns: \\[\\[/normal 0maf[%zf'a"
+        execute "g/function\\|.edatagrid({\\|{ field:\\|{field:/normal 0maf{%zf'a"
     endif
     if &ft == 'php'
         execute "g/protected \\$fillable = \\[/normal 0f[zf%"

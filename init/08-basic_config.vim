@@ -7,8 +7,8 @@ let $diff_me=0
 let g:uncrustify_cfg_file_path =
       \ shellescape(fnamemodify('~/.uncrustify.cfg', ':p'))
 
-set background=light
-colorscheme PaperColor
+set background=dark
+colorscheme palenight
 
 
 "set rulerformat to include line:col filename +|''
