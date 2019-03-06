@@ -92,3 +92,13 @@ LMap n <leader>zi <Plug>fold-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<c
 " let g:terminal_color_6='#2FA8AA'
 
 " ToggleDarkAndLight
+
+if has('win64')
+    nnoremap <leader><s-e><cr> :execute "au BufWinEnter *.php match Ignore /\r$/"<cr>
+
+    nnoremap <silent> <c-p><c-p> :CocList files<cr>
+    nnoremap <silent> <c-p><c-r> :CocList mru<cr>
+    nnoremap <silent> <c-p><c-o> :CocList buffers<cr>
+    nnoremap <silent> <c-p><c-[> :CocList outline<cr>
+endif
+
