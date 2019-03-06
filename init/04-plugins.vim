@@ -390,7 +390,7 @@ endif
 
  " vim-copy-as-rtf {{{
 
- call PM( 'zerowidth/vim-copy-as-rtf', {'on_cmd': ['CopyRTF']} )
+ call PM( 'zerowidth/vim-copy-as-rtf', {'on_cmd': ['CopyRTF'], 'platform':'mac'} )
 
  "}}} _vim-copy-as-rtf
 
