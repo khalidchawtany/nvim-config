@@ -127,8 +127,6 @@ elseif isdirectory('/dev/shm')
   let $TMPDIR = '/dev/shm'
 endif
 
-set shell=/usr/local/bin/zsh
-
 if has('path_extra')
   setglobal tags-=./tags tags-=./tags; tags^=./tags;
 endif
