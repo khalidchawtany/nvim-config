@@ -118,8 +118,8 @@ let s:PM_WL = [
              endif
          endif
 
-         if has_key(options, 'platform')
-             if options['platform'] == 1
+         if has_key(options, 'lazy')
+             if options['lazy'] == 1
                  return
              endif
          endif
