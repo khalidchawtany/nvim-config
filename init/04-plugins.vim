@@ -485,18 +485,20 @@ endif
 
  call PM('chrisbra/matchit')
 
- call PM('rlue/vim-barbaric')
+ " call PM('rlue/vim-barbaric')
 
+ "vim-xkbswitch {{{
  if PM('lyokha/vim-xkbswitch')
      if has('mac')
-         " if using https://github.com/vovkasm/input-source-switcher
-         " let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
+         " using https://github.com/vovkasm/input-source-switcher
+         let g:XkbSwitchLib = '/Users/juju/Development/Applications/input-source-switcher/build/libInputSourceSwitcher.dylib'
      elseif has('win')
          let g:XkbSwitchLib = 'C:\Development\libxkbswitch64.dll'
          let g:XkbSwitchIMappingsTrData = 'C:\Development\charmap.txt'
      endif
      let g:XkbSwitchEnabled = 1
  endif
+ "}}} _vim-xkbswitch
 
  " vim-fetch {{{
    call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
