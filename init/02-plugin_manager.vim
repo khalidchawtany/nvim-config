@@ -1,6 +1,6 @@
 if has('mac')
     let PMN = 'Dein'
-elseif has('win')
+elseif has('win64')
     let PMN = 'Plug'
 endif
 
