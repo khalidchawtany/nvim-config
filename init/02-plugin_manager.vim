@@ -113,14 +113,14 @@ let s:PM_WL = [
       let options = {}
       if len(a:000) > 0
 
-         if has_key(options, 'platform')
-             if !has(options['platform'])
+         if has_key(a:1, 'platform')
+             if !has(a:1['platform'])
                  return
              endif
          endif
 
-         if has_key(options, 'lazy')
-             if options['lazy'] == 1
+         if has_key(a:1, 'lazy')
+             if a:1['lazy'] == 1
                  return
              endif
          endif
