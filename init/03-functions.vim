@@ -274,7 +274,11 @@ function! FindGitDirOrRoot()"{{{
     return '.'
   endif
   if gitdir != ''
-    return substitute(gitdir, '\/\.git$', '', '')
+      if has('mac')
+          return substitute(gitdir, '\/\.git$', '', '')
+      elseif has('win64')
+          return substitute(gitdir, '\\.git$', '', '')
+      endif
   else
     return '/'
   endif

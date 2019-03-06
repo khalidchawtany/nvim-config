@@ -13,13 +13,18 @@ scriptencoding utf-8
   endif
 
 " Set important paths
-  let g:python2_host_prog='/usr/local/bin/python'
-  "First Run >> brew unlink python
-  "second let g:python2_host_prog='/Volumes/Home/Development/Applications/neovim/system_python_lldb_loader'
-  " UpdateRemotePlugins
-  let g:python3_host_prog='/usr/local/bin/python3'
-  let g:python_host_skip_check = 1
-  let g:python3_host_skip_check = 1
+if has('mac')
+    let g:python2_host_prog='/usr/local/bin/python'
+    let g:python3_host_prog='/usr/local/bin/python3'
+    "First Run >> brew unlink python
+    "second let g:python2_host_prog='/Volumes/Home/Development/Applications/neovim/system_python_lldb_loader'
+    " UpdateRemotePlugins
+elseif has('win64')
+    let g:python2_host_prog='C:\Development\Python\Python2\python2.7.exe'
+    let g:python3_host_prog='C:\Development\Python\Python3\python.exe'
+endif
+let g:python_host_skip_check = 1
+let g:python3_host_skip_check = 1
 
 filetype plugin indent on
 
@@ -131,8 +136,12 @@ if &list
 endif
 
 if !has('unix')
-  " I'd like to do this, but it seems like it breaks tags functionality
-  " set shell=powershell.exe
+    " I'd like to do this, but it seems like it breaks tags functionality
+    " set shell=powershell.exe
+    set shell=cmd.exe
+else
+
+    set shell=/usr/local/bin/zsh
 endif
 
 " guicursor messing around

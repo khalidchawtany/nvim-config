@@ -219,9 +219,14 @@ LMap N <leader>ws    <SID>write-sudo      :w !sudo tee % > /dev/null<CR>
 
 autocmd Filetype netrw nnoremap q :quit<cr>
 
-  LMap N <leader>ev    <SID>Vimrc           :e ~/.config/nvim/init<cr>
-  LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/ginit.vim \| else \| e ~/.gvimrc \| endif<cr>
-  LMap N <leader>e<BS> <SID>discard-changes :e! \| echo "changes discarded"<cr>
+    if has('mac')
+        LMap N <leader>ev    <SID>Vimrc           :e ~/.config/nvim/init<cr>
+        LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e ~/.config/nvim/ginit.vim \| else \| e ~/.gvimrc \| endif<cr>
+    elseif has('win64')
+        LMap N <leader>ev    <SID>Vimrc           :e C:\Users\JuJu\AppData\Local\nvim\init<cr>
+        LMap N <leader>eg    <SID>gVimrc          :if has("nvim") \| e C:\Users\JuJu\AppData\Local\nvim\ginit.vim \| else \| e ~/.gvimrc \| endif<cr>
+    endif
+LMap N <leader>e<BS> <SID>discard-changes :e! \| echo "changes discarded"<cr>
 
   "CD into:
   "current buffer file dir

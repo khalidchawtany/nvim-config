@@ -1,4 +1,8 @@
-let PMN = 'Dein'
+if has('mac')
+    let PMN = 'Dein'
+elseif has('win')
+    let PMN = 'Plug'
+endif
 
 "BlackList {{{
 let s:PM_BL = [
@@ -32,15 +36,17 @@ let s:PM_WL = [
     "Let Notifier notify me of anything
     let g:dein#enable_notification=1
 
-    " Required:
-    set runtimepath^=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim
-
-    " Required:
-    call dein#begin(expand('~/.config/nvim/dein'))
+    if has('mac')
+        set runtimepath^=~/.config/nvim/dein/repos/github.com/Shougo/dein.vim
+        call dein#begin(expand('~/.config/nvim/dein'))
+    elseif has('win64')
+        set runtimepath^=C:\Users\JuJu\AppData\Local\nvim\dein\repos\github.com\Shougo\dein.vim
+        call dein#begin('C:\Users\JuJu\AppData\Local\nvim\dein')
+    endif
 
     " Let dein manage dein
-    " Required:
     call dein#add('Shougo/dein.vim')
+
 
     "This is same as calling dein
     function! PM ( plugin, ...) "{{{

@@ -71,25 +71,49 @@ endif
 "How should I decide to take abackup
 set backupcopy=auto
 
-" Centralize backups, swapfiles and undo history
-if has('nvim')
-  set backupdir=~/.config/nvim/.cache/backups
+if has('mac')
+    if has('nvim')
+        " Centralize backups, swapfiles and undo history
+        set backupdir=~/.config/nvim/.cache/backups
 
-  set directory=~/.config/nvim/.cache/swaps
-  set viewdir=~/.config/nvim/.cache/views
+        set directory=~/.config/nvim/.cache/swaps
+        set viewdir=~/.config/nvim/.cache/views
 
-  if exists("&undodir")
-    set undodir=~/.config/nvim/.cache/undo
-  endif
-else
-  set backupdir=~/.vim/.cache/backups
+        if exists("&undodir")
+            set undodir=~/.config/nvim/.cache/undo
+        endif
+    else
+        set backupdir=~/.vim/.cache/backups
 
-  set directory=~/.vim/.cache/swaps
-  set viewdir=~/.vim/.cache/views
+        set directory=~/.vim/.cache/swaps
+        set viewdir=~/.vim/.cache/views
 
-  if exists("&undodir")
-    set undodir=~/.vim/.cache/undo
-  endif
+        if exists("&undodir")
+            set undodir=~/.vim/.cache/undo
+        endif
+    endif
+elseif has('win')
+    if has('nvim')
+
+        " Centralize backups, swapfiles and undo history
+        set backupdir=C:\Users\JuJu\AppData\Local\nvim-data\backups
+
+        set directory=C:\Users\JuJu\AppData\Local\nvim-data\swaps
+        set viewdir=C:\Users\JuJu\AppData\Local\nvim-data\views
+
+        if exists("&undodir")
+            set undodir=C:\Users\JuJu\AppData\Local\nvim-data\undo
+        endif
+    else
+        set backupdir=C:\Users\JuJu\AppData\Local\nvim-data\backups
+
+        set directory=C:\Users\JuJu\AppData\Local\nvim-data\swaps
+        set viewdir=C:\Users\JuJu\AppData\Local\nvim-data\views
+
+        if exists("&undodir")
+            set undodir=C:\Users\JuJu\AppData\Local\nvim-data\undo
+        endif
+    endif
 endif
 
 set undofile                          " Save undo's after file closes

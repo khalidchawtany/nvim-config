@@ -105,7 +105,9 @@ execute "tnoremap <silent> <D-" . i . "> <c-\\><c-n>:tabnext 10<cr>"
 
 "Fix the lldb path
 " ln -s /usr/local/Cellar/llvm/HEAD-f63894b/lib/liblldb.4.0.0.dylib /usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/_lldb.so
-let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
+if has('mac')
+    let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
+endif
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.

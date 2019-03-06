@@ -485,6 +485,19 @@ endif
 
  call PM('chrisbra/matchit')
 
+ call PM('rlue/vim-barbaric')
+
+ if PM('lyokha/vim-xkbswitch')
+     if has('mac')
+         " if using https://github.com/vovkasm/input-source-switcher
+         " let g:XkbSwitchLib = '/usr/local/lib/libInputSourceSwitcher.dylib'
+     elseif has('win')
+         let g:XkbSwitchLib = 'C:\Development\libxkbswitch64.dll'
+         let g:XkbSwitchIMappingsTrData = 'C:\Development\charmap.txt'
+     endif
+     let g:XkbSwitchEnabled = 1
+ endif
+
  " vim-fetch {{{
    call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
@@ -2021,12 +2034,19 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
                 " \  --color=bg+:#ff0000,bg:#002b36,spinner:#000000,hl:#ff00ff
                 " \  --color=fg:#839496,header:#586e75,info:#cb4b16,pointer:#719e07
                 " \  --color=marker:#719e07,fg+:#839496,prompt:#719e07,hl+:#719e07
-    let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+    if has('mac')
+        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        let s:null = 'null'
+    elseif has('win64')
+        let $FZF_DEFAULT_OPTS=" --history=C:/Users/juju/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        let s:null = 'nul'
+    endif
+
 
     "let $FZF_DEFAULT_COMMAND='ag -l -g ""'
-    let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/null'
+    let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
 
-    command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/null', 1, <bang>0)
+    command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/'.s:null, 1, <bang>0)
 
   if PM( 'junegunn/fzf.vim',
           \ {
@@ -2062,7 +2082,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
       " [Files] Extra options for fzf
       "         e.g. File preview using coderay (http://coderay.rubychan.de/)
       let g:fzf_files_options =
-            \ '--preview "(coderay {} || cat {}) 2> /dev/null | head -'.&lines.'"'
+            \ '--preview "(coderay {} || cat {}) 2> /dev/' . s:null . ' | head -'.&lines.'"'
 
       " [Buffers] Jump to the existing window if possible
       let g:fzf_buffers_jump = 1
@@ -2079,7 +2099,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
    "}}} _Command Local Options
 
    function! s:find_git_root()
-     return system('git rev-parse --show-toplevel 2> /dev/null')[:-2]
+     return system('git rev-parse --show-toplevel 2> /dev/' . s:null)[:-2]
    endfunction
 
    function! Map_FZF(cmd, key, options, cword)
@@ -2920,7 +2940,7 @@ endif
    nnoremap ]h :HisTravForward<cr>
    nnoremap [h :HisTravBack<cr>
 
-   let g:history_ft_ignore = ['netrw']
+   let g:history_ft_ignore = ['netrw', 'defx', 'nofile']
  endif
 
  "}}} _history-traverse
