@@ -3045,7 +3045,7 @@ endif
    nnoremap ]h :HisTravForward<cr>
    nnoremap [h :HisTravBack<cr>
 
-   let g:history_ft_ignore = ['netrw', 'defx', 'nofile']
+   let g:history_ft_ignore = ['netrw', 'defx', 'nofile', 'fugitive', 'gitcommit']
  endif
 
  "}}} _history-traverse
