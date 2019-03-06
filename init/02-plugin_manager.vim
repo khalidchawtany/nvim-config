@@ -118,6 +118,12 @@ let s:PM_WL = [
              endif
          endif
 
+         if has_key(options, 'platform')
+             if options['platform'] == 1
+                 return
+             endif
+         endif
+
         "Copy relevant values from passed args to options, changing option name|key.  
         for [key, value] in items(g:DeinToVimPlug)
           if has_key(a:1, key)
