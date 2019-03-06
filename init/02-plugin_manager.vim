@@ -93,7 +93,12 @@ let s:PM_WL = [
     " Extend the length of the timeout for vim-plug
     let g:plug_timeout=60
 
-    call plug#begin('~/.config/nvim/plugged')
+    if has('mac')
+        call plug#begin('~/.config/nvim/plugged')
+    elseif has('win64')
+        call plug#begin('C:\Users\JuJu\AppData\Local\nvim\plugged')
+    endif
+
     let g:DeinToVimPlug = {'build':'do', 'rev': 'branch', 'on_ft':'for', 'on_cmd':'on','on_map':'on'}
 
     "This is same as calling Plug command
