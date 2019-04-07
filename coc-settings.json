@@ -2,7 +2,6 @@
     "diagnostic.virtualText": true,
     "suggest.autoTrigger": "always",
     "suggest.triggerAfterInsertEnter": false,
-    "coc.preferences.triggerSignatureHelp": true,
     "suggest.minTriggerInputLength": 1,
     "suggest.timeout": 5000,
     "suggest.triggerCompletionWait": 100,
@@ -18,24 +17,80 @@
     "diagnostic.warningSign": "?",
     "diagnostic.infoSign": ">>",
     "diagnostic.hintSign": ">>",
-    "phpls.enable": true,
+
+
     "suggest.languageSourcePriority": 1,
-    "coc.source.around.priority":     2,
-    "coc.source.file.priority":       3,
-    "snippets.priority":              4,
-    "coc.source.ultisnips.priority":  5,
-    "coc.source.buffer.priority":     6,
-    "coc.source.dictionary.priority": 7,
-    "coc.source.word.priority":       8,
+    "coc.source.syntax.priority":     2,
+    "snippets.priority":              1,
+
+    "coc.source.around.enable": true,
+    "coc.source.around.priority": 1,
+    "coc.source.around.shortcut": "A",
+
+    "coc.source.buffer.enable": true,
+    "coc.source.buffer.shortcut": "B",
+    "coc.source.buffer.priority": 1,
+
+    "coc.source.dictionary.enable": true,
+    "coc.source.dictionary.shortcut": "D",
+    "coc.source.dictionary.priority": 2,
+
+    "coc.source.word.enable": false,
+    "coc.source.word.shortcut": "10k",
+    "coc.source.word.priority": 999999,
+
+
+    "coc.source.ultisnips.enable": true,
+    "coc.source.ultisnips.priority": 1,
+    "coc.source.ultisnips.shortcut": "US",
+
+    "coc.source.file.enable": true,
+    "coc.source.file.shortcut": "F",
+    "coc.source.file.priority": 1,
+    "coc.source.file.triggerCharacters": ["/"],
+    "coc.source.file.trimSameExts": [".ts", ".js"],
+    "coc.source.file.ignoreHidden": true,
+    "coc.source.file.ignorePatterns": [],
+
+    "coc.source.tag.enable": true,
+    "coc.source.tag.shortcut": "T",
+    "coc.source.tag.priority": 3,
+
+   "tailwind.enable": true,
+   "tailwind.shortcut": "TWCSS",
+   "tailwind.priority": 2,
+
+    "python.formatting.provider": "autopep8",
+
     "languageserver": {
-        "myphplang": {
-            "command": "php",
-            "args": [
-                "/Users/juju/.composer/vendor/felixfbecker/language-server/bin/php-language-server.php"
-            ],
-            "filetypes": [
-                "php"
-            ]
+        "intelephense": {
+            "command": "node",
+            "args": ["/usr/local/lib/node_modules/intelephense/lib/intelephense.js", "--stdio"],
+            "filetypes": ["php"],
+            "initializationOptions": {
+                "intelephense":{
+                    "completion" : {
+                        "fullyQualifyGlobalConstantsAndFunctions": false,
+                        "intelephense.completion.insertUseDeclaration": true
+                    }
+                },
+                "completion" : {
+                        "fullyQualifyGlobalConstantsAndFunctions": false,
+                        "intelephense.completion.insertUseDeclaration": true
+                }
+            },
+            "settings": {
+                "intelephense":{
+                    "completion" : {
+                        "fullyQualifyGlobalConstantsAndFunctions": false,
+                        "intelephense.completion.insertUseDeclaration": true
+                    }
+                },
+                "completion" : {
+                        "fullyQualifyGlobalConstantsAndFunctions": false,
+                        "intelephense.completion.insertUseDeclaration": true
+                }
+            }
         }
     }
 }

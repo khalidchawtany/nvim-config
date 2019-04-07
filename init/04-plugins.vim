@@ -50,8 +50,15 @@ let g:_did_vimrc_plugins = 1
    LMap N <leader>gdv <SID>V-Diff :call fugitive#detect(getcwd()) \| execute ":Gvdiff"<cr>
    LMap N <leader>gds <SID>S-Diff :call fugitive#detect(getcwd()) \| execute ":Gdiff"<cr>
 
+   " Fugitive Conflict Resolution
+   nnoremap gdh :diffget //2<CR>
+   nnoremap gdl :diffget //3<CR>
+
  endif
  "}}} _vim-fugitive
+ " vim-twiggy{{{
+ call PM('sodapopcan/vim-twiggy', {'on_cmd': 'Twiggy'})
+ " }}}
  " gv.vim {{{
 
    "Requires vim-fugitive
@@ -64,6 +71,9 @@ let g:_did_vimrc_plugins = 1
    endif
 
  "}}} _gv.vim
+ "gitv {{{
+ call PM("gregsexton/gitv",  {'on_cmd': ['Gitv']})
+ " }}}
  " vim-gitgutter {{{
 
    call PM( 'airblade/vim-gitgutter' )
@@ -95,6 +105,12 @@ let g:_did_vimrc_plugins = 1
  " Content Editor {{{
 
  " Org
+ " vim-notes {{{
+ if PM('xolox/vim-notes')
+     let g:notes_directories = ['~/Development/Notes']
+     let g:notes_suffix = '.note'
+ endif
+ "}}}
  " vim-speeddating {{{
 
    call PM( 'tpope/vim-speeddating', {'on_ft': ['org'],'on_map': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']} )
@@ -169,6 +185,36 @@ let g:_did_vimrc_plugins = 1
        " Auto-completion
 
  "}}}
+ " vim-esearch {{{
+ if PM('eugen0329/vim-esearch')
+     " Start esearch prompt autofilled with one of g:esearch.use initial patterns
+     call esearch#map('<leader>ff', 'esearch')
+     " Start esearch autofilled with a word under the cursor
+     call esearch#map('<leader>fw', 'esearch-word-under-cursor')
+
+     call esearch#out#win#map('t',       'tab')
+     call esearch#out#win#map('i',       'split')
+     call esearch#out#win#map('s',       'vsplit')
+     call esearch#out#win#map('<Enter>', 'open')
+     call esearch#out#win#map('o',       'open')
+
+     "    Open silently (keep focus on the results window)
+     call esearch#out#win#map('T', 'tab-silent')
+     call esearch#out#win#map('I', 'split-silent')
+     call esearch#out#win#map('S', 'vsplit-silent')
+
+     "    Move cursor with snapping
+     call esearch#out#win#map('<C-n>', 'next')
+     call esearch#out#win#map('<C-j>', 'next-file')
+     call esearch#out#win#map('<C-p>', 'prev')
+     call esearch#out#win#map('<C-k>', 'prev-file')
+
+     call esearch#cmdline#map('<C-o><C-r>', 'toggle-regex')
+     call esearch#cmdline#map('<C-o><C-s>', 'toggle-case')
+     call esearch#cmdline#map('<C-o><C-w>', 'toggle-word')
+     call esearch#cmdline#map('<C-o><C-h>', 'cmdline-help')
+ endif
+ "}}} _vim-esearch
  " vim-enmasse {{{
 
    call PM( 'Wolfy87/vim-enmasse',         { 'on_cmd': 'EnMasse'} )
@@ -222,6 +268,25 @@ let g:_did_vimrc_plugins = 1
     let g:multi_cursor_quit_key='<Esc>'
 
  "}}} _vim-multiple-cursors
+ " vim-visual-multi {{{
+ if PM('mg979/vim-visual-multi')
+   fun! VM_Start()
+     "this only works in devel branch, currently
+     highlightedyankoff
+   endfun
+
+   fun! VM_exit()
+     highlightedyankon
+   endfun
+   " let g:vm_plugins_compatibilty = {
+   "       \'autopairs': {
+   "       \   'var': 'b:autopairs_enabled',
+   "       \   'maps': 'call autopairsinit()',
+   "       \   'enable': 'let b:autopairs_enabled = 1',
+   "       \   'disable': 'let b:autopairs_enabled = 0'}
+   "       \}
+ endif
+ " }}}
  " vim-abolish {{{
 
    call PM( 'tpope/vim-abolish',           { 'on_cmd': ['S','Subvert', 'Abolish']} )
@@ -240,6 +305,10 @@ let g:_did_vimrc_plugins = 1
 
  "select something and press +,_
 call PM('terryma/vim-expand-region')
+
+"TODO: fix theses mappings
+" map gj <Plug>(expand_region_expand)
+" map gk <Plug>(expand_region_shrink)
 
  "}}} _vim-expand-region
 
@@ -467,6 +536,7 @@ endif
        \ ],
        \ 'on_cmd': [ 'Commentary' ]
        \ })
+ vmap <leader>cc  <Plug>Commentary
  xmap <leader>cc  <Plug>Commentary
  nmap <leader>cc  <Plug>Commentary
  omap <leader>cc  <Plug>Commentary
@@ -619,6 +689,9 @@ endif
  " vim-unimpaired {{{
  call PM( 'tpope/vim-unimpaired')
  "}}} _vim-unimpaired
+ "vim-sleuth {{{
+ call PM('tpope/vim-sleuth')
+ "}}} _vim-sleuth
  " vim-man {{{
    call PM( 'bruno-/vim-man', {'on_cmd': ['Man', 'SMan', 'VMan', 'Mangrep']} )
  "}}} _vim-man
@@ -1367,9 +1440,6 @@ endif
 
  "}}} _vim-test
 
- if PM('kassio/neoterm')
-     nnoremap <leader>tl :<c-u>exec v:count.'Tclear'<cr>
- endif
  "}}}
 
  " Snippets {{{
@@ -1616,10 +1686,11 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
        \ })
        "\ 'build': ':UpdateRemotePlugins'
    let g:LanguageClient_serverCommands = {
-         \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-         \ 'javascript': ['javascript-typescript-stdio'],
+         \ 'rust':           ['rustup', 'run', 'nightly', 'rls'],
+         \ 'javascript':     ['javascript-typescript-stdio'],
          \ 'javascript.jsx': ['javascript-typescript-stdio'],
-         \ 'typescript': ['javascript-typescript-stdio']
+         \ 'typescript':     ['javascript-typescript-stdio'],
+         \ 'python':         ['pyls']
          \ }
 
    " Automatically start language servers.
@@ -2141,7 +2212,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 "call Map_FZF  ( "COMMAND"   , "KEY"   , "OPTIONS"                                                                        , cw )
  call Map_FZF  ( "FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
  call Map_FZF  ( "FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
- call Map_FZF  ( "FzfFiles! "    , "e"   , ''                                                                               , 2  )
+ call Map_FZF  ( "FzfFiles! "    , "p"   , ''                                                                               , 2  )
  call Map_FZF  ( "FzfAg!"       , "a"     , ""                                                                               , 3  )
  call Map_FZF  ( "FzfLines!"    , "L"     , ""                                                                               , 2  )
  call Map_FZF  ( "FzfBLines!"   , "l"     , ""                                                                               , 2  )
@@ -2407,8 +2478,8 @@ endfunction
  " neovim-fuzzy {{{
  " cloudhead/neovim-fuzzy
  if PM('bosr/fzy.vim', { 'rev': 'dev', 'on_cmd': ['FuzzyOpen', 'FuzzyOpenFiles']})
-     nnoremap <c-p><c-p> <cmd>FuzzyOpenFiles<cr>
-     let g:fuzzy_winheight = 14
+     nnoremap <c-p><c-e> <cmd> let g:fuzzy_winheight = winheight(0) \| FuzzyOpenFiles<cr>
+     let g:fuzzy_winheight = 25
      let g:fuzzy_bufferpos = 'tab'
      " <Esc>     close fzy pane
      " <Enter>   open selected file with default open command
@@ -2427,6 +2498,12 @@ endfunction
      " let g:fuzzy_opencmd = 'vsplit'
  endif " PM()
  " }}} _neovim-fuzzy
+ " vim-picker {{{
+ if PM('srstevenson/vim-picker')
+     let g:picker_find_executable = 'rg'
+     let g:picker_find_flags = '--color never --files'
+ endif
+ " }}}
 
  "vim-dirvish {{{
  if PM('justinmk/vim-dirvish', {'platform' : 'win64'})
@@ -2482,14 +2559,12 @@ endfunction
   endfunction
 
    autocmd BufEnter * if <SID>isdir(expand('%')) && !exists('b:defx')
-               \ | exe 'Defx' expand('%')
+               \ | exe 'bw! | Defx' expand('%')
                \ | endif
 
      autocmd FileType defx call s:defx_my_settings()
      function! s:defx_my_settings() abort
          " Define mappings
-         nnoremap ; :
-         nnoremap : ;
          nnoremap <silent><buffer><expr> <CR>
                      \ defx#do_action('open')
          nnoremap <silent><buffer><expr> c
@@ -2551,9 +2626,44 @@ endfunction
                      \ defx#do_action('print')
          nnoremap <silent><buffer><expr> cd
                      \ defx#do_action('change_vim_cwd')
+
+         " nnoremap <silent><buffer> q
+         "             \ <cmd>noautocmd bw!<cr>
      endfunction
  endif
  "}}} _defx.nvim
+ " vim-laravel {{{
+ if PM('noahfrederick/vim-laravel')
+     " :{E,S,V,T}asset 	Anything under assets/
+     " :Ebootstrap 	Bootstrap files in boostrap/
+     " :Echannel 	Broadcast channels
+     " :Ecommand 	Console commands
+     " :Econfig 	Configuration files
+     " :Econtroller 	HTTP controllers
+     " :Edoc 	The README.md file
+     " :Eenv 	Your .env and .env.example
+     " :Eevent 	Events
+     " :Eexception 	Exceptions
+     " :Efactory 	Model factories
+     " :Ejob 	Jobs
+     " :Elanguage 	Messages/translations
+     " :Elib 	All class files under app/
+     " :Elistener 	Event listeners
+     " :Email 	Mailables
+     " :Emiddleware 	HTTP middleware
+     " :Emigration 	Database migrations
+     " :Enotification 	Notifications
+     " :Epolicy 	Auth policies
+     " :Eprovider 	Service providers
+     " :Erequest 	HTTP form requests
+     " :Eresource 	HTTP resources
+     " :Eroutes 	HTTP routes files
+     " :Erule 	Validation rules
+     " :Eseeder 	Database seeders
+     " :Etest 	All class files under tests/
+     " :Eview 	Blade templates
+ endif
+ " }}}
  " vim-projectionist {{{
 
   if PM( 'tpope/vim-projectionist')
@@ -2577,13 +2687,6 @@ endfunction
       \     "abc_turtle/app/*.php": {"type": "m"},
       \     "abc_turtle/resources/bread/*.php": {"type": "b"},
       \     "abc_turtle/resources/views/*s/": {"type": "v"}
-      \   },
-      \   "knights/": {
-      \     "knights/app/Http/Controllers/*Controller.php": {"type": "c"},
-      \     "knights/app/*.php": {"type": "m"},
-      \     "knights/vendor/Kjdion84/Laraback/src/Commands/BreadCommand.php": {"type": "b"},
-      \     "/Users/juju/Projects/PHP/knights/vendor/kjdion84/laraback/resources/bread/stubs/" : {"type": "p"},
-      \     "knights/resources/views/*s/": {"type": "v"}
       \   }
       \ }
     nnoremap <leader>pc :execute ":Ec ".expand("%:t:r")<cr>
@@ -2957,6 +3060,15 @@ endif
        \ 'hook_post_source': "nnoremap <leader>tt :e term://zsh<cr> | hi LightlineLeft_tabline_tabsel guibg=#444444 guifg=yellow "
        \ } )
    let g:vim_drawer_spaces = [
+         \["img", "img\/"],
+         \["js", "js\/"],
+         \["css", "css\/"],
+         \["public", "public\/"],
+         \["factory", "factories\/"],
+         \["seed", "seeds\/"],
+         \["migration", "migrations\/"],
+         \["request", "Requests\/"],
+         \["middleWare", "Middleware\/"],
          \["controller", "Controller\.php"],
          \["model", "app\/"],
          \["view", "\.blade\.php$"],
@@ -3077,6 +3189,15 @@ endif
 
  "}}}
 
+ " HTTP {{{
+  " call PM('sharat87/roast.vim')
+  call PM('khalidchawtany/roast.vim')
+
+  call PM('aquach/vim-http-client')
+
+  call PM('baverman/vial')
+  call PM('baverman/vial-http')
+ " }}}
  "Database {{{
 
  " dbext.vim {{{
@@ -3092,6 +3213,28 @@ endif
  "}}} _pipe-mysql.vim
 
  "}}}
+
+
+ " Terminal {{{
+
+ "nuake {{{
+ if PM('Lenovsky/nuake')
+   nnoremap <c-cr> :Nuake<CR>
+   " inoremap <c-cr> <C-\><C-n>:Nuake<CR>
+   tnoremap <c-cr> <C-\><C-n>:Nuake<CR>
+   let g:nuake_position = 'bottom'
+   let g:nuake_size = 0.25
+   let g:nuake_per_tab = 0
+ endif
+ "}}} _nuake
+
+ "neoterm {{{
+ if PM('kassio/neoterm')
+     nnoremap <leader>tl :<c-u>exec v:count.'Tclear'<cr>
+ endif
+ "}}} _neoterm
+
+ " }}}
 
  " Themeing {{{
 
@@ -3282,7 +3425,7 @@ endif
 
  "colortuner {{{
  if PM('zefei/vim-colortuner', {'on_cmd' :['Colortuner']})
-     let g:colortuner_preferred_schemes = ['papercolor', 'palenight']
+     let g:colortuner_preferred_schemes = ['Papercolor', 'palenight']
  endif
  "}}} _colortuner
 

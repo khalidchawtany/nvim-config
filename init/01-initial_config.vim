@@ -29,8 +29,9 @@ let g:python3_host_skip_check = 1
 filetype plugin indent on
 
 set wildignore+=*.o,*~,*.pyc,*pycache* " Ignore compiled files
-set wildignore+=__pycache__
-set wildmode=longest,list,full        " Complete the longest common string,
+set wildmode=full                     " Complete the longest common string,
+set wildoptions=pum                   " show wildmenu as normal autocompleting menu
+
 " then list them, then full
 set noshowmode
 set cmdheight=1                       " Height of the command bar
@@ -58,8 +59,6 @@ set updatetime=250                    " Make updates happen faster
 
 " I wouldn't use this without my DoNoHL function
 set hlsearch
-
-set scrolloff=10                      " Make it so there are always ten lines below my cursor
 
 " Tabs
 " Want auto indents automatically

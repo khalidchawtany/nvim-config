@@ -11,6 +11,7 @@ let s:PM_BL = [
 \'deoplete.nvim',
 \'phpcd.vim',
 \'ncm2',
+\'pear-tree'
 \ ]
 " \'coc.nvim',
 "}}}}

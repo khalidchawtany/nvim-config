@@ -5,26 +5,26 @@ endif
 set linespace=20
 " set guifont=FuraMono\ Nerd\ Font:h20
 " set guifont=FuraCode\ Nerd\ Font:h18
-set guifont=RobotoMono\ Nerd\ Font:h18
+" set guifont=RobotoMono\ Nerd\ Font:h18
+
+set guifont=Operator\ Mono\ Lig:h20
 
 " extensions for web dev
-VeonimExt 'veonim/ext-css'
-VeonimExt 'veonim/ext-json'
-VeonimExt 'veonim/ext-html'
-VeonimExt 'vscode:extension/sourcegraph.javascript-typescript'
+" VeonimExt 'veonim/ext-css'
+" VeonimExt 'veonim/ext-json'
+" VeonimExt 'veonim/ext-html'
+" VeonimExt 'vscode:extension/sourcegraph.javascript-typescript'
 
 set guicursor=n:block-CursorNormal,i:hor10-CursorInsert,v:block-CursorVisual
 hi! CursorNormal guibg=#f3a082
 hi! CursorInsert guibg=#f3a082
 hi! CursorVisual guibg=#6d33ff
 
-let g:vn_explorer_ignore_dirs = ['.git']
-let g:vn_explorer_ignore_files = ['.DS_Store']
 
 " workspace management
-let g:vn_project_root = '~/Projects'
-nno <silent> <c-t>p :call Veonim('vim-create-dir', g:vn_project_root)<cr>
-nno <silent> ,r :call Veonim('change-dir', g:vn_project_root)<cr>
+" let g:vn_project_root = '~/Projects'
+" nno <silent> <c-t>p :call Veonim('vim-create-dir', g:vn_project_root)<cr>
+" nno <silent> ,r :call Veonim('change-dir', g:vn_project_root)<cr>
 
 " multiplexed vim instance management
 nno <silent> <c-t>c :Veonim vim-create<cr>
@@ -32,9 +32,9 @@ nno <silent> <c-g> :Veonim vim-switch<cr>
 nno <silent> <c-t>, :Veonim vim-rename<cr>
 
 " workspace functions
-nno <silent> ,f :Veonim files<cr>
+nno <silent> <c-p><c-p> :Veonim files<cr>
 nno <silent> ,e :Veonim explorer<cr>
-nno <silent> ,b :Veonim buffers<cr>
+nno <silent> <c-p><c-o> :Veonim buffers<cr>
 nno <silent> ,d :Veonim change-dir<cr>
 
 " searching text
@@ -68,3 +68,43 @@ nno <silent> <space>pt :Veonim problems-toggle<cr>
 nno <silent> <space>pf :Veonim problems-focus<cr>
 nno <silent> <d-o> :Veonim buffer-prev<cr>
 nno <silent> <d-i> :Veonim buffer-next<cr>
+
+
+
+
+ let g:vscode_extensions = [
+  \'vscode.typescript-language-features'
+\]
+
+
+ " let g:veonim_key_transforms = [
+ "  \{'mode': 'all', 'event': 'hold', 'match': {'key': ';'}, 'transform': "e=>({key:';'+e.key})"},
+ "  \{'mode': 'all', 'event': 'up', 'match': {'key': 'Meta', 'metaKey': 'true'}, 'transform': "e=>({key:'<Esc>'})"}
+" \]
+
+ " let g:veonim_remap_modifiers = [
+ "  \{"from": "C", "to": "D"},
+ "  \{"from": "D", "to": "C"}
+" \]
+
+
+ let g:vscode_extensions = [
+  \'vscode.typescript-language-features',
+  \'vscode.json-language-features',
+  \'vscode.css-language-features',
+  \'vscode.markdown-language-features',
+  \'vscode.html-language-features',
+  \'vscode.php-language-features',
+\]
+
+  " \'rust-lang.rust',
+  " \'ms-vscode.go',
+  " \'ms-python.python',
+
+ let g:vscode_config = {
+  \'tsserver.trace.server': 'verbose',
+  \'typescript.tsserver.trace': 'verbose'
+\}
+
+ unmap /
+ unmap ?

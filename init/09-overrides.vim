@@ -9,6 +9,7 @@ endfunction
 
 let g:projects = [
       \ "~/Development/Applications/Oni",
+      \ "~/Projects/PHP/AssetManager/",
       \ "~/Projects/PHP/karaba/",
       \ "~/Projects/PHP/Knights/",
       \ "~/Projects/PHP/create_laravel_package/blog/",
@@ -90,3 +91,4 @@ LMap n <leader>zi <Plug>fold-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<c
 " let g:terminal_color_4='#4B79B3' " >la directory colors
 " let g:terminal_color_6='#2FA8AA'
 
+" ToggleDarkAndLight

@@ -17,7 +17,6 @@ set rulerformat=%l:%<%c%=%p%%\ %R\ %m
 
 " Enhance command-line completion
 set wildmenu
-set wildmode=longest,list,full
 
 " Types of files to ignore when autocompleting things
 set wildignore+=*.o,*.class,*.git,*.svn
@@ -299,6 +298,7 @@ set nostartofline                     " Don’t reset cursor to start of line wh
 set ruler                             " Show the cursor position
 set showmode                          " Show the current mode
 set shortmess=atI                     " Don’t show the intro message when starting Vim
+set inccommand=nosplit                " preview changes in the window not a split
 
 if !&scrolloff
   set scrolloff=2                       " Keep cursor in screen by value

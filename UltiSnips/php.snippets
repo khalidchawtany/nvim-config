@@ -47,14 +47,14 @@ endsnippet
 snippet sfun "Function"
 public static function $1()
 {
-		$0
+	$0
 }
 endsnippet
 
 snippet psfun "Function"
 private static function $1()
 {
-		$0
+	$0
 }
 endsnippet
 
@@ -71,6 +71,84 @@ if ($1) {
 }
 endsnippet
 
+snippet guarded "model guarded attribute"
+protected $guarded = [
+	$0,
+	];
+endsnippet
+
+snippet fillable "model fillable attribute"
+protected $fillable = [
+	$0,
+	];
+endsnippet
+
+snippet belongsTo "model belongsTo Relationship"
+public function ${1:model} ()
+{
+	return $this->belongsTo(\App\\${1/\w+\s*/\u$0/g}::class);
+}
+$0
+endsnippet
+
+snippet belongsToMany "model belongsTo Relationship"
+public function ${1:model}s ()
+{
+	return $this->belongsToMany(\App\\${1/\w+\s*/\u$0/g}::class);
+}
+$0
+endsnippet
+
+snippet hasMany "model hasMany Relationship"
+public function ${1:model}s ()
+{
+	return $this->hasMany(\App\\${1/\w+\s*/\u$0/g}::class);
+}
+$0
+endsnippet
+snippet null "migration nullable" i
+->nullable()$0
+endsnippet
+
+snippet def "migration default" i
+->default('$1')$0
+endsnippet
+
+snippet mstr "migration string field"
+$table->string('${1:name}')$0;
+endsnippet
+
+snippet mdec "migration decimal field"
+$table->decimal('${1:name}', ${2:12,2})$0;
+endsnippet
+
+snippet mdate "migration date field"
+$table->date('${1:name}')$0;
+endsnippet
+
+snippet mint "migration integer field"
+$table->integer('${1:name}')$0;
+endsnippet
+
+snippet muint "migration unsigned integer field"
+$table->unsignedInteger('${1:name}')$0;
+endsnippet
+
+snippet mtimestamp "migration timestamps"
+$table->timestamps();
+$0
+endsnippet
+
+snippet foreign "migration foreign"
+$table->unsignedInteger('${1:name}');
+
+$table->foreign('$1')
+	->references('$2')
+	->on('$3')
+	${4:->onDelete('cascade')};
+	$0
+endsnippet
+
 snippet pfun "Function"
 private function $1($2)
 {
@@ -82,7 +160,7 @@ snippet lvm "la4 make view"
 return View::make('${VISUAL:ViewFile}');
 endsnippet
 
-snippet tr "la4 translate sledction" i
+snippet tra "la4 translate sledction" i
 {{ trans('kur.`!p
 snip.rv = snip.v.text.lower()
 `') }}
@@ -391,14 +469,14 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ${1:`!p
 snip.rv = snip.basename or "untitled"`} extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function ${2:testExample}()
-    {
-				$0
-    }
+	/**
+	 * A basic test example.
+	 *
+	 * @return void
+	 */
+	public function ${2:testExample}()
+	{
+		$0
+	}
 }
 endsnippet
