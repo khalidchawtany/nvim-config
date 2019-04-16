@@ -3195,7 +3195,7 @@ endif
 
   call PM('aquach/vim-http-client')
 
-  call PM('baverman/vial')
+  call PM('baverman/vial', {'platform':'mac'})
   call PM('baverman/vial-http')
  " }}}
  "Database {{{
