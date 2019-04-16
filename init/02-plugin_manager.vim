@@ -1,7 +1,7 @@
 if has('mac')
     let PMN = 'Dein'
 elseif has('win64')
-    let PMN = 'Plug'
+    let PMN = 'Dein'
 endif
 
 "BlackList {{{
