@@ -35,7 +35,7 @@
     "coc.source.dictionary.shortcut": "D",
     "coc.source.dictionary.priority": 2,
 
-    "coc.source.word.enable": false,
+    "coc.source.word.enable": true,
     "coc.source.word.shortcut": "10k",
     "coc.source.word.priority": 999999,
 
@@ -68,6 +68,7 @@
             "args": ["/usr/local/lib/node_modules/intelephense/lib/intelephense.js", "--stdio"],
             "filetypes": ["php"],
             "initializationOptions": {
+                "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
                 "intelephense":{
                     "completion" : {
                         "fullyQualifyGlobalConstantsAndFunctions": false,
@@ -80,6 +81,7 @@
                 }
             },
             "settings": {
+                "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
                 "intelephense":{
                     "completion" : {
                         "fullyQualifyGlobalConstantsAndFunctions": false,
