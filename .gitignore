@@ -1,2 +1,11 @@
-/dein
-/plugged
+plugged
+dein/
+cache
+shada
+.init.vim-rplugin~
+.-rplugin~
+.cache
+.gitignore
+test.vim
+.netrwhist
+installer.sh
