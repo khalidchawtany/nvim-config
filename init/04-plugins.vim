@@ -50,6 +50,7 @@ let g:_did_vimrc_plugins = 1
    LMap N <leader>gdv <SID>V-Diff :call fugitive#detect(getcwd()) \| execute ":Gvdiff"<cr>
    LMap N <leader>gds <SID>S-Diff :call fugitive#detect(getcwd()) \| execute ":Gdiff"<cr>
 
+   LMap N <leader>g<cr> <SID>FixLN :call fugitive#detect(getcwd()) \| execute ":Gread\|Gwrite"<cr>
    " Fugitive Conflict Resolution
    nnoremap gdh :diffget //2<CR>
    nnoremap gdl :diffget //3<CR>
@@ -548,6 +549,8 @@ endif
  "}}}
 
  " Utils {{{
+
+ call PM('wsdjeg/dein-ui.vim')
 
  call PM('wincent/replay', {'lazy': 1})
 
@@ -1610,6 +1613,8 @@ endif
      nnoremap <silent> <space>s  :<C-u>Denite coc-service<cr>
      " Show links of current buffer
      nnoremap <silent> <space>l  :<C-u>Denite coc-link<cr>
+
+     nnoremap <silent> <c-p><c-s>  :CocList outline<cr>
  endif
  "}}} _coc.nvim
 
