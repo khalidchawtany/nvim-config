@@ -61,6 +61,16 @@
    "tailwind.priority": 2,
 
     "python.formatting.provider": "autopep8",
+    "list.normalMappings": {
+      "t": "action:tabe",
+      "v": "action:vsplit",
+      "s": "action:split",
+      "d": "expr:GetDeleteAction"
+    },
+    "list.insertMappings": {
+      "<C-t>": "action:tabe",
+      "<C-w>": "command:wincmd k"
+    },
 
     "languageserver": {
         "intelephense": {
