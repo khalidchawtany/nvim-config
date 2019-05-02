@@ -10,6 +10,7 @@ endfunction
 let g:projects = [
       \ "~/Development/Applications/Oni",
       \ "~/Projects/PHP/AssetManager/",
+      \ "~/Projects/PHP/ERP/",
       \ "~/Projects/PHP/karaba/",
       \ "~/Projects/PHP/Knights/",
       \ "~/Projects/PHP/create_laravel_package/blog/",

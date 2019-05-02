@@ -1098,6 +1098,17 @@ endif
  endif
  "}}} _pdv
 
+ if PM('beanworks/vim-phpfmt')
+   " A standard type: PEAR, PHPCS, PSR1, PSR2, Squiz and Zend
+   let g:phpfmt_standard = 'PSR2'
+   " Or your own defined source of standard (absolute or relative path):
+   " let g:phpfmt_standard = '/path/to/custom/standard.xml'
+
+   let g:phpfmt_autosave = 0
+   " let g:phpfmt_command = '/path/to/phpcbf'
+   " let g:phpfmt_tmp_dir = '/path/to/tmp/folder'
+ endif
+
  " phpcd.vim {{{
 
  if PM( 'lvht/phpcd.vim',

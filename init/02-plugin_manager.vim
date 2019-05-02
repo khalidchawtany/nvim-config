@@ -10,8 +10,7 @@ let s:PM_BL = [
 \'vim-which-key',
 \'deoplete.nvim',
 \'phpcd.vim',
-\'ncm2',
-\'pear-tree'
+\'ncm2'
 \ ]
 " \'coc.nvim',
 "}}}}

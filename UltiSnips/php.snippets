@@ -114,8 +114,20 @@ snippet def "migration default" i
 ->default('$1')$0
 endsnippet
 
+snippet minc "migration increments field"
+$table->increments('${1:id}')$0;
+endsnippet
+
+snippet mtext "migration text field"
+$table->text('${1:name}')$0;
+endsnippet
+
 snippet mstr "migration string field"
 $table->string('${1:name}')$0;
+endsnippet
+
+snippet mbool "migration boolean field"
+$table->boolean('${1:name}')$0;
 endsnippet
 
 snippet mdec "migration decimal field"
@@ -141,12 +153,10 @@ endsnippet
 
 snippet foreign "migration foreign"
 $table->unsignedInteger('${1:name}');
-
 $table->foreign('$1')
 	->references('$2')
 	->on('$3')
-	${4:->onDelete('cascade')};
-	$0
+	${4:->onDelete('cascade')}$0;
 endsnippet
 
 snippet pfun "Function"

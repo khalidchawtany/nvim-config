@@ -71,38 +71,7 @@
       "<C-t>": "action:tabe",
       "<C-w>": "command:wincmd k"
     },
-
+    "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
     "languageserver": {
-        "intelephense": {
-            "command": "node",
-            "args": ["/usr/local/lib/node_modules/intelephense/lib/intelephense.js", "--stdio"],
-            "filetypes": ["php"],
-            "initializationOptions": {
-                "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
-                "intelephense":{
-                    "completion" : {
-                        "fullyQualifyGlobalConstantsAndFunctions": false,
-                        "intelephense.completion.insertUseDeclaration": true
-                    }
-                },
-                "completion" : {
-                        "fullyQualifyGlobalConstantsAndFunctions": false,
-                        "intelephense.completion.insertUseDeclaration": true
-                }
-            },
-            "settings": {
-                "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
-                "intelephense":{
-                    "completion" : {
-                        "fullyQualifyGlobalConstantsAndFunctions": false,
-                        "intelephense.completion.insertUseDeclaration": true
-                    }
-                },
-                "completion" : {
-                        "fullyQualifyGlobalConstantsAndFunctions": false,
-                        "intelephense.completion.insertUseDeclaration": true
-                }
-            }
-        }
     }
 }
