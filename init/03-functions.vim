@@ -127,7 +127,7 @@ function! InsertSpaces()
   echom "No `" . s:char . "' found in the previous lines."
 endfunction
 
-inoremap <silent> <C-g> <C-[>:call InsertSpaces()<CR>A
+ inoremap <silent> <C-g><c-space> <C-[>:call InsertSpaces()<CR>A
 
 "}}}
 
