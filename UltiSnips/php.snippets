@@ -282,7 +282,7 @@ snippet div "Wrap in a DIV"
 </div>
 endsnippet
 
-snippet path "test Python" !b
+snippet path "file path" !b
 `!p snip.rv=path`
 endsnippet
 
@@ -324,7 +324,27 @@ snip.rv = wrap_with_comment(snip.v.text)
 `
 endsnippet
 
+snippet fnc "file Name Camel" !w
+`!p
+fileName = snip.fn[13:-4]
+parts = fileName.split('_')
+fileName = ''.join(x.title() for x in parts[1:])
+snip.rv=fileName
+`
+endsnippet
+
+snippet fnt "file Name Lower" !w
+`!p
+fileName = snip.fn[25:-10]
+snip.rv=fileName
+`
+endsnippet
+
 snippet fn "test Python" !b
+`!p snip.rv=snip.fn`
+endsnippet
+
+snippet fnf "test Python" !b
 `!p snip.rv=snip.fn`
 endsnippet
 
