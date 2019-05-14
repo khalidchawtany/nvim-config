@@ -24,20 +24,20 @@
     "snippets.priority":              1,
 
     "coc.source.around.enable": true,
-    "coc.source.around.priority": 1,
+    "coc.source.around.priority": 3,
     "coc.source.around.shortcut": "A",
 
     "coc.source.buffer.enable": true,
     "coc.source.buffer.shortcut": "B",
-    "coc.source.buffer.priority": 1,
+    "coc.source.buffer.priority": 4,
 
     "coc.source.dictionary.enable": true,
     "coc.source.dictionary.shortcut": "D",
-    "coc.source.dictionary.priority": 2,
+    "coc.source.dictionary.priority": 5,
 
     "coc.source.word.enable": true,
     "coc.source.word.shortcut": "10k",
-    "coc.source.word.priority": 999999,
+    "coc.source.word.priority": 99,
 
 
     "coc.source.ultisnips.enable": true,
@@ -61,6 +61,7 @@
    "tailwind.priority": 2,
 
     "python.formatting.provider": "autopep8",
+
     "list.normalMappings": {
       "t": "action:tabe",
       "v": "action:vsplit",
@@ -71,7 +72,11 @@
       "<C-t>": "action:tabe",
       "<C-w>": "command:wincmd k"
     },
+
     "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
+
+    "intelephense.completion.insertUseDeclaration" :true,
+
     "languageserver": {
     }
 }

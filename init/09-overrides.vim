@@ -41,6 +41,18 @@ hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
 
 command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
+set background=light
+colorscheme PaperColor
+" hi SignatureMarkText guibg=white guifg=lightgray
+" hi EndOfBuffer guibg=white
+" hi CursorLineNr guibg=white
+" hi CursorLine guibg=white
+" hi CursorColumn guibg=white
+" hi LineNr guibg=white
+" hi NonText guibg=white
+" hi Normal guibg=white
+" hi FoldColumn guibg=white guifg=lightblue
+
 let g:colorschemes = {
             \ 'light': {'togglebg': 'dark','colorscheme': 'PaperColor', 'lightline': 'one'},
             \ 'dark':  {'togglebg': 'light','colorscheme': 'palenight',  'lightline': 'onedark'}

@@ -446,47 +446,10 @@ endif
    let g:easy_align_ignore_comment = 0 " align comments
 
  "}}}
- " vim-surround {{{
- " ----------------------------------------------------------------------------
- call PM( 't9md/vim-surround_custom_mapping' )
- call PM( 'tpope/vim-surround', {
-                           \   'on_map' :[
-                           \      '<Plug>Dsurround' , '<Plug>Csurround',
-                           \      '<Plug>Ysurround' , '<Plug>YSurround',
-                           \      '<Plug>Yssurround',
-                           \      '<Plug>YSsurround', '<Plug>VgSurround',
-                           \      '<Plug>VSurround' , '<Plug>ISurround',
-                           \      ['i', '<Plug>Isurround'],
-                           \      ['i', '<Plug>ISurround']
-                           \ ]} )
-   let g:surround_no_mappings=1
-   nmap dS <Plug>Dsurround
-   nmap cS <Plug>Csurround
-   nmap c<cr> <Plug>Csurround
-   nmap y<cr> <Plug>Ysurround
-   nmap yS <Plug>YSurround
-   nmap y<cr><cr> <Plug>Yssurround
-   nmap ySS <Plug>YSsurround
-   xmap S <Plug>VSurround
-   xmap gSS <Plug>VgSurround
-   "Original mappings
-   "=================
-   "nmap ds  <Plug>Dsurround
-   "nmap cs  <Plug>Csurround
-   "nmap cS  <Plug>CSurround
-   "nmap ys  <Plug>Ysurround
-   "nmap yS  <Plug>YSurround
-   "nmap yss <Plug>Yssurround
-   "nmap ySs <Plug>YSsurround
-   "nmap ySS <Plug>YSsurround
-   "xmap S   <Plug>VSurround
-   "xmap gS  <Plug>VgSurround
-
-   imap <C-G>s <Plug>Isurround
-   imap <C-G>S <Plug>ISurround
-   imap <C-S> <Plug>Isurround
-
- "}}}
+ " vim-sandwich {{{
+ if PM('machakann/vim-sandwich')
+ endif
+ " }}}
  " Join{{{
   if PM('sk1418/Join', {'on_cmd': ['Join']})
   endif
@@ -502,8 +465,8 @@ endif
 
  " Fix for gk/gj(goes to HOME/END) after splitjoin
  function MapSplitJoin()
-   nnoremap gS :call Preserve('SplitjoinSplit')<cr><c-o>
-   nnoremap gJ :call Preserve('SplitjoinJoin')<cr><c-o>
+   nnoremap gS :call Preserve('SplitjoinSplit')<cr>
+   nnoremap gJ :call Preserve('SplitjoinJoin')<cr>
  endfunction
 
  "}}} _splitjoin.vim
@@ -2593,6 +2556,8 @@ endfunction
                      \ defx#do_action('open')
          nnoremap <silent><buffer><expr> E
                      \ defx#do_action('open', 'vsplit')
+         nnoremap <silent><buffer><expr> <c-t>
+                     \ defx#do_action('open', 'tabedit')
          nnoremap <silent><buffer><expr> P
                      \ defx#do_action('open', 'pedit')
          nnoremap <silent><buffer><expr> K
@@ -3527,6 +3492,7 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
+ call PM('owickstrom/vim-colors-paramount')
  call PM('jacoborus/tender.vim')
  call PM('rakr/vim-one')
  call PM('nightsense/snow')
