@@ -325,6 +325,8 @@ autocmd Filetype netrw nnoremap q :quit<cr>
 
   LMap N <leader>lu <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
   LMap N <leader>lw <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/js/<cr>
+  LMap N <leader>lR <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/routes/web.php<cr>
+  LMap N <leader>lW <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/routes/web.php<cr>
   LMap N <leader>la <Plug>laravel-edit-app :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
   LMap N <leader>lc <Plug>laravel-edit-controllers :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
   LMap N <leader>lf <Plug>laravel-edit-factories :e <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>
@@ -337,7 +339,10 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N <leader>lT <Plug>laravel-edit-traits :e <c-r>=FindGitDirOrRoot()<cr>/app/traits/<cr>
   LMap N <leader>lt <Plug>laravel-edit-tests :e <c-r>=FindGitDirOrRoot()<cr>/tests/<cr>
   LMap N <leader>lv <Plug>laravel-edit-views :e <c-r>=FindGitDirOrRoot()<cr>/resources/views/<cr>
-  LMap N <leader>lb <Plug>laravel-edit-breads :e <c-r>=FindGitDirOrRoot()<cr>/resources/bread/<cr>
+  LMap N <leader>lB <Plug>laravel-edit-breads :e <c-r>=FindGitDirOrRoot()<cr>/resources/bread/<cr>
+  LMap N <leader>lbb <Plug>laravel-edit-breads :e <c-r>=FindGitDirOrRoot()<cr>/resources/bread/<cr>
+  LMap N <leader>lbc <Plug>laravel-edit-bread-command :e <c-r>=FindGitDirOrRoot()<cr>/vendor/Kjdion84/laraback/src/Commands/BreadCommand.php<cr>
+  LMap N <leader>lbs <Plug>laravel-edit-bread-stubs :e <c-r>=FindGitDirOrRoot()<cr>/vendor/Kjdion84/laraback/resources/bread/stubs/default/<cr>
 
   " Java
   "nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>

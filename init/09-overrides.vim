@@ -1,6 +1,5 @@
 function! SetProjectPath(path)"{{{
-  execute "lcd " a:path
-  execute "cd "  a:path
+  execute "tcd "  a:path
   pwd
   set path+=public/**
 endfunction
@@ -26,7 +25,7 @@ let g:projects = [
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
-LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "sink":"CdP"})<cr>
+LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "sink":"CdP", "window" : "call FloatingFZF()"})<cr>
 
 function! RegenerateHelpTags()
   silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt
@@ -105,6 +104,8 @@ LMap n <leader>zi <Plug>fold-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<c
 " let g:terminal_color_6='#2FA8AA'
 
 " ToggleDarkAndLight
+
+hi NormalFloat guibg=white
 
 if has('win64')
     nnoremap <leader><s-e><cr> :execute "au BufWinEnter *.php match Ignore /\r$/"<cr>

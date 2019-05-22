@@ -35,7 +35,7 @@
     "coc.source.dictionary.shortcut": "D",
     "coc.source.dictionary.priority": 5,
 
-    "coc.source.word.enable": true,
+    "coc.source.word.enable": false,
     "coc.source.word.shortcut": "10k",
     "coc.source.word.priority": 99,
 

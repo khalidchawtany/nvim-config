@@ -2074,12 +2074,41 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
 
-       let g:fzf_command_prefix = 'Fzf'
+     let g:fzf_command_prefix = 'Fzf'
 
    if !has('nvim') && has('gui_running')
      let g:fzf_launcher = "fzf_iterm %s"
    endif
 
+   "{{{ floating window
+
+   au FileType fzf set nonu nornu
+   " let $FZF_DEFAULT_OPTS='--layout=reverse'
+   let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
+   function! FloatingFZF()
+     let buf = nvim_create_buf(v:false, v:true)
+     call setbufvar(buf, '&signcolumn', 'no')
+
+     let height = &lines - 3
+     let width = float2nr(&columns - (&columns * 2 / 10))
+     let col = float2nr((&columns - width) / 2)
+
+     let opts = {
+           \ 'relative': 'editor',
+           \ 'row': 1,
+           \ 'col': col,
+           \ 'width': width,
+           \ 'height': height
+           \ }
+
+     " call nvim_open_win(buf, v:true, opts)
+     let win = nvim_open_win(buf, v:true, opts)
+     call setwinvar(win, '&number', 0)
+     call setwinvar(win, '&relativenumber', 0)
+   endfunction
+
+   "}}}
     "let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
     "let g:fzf_layout = { 'window': '-tabnew' }
 
@@ -2189,24 +2218,24 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
 
 "call Map_FZF  ( "COMMAND"   , "KEY"   , "OPTIONS"                                                                        , cw )
- call Map_FZF  ( "FZF! "     , "d"     , " --reverse %:p:h "                                                              , 0  )
- call Map_FZF  ( "FZF! "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
- call Map_FZF  ( "FzfFiles! "    , "p"   , ''                                                                               , 2  )
- call Map_FZF  ( "FzfAg!"       , "a"     , ""                                                                               , 3  )
- call Map_FZF  ( "FzfLines!"    , "L"     , ""                                                                               , 2  )
- call Map_FZF  ( "FzfBLines!"   , "l"     , ""                                                                               , 2  )
- call Map_FZF  ( "FzfBTags!"    , "t"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfTags!"     , "]"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FZF "     , "d"     , " --reverse %:p:h "                                                              , 0  )
+ call Map_FZF  ( "FZF "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
+ call Map_FZF  ( "FzfFiles "    , "p"   , ''                                                                               , 2  )
+ call Map_FZF  ( "FzfAg"       , "a"     , ""                                                                               , 3  )
+ call Map_FZF  ( "FzfLines"    , "L"     , ""                                                                               , 2  )
+ call Map_FZF  ( "FzfBLines"   , "l"     , ""                                                                               , 2  )
+ call Map_FZF  ( "FzfBTags"    , "t"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfTags"     , "]"     , ""                                                                               , 0  )
 "call Map_FZF  ( "FzfLocate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
  call Map_FZF  ( "FzfGitFiles"  , "v"     , ''                                                                               , 0  )
- call Map_FZF  ( "FzfCommits!"  , "G"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfCommits"  , "G"     , ""                                                                               , 0  )
  call Map_FZF  ( "FzfBCommits!" , "g"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfSnippets!" , "s"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfMarks!"    , "<c-'>" , ""                                                                               , 0  )
- call Map_FZF  ( "FzfMarks!"    , "'"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfWindows!"  , "w"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfHelptags!" , "k"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfHistory!" , "h"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfSnippets" , "s"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfMarks"    , "<c-'>" , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfMarks"    , "'"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfWindows"  , "w"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfHelptags" , "k"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfHistory" , "h"     , ""                                                                               , 0  )
 
  function! GetFunctions()
      let query = ''
@@ -2272,7 +2301,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
          \ 'source':  reverse(s:all_files()),
          \ 'sink':    'edit',
          \ 'options': ' --reverse -m --no-sort -x',
-         \ 'window':  '-tabnew',
+         \ 'window':  'call FloatingFZF()',
          \ 'down':    '40%' })
 
 function! s:all_files()
@@ -2319,7 +2348,7 @@ endfunction
          \   'source':  reverse(<sid>tablist()),
          \   'sink':    function('<sid>tabopen'),
          \   'options': " --preview-window right:50%  --preview 'echo {}'  --bind ?:toggle-preview",
-         \   'window':    '-tabnew'
+         \   'window':    'call FloatingFZF()'
          \ })
 
    LMap N! <c-p><c-i> <plug>FzfTabs :FzfTabs<cr>
@@ -2356,7 +2385,7 @@ endfunction
          \   'source':  reverse(<sid>buflist()),
          \   'sink*':    function('<sid>bufopen'),
          \   'options': '+m --reverse --expect=ctrl-t,ctrl-v,ctrl-s',
-         \   'window':    '-tabnew'
+         \   'window':    'call FloatingFZF()'
          \ })<CR>
 
    "}}} _open_buffers -term
@@ -2371,7 +2400,7 @@ endfunction
                    \ 'source': command,
                    \ 'sink':   'e',
                    \ 'options': '-m -x +s',
-                   \ 'window':  'enew' })
+                   \ 'window':  'call FloatingFZF()' })
    endfunction
 
    command! FZFNeigh call s:fzf_neighbouring_files()
@@ -2445,10 +2474,12 @@ endfunction
          \   'source':  reverse(<sid>termlist()),
          \   'sink':    function('<sid>termtabopen'),
          \   'options': '+m --reverse',
-         \   'window':    '-tabnew'
+         \   'window':    'call FloatingFZF()'
          \ })<CR>
 
    "}}} _open_terms
+
+
   endif
 
  endif
@@ -2479,8 +2510,8 @@ endfunction
  " }}} _neovim-fuzzy
  " vim-picker {{{
  if PM('srstevenson/vim-picker')
-     let g:picker_find_executable = 'rg'
-     let g:picker_find_flags = '--color never --files'
+    let g:picker_custom_find_executable = 'rg'
+    let g:picker_custom_find_flags = '--color never --files'
  endif
  " }}}
 
@@ -3283,8 +3314,8 @@ endif
      "return fileformat
    endfunction
 
-   let g:lightline.colorscheme = 'onedark'
-   " let g:lightline.colorscheme = 'one'
+   " let g:lightline.colorscheme = 'onedark'
+   let g:lightline.colorscheme = 'one'
    " let g:lightline.colorscheme = 'material'
    " let g:lightline.colorscheme = 'gruvbox'
    " let g:lightline.colorscheme = 'wombat'
@@ -3412,7 +3443,7 @@ endif
 
  " vim-css-color {{{
 
-   if PM( 'ap/vim-css-color', { 'on_ft':['css','scss','sass','less','styl']} )
+   if PM( 'ap/vim-css-color', { 'on_ft':['css','scss','sass','less','styl', 'php', 'blade', 'html']} )
      "au BufWinEnter *.vim call css_color#init('hex', '', 'vimHiGuiRgb,vimComment,vimLineComment,vimString')
      "au BufWinEnter *.blade.php call css_color#init('css', 'extended', 'htmlString,htmlCommentPart,phpStringSingle')
    endif
