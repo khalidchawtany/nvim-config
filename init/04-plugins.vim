@@ -100,6 +100,18 @@ let g:_did_vimrc_plugins = 1
    call PM( 'vim-scripts/DirDiff.vim', {'on_cmd': ['DirDiff']} )
 
  "}}} _DirDiff.vim
+ "{{{ git-messenger.vim
+  if PM('rhysd/git-messenger.vim', {
+              \   'lazy' : 1,
+              \   'on_cmd' : 'GitMessenger',
+              \   'on_map' : '<Plug>(git-messenger',
+              \ })
+    let g:git_messenger_no_default_mappings = 1
+
+   LMap N <leader>gg <SID>Git_Messenger :GitMessenger<cr>
+
+  endif
+ "}}} git-messenger.vim
 
  "}}}
 
@@ -142,6 +154,20 @@ let g:_did_vimrc_plugins = 1
  endif
 
  "}}} _vim-table-mode
+ "{{{ Kronos.vim
+ if PM('soywod/kronos.vim', {'on_map':['<plug>(kronos-'] })
+   nmap <cr>   <plug>(kronos-toggle)
+   nmap K      <plug>(kronos-info)
+   nmap gc     <plug>(kronos-context)
+   nmap gh     <plug>(kronos-hide-done)
+   nmap gw     <plug>(kronos-worktime)
+   nmap <c-n>  <plug>(kronos-next-cell)
+   nmap <c-p>  <plug>(kronos-prev-cell)
+   nmap dic    <plug>(kronos-delete-in-cell)
+   nmap cic    <plug>(kronos-change-in-cell)
+   nmap vic    <plug>(kronos-visual-in-cell)
+ endif
+ "}}}"
 
  " Multi-edits
 
@@ -1269,6 +1295,10 @@ endif
  endif
 
  "}}}"Always match html tag
+ "{{{ tagalong
+  if PM('AndrewRadev/tagalong.vim')
+  endif
+ "}}} _tagalong
 
  "React Dev
  "vim-javascript {{{
