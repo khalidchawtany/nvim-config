@@ -1368,16 +1368,28 @@ endif
 
    let g:ale_completion_enabled=1
    let g:ale_php_langserver_use_global=1
-   let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/php-language-server.php'
+   if has('mac')
+     let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/php-language-server.php'
+   else
+     let g:ale_php_langserver_executable='C:\Users\JuJu\AppData\Roaming\Composer\vendor\bin\php-language-server.bat'
+   endif
 
    let g:ale_php_phpcs_use_global=1
    " let g:ale_php_phpcs_standard = 'laravel'
-   let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcs'
+   if has('mac')
+     let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcs'
+   else
+     let g:ale_php_langserver_executable='C:\Users\JuJu\AppData\Roaming\Composer\vendor\bin\phpcs.bat'
+   endif
 
    let g:ale_php_phpcbf_use_global=1
    let g:ale_php_phpcbf_standard='PSR2'
    let g:ale_php_phpcs_standard='phpcs.xml.dist'
-   let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcbf'
+   if has('mac')
+     let g:ale_php_langserver_executable=$HOME.'/.composer/vendor/bin/phpcbf'
+   else
+     let g:ale_php_langserver_executable='C:\Users\JuJu\AppData\Roaming\Composer\vendor\bin\phpcbf.bat'
+   endif
 
    let g:ale_fixers = {
        \   '*'         : ['remove_trailing_lines', 'trim_whitespace'],
