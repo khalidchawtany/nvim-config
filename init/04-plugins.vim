@@ -299,11 +299,11 @@ let g:_did_vimrc_plugins = 1
  if PM('mg979/vim-visual-multi')
    fun! VM_Start()
      "this only works in devel branch, currently
-     highlightedyankoff
+     " highlightedyankoff
    endfun
 
    fun! VM_exit()
-     highlightedyankon
+     " highlightedyankon
    endfun
    " let g:vm_plugins_compatibilty = {
    "       \'autopairs': {
@@ -1297,6 +1297,9 @@ endif
  "}}}"Always match html tag
  "{{{ tagalong
   if PM('AndrewRadev/tagalong.vim')
+    let g:tagalong_mappings = []
+    " use tagalong#Trigger
+    " then tagalong#Apply
   endif
  "}}} _tagalong
 
@@ -3255,6 +3258,10 @@ endif
  "}}} _pipe-mysql.vim
 
  "}}}
+
+ if PM('metakirby5/codi.vim', {'on_cmd':['Codi']})
+ endif
+
 
 
  " Terminal {{{
