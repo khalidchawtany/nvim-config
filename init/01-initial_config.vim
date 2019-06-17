@@ -1,5 +1,9 @@
 scriptencoding utf-8
 
+
+if has('mac')
+  let $PATH =$PATH . ':/Users/juju/.composer/vendor/bin/'
+endif
 " Set our leader key to Space
   let mapleader = "\<space>"
   let g:mapleader = "\<space>"
