@@ -324,9 +324,9 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   endfunction
 
   LMap N <leader>lu <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
-  LMap N <leader>lw <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/js/<cr>
-  LMap N <leader>lR <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/routes/web.php<cr>
-  LMap N <leader>lW <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/routes/web.php<cr>
+  LMap N <leader>lj <Plug>laravel-edit-public-js :e <c-r>=FindGitDirOrRoot()<cr>/public/js/<cr>
+  LMap N <leader>lR <Plug>laravel-edit-resources :e <c-r>=FindGitDirOrRoot()<cr>/resources/<cr>
+  LMap N <leader>lw <Plug>laravel-edit-public-web :e <c-r>=FindGitDirOrRoot()<cr>/routes/web.php<cr>
   LMap N <leader>la <Plug>laravel-edit-app :e <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
   LMap N <leader>lc <Plug>laravel-edit-controllers :e <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
   LMap N <leader>lf <Plug>laravel-edit-factories :e <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>

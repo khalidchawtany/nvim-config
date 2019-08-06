@@ -682,7 +682,9 @@ endif
  call PM( 'tpope/vim-unimpaired')
  "}}} _vim-unimpaired
  "vim-sleuth {{{
- call PM('tpope/vim-sleuth')
+ if PM('tpope/vim-sleuth')
+   let g:sleuth_automatic = 0
+ endif
  "}}} _vim-sleuth
  " vim-man {{{
    call PM( 'bruno-/vim-man', {'on_cmd': ['Man', 'SMan', 'VMan', 'Mangrep']} )
@@ -1582,7 +1584,8 @@ endif
      augroup mygroup
          autocmd!
          " Setup formatexpr specified filetype(s).
-         autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+         " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+         autocmd FileType json setl formatexpr=CocAction('formatSelected')
          " Update signature help on jump placeholder
          autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
      augroup end
@@ -1711,11 +1714,11 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
        "\ 'build': ':UpdateRemotePlugins'
    let g:LanguageClient_serverCommands = {
          \ 'rust':           ['rustup', 'run', 'nightly', 'rls'],
-         \ 'javascript':     ['javascript-typescript-stdio'],
-         \ 'javascript.jsx': ['javascript-typescript-stdio'],
-         \ 'typescript':     ['javascript-typescript-stdio'],
          \ 'python':         ['pyls']
          \ }
+         " \ 'javascript':     ['javascript-typescript-stdio'],
+         " \ 'javascript.jsx': ['javascript-typescript-stdio'],
+         " \ 'typescript':     ['javascript-typescript-stdio'],
 
    " Automatically start language servers.
    let g:LanguageClient_autoStart = 1

@@ -78,5 +78,6 @@
     "intelephense.completion.insertUseDeclaration" :true,
 
     "languageserver": {
-    }
+    },
+    "git.enableGutters": true
 }
