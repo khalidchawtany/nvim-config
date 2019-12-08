@@ -126,20 +126,24 @@ snippet mstr "migration string field"
 $table->string('${1:name}')$0;
 endsnippet
 
+snippet menum "migration enum field"
+$table->enum('${1:name}', ['${2:options1}', ])$0;
+endsnippet
+
 snippet mbool "migration boolean field"
-$table->boolean('${1:name}')$0;
+$table->boolean('${1:isTrue}')$0;
 endsnippet
 
 snippet mdec "migration decimal field"
-$table->decimal('${1:name}', ${2:12,2})$0;
+$table->decimal('${1:money}', ${2:12,2})$0;
 endsnippet
 
 snippet mdate "migration date field"
-$table->date('${1:name}')$0;
+$table->date('${1:date}')$0;
 endsnippet
 
 snippet mint "migration integer field"
-$table->integer('${1:name}')$0;
+$table->integer('${1:quantity}')$0;
 endsnippet
 
 snippet muint "migration unsigned integer field"

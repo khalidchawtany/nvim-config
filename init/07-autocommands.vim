@@ -17,30 +17,30 @@ autocmd BufEnter *.php :syntax sync fromstart
 
 " Jump back to last file of a specific type or path
 "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-autocmd BufLeave *.css,*.less,*.scss mark S
-autocmd BufLeave *.js,*.coffee       mark J
-autocmd BufLeave *.html              mark H
-autocmd BufLeave app/*.php           mark P
-autocmd BufLeave */migrations/*      mark M
-autocmd BufLeave */seeds/*           mark D
-autocmd BufLeave */Controllers/*     mark C
-autocmd BufLeave */test/*,*/spec/*   mark T
-autocmd BufLeave */Http/routes.*     mark R
-autocmd BufLeave *.blade.php silent!
-      \ | if expand("<afile>") =~ "*layout.*"
-        \ | mark L
-        \ | else
-          \ | mark V
-          \ | endif
+" autocmd BufLeave *.css,*.less,*.scss mark S
+" autocmd BufLeave *.js,*.coffee       mark J
+" autocmd BufLeave *.html              mark H
+" autocmd BufLeave app/*.php           mark P
+" autocmd BufLeave */migrations/*      mark M
+" autocmd BufLeave */seeds/*           mark D
+" autocmd BufLeave */Controllers/*     mark C
+" autocmd BufLeave */test/*,*/spec/*   mark T
+" autocmd BufLeave */Http/routes.*     mark R
+" autocmd BufLeave *.blade.php silent!
+"       \ | if expand("<afile>") =~ "*layout.*"
+"         \ | mark L
+"         \ | else
+"           \ | mark V
+"           \ | endif
 
 "Unless the file name has test in it mark it C for *.cs
 "if the file name has test in it mark it T for *.cs
-autocmd BufLeave *.cs silent!
-      \ | if (expand("<afile>")) =~ ".*test.*"
-        \ | mark T
-        \ | else
-          \ | mark C
-          \ | endif
+" autocmd BufLeave *.cs silent!
+"       \ | if (expand("<afile>")) =~ ".*test.*"
+"         \ | mark T
+"         \ | else
+"           \ | mark C
+"           \ | endif
 
 " Enable file type detection
 filetype on

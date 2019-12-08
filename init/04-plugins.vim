@@ -788,6 +788,9 @@ endif
 
  " languages {{{
 
+ " Vue
+ call PM('posva/vim-vue')
+
  " Advanced Syntax Highlighting
  "vim-polyglot {{{
 call PM('sheerun/vim-polyglot')
@@ -1213,11 +1216,11 @@ endif
  "}}}
  " emmet {{{
 
- if PM( 'mattn/emmet-vim', {'on_ft':['html','js', 'jsx','ts','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php']} )
+ if PM( 'mattn/emmet-vim', {'on_ft':['html','js', 'jsx','ts','xml','xsl','xslt','xsd','css','sass','scss','less','mustache', 'blade', 'php', 'vue']} )
 
    "let g:user_emmet_mode='a'         "enable all function in all mode.
    let g:user_emmet_mode='i'         "enable all function in insert mode
-   let g:user_emmet_leader_key="<c-'><c-;>"
+   let g:user_emmet_leader_key="<c-;><c-;>"
    let g:user_emmet_settings = {
          \  'javascript.jsx' : {
          \      'extends' : 'jsx',
@@ -2617,7 +2620,7 @@ endfunction
   endfunction
 
    autocmd BufEnter * if <SID>isdir(expand('%')) && !exists('b:defx')
-               \ | exe 'bw! | Defx' expand('%')
+               \ | exe 'Defx' expand('%')
                \ | endif
 
      autocmd FileType defx call s:defx_my_settings()
@@ -2631,10 +2634,10 @@ endfunction
                      \ defx#do_action('move')
          nnoremap <silent><buffer><expr> p
                      \ defx#do_action('paste')
-         nnoremap <silent><buffer><expr> l
-                     \ defx#do_action('open')
-         nnoremap <silent><buffer><expr> E
-                     \ defx#do_action('open', 'vsplit')
+         nnoremap <silent><buffer><expr> <c-v>
+                     \ defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
+         nnoremap <silent><buffer><expr> <c-s>
+                     \ defx#do_action('multi', [['drop', 'split'], 'quit'])
          nnoremap <silent><buffer><expr> <c-t>
                      \ defx#do_action('open', 'tabedit')
          nnoremap <silent><buffer><expr> P
@@ -2933,13 +2936,13 @@ if PM( 'rhysd/clever-f.vim') " , { \ 'on_map': [ '<Plug>(clever-f-' ], \ 'on_fun
    map ssa       <Plug>(easymotion-jumptoanywhere)
    map s<cr>       <Plug>(easymotion-repeat)
 
-   map <c-s>L    <Plug>(easymotion-eol-bd-jk)
-   map <c-s>H    <Plug>(easymotion-sol-bd-jk)
+   map ssL    <Plug>(easymotion-eol-bd-jk)
+   map ssH    <Plug>(easymotion-sol-bd-jk)
 
-   map <c-s>f    <Plug>(easymotion-overwin-f)
-   map <c-s>;    <Plug>(easymotion-overwin-f2)
-   map <c-s>w    <Plug>(easymotion-overwin-w)
-   map <c-s>l    <Plug>(easymotion-overwin-line)
+   map sSF    <Plug>(easymotion-overwin-f)
+   map sS;    <Plug>(easymotion-overwin-f2)
+   map sSW    <Plug>(easymotion-overwin-w)
+   map sSL    <Plug>(easymotion-overwin-line)
 
 " Default Maps {{{
 "   Default Mapping      | Details
@@ -3150,12 +3153,19 @@ endif
 
    let g:zoomwintab_remap = 0
    " zoom with <META-O> in any mode
-   nnoremap <silent> <c-w><c-o> :ZoomWinTabToggle<cr>
-   inoremap <silent> <c-w><c-o> <c-\><c-n>:ZoomWinTabToggle<cr>a
-   vnoremap <silent> <c-w><c-o> <c-\><c-n>:ZoomWinTabToggle<cr>gv
  endif
 
  "}}} _zoomwintab.vim
+ "
+ "{{{ vim-maximizer
+ if PM('szw/vim-maximizer', {'on_cmd': ['MaximizerToggle']})
+     let g:maximizer_set_default_mapping = 0
+
+     nnoremap <silent> <c-w><c-o> :ZoomWinTabToggle<cr>
+     inoremap <silent> <c-w><c-o> <c-\><c-n>:ZoomWinTabToggle<cr>a
+     vnoremap <silent> <c-w><c-o> <c-\><c-n>:ZoomWinTabToggle<cr>gv
+ endif
+ "}}} _vim-maximizer
 
  " Finder
  " gtfo {{{
@@ -3487,9 +3497,30 @@ endif
   endif
  "}}}
 
+ if PM('junegunn/goyo.vim', {'on_cmd' :['Goyo']})
+     let g:goyo_width = 100
+     let g:goyo_linenr = 1
+ endif
+
  "colortuner {{{
  if PM('zefei/vim-colortuner', {'on_cmd' :['Colortuner']})
      let g:colortuner_preferred_schemes = ['Papercolor', 'palenight']
+     function! s:goyo_enter()
+         set noshowmode
+         set noshowcmd
+         set scrolloff=999
+         set signcolumn=no
+     endfunction
+
+     function! s:goyo_leave()
+         set showmode
+         set showcmd
+         set scrolloff=5
+         set signcolumn=yes
+     endfunction
+
+     autocmd! User GoyoEnter nested call <SID>goyo_enter()
+     autocmd! User GoyoLeave nested call <SID>goyo_leave()
  endif
  "}}} _colortuner
 
@@ -3611,6 +3642,7 @@ endif
  let g:oceanic_next_terminal_bold = 0
  let g:oceanic_next_terminal_italic = 1
 
+ call PM('joshdick/onedark.vim')
  call PM('rakr/vim-one')
  let g:one_allow_italics = 1 " I love italic for comments
 

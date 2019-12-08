@@ -1,10 +1,12 @@
-let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
+" let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-GuiFont! Operator Mono Lig:h17
+set guifont=Operator\ Mono\ Lig:h17
 
 " Support ligature
 call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)
+nnoremap co<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)<cr>
+nnoremap cO<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 0)<cr>
 
 let g:gui_fonts = [
       \ 'Operator Mono Lig:h17',
@@ -58,8 +60,11 @@ endif
 "Don't use gui tabline and Popup menu
 " call rpcnotify(0, "Gui", "Option", "Tabline", "false")
 " call rpcnotify(0, 'Gui', 'Option', 'Popupmenu', 0) 
-GuiTabline 0
-GuiPopupmenu 0
+
+if ! exists('g:fvim_loaded')
+    GuiTabline 0
+    GuiPopupmenu 0
+endif
 
 
 
@@ -108,6 +113,18 @@ execute "tnoremap <silent> <D-" . i . "> <c-\\><c-n>:tabnext 10<cr>"
 if has('mac')
     let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
 endif
+
+ if exists('g:fvim_loaded')
+    " good old 'set guifont' compatibility
+    " Ctrl-ScrollWheel for zooming in/out
+    nnoremap <silent> <C-ScrollWheelUp> :set guifont=+<CR>
+    nnoremap <silent> <C-ScrollWheelDown> :set guifont=-<CR>
+    nnoremap <A-CR> :FVimToggleFullScreen<CR>
+    " FVimCursorSmoothMove v:true
+    " FVimCursorSmoothBlink v:true
+endif
+
+
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.

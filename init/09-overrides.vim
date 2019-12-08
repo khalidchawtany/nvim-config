@@ -10,7 +10,7 @@ let g:projects = [
       \ "~/Development/Applications/Oni",
       \ "~/Projects/PHP/AssetManager/",
       \ "~/Projects/PHP/ERP/",
-      \ "/Volumes/Dev/ERPD/",
+      \ "/Volumes/Dev/ERP/",
       \ "~/Projects/PHP/karaba/",
       \ "~/Projects/PHP/Knights/",
       \ "~/Projects/PHP/create_laravel_package/blog/",
@@ -117,3 +117,5 @@ if has('win64')
     nnoremap <silent> <c-p><c-[> :CocList outline<cr>
 endif
 
+set linespace=20
+set guifont=Operator\ Mono\ Lig:h20

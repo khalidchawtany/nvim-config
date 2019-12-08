@@ -323,6 +323,25 @@ autocmd Filetype netrw nnoremap q :quit<cr>
       endif
   endfunction
 
+
+  LMap N <leader>jj <Plug>laravel-edit-assets-js :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/<cr>
+  LMap N <leader>jr <Plug>laravel-edit-js-router :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/router.js<cr>
+  LMap N <leader>jv <Plug>laravel-edit-js-views :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/views/<cr>
+  LMap N <leader>js <Plug>laravel-edit-js-store :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/store/<cr>
+  LMap N <leader>jc <Plug>laravel-edit-js-components :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/components/<cr>
+  LMap N <leader>jd <Plug>laravel-edit-js-database :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/database/<cr>
+  LMap N <leader>jm <Plug>laravel-edit-js-models :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/models/<cr>
+  LMap N <leader>ja <Plug>laravel-edit-js-models :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/models/<cr>
+
+  LMap N <leader>Jj <Plug>laravel-tabedit-assets-js :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/<cr>
+  LMap N <leader>Jr <Plug>laravel-tabedit-js-router :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/router.js<cr>
+  LMap N <leader>Jv <Plug>laravel-tabedit-js-views :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/views/<cr>
+  LMap N <leader>Js <Plug>laravel-tabedit-js-store :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/store/<cr>
+  LMap N <leader>Jc <Plug>laravel-tabedit-js-components :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/components/<cr>
+  LMap N <leader>Jd <Plug>laravel-tabedit-js-database :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/database/<cr>
+  LMap N <leader>Jm <Plug>laravel-tabedit-js-models :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/models/<cr>
+  LMap N <leader>Ja <Plug>laravel-tabedit-js-models :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/models/<cr>
+
   LMap N <leader>lu <Plug>laravel-edit-public :e <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
   LMap N <leader>lj <Plug>laravel-edit-public-js :e <c-r>=FindGitDirOrRoot()<cr>/public/js/<cr>
   LMap N <leader>lR <Plug>laravel-edit-resources :e <c-r>=FindGitDirOrRoot()<cr>/resources/<cr>
@@ -343,6 +362,27 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N <leader>lbb <Plug>laravel-edit-breads :e <c-r>=FindGitDirOrRoot()<cr>/resources/bread/<cr>
   LMap N <leader>lbc <Plug>laravel-edit-bread-command :e <c-r>=FindGitDirOrRoot()<cr>/vendor/Kjdion84/laraback/src/Commands/BreadCommand.php<cr>
   LMap N <leader>lbs <Plug>laravel-edit-bread-stubs :e <c-r>=FindGitDirOrRoot()<cr>/vendor/Kjdion84/laraback/resources/bread/stubs/default/<cr>
+
+  LMap N <leader>Lu <Plug>laravel-tabedit-public :tabe <c-r>=FindGitDirOrRoot()<cr>/public/<cr>
+  LMap N <leader>Lj <Plug>laravel-tabedit-public-js :tabe <c-r>=FindGitDirOrRoot()<cr>/public/js/<cr>
+  LMap N <leader>LR <Plug>laravel-tabedit-resources :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/<cr>
+  LMap N <leader>Lw <Plug>laravel-tabedit-public-web :tabe <c-r>=FindGitDirOrRoot()<cr>/routes/web.php<cr>
+  LMap N <leader>La <Plug>laravel-tabedit-app :tabe <c-r>=FindGitDirOrRoot()<cr>/app/<cr>
+  LMap N <leader>Lc <Plug>laravel-tabedit-controllers :tabe <c-r>=FindGitDirOrRoot()<cr>/app/Http/Controllers<cr>
+  LMap N <leader>Lf <Plug>laravel-tabedit-factories :tabe <c-r>=FindGitDirOrRoot()<cr>/database/factories/<cr>
+  LMap N <leader>Lh <Plug>laravel-tabedit-helpers :tabe <c-r>=FindGitDirOrRoot()<cr>/app/Helpers/<cr>
+  LMap N <leader>Lm <Plug>laravel-tabedit-migrations :tabe <c-r>=FindGitDirOrRoot()<cr>/database/migrations/<cr>
+  LMap N <leader>Lo <Plug>laravel-tabedit-observes :tabe <c-r>=FindGitDirOrRoot()<cr>/app/Observers/<cr>
+  LMap N <leader>Lp <Plug>laravel-tabedit-providers :tabe <c-r>=FindGitDirOrRoot()<cr>/app/Providers/<cr>
+  LMap N <leader>Lr <Plug>laravel-tabedit-requests :tabe <c-r>=FindGitDirOrRoot()<cr>/app/Http/Requests/<cr>
+  LMap N <leader>Ls <Plug>laravel-tabedit-seeds :tabe <c-r>=FindGitDirOrRoot()<cr>/database/seeds/<cr>
+  LMap N <leader>LT <Plug>laravel-tabedit-traits :tabe <c-r>=FindGitDirOrRoot()<cr>/app/traits/<cr>
+  LMap N <leader>Lt <Plug>laravel-tabedit-tests :tabe <c-r>=FindGitDirOrRoot()<cr>/tests/<cr>
+  LMap N <leader>Lv <Plug>laravel-tabedit-views :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/views/<cr>
+  LMap N <leader>LB <Plug>laravel-tabedit-breads :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/bread/<cr>
+  LMap N <leader>Lbb <Plug>laravel-tabedit-breads :tabe <c-r>=FindGitDirOrRoot()<cr>/resources/bread/<cr>
+  LMap N <leader>Lbc <Plug>laravel-tabedit-bread-command :tabe <c-r>=FindGitDirOrRoot()<cr>/vendor/Kjdion84/laraback/src/Commands/BreadCommand.php<cr>
+  LMap N <leader>Lbs <Plug>laravel-tabedit-bread-stubs :tabe <c-r>=FindGitDirOrRoot()<cr>/vendor/Kjdion84/laraback/resources/bread/stubs/default/<cr>
 
   " Java
   "nnoremap  <leader>ej : exe "!cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")<cr>
@@ -377,3 +417,5 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   nnoremap gR "xyiw:%S/<c-r>x//g<left><left>
 
   vnoremap gr y:%S/<c-r>"/<c-r>"/g<left><left>
+
+  nnoremap <leader>ji gg/import<cr>
