@@ -2566,6 +2566,23 @@ endfunction
  endif
  " }}}
 
+ if PM('liuchengxu/vim-clap')
+     hi default link ClapInput   Visual
+     hi default link ClapDisplay Pmenu
+     hi default link ClapPreview PmenuSel
+     hi default link ClapMatches Search
+
+     " By default ClapQuery will use the bold fg of Normal and the same bg of ClapInput
+
+     hi ClapDefaultPreview          ctermbg=237 guibg=#3E4452
+     hi ClapDefaultSelected         cterm=bold,underline gui=bold,underline ctermfg=80 guifg=#5fd7d7
+     hi ClapDefaultCurrentSelection cterm=bold gui=bold ctermfg=224 guifg=#ffd7d7
+
+     hi default link ClapPreview          ClapDefaultPreview
+     hi default link ClapSelected         ClapDefaultSelected
+     hi default link ClapCurrentSelection ClapDefaultCurrentSelection
+ endif
+
  "vim-dirvish {{{
  if PM('justinmk/vim-dirvish', {'platform' : 'win64'})
      if PM('kristijanhusak/vim-dirvish-git')
