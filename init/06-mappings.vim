@@ -324,6 +324,11 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   endfunction
 
 
+  "in test dd response
+  nnoremap <leader>dr A;<cr>dd($response);<esc>jI$response<esc>
+  "dd for selected variable
+  vnoremap <leader>dd "ryOdd(<c-r>r);<esc>
+
   LMap N <leader>jj <Plug>laravel-edit-assets-js :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/<cr>
   LMap N <leader>jr <Plug>laravel-edit-js-router :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/router.js<cr>
   LMap N <leader>jv <Plug>laravel-edit-js-views :e <c-r>=FindGitDirOrRoot()<cr>/resources/assets/js/views/<cr>
