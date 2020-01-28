@@ -2,7 +2,10 @@ scriptencoding utf-8
 
 
 if has('mac')
-  let $PATH =$PATH . ':/Users/juju/.composer/vendor/bin/'
+  let $PATH =$PATH
+              \. ':/Users/juju/.composer/vendor/bin/'
+              \. ':/Users/juju/Development/go/bin/gopls'
+              \. ':/Users/juju/go/bin/gopls'
 endif
 " Set our leader key to Space
   let mapleader = "\<space>"

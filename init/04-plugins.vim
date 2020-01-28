@@ -57,8 +57,21 @@ let g:_did_vimrc_plugins = 1
 
  endif
  "}}} _vim-fugitive
+ " vim-conflicted {{{
+ if PM('christoomey/vim-conflicted',  {'on_cmd': ['Conflicted', 'Merger', 'GitNextConflict']})
+     set stl+=%{ConflictedVersion()}
+     " Use `gl` and `gu` rather than the default conflicted diffget mappings
+     let g:diffget_local_map = 'gl'
+     let g:diffget_upstream_map = 'gu'
+     LMap N <leader>g] <SID>GitNextConflict :GitNextConflict<cr>
+     LMap N <leader>g[ <SID>Conflicted :Conflicted<cr>
+
+ endif
+ " }}}
  " vim-twiggy{{{
- call PM('sodapopcan/vim-twiggy', {'on_cmd': 'Twiggy'})
+ if PM('sodapopcan/vim-twiggy', {'on_cmd': 'Twiggy'})
+     LMap N <leader>gb <SID>Twiggy :Twiggy<cr>
+ endif
  " }}}
  " gv.vim {{{
 
@@ -73,7 +86,9 @@ let g:_did_vimrc_plugins = 1
 
  "}}} _gv.vim
  "gitv {{{
- call PM("gregsexton/gitv",  {'on_cmd': ['Gitv']})
+ if PM("gregsexton/gitv",  {'on_cmd': ['Gitv']})
+     LMap N <leader>gv <SID>Gitv :Gitv<cr>
+ endif
  " }}}
  " vim-gitgutter {{{
 
@@ -156,7 +171,7 @@ let g:_did_vimrc_plugins = 1
  "}}} _vim-table-mode
  "{{{ Kronos.vim
  if PM('soywod/kronos.vim', {'on_map':['<plug>(kronos-'] })
-   nmap <cr>   <plug>(kronos-toggle)
+   " nmap <cr>   <plug>(kronos-toggle)
    nmap K      <plug>(kronos-info)
    nmap gc     <plug>(kronos-context)
    nmap gh     <plug>(kronos-hide-done)
@@ -752,6 +767,10 @@ endif
        \ } )
 
  "}}} _vim-scriptease
+ "greprtpscr {{{
+ if PM('jyscao/vim-greprtpscr', {'on_cmd': ['GrepRtp', 'GrepScr']})
+ endif
+ "}}}
  " vim-debugger {{{
  call PM('haya14busa/vim-debugger',
        \ {'on_cmd': ['DebugOn', 'Debugger', 'Debug', 'StackTrace', 'CallStack', 'CallStackReport']})
@@ -788,6 +807,8 @@ endif
 
  " languages {{{
 
+ if PM('fatih/vim-go', { 'build': ':GoUpdateBinaries' })
+ endif
  " Vue
  call PM('posva/vim-vue')
 
@@ -1369,6 +1390,7 @@ endif
    let g:ale_linters = {
        \ 'javascript': ['eslint', 'flow'],
        \ 'php': ['langserver', 'phpcs'],
+       \ 'go': ['gopls'],
        \}
 
    let g:ale_completion_enabled=1
@@ -1717,11 +1739,14 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
        "\ 'build': ':UpdateRemotePlugins'
    let g:LanguageClient_serverCommands = {
          \ 'rust':           ['rustup', 'run', 'nightly', 'rls'],
-         \ 'python':         ['pyls']
+         \ 'python':         ['pyls'],
+          \ 'go': ['/Users/juju/go/bin/gopls']
          \ }
          " \ 'javascript':     ['javascript-typescript-stdio'],
          " \ 'javascript.jsx': ['javascript-typescript-stdio'],
          " \ 'typescript':     ['javascript-typescript-stdio'],
+         "
+         autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 
    " Automatically start language servers.
    let g:LanguageClient_autoStart = 1
@@ -2167,10 +2192,11 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
                 " \  --color=fg:#839496,header:#586e75,info:#cb4b16,pointer:#719e07
                 " \  --color=marker:#719e07,fg+:#839496,prompt:#719e07,hl+:#719e07
     if has('mac')
-        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        " let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-space:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind 'ctrl-space:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
         let s:null = 'null'
     elseif has('win64')
-        let $FZF_DEFAULT_OPTS=" --history=C:/Users/juju/.fzf_history --reverse --bind '::jump,;:jump-accept'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        let $FZF_DEFAULT_OPTS=" --history=C:/Users/juju/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-a:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
         let s:null = 'nul'
     endif
 
@@ -2179,6 +2205,10 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
 
     command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/'.s:null, 1, <bang>0)
+
+
+    command! -bang -nargs=* Rg call fzf#vim#grep( 'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
+    nnoremap <c-p>A :Rg<cr>
 
   if PM( 'junegunn/fzf.vim',
           \ {
@@ -2339,8 +2369,15 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
    endfunction
 
    command! -nargs=1 PrintPathInNextLine call PrintPathInNextLineFunction(<f-args>)
+    
+   function! s:build_quickfix_list(lines)
+       call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+       copen
+       cc
+   endfunction
 
    let g:fzf_action = {
+         \ 'ctrl-q': function('s:build_quickfix_list'),
          \ 'ctrl-m': 'e!',
          \ 'ctrl-t': 'tabedit!',
          \ 'ctrl-s': 'split',
@@ -2566,7 +2603,7 @@ endfunction
  endif
  " }}}
 
- if PM('liuchengxu/vim-clap')
+ if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
      hi default link ClapInput   Visual
      hi default link ClapDisplay Pmenu
      hi default link ClapPreview PmenuSel
@@ -2581,6 +2618,7 @@ endfunction
      hi default link ClapPreview          ClapDefaultPreview
      hi default link ClapSelected         ClapDefaultSelected
      hi default link ClapCurrentSelection ClapDefaultCurrentSelection
+
  endif
 
  "vim-dirvish {{{
@@ -3241,7 +3279,7 @@ endif
  endif
  "}}} _ctrlsf.vim
 
- "fze {{{
+ "fze {{{ manage files using FZF
  if PM('khalidchawtany/fze')
      nnoremap     <C-;>rf <cmd>Fze<cr>
  endif
@@ -3276,54 +3314,22 @@ endif
 
  "}}}
 
- " HTTP {{{
-  " call PM('sharat87/roast.vim')
-  call PM('khalidchawtany/roast.vim')
-
-  call PM('aquach/vim-http-client')
-
-  call PM('baverman/vial', {'platform':'mac'})
-  call PM('baverman/vial-http')
- " }}}
- "Database {{{
-
- " dbext.vim {{{
-
- if PM( 'vim-scripts/dbext.vim' )
-   let g:dbext_default_profile_mysql_local = 'type=MYSQL:user=root:passwd=root:dbname=younesdb:extra=-t'
- endif
-
- "}}} _dbext.vim
-
- " pipe-mysql.vim {{{
-   call PM( 'NLKNguyen/pipe-mysql.vim' )
- "}}} _pipe-mysql.vim
-
- "}}}
-
- if PM('metakirby5/codi.vim', {'on_cmd':['Codi']})
- endif
-
-
+"codi {{{ The interactve scratchpad soulver alternative
+    if PM('metakirby5/codi.vim', {'on_cmd':['Codi']})
+    endif
+"}}}
 
  " Terminal {{{
 
- "nuake {{{
- if PM('Lenovsky/nuake')
-   nnoremap <c-cr> :Nuake<CR>
-   " inoremap <c-cr> <C-\><C-n>:Nuake<CR>
-   tnoremap <c-cr> <C-\><C-n>:Nuake<CR>
-   let g:nuake_position = 'bottom'
-   let g:nuake_size = 0.25
-   let g:nuake_per_tab = 0
- endif
- "}}} _nuake
-
- "neoterm {{{
- if PM('kassio/neoterm')
-     nnoremap <leader>tl :<c-u>exec v:count.'Tclear'<cr>
- endif
- "}}} _neoterm
+ "vim-floaterm {{{
+    if PM('voldikss/vim-floaterm')
+        " let g:floaterm_keymap_new    = '<F7>'
+        let g:floaterm_keymap_prev   = '<C-BS>'
+        " let g:floaterm_keymap_next   = '<F9>'
+        let g:floaterm_keymap_toggle = '<C-CR>'
+        let g:floaterm_position = 'center'
+    endif
+ "}}}
 
  " }}}
 
@@ -3603,6 +3609,8 @@ endif
  if PM( 'roman/golden-ratio' )
    nnoremap cog :<c-u>GoldenRatioToggle<cr>
   let g:golden_ratio_exclude_nonmodifiable = 1
+  let g:golden_ratio_autocommand = 0
+  let g:loaded_golden_ratio = 0
  endif
 
  "}}} _golden-ratio

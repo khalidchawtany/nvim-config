@@ -74,12 +74,78 @@
       "<C-t>": "action:tabe",
       "<C-w>": "command:wincmd k"
     },
+ "explorer.keyMappings": {
+    "k": "nodePrev",
+    "j": "nodeNext",
+
+    "*": "toggleSelection",
+    "<tab>": "actionMenu",
+
+    "h": "collapse",
+    "l": "expand",
+    "J": ["toggleSelection", "normal:j"],
+    "K": ["toggleSelection", "normal:k"],
+    "gl": "expandRecursive",
+    "gh": "collapseRecursive",
+    "o": "expandOrCollapse",
+    "<cr>": "open",
+    "e": "open",
+    "E": "openInVsplit",
+    "t": "openInTab",
+    "<bs>": "gotoParent",
+    "-": "gotoParent",
+
+    "y": "copyFilepath",
+    "Y": "copyFilename",
+    "c": "copyFile",
+    "x": "cutFile",
+    "p": "pasteFile",
+    "d": "delete",
+    "D": "deleteForever",
+
+    "a": "addFile",
+    "A": "addDirectory",
+    "r": "rename",
+
+    ".": "toggleHidden",
+    "R": "refresh",
+
+    "?": "help",
+    "q": "quit",
+    "X": "systemExecute",
+    "gd": "listDrive",
+
+    "f": "search",
+    "F": "searchRecursive",
+
+    "gf": "gotoSource:file",
+    "gb": "gotoSource:buffer",
+
+    "[[": "sourcePrev",
+    "]]": "sourceNext",
+
+    "[d": "diagnosticPrev",
+    "]d": "diagnosticNext",
+
+    "[c": "gitPrev",
+    "]c": "gitNext",
+    "<<": "gitStage",
+    ">>": "gitUnstage"
+ },
 
     "intelephense.completion.fullyQualifyGlobalConstantsAndFunctions": false,
 
     "intelephense.completion.insertUseDeclaration" :true,
 
     "languageserver": {
+        "golang": {
+            "command": "/Users/juju/go/bin/gopls",
+            "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+            "filetypes": ["go"],
+            "initializationOptions": {
+                "usePlaceholders": true
+            }
+        }
     },
     "git.enableGutters": true
 }

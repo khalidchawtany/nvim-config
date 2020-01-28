@@ -85,7 +85,9 @@ function! FoldFunction()
     if &ft == 'php'
         execute "g/protected \\$fillable = \\[/normal 0f[zf%"
         execute "g/protected \\$dates = \\[/normal 0f[zf%"
-        execute "g/function/normal 0maf{%zf'a"
+        execute "g/public function/normal 0maf{%zf'a"
+        execute "g/protected function/normal 0maf{%zf'a"
+        execute "g/private function/normal 0maf{%zf'a"
         execute "g/\\/\\*\\*/normal mazf%'a"
         normal zM
     endif

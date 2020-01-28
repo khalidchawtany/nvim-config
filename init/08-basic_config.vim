@@ -322,4 +322,3 @@ let g:netrw_liststyle=3               "Make netrw look like NerdTree
 
 highlight! ColorColumn ctermbg=darkblue guibg=#E1340F guifg=#111111
 let w:my_colorcol_hi_id = matchadd('ColorColumn', '\%101v', 100)
-

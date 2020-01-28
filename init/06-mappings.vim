@@ -18,6 +18,13 @@ LMap N <leader>tm0 <Plug>tab-move-first :tabmove 0<cr>
 
 " Utils {{{
 "===============================================================================
+"
+
+nnoremap ]] ]]zz
+nnoremap ][ ][zz
+nnoremap [[ [[zz
+nnoremap [] []zz
+
 
 nnoremap c* *Ncgn
 
@@ -259,6 +266,8 @@ autocmd Filetype netrw nnoremap q :quit<cr>
 
   LMap N <leader>tp <Plug>todo-project :e <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
   LMap N <leader>to <Plug>todo-global :e ~/org/todo.org<cr>
+  LMap N <leader>Tp <Plug>todo-project-tab :tabe <c-r>=FindGitDirOrRoot()<cr>/todo.org<cr>
+  LMap N <leader>To <Plug>todo-global-tab :tabe ~/org/todo.org<cr>
 
   LMap N <Leader>s; <Plug>source-selection "vyy:@v<CR>
   LMap V <Leader>s; <Plug>source-selection "vy:@v<CR>
@@ -394,7 +403,9 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N  <leader>ej <Plug>execute-java :call ExecuteJava()<cr>
   function! ExecuteJava()
     write
-    exe "tab term cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")
+    exe "vsplit"
+    exe "term cd " . shellescape(expand("%:h")) . " && javac " . expand ("%:t") . " && java " . expand("%:t:r")
+    exe "startinsert"
   endfunction
 
   " HTML
