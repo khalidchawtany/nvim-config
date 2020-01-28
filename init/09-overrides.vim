@@ -10,6 +10,7 @@ let g:projects = [
       \ "~/Development/Applications/Oni",
       \ "~/Projects/PHP/AssetManager/",
       \ "~/Projects/PHP/ERP/",
+      \ "~/Projects/React/DebtManager",
       \ "/Volumes/Dev/ERP/",
       \ "~/Projects/PHP/karaba/",
       \ "~/Projects/PHP/Knights/",
