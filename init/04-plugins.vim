@@ -29,7 +29,7 @@ let g:_did_vimrc_plugins = 1
        \     'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
        \     'Gmove', 'Gremove', 'Gblame', 'Gbrowse' ],
        \     'on_ft': ['git'],
-       \     'hook_post_source': "call fugitive#detect(expand('%:p')) | if exists('g:NewFugitiveFile') | edit % | endif"
+       \     'hook_post_source': "call FugitiveDetect(expand('%:p')) | if exists('g:NewFugitiveFile') | edit % | endif"
        \ })
 
    autocmd User fugitive
@@ -40,17 +40,17 @@ let g:_did_vimrc_plugins = 1
    " autocmd BufEnter * if &ft=="fugitive" | call feedkeys("o") | endif
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-   LMap N <leader>gs <SID>Status  :call fugitive#detect(expand('%:p')) \| :Gstatus<cr>
-   LMap N <leader>g<leader> <SID>TabStatus  :call fugitive#detect(getcwd()) \| :Gtabedit :<cr>
-   LMap N <leader>gc <SID>Commit  :call fugitive#detect(getcwd()) \| execute ":Gcommit"<cr>
-   LMap N <leader>gp <SID>Pull    :call fugitive#detect(getcwd()) \| execute ":Gpull"<cr>
-   LMap N <leader>gu <SID>Push    :call fugitive#detect(getcwd()) \| execute ":Gpush"<cr>
-   LMap N <leader>gr <SID>Read    :call fugitive#detect(getcwd()) \| execute ":Gread"<cr>
-   LMap N <leader>gw <SID>Write   :call fugitive#detect(getcwd()) \| execute ":Gwrite"<cr>
-   LMap N <leader>gdv <SID>V-Diff :call fugitive#detect(getcwd()) \| execute ":Gvdiff"<cr>
-   LMap N <leader>gds <SID>S-Diff :call fugitive#detect(getcwd()) \| execute ":Gdiff"<cr>
+   LMap N <leader>gs <SID>Status  :call FugitiveDetect(expand('%:p')) \| :Gstatus<cr>
+   LMap N <leader>g<leader> <SID>TabStatus  :call FugitiveDetect(getcwd()) \| :Gtabedit :<cr>
+   LMap N <leader>gc <SID>Commit  :call FugitiveDetect(getcwd()) \| execute ":Gcommit"<cr>
+   LMap N <leader>gp <SID>Pull    :call FugitiveDetect(getcwd()) \| execute ":Gpull"<cr>
+   LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Gpush"<cr>
+   LMap N <leader>gr <SID>Read    :call FugitiveDetect(getcwd()) \| execute ":Gread"<cr>
+   LMap N <leader>gw <SID>Write   :call FugitiveDetect(getcwd()) \| execute ":Gwrite"<cr>
+   LMap N <leader>gdv <SID>V-Diff :call FugitiveDetect(getcwd()) \| execute ":Gvdiff"<cr>
+   LMap N <leader>gds <SID>S-Diff :call FugitiveDetect(getcwd()) \| execute ":Gdiff"<cr>
 
-   LMap N <leader>g<cr> <SID>FixLN :call fugitive#detect(getcwd()) \| execute ":Gread\|Gwrite"<cr>
+   LMap N <leader>g<cr> <SID>FixLN :call FugitiveDetect(getcwd()) \| execute ":Gread\|Gwrite"<cr>
    " Fugitive Conflict Resolution
    nnoremap gdh :diffget //2<CR>
    nnoremap gdl :diffget //3<CR>
@@ -807,7 +807,7 @@ endif
 
  " languages {{{
 
- if PM('fatih/vim-go', { 'build': ':GoUpdateBinaries' })
+ if PM('fatih/vim-go', { 'build': 'GoUpdateBinaries' })
  endif
  " Vue
  call PM('posva/vim-vue')

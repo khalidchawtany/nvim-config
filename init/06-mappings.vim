@@ -183,6 +183,9 @@ LMap n <leader>d <Plug>delete-to-blackhole "_d
 LMap n <leader>y <Plug>copy-to-+ "+y
 LMap N <leader>+ <Plug>add-line-below o<esc>"+p
 LMap N <leader>= <SID>paste-from-clip "+p
+
+cnoremap <D-v> <C-R>+
+tnoremap <D-v> <C-\><C-N>pi
 "}}}
 
 " Indentation {{{

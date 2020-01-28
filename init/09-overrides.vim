@@ -8,6 +8,7 @@ endfunction
 
 let g:projects = [
       \ "~/Development/Applications/Oni",
+      \ "~/Projects/go/bfmysql/",
       \ "~/Projects/PHP/AssetManager/",
       \ "~/Projects/PHP/ERP/",
       \ "~/Projects/React/DebtManager",
@@ -19,15 +20,18 @@ let g:projects = [
       \ "~/Projects/PHP/koga/www/",
       \ "~/Projects/PHP/my-react-app-backend/",
       \ "~/Projects/React/my-react-app/",
-      \ "~/Research/Math_Miran/mathjs",
-      \ "~/Research/Math_Miran/react-math",
-      \ "~/Research/Math_Miran/react-popmotion-animation-example",
-      \ "~/Research/Math_Miran/Math"
+      \ "/Volumes/Data/Research/ImageProcessing",
+      \ "/Volumes/Data/Research/Math_Miran/mathjs",
+      \ "/Volumes/Data/Research/Math_Miran/react-math",
+      \ "/Volumes/Data/Research/Math_Miran/react-popmotion-animation-example",
+      \ "/Volumes/Data/Research/Math_Miran/Math"
       \]
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
 LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "sink":"CdP", "window" : "call FloatingFZF()"})<cr>
+
+LMap N! <leader>ed <Plug>EditDevDrive <cmd>e /Volumes/Dev<cr>
 
 function! RegenerateHelpTags()
   silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt
