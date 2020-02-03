@@ -29,7 +29,7 @@ let g:projects = [
 
 command! -nargs=? CdP :call SetProjectPath('<args>')
 
-LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "sink":"CdP", "window" : "call FloatingFZF()"})<cr>
+LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "sink":"CdP", "window" :{ 'width': 0.9, 'height': 0.6 }})<cr>
 
 LMap N! <leader>ed <Plug>EditDevDrive <cmd>e /Volumes/Dev<cr>
 

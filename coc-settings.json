@@ -147,5 +147,7 @@
             }
         }
     },
-    "git.enableGutters": true
+    "git.enableGutters": true,
+    "todolist.monitor": true
+
 }

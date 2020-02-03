@@ -29,7 +29,7 @@ let g:_did_vimrc_plugins = 1
        \     'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
        \     'Gmove', 'Gremove', 'Gblame', 'Gbrowse' ],
        \     'on_ft': ['git'],
-       \     'hook_post_source': "call FugitiveDetect(expand('%:p')) | if exists('g:NewFugitiveFile') | edit % | endif"
+       \     'hook_post_source': "if exists('g:NewFugitiveFile') | edit % | endif"
        \ })
 
    autocmd User fugitive
@@ -40,17 +40,17 @@ let g:_did_vimrc_plugins = 1
    " autocmd BufEnter * if &ft=="fugitive" | call feedkeys("o") | endif
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-   LMap N <leader>gs <SID>Status  :call FugitiveDetect(expand('%:p')) \| :Gstatus<cr>
-   LMap N <leader>g<leader> <SID>TabStatus  :call FugitiveDetect(getcwd()) \| :Gtabedit :<cr>
-   LMap N <leader>gc <SID>Commit  :call FugitiveDetect(getcwd()) \| execute ":Gcommit"<cr>
-   LMap N <leader>gp <SID>Pull    :call FugitiveDetect(getcwd()) \| execute ":Gpull"<cr>
-   LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Gpush"<cr>
-   LMap N <leader>gr <SID>Read    :call FugitiveDetect(getcwd()) \| execute ":Gread"<cr>
-   LMap N <leader>gw <SID>Write   :call FugitiveDetect(getcwd()) \| execute ":Gwrite"<cr>
-   LMap N <leader>gdv <SID>V-Diff :call FugitiveDetect(getcwd()) \| execute ":Gvdiff"<cr>
-   LMap N <leader>gds <SID>S-Diff :call FugitiveDetect(getcwd()) \| execute ":Gdiff"<cr>
+   LMap N <leader>gs <SID>Status  <cmd>Gstatus<cr>
+   LMap N <leader>g<leader> <SID>TabStatus  <cmd>Gtabedit :<cr>
+   LMap N <leader>gc <SID>Commit  <cmd>Gcommit<cr>
+   LMap N <leader>gp <SID>Pull    <cmd>Gpull<cr>
+   LMap N <leader>gu <SID>Push    <cmd>Gpush<cr>
+   LMap N <leader>gr <SID>Read    <cmd>Gread<cr>
+   LMap N <leader>gw <SID>Write   <cmd>Gwrite<cr>
+   LMap N <leader>gdv <SID>V-Diff <cmd>Gvdiff<cr>
+   LMap N <leader>gds <SID>S-Diff <cmd>Gdiff<cr>
 
-   LMap N <leader>g<cr> <SID>FixLN :call FugitiveDetect(getcwd()) \| execute ":Gread\|Gwrite"<cr>
+   LMap N <leader>g<cr> <SID>FixLN :execute ":Gread\|Gwrite"<cr>
    " Fugitive Conflict Resolution
    nnoremap gdh :diffget //2<CR>
    nnoremap gdl :diffget //3<CR>
@@ -2149,51 +2149,41 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  "}}} _cpsm
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
+       " [Buffers] Jump to the existing window if possible
+       let g:fzf_buffers_jump = 1
 
-     let g:fzf_command_prefix = 'Fzf'
+       " [[B]Commits] Customize the options used by 'git log':
+       let g:fzf_commits_log_options = '--graph --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 
-   if !has('nvim') && has('gui_running')
-     let g:fzf_launcher = "fzf_iterm %s"
-   endif
+       let g:fzf_command_prefix = 'Fzf'
 
-   "{{{ floating window
+       "Show FZF in a floating window
+       let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7 } }
+       "let $FZF_DEFAULT_OPTS='--layout=reverse'
+       "let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
+       "let g:fzf_layout = { 'window': '-tabnew' }
 
-   au FileType fzf set nonu nornu
-   " let $FZF_DEFAULT_OPTS='--layout=reverse'
-   let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+       au FileType fzf set nonu nornu
 
-   function! FloatingFZF()
-     let buf = nvim_create_buf(v:false, v:true)
-     call setbufvar(buf, '&signcolumn', 'no')
+       if !has('nvim') && has('gui_running')
+           let g:fzf_launcher = "fzf_iterm %s"
+       endif
 
-     let height = &lines - 3
-     let width = float2nr(&columns - (&columns * 2 / 10))
-     let col = float2nr((&columns - width) / 2)
 
-     let opts = {
-           \ 'relative': 'editor',
-           \ 'row': 1,
-           \ 'col': col,
-           \ 'width': width,
-           \ 'height': height
-           \ }
+   command! -bang -nargs=* Rg
+               \ call fzf#vim#grep(
+               \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+               \   fzf#vim#with_preview(), <bang>0)
 
-     " call nvim_open_win(buf, v:true, opts)
-     let win = nvim_open_win(buf, v:true, opts)
-     call setwinvar(win, '&number', 0)
-     call setwinvar(win, '&relativenumber', 0)
-   endfunction
-
-   "}}}
-    "let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
-    "let g:fzf_layout = { 'window': '-tabnew' }
+   nnoremap silent! <c-p><c-a> <cmd>Rg<cr>
+   nnoremap silent! <c-p>a <cmd>Rg <c-r><c-w><cr>
 
                 " \  --color=bg+:#ff0000,bg:#002b36,spinner:#000000,hl:#ff00ff
                 " \  --color=fg:#839496,header:#586e75,info:#cb4b16,pointer:#719e07
                 " \  --color=marker:#719e07,fg+:#839496,prompt:#719e07,hl+:#719e07
     if has('mac')
         " let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-space:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
-        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind 'ctrl-space:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind 'ctrl-space:select-all,ctrl-l:jump '  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
         let s:null = 'null'
     elseif has('win64')
         let $FZF_DEFAULT_OPTS=" --history=C:/Users/juju/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-a:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
