@@ -43,6 +43,7 @@ endfunction
 hi FoldColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
 hi SignColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
 hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
+hi IncSearch guifg=orange
 
 command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
@@ -67,6 +68,7 @@ command! ToggleDarkAndLight
             \  exe 'set background='.g:colorschemes[&background].togglebg
             \| exe 'colorscheme' g:colorschemes[&background].colorscheme
             \| exe 'LightLineColorScheme' g:colorschemes[&background].lightline
+
 
  nnoremap cob <cmd>ToggleDarkAndLight<cr>
 

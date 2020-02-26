@@ -133,7 +133,7 @@ endfunction
 
 " The following function takes a command such as the following
 " >>   Map !NV key <plug-name> command
-"      !       -indiucates that the mapping is silent 
+"      !       -indiucates that the mapping is silent
 "      CAPS    -capital letters indicate noremap
 function! Map(mode, key, ...) abort"{{{
   let ops=""
@@ -158,8 +158,8 @@ command! -nargs=* Map call Map(<f-args>)
 " The following function takes a command such as the following, this applies the
 " plug and SID for showing with leader guide
 " >>   LMap !NVExpr key <plug|SID-name> command
-"      !       -indiucates that the mapping is silent 
-"      Expr    -indiucates that the mapping is expression 
+"      !       -indiucates that the mapping is silent
+"      Expr    -indiucates that the mapping is expression
 "      CAPS    -capital letters indicate noremap
 function! LMap(mode, key, pluginfo, ...) abort"{{{
   let ops=""
@@ -668,3 +668,65 @@ function! ToggleFoldMarker() "{{{
   endif
 endfunction "}}}
 
+
+
+
+
+"{{{ miniyank-fzf
+ function! FZFYankList() abort
+  function! KeyValue(key, val)
+    let line = join(a:val[0], '\n')
+    if (a:val[1] ==# 'V')
+      let line = '\n'.line
+    endif
+    return a:key.' '.line
+  endfunction
+  return map(miniyank#read(), function('KeyValue'))
+endfunction
+
+function! FZFYankHandler(opt, line) abort
+  let key = substitute(a:line, ' .*', '', '')
+  if !empty(a:line)
+    let yanks = miniyank#read()[key]
+    call miniyank#drop(yanks, a:opt)
+  endif
+endfunction
+
+command! FzfYanksAfter call fzf#run(fzf#wrap('FzfYanksAfter', {
+\ 'source':  FZFYankList(),
+\ 'sink':    function('FZFYankHandler', ['p']),
+\ 'options': '--no-sort --prompt="Yanks-p> "',
+\ }))
+
+command! FzfYanksBefore call fzf#run(fzf#wrap('FzfYanksBefore', {
+\ 'source':  FZFYankList(),
+\ 'sink':    function('FZFYankHandler', ['P']),
+\ 'options': '--no-sort --prompt="Yanks-P> "',
+\ }))
+
+nnoremap <c-p><c-y> :FzfYanksAfter<cr>
+nnoremap <c-p><c-y> :FzfYanksBefore<cr>
+"}}}
+
+
+"{{{ fzf-registers
+ function! s:get_registers() abort
+  redir => l:regs
+  silent registers
+  redir END
+
+  return split(l:regs, '\n')[1:]
+endfunction
+
+function! s:registers(...) abort
+  let l:opts = {
+        \ 'source': s:get_registers(),
+        \ 'sink': {x -> feedkeys(matchstr(x, '\v^\S+\ze.*') . (a:1 ? 'P' : 'p'), 'x')},
+        \ 'options': '--prompt="Reg> "'
+        \ }
+  call fzf#run(fzf#wrap(l:opts))
+endfunction
+
+command! -bang FzfRegisters call s:registers('<bang>' ==# '!')
+nnoremap <c-p><c-"> <cmd>FzfRegisters<cr>
+"}}}

@@ -28,8 +28,9 @@ let g:_did_vimrc_plugins = 1
        \     'Gtabedit', 'Gpedit',  'Gread',  'Gwrite',
        \     'Gwq',      'Gdiff',   'Gsdiff', 'Gvdiff',
        \     'Gmove', 'Gremove', 'Gblame', 'Gbrowse' ],
+       \     'on_func': ['FugitiveDetect'],
        \     'on_ft': ['git'],
-       \     'hook_post_source': "if exists('g:NewFugitiveFile') | edit % | endif"
+       \     'hook_post_source': "call FugitiveDetect(expand('%:p')) | if exists('g:NewFugitiveFile') | edit % | endif"
        \ })
 
    autocmd User fugitive
@@ -40,17 +41,17 @@ let g:_did_vimrc_plugins = 1
    " autocmd BufEnter * if &ft=="fugitive" | call feedkeys("o") | endif
    autocmd BufNewFile  fugitive://* call PM_SOURCE('vim-fugitive') | let g:NewFugitiveFile=1 | call feedkeys(';<BS>')
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
-   LMap N <leader>gs <SID>Status  <cmd>Gstatus<cr>
-   LMap N <leader>g<leader> <SID>TabStatus  <cmd>Gtabedit :<cr>
-   LMap N <leader>gc <SID>Commit  <cmd>Gcommit<cr>
-   LMap N <leader>gp <SID>Pull    <cmd>Gpull<cr>
-   LMap N <leader>gu <SID>Push    <cmd>Gpush<cr>
-   LMap N <leader>gr <SID>Read    <cmd>Gread<cr>
-   LMap N <leader>gw <SID>Write   <cmd>Gwrite<cr>
-   LMap N <leader>gdv <SID>V-Diff <cmd>Gvdiff<cr>
-   LMap N <leader>gds <SID>S-Diff <cmd>Gdiff<cr>
+    LMap N <leader>gs <SID>Status  :call FugitiveDetect(expand('%:p')) \| :Gstatus<cr>
+    LMap N <leader>g<leader> <SID>TabStatus  :call FugitiveDetect(getcwd()) \| :Gtabedit :<cr>
+    LMap N <leader>gc <SID>Commit  :call FugitiveDetect(getcwd()) \| execute ":Gcommit"<cr>
+    LMap N <leader>gp <SID>Pull    :call FugitiveDetect(getcwd()) \| execute ":Gpull"<cr>
+    LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Gpush"<cr>
+    LMap N <leader>gr <SID>Read    :call FugitiveDetect(getcwd()) \| execute ":Gread"<cr>
+    LMap N <leader>gw <SID>Write   :call FugitiveDetect(getcwd()) \| execute ":Gwrite"<cr>
+    LMap N <leader>gdv <SID>V-Diff :call FugitiveDetect(getcwd()) \| execute ":Gvdiff"<cr>
+    LMap N <leader>gds <SID>S-Diff :call FugitiveDetect(getcwd()) \| execute ":Gdiff"<cr>
 
-   LMap N <leader>g<cr> <SID>FixLN :execute ":Gread\|Gwrite"<cr>
+    LMap N <leader>g<cr> <SID>FixLN :call FugitiveDetect(getcwd()) \| execute ":Gread\|Gwrite"<cr>
    " Fugitive Conflict Resolution
    nnoremap gdh :diffget //2<CR>
    nnoremap gdl :diffget //3<CR>
@@ -127,6 +128,15 @@ let g:_did_vimrc_plugins = 1
 
   endif
  "}}} git-messenger.vim
+ " gflog {{{
+ if PM('rbong/vim-flog', {'on_cmd': ['Flog', 'FlogSplit']})
+ endif
+ " }}} _gflog
+ " diffconflicts {{{
+ if PM('whiteinge/diffconflicts')
+ endif
+ " }}} _ diffconflicts
+
 
  "}}}
 
@@ -2183,7 +2193,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
                 " \  --color=marker:#719e07,fg+:#839496,prompt:#719e07,hl+:#719e07
     if has('mac')
         " let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-space:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
-        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind 'ctrl-space:select-all,ctrl-l:jump '  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
+        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --pointer=' ▶' --marker='◉' --reverse --bind 'ctrl-space:select-all,ctrl-l:jump'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44,gutter:#eeeeee,marker:#ff0000"
         let s:null = 'null'
     elseif has('win64')
         let $FZF_DEFAULT_OPTS=" --history=C:/Users/juju/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-a:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
@@ -2299,8 +2309,8 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  call Map_FZF  ( "FzfTags"     , "]"     , ""                                                                               , 0  )
 "call Map_FZF  ( "FzfLocate"    , "<cr>"  , "--reverse  %:p:h"                                                               , 0  )
  call Map_FZF  ( "FzfGitFiles"  , "v"     , ''                                                                               , 0  )
- call Map_FZF  ( "FzfCommits"  , "G"     , ""                                                                               , 0  )
- call Map_FZF  ( "FzfBCommits!" , "g"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfCommits"  , "C"     , ""                                                                               , 0  )
+ call Map_FZF  ( "FzfBCommits!" , "c"     , ""                                                                               , 0  )
  call Map_FZF  ( "FzfSnippets" , "s"     , ""                                                                               , 0  )
  call Map_FZF  ( "FzfMarks"    , "<c-'>" , ""                                                                               , 0  )
  call Map_FZF  ( "FzfMarks"    , "'"     , ""                                                                               , 0  )
@@ -2316,6 +2326,9 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
      exe ':FzfBLines!' query
  endfunction
  nnoremap <silent> <c-p><c-f> <cmd>call GetFunctions()<cr>
+
+ nnoremap <silent> <c-p><c-g> <cmd>FzfPreviewGitStatus<cr>
+ nnoremap <silent> <c-p>g <cmd>FzfPreviewGitStatus<cr>
 
  "The last param is <bang>0 to make it fullscreen
  nnoremap <silent> <c-p>p :silent! call fzf#vim#files(getcwd(), {'options': '--reverse -q '.shellescape(expand('<cword>'))}, 1)<cr>
@@ -2359,7 +2372,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
    endfunction
 
    command! -nargs=1 PrintPathInNextLine call PrintPathInNextLineFunction(<f-args>)
-    
+
    function! s:build_quickfix_list(lines)
        call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
        copen
@@ -2379,7 +2392,6 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
          \ 'source':  reverse(s:all_files()),
          \ 'sink':    'edit',
          \ 'options': ' --reverse -m --no-sort -x',
-         \ 'window':  'call FloatingFZF()',
          \ 'down':    '40%' })
 
 function! s:all_files()
@@ -2426,7 +2438,6 @@ endfunction
          \   'source':  reverse(<sid>tablist()),
          \   'sink':    function('<sid>tabopen'),
          \   'options': " --preview-window right:50%  --preview 'echo {}'  --bind ?:toggle-preview",
-         \   'window':    'call FloatingFZF()'
          \ })
 
    LMap N! <c-p><c-i> <plug>FzfTabs :FzfTabs<cr>
@@ -2463,7 +2474,6 @@ endfunction
          \   'source':  reverse(<sid>buflist()),
          \   'sink*':    function('<sid>bufopen'),
          \   'options': '+m --reverse --expect=ctrl-t,ctrl-v,ctrl-s',
-         \   'window':    'call FloatingFZF()'
          \ })<CR>
 
    "}}} _open_buffers -term
@@ -2478,7 +2488,7 @@ endfunction
                    \ 'source': command,
                    \ 'sink':   'e',
                    \ 'options': '-m -x +s',
-                   \ 'window':  'call FloatingFZF()' })
+                   \ })
    endfunction
 
    command! FZFNeigh call s:fzf_neighbouring_files()
@@ -2552,7 +2562,6 @@ endfunction
          \   'source':  reverse(<sid>termlist()),
          \   'sink':    function('<sid>termtabopen'),
          \   'options': '+m --reverse',
-         \   'window':    'call FloatingFZF()'
          \ })<CR>
 
    "}}} _open_terms
@@ -2563,6 +2572,28 @@ endfunction
  endif
 
  " }}}
+ " fzf-preview {{{
+ if PM('yuki-ycino/fzf-preview.vim', {'on_cmd':[
+             \ 'FzfPreviewProjectFiles',
+             \ 'FzfPreviewGitFiles',
+             \ 'FzfPreviewDirectoryFiles',
+             \ 'FzfPreviewGitStatus',
+             \ 'FzfPreviewBuffers',
+             \ 'FzfPreviewProjectOldFiles',
+             \ 'FzfPreviewProjectMruFiles',
+             \ 'FzfPreviewProjectGrep',
+             \ 'FzfPreviewOldFiles',
+             \ 'FzfPreviewMruFiles',
+             \ 'FzfPreviewFromResources'
+             \ ]})
+
+     " let g:fzf_preview_command = 'bat --color=always --style=grid {-1}' " Installed bat
+     " let g:fzf_preview_command = 'bat --color=always --style=grid {-1}' " Installed bat
+
+     call PM('Shougo/neomru.vim')
+ endif
+ " }}} _fzf-preview
+ "
  " neovim-fuzzy {{{
  " cloudhead/neovim-fuzzy
  if PM('bosr/fzy.vim', { 'rev': 'dev', 'on_cmd': ['FuzzyOpen', 'FuzzyOpenFiles']})
@@ -2832,6 +2863,8 @@ if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
     map <Leader><Leader>c <Plug>(miniyank-tochar)
     map <Leader><Leader>l <Plug>(miniyank-toline)
     map <Leader><Leader>b <Plug>(miniyank-toblock)
+
+    let g:miniyank_maxitems = 1000
 endif
 
  "}}} _nvim-miniyank
@@ -3513,6 +3546,38 @@ endif
  if PM('junegunn/goyo.vim', {'on_cmd' :['Goyo']})
      let g:goyo_width = 100
      let g:goyo_linenr = 1
+
+     function! ReturnHighlightTerm(group, term)
+         " Store output of group to variable
+         let output = execute('hi ' . a:group)
+
+         " Find the term we're looking for
+         return matchstr(output, a:term.'=\zs\S*')
+     endfunction
+
+     function! Goyo_enter()
+         set noshowmode
+         set noshowcmd
+         set scrolloff=999
+
+         let g:gui_fg = ReturnHighlightTerm('SignatureMarkText', 'guifg')
+         let gui_bg = ReturnHighlightTerm('SignatureMarkText', 'guibg')
+         execute ('hi SignatureMarkText guifg='.gui_bg)
+     endfunction
+
+     function! Goyo_leave()
+         set showmode
+         set showcmd
+         set scrolloff=5
+         execute ('hi SignatureMarkText guifg='.g:gui_fg)
+     endfunction
+
+
+   augroup RegisterGoyoAutoCommands
+       autocmd!
+       autocmd VimEnter *  autocmd! User GoyoEnter nested call Goyo_enter()
+             \| autocmd! User GoyoLeave nested call Goyo_leave()
+   augroup END
  endif
 
  "colortuner {{{
@@ -3643,6 +3708,7 @@ endif
  call PM('vim-scripts/summerfruit256.vim')
  call PM('andbar-ru/vim-unicon')
  call PM('kamwitsta/flatwhite-vim')
+ call PM('arzg/vim-colors-xcode')
 
  call PM('ayu-theme/ayu-vim')
  let ayucolor="dark"   " for dark version of theme

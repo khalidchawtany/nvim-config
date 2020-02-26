@@ -159,3 +159,16 @@ let g:loaded_netrw             = 1
 let g:loaded_netrwPlugin       = 1
 let g:loaded_netrwSettings     = 1
 let g:loaded_netrwFileHandlers = 1
+
+
+augroup ColorschemeToggle
+    autocmd!
+    autocmd ColorScheme * call ColorschemeToggled()
+augroup END
+
+function! ColorschemeToggled()
+    if g:colors_name == 'PaperColor'
+        hi IncSearch guifg=orange
+        hi Comment gui=italic
+    endif
+endfunction

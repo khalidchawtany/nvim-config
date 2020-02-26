@@ -12,7 +12,7 @@
     "codeLens.enable": true,
     "codeLens.separator": "?",
     "suggest.snippetIndicator": "",
-    "diagnostic.enable": true,
+    "diagnostic.enable": false,
     "diagnostic.signOffset": 1000,
     "diagnostic.errorSign": "",
     "diagnostic.warningSign": "»",
