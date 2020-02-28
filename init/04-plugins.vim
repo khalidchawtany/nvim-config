@@ -132,6 +132,7 @@ let g:_did_vimrc_plugins = 1
  if PM('xolox/vim-notes')
      let g:notes_directories = ['~/Development/Notes']
      let g:notes_suffix = '.note'
+     au BufEnter *.note syntax match notesXXX /\[[a-zA-Z]\]/
  endif
  "}}}
  " vim-speeddating {{{
@@ -801,6 +802,14 @@ endif
  "}}}
 
  " languages {{{
+
+ " nvim-lsp {{{
+ if PM('neovim/nvim-lsp')
+" lua << EOF
+"     require'nvim_lsp'.intelephense.setup{}
+" EOF
+ endif
+ " }}} _ nvim-lsp
 
  if PM('fatih/vim-go', { 'build': 'GoUpdateBinaries' })
  endif
