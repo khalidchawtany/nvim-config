@@ -46,7 +46,7 @@ nnoremap <silent> co/ :<C-u>call <SID>ToggleSearchPattern()<CR>
 LMap N <leader>ha <Plug>highlight-word-on  :call HighlightAllOfWord(1)<cr>
 LMap N <leader>hA <Plug>highlight-word-off :call HighlightAllOfWord(0)<cr>
 
-nnoremap <silent><nowait> <BS> :GitGutterAll<cr>:syntax sync minlines=1000<cr>:nohlsearch \| echo "" \|redraw! \| diffupdate \| normal \<Plug>(FastFoldUpdate) \| silent! call clever_f#reset()  <cr>
+nnoremap <silent><nowait> <BS> :syntax sync minlines=1000<cr>:nohlsearch \| echo "" \|redraw! \| diffupdate \| normal \<Plug>(FastFoldUpdate) \| silent! call clever_f#reset()  <cr>
 
 nnoremap <F12> :call ToggleMouseFunction()<cr>
 
@@ -432,9 +432,10 @@ autocmd Filetype netrw nnoremap q :quit<cr>
 
   "rename text under curser or visually selected
   " nnoremap gr *yiw:%s//<c-r>"/g<left><left>
-  nnoremap gr "xyiw:S/<c-r>x//g<left><left>
-  nnoremap gR "xyiw:%S/<c-r>x//g<left><left>
+  nnoremap gr "xyiw:s/<c-r>x//g<left><left>
+  nnoremap gR "xyiw:%s/<c-r>x//g<left><left>
 
-  vnoremap gr y:%S/<c-r>"/<c-r>"/g<left><left>
+  vnoremap gr y:s/<c-r>"/<c-r>"/g<left><left>
+  vnoremap gR y:%s/<c-r>"/<c-r>"/g<left><left>
 
   nnoremap <leader>ji gg/import<cr>

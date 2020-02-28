@@ -58,17 +58,6 @@ let g:_did_vimrc_plugins = 1
 
  endif
  "}}} _vim-fugitive
- " vim-conflicted {{{
- if PM('christoomey/vim-conflicted',  {'on_cmd': ['Conflicted', 'Merger', 'GitNextConflict']})
-     set stl+=%{ConflictedVersion()}
-     " Use `gl` and `gu` rather than the default conflicted diffget mappings
-     let g:diffget_local_map = 'gl'
-     let g:diffget_upstream_map = 'gu'
-     LMap N <leader>g] <SID>GitNextConflict :GitNextConflict<cr>
-     LMap N <leader>g[ <SID>Conflicted :Conflicted<cr>
-
- endif
- " }}}
  " vim-twiggy{{{
  if PM('sodapopcan/vim-twiggy', {'on_cmd': 'Twiggy'})
      LMap N <leader>gb <SID>Twiggy :Twiggy<cr>
@@ -91,11 +80,6 @@ let g:_did_vimrc_plugins = 1
      LMap N <leader>gv <SID>Gitv :Gitv<cr>
  endif
  " }}}
- " vim-gitgutter {{{
-
-   call PM( 'airblade/vim-gitgutter' )
-
- "}}} _vim-gitgutter
  " vimagit {{{
 
  if PM( 'jreybert/vimagit', {'on_cmd': ['Magit'], 'on_map': ['\<leader>gm'], 'rev': 'next'} )
@@ -106,11 +90,6 @@ let g:_did_vimrc_plugins = 1
    LMap N <leader>gm <SID>Magit :Magit<cr>
  endif
  "}}} _vimagit
- "gina{{{
- if PM('lambdalisue/gina.vim', {'on_cmd': ['Gina'], 'on_map': ['\<leader>gn']} )
-   LMap N <leader>gn <SID>Gina :Gina status<cr>
- endif
- "}}} _gina
  " DirDiff.vim {{{
 
    call PM( 'vim-scripts/DirDiff.vim', {'on_cmd': ['DirDiff']} )
@@ -128,15 +107,21 @@ let g:_did_vimrc_plugins = 1
 
   endif
  "}}} git-messenger.vim
- " gflog {{{
- if PM('rbong/vim-flog', {'on_cmd': ['Flog', 'FlogSplit']})
+ " vim-conflicted {{{
+ if PM('christoomey/vim-conflicted',  {'on_cmd': ['Conflicted', 'Merger', 'GitNextConflict']})
+     set stl+=%{ConflictedVersion()}
+     " Use `gl` and `gu` rather than the default conflicted diffget mappings
+     let g:diffget_local_map = 'gl'
+     let g:diffget_upstream_map = 'gu'
+     LMap N <leader>g] <SID>GitNextConflict :GitNextConflict<cr>
+     LMap N <leader>g[ <SID>Conflicted :Conflicted<cr>
+
  endif
- " }}} _gflog
+ " }}}
  " diffconflicts {{{
  if PM('whiteinge/diffconflicts')
  endif
  " }}} _ diffconflicts
-
 
  "}}}
 
