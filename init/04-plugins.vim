@@ -286,12 +286,6 @@ let g:_did_vimrc_plugins = 1
  call PM( 'gabesoft/vim-ags', {'on_cmd': ['Ags']} )
 
  "}}} _vim-ags
- " inline_edit.vim {{{
-
-   call PM( 'AndrewRadev/inline_edit.vim', { 'on_cmd': ['InlineEdit']} )
-   xnoremap <leader>ei <cmd>InlineEdit<cr>
-
- "}}} _inline_edit.vim
  " vim-multiple-cursors {{{
 
    call PM( 'terryma/vim-multiple-cursors' )
@@ -350,6 +344,12 @@ call PM('terryma/vim-expand-region')
  "}}} _vim-expand-region
 
  " Isolate
+ " inline_edit.vim {{{
+
+   call PM( 'AndrewRadev/inline_edit.vim', { 'on_cmd': ['InlineEdit']} )
+   xnoremap <leader>ei <cmd>InlineEdit<cr>
+
+ "}}} _inline_edit.vim
  " NrrwRgn {{{
 
  if PM( 'chrisbra/NrrwRgn', {
@@ -514,15 +514,6 @@ endif
   vmap gs  <Plug>SortMotionVisual
 
  "}}} _vim-sort-motion
- " vim-tag-comment {{{
-   " Comment out HTML properly
-   call PM( 'mvolkmann/vim-tag-comment', {'on_cmd': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']} )
-   nmap <leader>tc :ElementComment<cr>
-   nmap <leader>tu :ElementUncomment<cr>
-   nmap <leader>tC :TagComment<cr>
-   nmap <leader>tU :TagUncomment<cr>
-
- "}}} _vim-tag-comment
 
  " Comments
  " vim-commentary {{{
@@ -544,6 +535,15 @@ endif
  nmap <leader>ce <Plug>ChangeCommentary
  nmap <leader>cu <Plug>Commentary<Plug>Commentary
  " }}} _vim-commentary
+ " vim-tag-comment {{{
+   " Comment out HTML properly
+   call PM( 'mvolkmann/vim-tag-comment', {'on_cmd': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']} )
+   nmap <leader>tc :ElementComment<cr>
+   nmap <leader>tu :ElementUncomment<cr>
+   nmap <leader>tC :TagComment<cr>
+   nmap <leader>tU :TagUncomment<cr>
+
+ "}}} _vim-tag-comment
 
  "}}}
 
@@ -2126,21 +2126,8 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  "}}} _vim-CtrlSpace
 
  " File
- " denite.vim{{{
-   if PM( 'Shougo/denite.nvim', {'hook_post_source': 'call SetDeniteMappings()'} )
-    " Change mappings.
-    function! SetDeniteMappings()
-        call denite#custom#map('_', "<C-j>", '<denite:move_to_next_line>')
-        call denite#custom#map('_', "<C-k>", '<denite:move_to_prev_line>')
-        call denite#custom#map('_', "<C-;>", '<denite:input_command_line>')
-        call denite#custom#var('file_rec', 'command',
-                    \ ['rg', '--threads', '2', '--files', '--glob', '!.git'])
-    endfunction
-  endif
-
- " }}} _dnite.vim
  "cpsm {{{
- call PM('nixprime/cpsm')
+    call PM('nixprime/cpsm')
  "}}} _cpsm
  " FZF {{{
    if PM('junegunn/fzf', { 'build': 'sh -c "~/.config/nvim/dein/repos/github.com/junegunn/fzf/install --bin"', 'merged': 0 })
@@ -2609,184 +2596,186 @@ endfunction
  endif
  " }}}
 
- if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
-     hi default link ClapInput   Visual
-     hi default link ClapDisplay Pmenu
-     hi default link ClapPreview PmenuSel
-     hi default link ClapMatches Search
+ " vim-clap {{{
+    if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
+        hi default link ClapInput   Visual
+        hi default link ClapDisplay Pmenu
+        hi default link ClapPreview PmenuSel
+        hi default link ClapMatches Search
 
-     " By default ClapQuery will use the bold fg of Normal and the same bg of ClapInput
+        " By default ClapQuery will use the bold fg of Normal and the same bg of ClapInput
 
-     hi ClapDefaultPreview          ctermbg=237 guibg=#3E4452
-     hi ClapDefaultSelected         cterm=bold,underline gui=bold,underline ctermfg=80 guifg=#5fd7d7
-     hi ClapDefaultCurrentSelection cterm=bold gui=bold ctermfg=224 guifg=#ffd7d7
+        hi ClapDefaultPreview          ctermbg=237 guibg=#3E4452
+        hi ClapDefaultSelected         cterm=bold,underline gui=bold,underline ctermfg=80 guifg=#5fd7d7
+        hi ClapDefaultCurrentSelection cterm=bold gui=bold ctermfg=224 guifg=#ffd7d7
 
-     hi default link ClapPreview          ClapDefaultPreview
-     hi default link ClapSelected         ClapDefaultSelected
-     hi default link ClapCurrentSelection ClapDefaultCurrentSelection
+        hi default link ClapPreview          ClapDefaultPreview
+        hi default link ClapSelected         ClapDefaultSelected
+        hi default link ClapCurrentSelection ClapDefaultCurrentSelection
 
- endif
+    endif
+ " }}} _ vim-clap
 
  "vim-dirvish {{{
- if PM('justinmk/vim-dirvish', {'platform' : 'win64'})
-     if PM('kristijanhusak/vim-dirvish-git')
-         " let g:dirvish_git_indicators = {
-         "             \ 'Modified'  : '?',
-         "             \ 'Staged'    : '?',
-         "             \ 'Untracked' : '?',
-         "             \ 'Renamed'   : '?',
-         "             \ 'Unmerged'  : '?',
-         "             \ 'Ignored'   : '?',
-         "             \ 'Unknown'   : '?'
-         "             \ }
-         " autocmd vimrc FileType dirvish nmap <silent><buffer><C-n> <Plug>(dirvish_git_next_file)
-         " autocmd vimrc FileType dirvish nmap <silent><buffer><C-p> <Plug>(dirvish_git_prev_file)
-     endif
-     call PM('fsharpasharp/vim-dirvinist')
- endif
+    if PM('justinmk/vim-dirvish', {'platform' : 'win64'})
+        if PM('kristijanhusak/vim-dirvish-git')
+            " let g:dirvish_git_indicators = {
+            "             \ 'Modified'  : '?',
+            "             \ 'Staged'    : '?',
+            "             \ 'Untracked' : '?',
+            "             \ 'Renamed'   : '?',
+            "             \ 'Unmerged'  : '?',
+            "             \ 'Ignored'   : '?',
+            "             \ 'Unknown'   : '?'
+            "             \ }
+            " autocmd vimrc FileType dirvish nmap <silent><buffer><C-n> <Plug>(dirvish_git_next_file)
+            " autocmd vimrc FileType dirvish nmap <silent><buffer><C-p> <Plug>(dirvish_git_prev_file)
+        endif
+        call PM('fsharpasharp/vim-dirvinist')
+    endif
  " }}} _vim-dirvish
 
  "defx.nvim {{{
 
- if PM('Shougo/defx.nvim', {'platform':'mac', 'hook_post_source': "call SetDefXOPtions()"})
-     if PM('kristijanhusak/defx-icons')
-         " :Defx -columns=icons:filename:type
-         let g:defx_icons_enable_syntax_highlight = 0
-     endif
+    if PM('Shougo/defx.nvim', {'platform':'mac', 'hook_post_source': "call SetDefXOPtions()"})
+        if PM('kristijanhusak/defx-icons')
+            " :Defx -columns=icons:filename:type
+            let g:defx_icons_enable_syntax_highlight = 0
+        endif
 
-     function! SetDefXOPtions()
-         call defx#custom#option('_', {
-                     \ 'columns': 'mark:filename:type:size:time',
-                     \ })
-         call defx#custom#column('filename', {
-                     \ 'min_width': 40,
-                     \ 'max_width': 80,
-                     \ })
+        function! SetDefXOPtions()
+            call defx#custom#option('_', {
+                        \ 'columns': 'mark:filename:type:size:time',
+                        \ })
+            call defx#custom#column('filename', {
+                        \ 'min_width': 40,
+                        \ 'max_width': 80,
+                        \ })
 
-         call defx#custom#column('mark', {
-                     \ 'directory_icon': '▸',
-                     \ 'readonly_icon': '✗',
-                     \ 'selected_icon': '✓',
-                     \ })
-     endfunction
+            call defx#custom#column('mark', {
+                        \ 'directory_icon': '▸',
+                        \ 'readonly_icon': '✗',
+                        \ 'selected_icon': '✓',
+                        \ })
+        endfunction
 
-     nnoremap <silent> - :Defx  `expand('%:p:h')` -search=`expand('%:p')`<cr>
+        nnoremap <silent> - :Defx  `expand('%:p:h')` -search=`expand('%:p')`<cr>
 
-	" nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-	" Defx -split=vertical -winwidth=50 -direction=topleft
+    " nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
+    " Defx -split=vertical -winwidth=50 -direction=topleft
 
-  function! s:isdir(dir)
-      return !empty(a:dir) && (isdirectory(a:dir) ||
-                  \ (!empty($SYSTEMDRIVE) && isdirectory('/'.tolower($SYSTEMDRIVE[0]).a:dir)))
-  endfunction
+    function! s:isdir(dir)
+        return !empty(a:dir) && (isdirectory(a:dir) ||
+                    \ (!empty($SYSTEMDRIVE) && isdirectory('/'.tolower($SYSTEMDRIVE[0]).a:dir)))
+    endfunction
 
-   autocmd BufEnter * if <SID>isdir(expand('%')) && !exists('b:defx')
-               \ | exe 'Defx' expand('%')
-               \ | endif
+    autocmd BufEnter * if <SID>isdir(expand('%')) && !exists('b:defx')
+                \ | exe 'Defx' expand('%')
+                \ | endif
 
-     autocmd FileType defx call s:defx_my_settings()
-     function! s:defx_my_settings() abort
-         " Define mappings
-         nnoremap <silent><buffer><expr> <CR>
-                     \ defx#do_action('open')
-         nnoremap <silent><buffer><expr> c
-                     \ defx#do_action('copy')
-         nnoremap <silent><buffer><expr> m
-                     \ defx#do_action('move')
-         nnoremap <silent><buffer><expr> p
-                     \ defx#do_action('paste')
-         nnoremap <silent><buffer><expr> <c-v>
-                     \ defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
-         nnoremap <silent><buffer><expr> <c-s>
-                     \ defx#do_action('multi', [['drop', 'split'], 'quit'])
-         nnoremap <silent><buffer><expr> <c-t>
-                     \ defx#do_action('open', 'tabedit')
-         nnoremap <silent><buffer><expr> P
-                     \ defx#do_action('open', 'pedit')
-         nnoremap <silent><buffer><expr> K
-                     \ defx#do_action('new_directory')
-         nnoremap <silent><buffer><expr> N
-                     \ defx#do_action('new_file')
-         nnoremap <silent><buffer><expr> M
-                     \ defx#do_action('new_multiple_files')
-         nnoremap <silent><buffer><expr> C
-                     \ defx#do_action('toggle_columns',
-                     \                'mark:filename:type:size:time')
-         nnoremap <silent><buffer><expr> S
-                     \ defx#do_action('toggle_sort', 'Time')
-         nnoremap <silent><buffer><expr> d
-                     \ defx#do_action('remove')
-         nnoremap <silent><buffer><expr> r
-                     \ defx#do_action('rename')
-         nnoremap <silent><buffer><expr> !
-                     \ defx#do_action('execute_command')
-         nnoremap <silent><buffer><expr> x
-                     \ defx#do_action('execute_system')
-         nnoremap <silent><buffer><expr> yy
-                     \ defx#do_action('yank_path')
-         nnoremap <silent><buffer><expr> .
-                     \ defx#do_action('toggle_ignored_files')
-         nnoremap <silent><buffer><expr> ;
-                     \ defx#do_action('repeat')
-         nnoremap <silent><buffer><expr> h
-                     \ defx#do_action('cd', ['..'])
-         nnoremap <silent><buffer><expr> -
-                     \ defx#do_action('cd', ['..'])
-         nnoremap <silent><buffer><expr> ~
-                     \ defx#do_action('cd')
-         nnoremap <silent><buffer><expr> q
-                     \ defx#do_action('quit')
-         nnoremap <silent><buffer><expr> <Space>
-                     \ defx#do_action('toggle_select') . 'j'
-         nnoremap <silent><buffer><expr> *
-                     \ defx#do_action('toggle_select_all')
-         nnoremap <silent><buffer><expr> j
-                     \ line('.') == line('$') ? 'gg' : 'j'
-         nnoremap <silent><buffer><expr> k
-                     \ line('.') == 1 ? 'G' : 'k'
-         nnoremap <silent><buffer><expr> <C-l>
-                     \ defx#do_action('redraw')
-         nnoremap <silent><buffer><expr> <C-g>
-                     \ defx#do_action('print')
-         nnoremap <silent><buffer><expr> cd
-                     \ defx#do_action('change_vim_cwd')
+        autocmd FileType defx call s:defx_my_settings()
+        function! s:defx_my_settings() abort
+            " Define mappings
+            nnoremap <silent><buffer><expr> <CR>
+                        \ defx#do_action('open')
+            nnoremap <silent><buffer><expr> c
+                        \ defx#do_action('copy')
+            nnoremap <silent><buffer><expr> m
+                        \ defx#do_action('move')
+            nnoremap <silent><buffer><expr> p
+                        \ defx#do_action('paste')
+            nnoremap <silent><buffer><expr> <c-v>
+                        \ defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
+            nnoremap <silent><buffer><expr> <c-s>
+                        \ defx#do_action('multi', [['drop', 'split'], 'quit'])
+            nnoremap <silent><buffer><expr> <c-t>
+                        \ defx#do_action('open', 'tabedit')
+            nnoremap <silent><buffer><expr> P
+                        \ defx#do_action('open', 'pedit')
+            nnoremap <silent><buffer><expr> K
+                        \ defx#do_action('new_directory')
+            nnoremap <silent><buffer><expr> N
+                        \ defx#do_action('new_file')
+            nnoremap <silent><buffer><expr> M
+                        \ defx#do_action('new_multiple_files')
+            nnoremap <silent><buffer><expr> C
+                        \ defx#do_action('toggle_columns',
+                        \                'mark:filename:type:size:time')
+            nnoremap <silent><buffer><expr> S
+                        \ defx#do_action('toggle_sort', 'Time')
+            nnoremap <silent><buffer><expr> d
+                        \ defx#do_action('remove')
+            nnoremap <silent><buffer><expr> r
+                        \ defx#do_action('rename')
+            nnoremap <silent><buffer><expr> !
+                        \ defx#do_action('execute_command')
+            nnoremap <silent><buffer><expr> x
+                        \ defx#do_action('execute_system')
+            nnoremap <silent><buffer><expr> yy
+                        \ defx#do_action('yank_path')
+            nnoremap <silent><buffer><expr> .
+                        \ defx#do_action('toggle_ignored_files')
+            nnoremap <silent><buffer><expr> ;
+                        \ defx#do_action('repeat')
+            nnoremap <silent><buffer><expr> h
+                        \ defx#do_action('cd', ['..'])
+            nnoremap <silent><buffer><expr> -
+                        \ defx#do_action('cd', ['..'])
+            nnoremap <silent><buffer><expr> ~
+                        \ defx#do_action('cd')
+            nnoremap <silent><buffer><expr> q
+                        \ defx#do_action('quit')
+            nnoremap <silent><buffer><expr> <Space>
+                        \ defx#do_action('toggle_select') . 'j'
+            nnoremap <silent><buffer><expr> *
+                        \ defx#do_action('toggle_select_all')
+            nnoremap <silent><buffer><expr> j
+                        \ line('.') == line('$') ? 'gg' : 'j'
+            nnoremap <silent><buffer><expr> k
+                        \ line('.') == 1 ? 'G' : 'k'
+            nnoremap <silent><buffer><expr> <C-l>
+                        \ defx#do_action('redraw')
+            nnoremap <silent><buffer><expr> <C-g>
+                        \ defx#do_action('print')
+            nnoremap <silent><buffer><expr> cd
+                        \ defx#do_action('change_vim_cwd')
 
-         " nnoremap <silent><buffer> q
-         "             \ <cmd>noautocmd bw!<cr>
-     endfunction
- endif
+            " nnoremap <silent><buffer> q
+            "             \ <cmd>noautocmd bw!<cr>
+        endfunction
+    endif
  "}}} _defx.nvim
  " vim-laravel {{{
- if PM('noahfrederick/vim-laravel')
-     " :{E,S,V,T}asset 	Anything under assets/
-     " :Ebootstrap 	Bootstrap files in boostrap/
-     " :Echannel 	Broadcast channels
-     " :Ecommand 	Console commands
-     " :Econfig 	Configuration files
-     " :Econtroller 	HTTP controllers
-     " :Edoc 	The README.md file
-     " :Eenv 	Your .env and .env.example
-     " :Eevent 	Events
-     " :Eexception 	Exceptions
-     " :Efactory 	Model factories
-     " :Ejob 	Jobs
-     " :Elanguage 	Messages/translations
-     " :Elib 	All class files under app/
-     " :Elistener 	Event listeners
-     " :Email 	Mailables
-     " :Emiddleware 	HTTP middleware
-     " :Emigration 	Database migrations
-     " :Enotification 	Notifications
-     " :Epolicy 	Auth policies
-     " :Eprovider 	Service providers
-     " :Erequest 	HTTP form requests
-     " :Eresource 	HTTP resources
-     " :Eroutes 	HTTP routes files
-     " :Erule 	Validation rules
-     " :Eseeder 	Database seeders
-     " :Etest 	All class files under tests/
-     " :Eview 	Blade templates
- endif
+    if PM('noahfrederick/vim-laravel')
+        " :{E,S,V,T}asset 	Anything under assets/
+        " :Ebootstrap 	Bootstrap files in boostrap/
+        " :Echannel 	Broadcast channels
+        " :Ecommand 	Console commands
+        " :Econfig 	Configuration files
+        " :Econtroller 	HTTP controllers
+        " :Edoc 	The README.md file
+        " :Eenv 	Your .env and .env.example
+        " :Eevent 	Events
+        " :Eexception 	Exceptions
+        " :Efactory 	Model factories
+        " :Ejob 	Jobs
+        " :Elanguage 	Messages/translations
+        " :Elib 	All class files under app/
+        " :Elistener 	Event listeners
+        " :Email 	Mailables
+        " :Emiddleware 	HTTP middleware
+        " :Emigration 	Database migrations
+        " :Enotification 	Notifications
+        " :Epolicy 	Auth policies
+        " :Eprovider 	Service providers
+        " :Erequest 	HTTP form requests
+        " :Eresource 	HTTP resources
+        " :Eroutes 	HTTP routes files
+        " :Erule 	Validation rules
+        " :Eseeder 	Database seeders
+        " :Etest 	All class files under tests/
+        " :Eview 	Blade templates
+    endif
  " }}}
  " vim-projectionist {{{
 
@@ -2823,17 +2812,13 @@ endfunction
 
  "}}} _vim-projectionist
  " vim-dotenv {{{
-
    call PM( 'tpope/vim-dotenv', {'on_cmd':['Dotenv']} )
-
  "}}} _vim-dotenv
 
  " Content
  " vim-stay {{{
-
- "Restore cursor when reopoening files
-call PM('kopischke/vim-stay')
-
+    "Restore cursor when reopoening files
+    call PM('kopischke/vim-stay')
  "}}} _vim-stay
  " nvim-miniyank {{{
 if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
@@ -2854,9 +2839,7 @@ endif
 
  "}}} _nvim-miniyank
  " vim-pseudocl {{{
-
    call PM( 'junegunn/vim-pseudocl' ) "Required by oblique & fnr
-
  "}}} _vim-pseudocl
  " vim-oblique {{{
 if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
@@ -2888,13 +2871,6 @@ if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
    nmap  g;r <Plug>(Scalpel)
   endif
  "}}} _scalpel
- " vim-fuzzysearch {{{
-
-  if PM( 'ggVGc/vim-fuzzysearch', {'on_cmd': ['FuzzySearch']} )
-   nnoremap g\f :FuzzySearch<cr>
- endif
-
- "}}} _vim-fuzzysearch
  " grepper {{{
 
  if PM( 'mhinz/vim-grepper', {'on_cmd': [ 'Grepper'], 'on_map': [ '<plug>(Grepper' ]} )
@@ -3272,9 +3248,9 @@ endif
  "}}} _ctrlsf.vim
 
  "fze {{{ manage files using FZF
- if PM('khalidchawtany/fze')
-     nnoremap     <C-;>rf <cmd>Fze<cr>
- endif
+    if PM('khalidchawtany/fze')
+        nnoremap <c-p><c-x> <cmd>Fze<cr>
+    endif
  "}}} _fxe
 
  " }}} _Navigation
@@ -3284,6 +3260,8 @@ endif
  " vim-foldfocus {{{
 
   if PM( 'vasconcelloslf/vim-foldfocus', {'on_func': ['FoldFocus']} )
+
+   nnoremap zF :call FoldFocus('vnew')<CR>
    nnoremap <leader>z<cr> :call FoldFocus('vnew')<CR>
    nnoremap <leader>zz<cr>  :call FoldFocus('e')<CR>
  endif
@@ -3298,7 +3276,7 @@ endif
    " or the the inverse using <leader>iz or restore original fold using <leader>Z
    nmap <Leader>zs   <Plug>SearchFoldNormal
    nmap <Leader>zi   <Plug>SearchFoldInverse
-   nmap <Leader>ze   <Plug>SearchFoldRestore
+   nmap <Leader>zr   <Plug>SearchFoldRestore
    nmap <Leader>zw   <Plug>SearchFoldCurrentWord
  endif
 
@@ -3327,9 +3305,6 @@ endif
 
  " Themeing {{{
 
- "vim-flagship {{{
- call PM('tpope/vim-flagship', {'lazy':1})
- "}}} _vim-flagship
  " lightline {{{
  if PM( 'itchyny/lightline.vim' )
 
@@ -3512,6 +3487,7 @@ endif
   endif
  "}}}
 
+ " goyo {{{
  if PM('junegunn/goyo.vim', {'on_cmd' :['Goyo']})
      let g:goyo_width = 100
      let g:goyo_linenr = 1
@@ -3548,6 +3524,7 @@ endif
              \| autocmd! User GoyoLeave nested call Goyo_leave()
    augroup END
  endif
+ " }}} _ goyo
 
  "colortuner {{{
  if PM('zefei/vim-colortuner', {'on_cmd' :['Colortuner']})
