@@ -2888,20 +2888,12 @@ if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
   Map nox z/ <Plug>(Oblique-F/)
   Map nox z? <Plug>(Oblique-F?)
 
-  "Make n/N move forward/backwards regardless of search direction
-  "Map nx  n  <Plug>(Oblique-n)
-  "Map nx  N  <Plug>(Oblique-N)
-  "noremap <expr> n 'Nn'[v:searchforward]
-  "noremap <expr> N 'nN'[v:searchforward]
   nmap <expr>n ['<Plug>(Oblique-N)','<Plug>(Oblique-n)'][v:searchforward]
   nmap <expr>N ['<Plug>(Oblique-n)','<Plug>(Oblique-N)'][v:searchforward]
 
-  autocmd! User Oblique       AnzuUpdateSearchStatusOutput | normal! zz
-  autocmd! User ObliqueStar   AnzuUpdateSearchStatusOutput | normal! zz
-  autocmd! User ObliqueRepeat AnzuUpdateSearchStatusOutput | normal! zz
-  " autocmd! User Oblique        AnzuUpdateSearchStatusOutput
-  " autocmd! User ObliqueStar    AnzuUpdateSearchStatusOutput
-  " autocmd! User ObliqueRepeat  AnzuUpdateSearchStatusOutput
+  autocmd! User Oblique       normal! zz
+  autocmd! User ObliqueStar   normal! zz
+  autocmd! User ObliqueRepeat normal! zz
 
  endif
 
@@ -2911,14 +2903,6 @@ if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
    nmap  g;r <Plug>(Scalpel)
   endif
  "}}} _scalpel
- " vim-anzu {{{
-
- if PM( 'osyo-manga/vim-anzu', {'on_cmd': ['AnzuUpdateSearchStatusOutput']} )
-  "Let anzu display numbers only. The search is already displayed by Oblique
-  let g:anzu_status_format = ' (%i/%l)'
- endif
-
- "}}} _vim-anzu
  " vim-fuzzysearch {{{
 
   if PM( 'ggVGc/vim-fuzzysearch', {'on_cmd': ['FuzzySearch']} )
