@@ -803,6 +803,58 @@ endif
 
  " languages {{{
 
+ " any-jump {{{
+ if PM('pechorin/any-jump.nvim')
+
+    let g:any_jump_disable_default_keybindings = v:true
+    " Jump to definition under cursore
+    nnoremap gjj :AnyJump<CR>
+
+    " open previous opened file (after jump)
+    nnoremap gjb :AnyJumpBack<CR>
+    nnoremap gjk :AnyJumpBack<CR>
+
+    " open last closed search window again
+    nnoremap gjl :AnyJumpLastResults<CR>
+
+    au FileType any-jump nnoremap <buffer> o :call g:AnyJumpHandleOpen()<cr>
+    au FileType any-jump nnoremap <buffer><CR> :call g:AnyJumpHandleOpen()<cr>
+    au FileType any-jump nnoremap <buffer> p :call g:AnyJumpHandlePreview()<cr>
+    au FileType any-jump nnoremap <buffer> <tab> :call g:AnyJumpHandlePreview()<cr>
+    au FileType any-jump nnoremap <buffer> q :call g:AnyJumpHandleClose()<cr>
+    au FileType any-jump nnoremap <buffer> <esc> :call g:AnyJumpHandleClose()<cr>
+    au FileType any-jump nnoremap <buffer> u :call g:AnyJumpHandleUsages()<cr>
+    au FileType any-jump nnoremap <buffer> U :call g:AnyJumpHandleUsages()<cr>
+    au FileType any-jump nnoremap <buffer> b :call g:AnyJumpToFirstLink()<cr>
+    au FileType any-jump nnoremap <buffer> T :call g:AnyJumpToggleGrouping()<cr>
+    au FileType any-jump nnoremap <buffer> a :call g:AnyJumpToggleAllResults()<cr>
+    au FileType any-jump nnoremap <buffer> A :call g:AnyJumpToggleAllResults()<cr>
+
+    " Show line numbers in search rusults
+    let g:any_jump_list_numbers = v:true
+
+    " Auto search usages
+    let g:any_jump_usages_enabled = v:false
+
+    " Auto group results by filename
+    let g:any_jump_grouping_enabled = v:false
+
+    " Amount of preview lines for each search result
+    let g:any_jump_preview_lines_count = 5
+
+    " Max search results, other results can be opened via [a]
+    let g:any_jump_max_search_results = 7
+
+    " Prefered search engine: rg or ag
+    let g:any_jump_search_prefered_engine = 'rg'
+    " Ungrouped results ui variants:
+    " - 'filename_first'
+    " - 'filename_last'
+
+    let g:any_jump_results_ui_style = 'filename_first' "
+ endif
+ " }}} _ any-jump
+
  " nvim-lsp {{{
  if PM('neovim/nvim-lsp')
 " lua << EOF
@@ -3574,7 +3626,7 @@ endif
  " vim-better-whitespace {{{
 
  if PM( 'ntpeters/vim-better-whitespace' )
-   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'leaderGuide']
+   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'leaderGuide', 'any-jump']
    autocmd FileType unite DisableWhitespace
    autocmd FileType vimfiler DisableWhitespace
  endif
