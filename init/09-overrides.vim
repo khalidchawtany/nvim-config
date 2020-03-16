@@ -34,9 +34,10 @@ LMap N! <c-p><c-\> <Plug>FzfProjects <cmd>call fzf#run({"source": g:projects , "
 LMap N! <leader>ed <Plug>EditDevDrive <cmd>e /Volumes/Dev<cr>
 
 function! RegenerateHelpTags()
-  silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt
-  silent! !rm ~/.config/nvim/dein/.dein/doc/hyperstyle.txt
-  silent! helptags ~/.config/nvim/dein/.dein/doc/
+    silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt
+    silent! !rm ~/.config/nvim/dein/.dein/doc/hyperstyle.txt
+    silent! helptags ~/.config/nvim/dein/.dein/doc/
+    helptags /Users/juju/.config/nvim/dein/.cache/init.vim/.dein/doc/
 endfunction
 
 "hi FoldColumn ctermfg=4 ctermbg=248 guifg=#00008B guibg=#e0e0e0
@@ -68,9 +69,26 @@ command! ToggleDarkAndLight
             \  exe 'set background='.g:colorschemes[&background].togglebg
             \| exe 'colorscheme' g:colorschemes[&background].colorscheme
             \| exe 'LightLineColorScheme' g:colorschemes[&background].lightline
+            \| exe 'call SetClapFuzzyMatches()'
 
 
  nnoremap cob <cmd>ToggleDarkAndLight<cr>
+
+
+ function! SetClapFuzzyMatches()
+     hi ClapFuzzyMatches1 cterm=bold ctermfg=118 gui=bold guifg=#87ff00
+     hi ClapFuzzyMatches2 cterm=bold ctermfg=82 gui=bold guifg=#5fff00
+     hi ClapFuzzyMatches3 cterm=bold ctermfg=46 gui=bold guifg=#00ff00
+     hi ClapFuzzyMatches4 cterm=bold ctermfg=47 gui=bold guifg=#00ff5f
+     hi ClapFuzzyMatches5 cterm=bold ctermfg=48 gui=bold guifg=#00ff87
+     hi ClapFuzzyMatches6 cterm=bold ctermfg=49 gui=bold guifg=#00ffaf
+     hi ClapFuzzyMatches7 cterm=bold ctermfg=50 gui=bold guifg=#00ffd7
+     hi ClapFuzzyMatches8 cterm=bold ctermfg=51 gui=bold guifg=#00ffff
+     hi ClapFuzzyMatches9 cterm=bold ctermfg=87 gui=bold guifg=#5fffff
+     hi ClapFuzzyMatches10 cterm=bold ctermfg=123 gui=bold guifg=#87ffff
+     hi ClapFuzzyMatches11 cterm=bold ctermfg=159 gui=bold guifg=#afffff
+     hi ClapFuzzyMatches12 cterm=bold ctermfg=195 gui=bold guifg=#d7ffff
+ endfunction
 
  function! s:term_gf()
     let procid = matchstr(bufname(""), '\(://.*/\)\@<=\(\d\+\)')

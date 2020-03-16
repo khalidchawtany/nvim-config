@@ -50,6 +50,11 @@ nnoremap <silent><nowait> <BS> :syntax sync minlines=1000<cr>:nohlsearch \| echo
 
 nnoremap <F12> :call ToggleMouseFunction()<cr>
 
+
+nnoremap <c-s><space> :echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+            \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+            \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"<CR>
+
 vnoremap . :norm.<CR>
 
 " { and } skip over closed folds

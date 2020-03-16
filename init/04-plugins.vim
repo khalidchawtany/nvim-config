@@ -45,7 +45,7 @@ let g:_did_vimrc_plugins = 1
     LMap N <leader>g<leader> <SID>TabStatus  :call FugitiveDetect(getcwd()) \| :Gtabedit :<cr>
     LMap N <leader>gc <SID>Commit  :call FugitiveDetect(getcwd()) \| execute ":Gcommit"<cr>
     LMap N <leader>gp <SID>Pull    :call FugitiveDetect(getcwd()) \| execute ":Gpull"<cr>
-    LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Gpush"<cr>
+    LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Gpush" \| echo "Pushed :)"<cr>
     LMap N <leader>gr <SID>Read    :call FugitiveDetect(getcwd()) \| execute ":Gread"<cr>
     LMap N <leader>gw <SID>Write   :call FugitiveDetect(getcwd()) \| execute ":Gwrite"<cr>
     LMap N <leader>gdv <SID>V-Diff :call FugitiveDetect(getcwd()) \| execute ":Gvdiff"<cr>
@@ -804,7 +804,8 @@ endif
  " languages {{{
 
  " any-jump {{{
- if PM('pechorin/any-jump.nvim')
+ " if PM('khalidchawtany/any-jump.nvim')
+  if PM('pechorin/any-jump.nvim')
 
     let g:any_jump_disable_default_keybindings = v:true
     " Jump to definition under cursore
@@ -844,6 +845,8 @@ endif
 
     " Max search results, other results can be opened via [a]
     let g:any_jump_max_search_results = 7
+
+    let g:any_jump_window_width_ratio = 0.8
 
     " Prefered search engine: rg or ag
     let g:any_jump_search_prefered_engine = 'rg'
@@ -1391,6 +1394,7 @@ endif
    "}}} _vim-javascript
    "vim-jsx {{{
    call PM('mxw/vim-jsx')
+   let g:jsx_ext_required = 1
    "}}} _vim-jsx
  " vim-ragtag {{{
 
@@ -1718,6 +1722,34 @@ endif
      nnoremap <silent> <space>l  :<C-u>Denite coc-link<cr>
 
      nnoremap <silent> <c-p><c-s>  :CocList outline<cr>
+
+     " git gutter
+     " navigate chunks of current buffer
+     nmap [c <Plug>(coc-git-prevchunk)zz
+     nmap ]c <Plug>(coc-git-nextchunk)zz
+
+
+     " Show chunk info under cursor.
+     nmap <leader>gi <Plug>(coc-git-chunkinfo)
+
+     " Show commit contains current position
+     nmap <leader>gh <Plug>(coc-git-commit)
+
+     nnoremap <leader>hu :CocCommand git.chunkUndo<cr>
+     nnoremap <leader>hw :CocCommand git.chunkStage<cr>
+     nnoremap <leader>hs :CocCommand git.chunkStage<cr>
+
+     " " show chunk diff at current position
+     " nmap gs <Plug>(coc-git-chunkinfo)
+     " " show commit contains current position
+     " nmap gc <Plug>(coc-git-commit)
+
+
+     " create text object for git chunks
+     omap ig <Plug>(coc-git-chunk-inner)
+     xmap ig <Plug>(coc-git-chunk-inner)
+     omap ag <Plug>(coc-git-chunk-outer)
+     xmap ag <Plug>(coc-git-chunk-outer)
  endif
  "}}} _coc.nvim
 
@@ -2659,20 +2691,77 @@ endfunction
 
  " vim-clap {{{
     if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
-        hi default link ClapInput   Visual
-        hi default link ClapDisplay Pmenu
-        hi default link ClapPreview PmenuSel
-        hi default link ClapMatches Search
 
-        " By default ClapQuery will use the bold fg of Normal and the same bg of ClapInput
 
-        hi ClapDefaultPreview          ctermbg=237 guibg=#3E4452
-        hi ClapDefaultSelected         cterm=bold,underline gui=bold,underline ctermfg=80 guifg=#5fd7d7
-        hi ClapDefaultCurrentSelection cterm=bold gui=bold ctermfg=224 guifg=#ffd7d7
+        let g:clap_layout = { 'relative': 'editor', 'width': '78%', 'height': '33%', 'row': '33%', 'col': '11%' }
+        let g:clap_open_action = {'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit' }
+        let g:clap_selected_sign = {'text': ' >', 'texthl': "ClapSelectedSign", "linehl": "ClapSelected"}
+        let g:clap_current_selection_sign = {'text': '>>', 'texthl': "ClapCurrentSelectionSign", "linehl": "ClapCurrentSelection"}
+        let g:clap_popup_input_delay = 100
 
-        hi default link ClapPreview          ClapDefaultPreview
-        hi default link ClapSelected         ClapDefaultSelected
-        hi default link ClapCurrentSelection ClapDefaultCurrentSelection
+        let g:clap_theme = {
+                    \ }
+                    " \ 'input': {'guifg': 'red', 'ctermfg': 'red', 'guibg': 'red'},
+                    " \ 'search_text': {'guifg': 'red', 'ctermfg': 'red'},
+                    " \ 'selected': {'guifg': 'green', 'ctermfg': 'green'},
+                    " \ 'spinner': {'guifg': 'green', 'ctermfg': 'green'},
+                    " \ 'selected_sign': {'guifg': 'green', 'ctermfg': 'green'},
+                    " \ 'current_selection': {'guifg': 'green', 'ctermfg': 'green'},
+                    " \ 'current_selection_sign': {'guifg': 'green', 'ctermfg': 'green'},
+                    " \ 'display': {'guifg': 'green', 'ctermfg': 'green'},
+                    " \ 'preview': {'guifg': 'green', 'ctermfg': 'green'}
+                    "
+        " let g:clap_theme = 'material_design_dark'
+        nnoremap <c-s>f        :Clap files<cr>
+        nnoremap <c-s>l        :Clap blines<cr>
+        nnoremap <c-s>L        :Clap lines<cr>
+        nnoremap <c-s>o        :Clap buffers<cr>
+        nnoremap <c-s>c        :Clap colors<cr>
+        nnoremap <c-s>;        :Clap command<cr>
+        nnoremap <c-s><cr>     :Clap command_history<cr>
+        nnoremap <c-s>/        :Clap search_history<cr>
+        nnoremap <c-s>gc       :Clap commits<cr>
+        nnoremap <c-s>t        :Clap file_types<cr>
+        nnoremap <c-s><c-f>    :Clap gfiles<cr>
+        nnoremap <c-s>F        :Clap git_diff_files<cr>
+        nnoremap <c-s>a        :Clap grep<cr>
+        nnoremap <c-s>j        :Clap jumps<cr>
+        nnoremap <c-s>'        :Clap marks<cr>
+        nnoremap <c-s>m        :Clap maps<cr>
+        nnoremap <c-s>q        :Clap quickfix<cr>
+        nnoremap <c-s>]        :Clap loclist<cr>
+        nnoremap <c-s>r        :Clap registers<cr>
+        nnoremap <c-s>y        :Clap yanks<cr>
+        nnoremap <c-s>p        :Clap filer<cr>
+        nnoremap <c-s>P        :Clap providers<cr>
+        nnoremap <c-s>w        :Clap windows<cr>
+        nnoremap <c-s>w        :Clap loclist<cr>
+
+         " hi default link ClapInput   Visual
+         " hi default link ClapDisplay Pmenu
+         " hi default link ClapPreview PmenuSel
+         " hi default link ClapMatches Search
+
+         " " By default ClapQuery will use the bold fg of Normal and the same bg of ClapInput
+
+         " hi ClapDefaultPreview          ctermbg=237 guibg=#3E4452
+         " hi ClapDefaultSelected         cterm=bold,underline gui=bold,underline ctermfg=80 guifg=#5fd7d7
+         " hi ClapDefaultCurrentSelection cterm=bold gui=bold ctermfg=224 guifg=#ffd7d7
+
+         " hi default link ClapPreview          ClapDefaultPreview
+         " hi default link ClapSelected         ClapDefaultSelected
+         " hi default link ClapCurrentSelection ClapDefaultCurrentSelection
+
+        " augroup YourGroup
+        "     autocmd!
+        "     autocmd User ClapOnEnter   call YourFunction()
+        "     autocmd User ClapOnExit    call YourFunction()
+        " augroup END
+
+        let g:clap_provider_commands = {
+                    \ 'source': ['Clap debug', 'UltiSnipsEdit'],
+                    \ 'sink': { selected -> execute(selected, '')},
+                    \ }
 
     endif
  " }}} _ vim-clap
@@ -3629,6 +3718,7 @@ endif
    let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'leaderGuide', 'any-jump']
    autocmd FileType unite DisableWhitespace
    autocmd FileType vimfiler DisableWhitespace
+   autocmd FileType any-jump DisableWhitespace
  endif
 
  "}}}
@@ -3693,6 +3783,7 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
+ call PM('liuchengxu/space-vim-dark')
  call PM('owickstrom/vim-colors-paramount')
  call PM('jacoborus/tender.vim')
  call PM('rakr/vim-one')
@@ -3719,8 +3810,9 @@ endif
 
  call PM('ayu-theme/ayu-vim')
  let ayucolor="dark"   " for dark version of theme
- let ayucolor="mirage" " for mirage version of theme
- let ayucolor="light"  " for light version of theme
+ " let ayucolor="mirage" " for mirage version of theme
+ " let ayucolor="light"  " for light version of theme
+
 
  call PM('drewtempelmeyer/palenight.vim')
  let g:palenight_terminal_italics=1
