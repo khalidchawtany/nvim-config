@@ -2794,12 +2794,13 @@ endfunction
                     \ 'row': start_y,
                     \ 'col': start_x,
                     \ 'width': width,
-                    \ 'height': height
+                    \ 'height': height,
                     \ }
 
             call nvim_open_win(buf, v:true, opts)
         endfunction
-        let g:nnn#layout = 'call NNNlayout()'
+        " let g:nnn#layout = 'call NNNlayout()'
+        let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug', 'border': 'rounded' } }
     endif
  "}}} _ nnn.vim
  " fern.vim {{{
