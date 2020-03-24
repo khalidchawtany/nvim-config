@@ -48,8 +48,10 @@ hi IncSearch guifg=orange
 
 command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
-set background=light
-colorscheme PaperColor
+ colorscheme palenight
+ hi NormalFloat guibg=#697098
+ hi Visual guibg=#ff5370
+
 " hi SignatureMarkText guibg=white guifg=lightgray
 " hi EndOfBuffer guibg=white
 " hi CursorLineNr guibg=white
@@ -60,6 +62,7 @@ colorscheme PaperColor
 " hi Normal guibg=white
 " hi FoldColumn guibg=white guifg=lightblue
 
+
 let g:colorschemes = {
             \ 'light': {'togglebg': 'dark','colorscheme': 'PaperColor', 'lightline': 'one'},
             \ 'dark':  {'togglebg': 'light','colorscheme': 'palenight',  'lightline': 'onedark'}
@@ -69,13 +72,13 @@ command! ToggleDarkAndLight
             \  exe 'set background='.g:colorschemes[&background].togglebg
             \| exe 'colorscheme' g:colorschemes[&background].colorscheme
             \| exe 'LightLineColorScheme' g:colorschemes[&background].lightline
-            \| exe 'call SetClapFuzzyMatches()'
+            \| exe 'call CorrectColorsAfterColorschemeChange()'
 
 
  nnoremap cob <cmd>ToggleDarkAndLight<cr>
 
 
- function! SetClapFuzzyMatches()
+ function! CorrectColorsAfterColorschemeChange()
      hi ClapFuzzyMatches1 cterm=bold ctermfg=118 gui=bold guifg=#87ff00
      hi ClapFuzzyMatches2 cterm=bold ctermfg=82 gui=bold guifg=#5fff00
      hi ClapFuzzyMatches3 cterm=bold ctermfg=46 gui=bold guifg=#00ff00
@@ -88,6 +91,10 @@ command! ToggleDarkAndLight
      hi ClapFuzzyMatches10 cterm=bold ctermfg=123 gui=bold guifg=#87ffff
      hi ClapFuzzyMatches11 cterm=bold ctermfg=159 gui=bold guifg=#afffff
      hi ClapFuzzyMatches12 cterm=bold ctermfg=195 gui=bold guifg=#d7ffff
+
+     if &background = 'dark'
+         hi NormalFloat guibg=#697098
+     endif
  endfunction
 
  function! s:term_gf()
@@ -133,8 +140,6 @@ LMap n <leader>zi <Plug>fold-indent <cmd>set fdm=indent<cr><cmd>set fdm=manual<c
 
 " ToggleDarkAndLight
 
-hi NormalFloat guibg=white
-
 if has('win64')
     nnoremap <leader><s-e><cr> :execute "au BufWinEnter *.php match Ignore /\r$/"<cr>
 
@@ -146,3 +151,18 @@ endif
 
 set linespace=20
 set guifont=Operator\ Mono\ Lig:h20
+
+
+
+
+
+" let g:index = 0
+" while g:index < 256
+"     exec 'let g:terminal_color_' . g:index . '= "red" '
+"     " exec 'echomsg "let g:terminal_color_". g:index  . " = " . g:terminal_color_' . g:index
+"     let g:index = g:index + 1
+" endwhile
+
+" let g:nnn#command = "TERM=screen-256color  NNN_COLORS='0' nnn -d"
+" let g:terminal_color_background="blue"
+" let g:terminal_color_foreground ="green"

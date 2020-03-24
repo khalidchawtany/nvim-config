@@ -137,7 +137,7 @@ let g:_did_vimrc_plugins = 1
  "}}}
  " vim-speeddating {{{
 
-   call PM( 'tpope/vim-speeddating', {'on_ft': ['org'],'on_map': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']} )
+   call PM( 'tpope/vim-speeddating', {'on_ft': ['org'], 'on_cmd': ['SpeedDatingFormat'], 'on_map': ['<Plug>SpeedDatingUp', '<Plug>SpeedDatingDown']} )
 
  "}}} _vim-speeddating
  " vim-orgmode {{{
@@ -1309,46 +1309,7 @@ endif
  endif
 
  "}}}
- " pear-tree {{{
- if PM('tmsvg/pear-tree')
-     " Default rules for matching:
-     let g:pear_tree_pairs = {
-                 \ '(': {'closer': ')'},
-                 \ '[': {'closer': ']'},
-                 \ '{': {'closer': '}'},
-                 \ "'": {'closer': "'"},
-                 \ '"': {'closer': '"'}
-                 \ }
-     " See pear-tree/ftplugin/ for filetype-specific matching rules
 
-     " Pear Tree is enabled for all filetypes by default
-     let g:pear_tree_ft_disabled = []
-
-     " Pair expansion is dot-repeatable by default
-     let g:pear_tree_repeatable_expand = 1
-
-     " Smart pairs are disabled by default
-     let g:pear_tree_smart_openers = 0
-     let g:pear_tree_smart_closers = 0
-     let g:pear_tree_smart_backspace = 0
-
-     " If enabled, smart pair functions timeout after 60ms
-     let g:pear_tree_timeout = 60
-
-     " Default mappings:
-     imap <BS> <Plug>(PearTreeBackspace)
-     imap <CR> <Plug>(PearTreeExpand)
-     imap <Esc> <Plug>(PearTreeFinishExpansion)
-     " Pear Tree also makes <Plug> mappings for each opening and closing string.
-     "     :help <Plug>(PearTreeOpener)
-     "     :help <Plug>(PearTreeCloser)
-
-     " Not mapped by default:
-     " <Plug>(PearTreeJump)
-     " <Plug>(PearTreeExpandOne)
-     " <Plug>(PearTreeJNR)
- endif
- " }}} _pear-tree
  " vim-closetag {{{
  "This plugin uses > of the clos tag to work in insert mode
  "<table|   => press > to have <table>|<table>
@@ -2693,11 +2654,11 @@ endfunction
     if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
 
 
-        let g:clap_layout = { 'relative': 'editor', 'width': '78%', 'height': '33%', 'row': '33%', 'col': '11%' }
+        let g:clap_layout = { 'relative': 'editor', 'width': '78%', 'height': '35%', 'row': '20%', 'col': '11%' }
         let g:clap_open_action = {'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit' }
         let g:clap_selected_sign = {'text': ' >', 'texthl': "ClapSelectedSign", "linehl": "ClapSelected"}
         let g:clap_current_selection_sign = {'text': '>>', 'texthl': "ClapCurrentSelectionSign", "linehl": "ClapCurrentSelection"}
-        let g:clap_popup_input_delay = 100
+        let g:clap_popup_input_delay = 0
 
         let g:clap_theme = {
                     \ }
@@ -2713,6 +2674,9 @@ endfunction
                     "
         " let g:clap_theme = 'material_design_dark'
         nnoremap <c-s>f        :Clap files<cr>
+        nnoremap <c-s><c-s>f    :Clap files ++query=<cword><cr>
+        nnoremap <c-s>-    :exec "Clap files " expand('%:h:p')<cr>
+
         nnoremap <c-s>l        :Clap blines<cr>
         nnoremap <c-s>L        :Clap lines<cr>
         nnoremap <c-s>o        :Clap buffers<cr>
@@ -2725,6 +2689,7 @@ endfunction
         nnoremap <c-s><c-f>    :Clap gfiles<cr>
         nnoremap <c-s>F        :Clap git_diff_files<cr>
         nnoremap <c-s>a        :Clap grep<cr>
+        nnoremap <c-s><c-s>a    :Clap grep ++query=<cword><cr>
         nnoremap <c-s>j        :Clap jumps<cr>
         nnoremap <c-s>'        :Clap marks<cr>
         nnoremap <c-s>m        :Clap maps<cr>
@@ -2752,11 +2717,13 @@ endfunction
          " hi default link ClapSelected         ClapDefaultSelected
          " hi default link ClapCurrentSelection ClapDefaultCurrentSelection
 
-        " augroup YourGroup
-        "     autocmd!
-        "     autocmd User ClapOnEnter   call YourFunction()
-        "     autocmd User ClapOnExit    call YourFunction()
-        " augroup END
+         " augroup ClapUserGroup
+         "     autocmd!
+         "     autocmd User ClapOnEnter   call ClapOnEnter()
+         "     autocmd User ClapOnExit    call ClapOnExit()
+         " augroup END
+
+         au filetype clap_input inoremap <buffer> <c-space> <cmd>call g:clap.preview.hide()()<cr>
 
         let g:clap_provider_commands = {
                     \ 'source': ['Clap debug', 'UltiSnipsEdit'],
@@ -2766,135 +2733,116 @@ endfunction
     endif
  " }}} _ vim-clap
 
- "vim-dirvish {{{
-    if PM('justinmk/vim-dirvish', {'platform' : 'win64'})
-        if PM('kristijanhusak/vim-dirvish-git')
-            " let g:dirvish_git_indicators = {
-            "             \ 'Modified'  : '?',
-            "             \ 'Staged'    : '?',
-            "             \ 'Untracked' : '?',
-            "             \ 'Renamed'   : '?',
-            "             \ 'Unmerged'  : '?',
-            "             \ 'Ignored'   : '?',
-            "             \ 'Unknown'   : '?'
-            "             \ }
-            " autocmd vimrc FileType dirvish nmap <silent><buffer><C-n> <Plug>(dirvish_git_next_file)
-            " autocmd vimrc FileType dirvish nmap <silent><buffer><C-p> <Plug>(dirvish_git_prev_file)
-        endif
-        call PM('fsharpasharp/vim-dirvinist')
+ "floatLf-nvim {{{
+    if PM('haorenW1025/floatLf-nvim')
+ " LfToggle
+ " LfToggleCurrentBuf
+        let g:floatLf_autoclose = 1
+        " let g:floatLf_lf_close = 'q'
+        " let g:floatLf_lf_open = '<cr>'
+        " let g:floatLf_lf_split = '<c-s>'
+        " let g:floatLf_lf_vsplit = '<c-v>'
+        " let g:floatLf_lf_tab = '<c-t>'
+
+        let g:floatLf_border = 1
+        " let g:floatLf_topleft_border = "?"
+        " let g:floatLf_topright_border = "?"
+        " let g:floatLf_botleft_border = "?"
+        " let g:floatLf_botright_border = "?"
+        " let g:floatLf_vertical_border = "?"
+        " let g:floatLf_horizontal_border = "?"
     endif
- " }}} _vim-dirvish
+ "}}} _ floatLf-nvim
 
- "defx.nvim {{{
+ "nnn.vim {{{
+    if PM('mcchrish/nnn.vim')
 
-    if PM('Shougo/defx.nvim', {'platform':'mac', 'hook_post_source': "call SetDefXOPtions()"})
-        if PM('kristijanhusak/defx-icons')
-            " :Defx -columns=icons:filename:type
-            let g:defx_icons_enable_syntax_highlight = 0
-        endif
+        " Start nnn in the current file's directory
+        nnoremap <silent> <leader>- :NnnPicker '%:p:h'<CR>
 
-        function! SetDefXOPtions()
-            call defx#custom#option('_', {
-                        \ 'columns': 'mark:filename:type:size:time',
-                        \ })
-            call defx#custom#column('filename', {
-                        \ 'min_width': 40,
-                        \ 'max_width': 80,
-                        \ })
+        let g:nnn#replace_netrw = 1
 
-            call defx#custom#column('mark', {
-                        \ 'directory_icon': '▸',
-                        \ 'readonly_icon': '✗',
-                        \ 'selected_icon': '✓',
-                        \ })
+         let g:nnn#command = "NNN_COLORS='34567' nnn -d"
+
+         function! CopyLinestoRegister(lines)
+             let joined_lines = join(a:lines, "\n")
+             if len(a:lines) > 1
+                 let joined_lines .= "\n"
+             endif
+             echom joined_lines
+             let @+ = joined_lines
+         endfunction
+
+         let g:nnn#action = {
+                     \ '<c-t>': 'tab split',
+                     \ '<c-s>': 'split',
+                     \ '<c-v>': 'vsplit',
+                     \ '<c-y>': function('CopyLinestoRegister') }
+
+
+        " Floating window (neovim)
+        function! NNNlayout()
+            let buf = nvim_create_buf(v:false, v:true)
+
+            let height = &lines - (float2nr(&lines / 3))
+            let width = float2nr(&columns - (&columns * 1 / 4))
+            let start_x = float2nr(&columns * 1 / 8)
+            let start_y = float2nr(height / 6)
+
+            let opts = {
+                    \ 'relative': 'editor',
+                    \ 'row': start_y,
+                    \ 'col': start_x,
+                    \ 'width': width,
+                    \ 'height': height
+                    \ }
+
+            call nvim_open_win(buf, v:true, opts)
+        endfunction
+        let g:nnn#layout = 'call NNNlayout()'
+    endif
+ "}}} _ nnn.vim
+ " fern.vim {{{
+    if PM('lambdalisue/fern.vim')
+        nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -reveal=% \| endif \| <cr>
+        " nnoremap <silent> - :Fern %:h:p -drawer -reveal=% -width=33 -wait<cr>
+        " nnoremap <leader>- :Fern %:p:h -toggle -reveal=% -drawer -width=33<cr>
+
+        function! s:init_fern() abort
+            nmap <buffer> - <Plug>(fern-action-leave)
+            " nnoremap <buffer> q :<C-u>quit<CR>
+            nnoremap <buffer><silent> q :<C-u>bwipeout %<CR>
+            nnoremap <buffer> <c-l> <c-w>l
+            setlocal norelativenumber
+            setlocal nonumber
+            setlocal foldcolumn=0
         endfunction
 
-        nnoremap <silent> - :Defx  `expand('%:p:h')` -search=`expand('%:p')`<cr>
+        " use forn to browse dirs
+        augroup customize-fern
+            autocmd!
+            autocmd FileType fern call s:init_fern()
+        augroup END
 
-    " nnoremap <silent><buffer><expr> <CR> defx#do_action('drop')
-    " Defx -split=vertical -winwidth=50 -direction=topleft
+         " augroup my-fern-hijack
+         "     autocmd!
+         "     autocmd BufEnter * ++nested call s:hijack_directory()
+         " augroup END
 
-    function! s:isdir(dir)
-        return !empty(a:dir) && (isdirectory(a:dir) ||
-                    \ (!empty($SYSTEMDRIVE) && isdirectory('/'.tolower($SYSTEMDRIVE[0]).a:dir)))
-    endfunction
-
-    autocmd BufEnter * if <SID>isdir(expand('%')) && !exists('b:defx')
-                \ | exe 'Defx' expand('%')
-                \ | endif
-
-        autocmd FileType defx call s:defx_my_settings()
-        function! s:defx_my_settings() abort
-            " Define mappings
-            nnoremap <silent><buffer><expr> <CR>
-                        \ defx#do_action('open')
-            nnoremap <silent><buffer><expr> c
-                        \ defx#do_action('copy')
-            nnoremap <silent><buffer><expr> m
-                        \ defx#do_action('move')
-            nnoremap <silent><buffer><expr> p
-                        \ defx#do_action('paste')
-            nnoremap <silent><buffer><expr> <c-v>
-                        \ defx#do_action('multi', [['drop', 'vsplit'], 'quit'])
-            nnoremap <silent><buffer><expr> <c-s>
-                        \ defx#do_action('multi', [['drop', 'split'], 'quit'])
-            nnoremap <silent><buffer><expr> <c-t>
-                        \ defx#do_action('open', 'tabedit')
-            nnoremap <silent><buffer><expr> P
-                        \ defx#do_action('open', 'pedit')
-            nnoremap <silent><buffer><expr> K
-                        \ defx#do_action('new_directory')
-            nnoremap <silent><buffer><expr> N
-                        \ defx#do_action('new_file')
-            nnoremap <silent><buffer><expr> M
-                        \ defx#do_action('new_multiple_files')
-            nnoremap <silent><buffer><expr> C
-                        \ defx#do_action('toggle_columns',
-                        \                'mark:filename:type:size:time')
-            nnoremap <silent><buffer><expr> S
-                        \ defx#do_action('toggle_sort', 'Time')
-            nnoremap <silent><buffer><expr> d
-                        \ defx#do_action('remove')
-            nnoremap <silent><buffer><expr> r
-                        \ defx#do_action('rename')
-            nnoremap <silent><buffer><expr> !
-                        \ defx#do_action('execute_command')
-            nnoremap <silent><buffer><expr> x
-                        \ defx#do_action('execute_system')
-            nnoremap <silent><buffer><expr> yy
-                        \ defx#do_action('yank_path')
-            nnoremap <silent><buffer><expr> .
-                        \ defx#do_action('toggle_ignored_files')
-            nnoremap <silent><buffer><expr> ;
-                        \ defx#do_action('repeat')
-            nnoremap <silent><buffer><expr> h
-                        \ defx#do_action('cd', ['..'])
-            nnoremap <silent><buffer><expr> -
-                        \ defx#do_action('cd', ['..'])
-            nnoremap <silent><buffer><expr> ~
-                        \ defx#do_action('cd')
-            nnoremap <silent><buffer><expr> q
-                        \ defx#do_action('quit')
-            nnoremap <silent><buffer><expr> <Space>
-                        \ defx#do_action('toggle_select') . 'j'
-            nnoremap <silent><buffer><expr> *
-                        \ defx#do_action('toggle_select_all')
-            nnoremap <silent><buffer><expr> j
-                        \ line('.') == line('$') ? 'gg' : 'j'
-            nnoremap <silent><buffer><expr> k
-                        \ line('.') == 1 ? 'G' : 'k'
-            nnoremap <silent><buffer><expr> <C-l>
-                        \ defx#do_action('redraw')
-            nnoremap <silent><buffer><expr> <C-g>
-                        \ defx#do_action('print')
-            nnoremap <silent><buffer><expr> cd
-                        \ defx#do_action('change_vim_cwd')
-
-            " nnoremap <silent><buffer> q
-            "             \ <cmd>noautocmd bw!<cr>
-        endfunction
+         " function! s:hijack_directory() abort
+         "     if !isdirectory(expand('%'))
+         "         return
+         "     endif
+         "     let path = expand('%:p')
+         "     bwipeout %
+         "     " execute 'Fern ' path
+         "     execute "NnnPicker " path
+         "     " execute "FloatermNew lf " path
+         "     " execute "LfToggle " path
+         " endfunction
     endif
- "}}} _defx.nvim
+ " }}} _ fern.vim
+
  " vim-laravel {{{
     if PM('noahfrederick/vim-laravel')
         " :{E,S,V,T}asset 	Anything under assets/
@@ -3594,7 +3542,7 @@ endif
      autocmd BufWritePost *.c,*.cpp call s:syntastic()
    augroup END
    function! s:syntastic()
-     SyntasticCheck
+     " SyntasticCheck
      call lightline#update()
    endfunction
 

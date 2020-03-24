@@ -1,3 +1,16 @@
+
+set runtimepath+=~/Projects/vim-plugins/vim-floaterm
+let g:floaterm_position = 'center'
+
+au filetype floaterm call SetFloatermMappings()
+
+function! SetFloatermMappings()
+     tnoremap <buffer> <c-t> <cmd>let g:floaterm_open_command = 'tabedit' \| call feedkeys("l", "i")<cr>
+     tnoremap <buffer> <c-o> <cmd>let g:floaterm_open_command = 'edit'    \| call feedkeys("l", "i")<CR>
+     tnoremap <buffer> <c-v> <cmd>let g:floaterm_open_command = 'vsplit'  \| call feedkeys("l", "i")<CR>
+     tnoremap <buffer> <c-s> <cmd>let g:floaterm_open_command = 'splqit'  \| call feedkeys("l", "i")<CR>
+endfunction
+
 scriptencoding utf-8
 
 
