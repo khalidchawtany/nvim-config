@@ -48,9 +48,11 @@ hi IncSearch guifg=orange
 
 command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
- colorscheme palenight
- hi NormalFloat guibg=#697098
- hi Visual guibg=#ff5370
+ " colorscheme palenight
+ " hi NormalFloat guibg=#697098
+ " hi Visual guibg=#ff5370
+colorscheme Papercolor
+set background=light
 
 " hi SignatureMarkText guibg=white guifg=lightgray
 " hi EndOfBuffer guibg=white
@@ -92,7 +94,7 @@ command! ToggleDarkAndLight
      hi ClapFuzzyMatches11 cterm=bold ctermfg=159 gui=bold guifg=#afffff
      hi ClapFuzzyMatches12 cterm=bold ctermfg=195 gui=bold guifg=#d7ffff
 
-     if &background = 'dark'
+     if &background == 'dark'
          hi NormalFloat guibg=#697098
      endif
  endfunction

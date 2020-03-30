@@ -128,4 +128,4 @@ endif
 
 "***************MUST BE LAST LINE*******
 "Start neovim-qt as maximized borderless.
-" call GuiWindowMaximized(2)<cr>
+call GuiWindowMaximized(2)

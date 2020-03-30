@@ -2,6 +2,9 @@
 set runtimepath+=~/Projects/vim-plugins/vim-floaterm
 let g:floaterm_position = 'center'
 
+let g:statusline = &statusline
+let g:tabline = &tabline
+
 au filetype floaterm call SetFloatermMappings()
 
 function! SetFloatermMappings()

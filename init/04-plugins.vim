@@ -1,8 +1,10 @@
+ " prevent_vimrc_double_source {{{
 if exists('g:_did_vimrc_plugins')
     finish
 endif
 
 let g:_did_vimrc_plugins = 1
+ "}}} _ prevent_vimrc_double_source
 
 " Libraries {{{
 
@@ -550,16 +552,43 @@ endif
 
  " Utils {{{
 
- call PM('wsdjeg/dein-ui.vim')
+"codi {{{ The interactve scratchpad soulver alternative
+    if PM('metakirby5/codi.vim', {'on_cmd':['Codi']})
+    endif
+"}}}
 
+ " info-window.nvim {{{
+ if PM('mcchrish/info-window.nvim')
+     nnoremap <silent> <c-g><c-g> :InfoWindowToggle<cr>
+
+     highlight link InfoWindowFloat StatusLine
+
+     let g:infowindow_lines = [
+                 \ " Line: " . line('.'),
+                 \ " Column: " . col('.'),
+                 \ " File: " . &filetype . ' - ' . &fileencoding . ' [' . &fileformat . ']',
+                 \ ]
+ endif
+ "}}} _ info-window.nvim
+
+ " dein-ui.vim {{{
+ " Provies DeinUpdate command
+ call PM('wsdjeg/dein-ui.vim', {'on_cmd': 'DeinUpdate'})
+ "}}} _ dein-ui.vim
+
+ " replay {{{
  call PM('wincent/replay', {'lazy': 1})
+ "}}} _ replay
 
+ " startuptime.vim {{{
  call PM('tweekmonster/startuptime.vim')
+ "}}} _ startuptime.vim
 
+ " matchit {{{
  call PM('chrisbra/matchit')
+ "}}} _ matchit
 
  " call PM('rlue/vim-barbaric')
-
  "vim-xkbswitch {{{
  if PM('lyokha/vim-xkbswitch')
      if has('mac')
@@ -576,15 +605,18 @@ endif
  " vim-fetch {{{
    call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
+
  " pipe.vim {{{
 
    "Pipe !command output to vim
    call PM( 'NLKNguyen/pipe.vim' )
 
  "}}} _pipe.vim
+
  "vim-signature {{{
    call PM('kshenoy/vim-signature')
  "}}} _vim-signature'
+
  " vim-submode {{{
    "call PM( 'kana/vim-submode' )
    if PM( 'khalidchawtany/vim-submode' )
@@ -689,33 +721,40 @@ endif
    endfunction
  endif "PM()
  "}}}
+
  " vim-unimpaired {{{
  call PM( 'tpope/vim-unimpaired')
  "}}} _vim-unimpaired
+
  "vim-sleuth {{{
+ " Sets buffer options heuristically
  if PM('tpope/vim-sleuth')
    let g:sleuth_automatic = 0
  endif
  "}}} _vim-sleuth
+
  " vim-man {{{
    call PM( 'bruno-/vim-man', {'on_cmd': ['Man', 'SMan', 'VMan', 'Mangrep']} )
  "}}} _vim-man
+
  " vim-rsi {{{
    call PM( 'tpope/vim-rsi' )
  "}}} _vim-rsi
+
  " capture.vim {{{
 
    "Capture EX-commad in a buffer
    call PM( 'tyru/capture.vim', {'on_cmd': 'Capture'} )
 
  "}}} _capture.vim
+
  " vim-eunuch {{{
 
    call PM( 'tpope/vim-eunuch', {'on_cmd': [ 'Remove', 'Unlink', 'Move', 'Rename',
        \ 'Chmod', 'Mkdir', 'Find', 'Locate', 'SudoEdit', 'SudoWrite', 'Wall', 'W' ]})
 
  "}}} _vim-eunuch
- "call PM( 'duggiefresh/vim-easydir' )
+
  " vim-capslock {{{
 
  call PM( 'tpope/vim-capslock' ,{
@@ -728,32 +767,38 @@ endif
    imap <c-l>e <C-O><Plug>CapsLockEnable
    imap <c-l>d <C-O><Plug>CapsLockDisable
  "}}} _vim-capslock
+
  " vim-repeat {{{
 
  call PM( 'tpope/vim-repeat' )
 
  "}}} _vim-repeat
+
  " vim-obsession {{{
 
    call PM( 'tpope/vim-obsession', {'on_cmd':['Obsession']} )
 
  "}}} _vim-obsession
+
  "close-buffers.vim {{{
  if PM('Asheq/close-buffers.vim')
      nnoremap <c-;>wh <cmd>CloseHiddenBuffers<cr>
      nnoremap <c-;><c-w><c-h> <cmd>CloseHiddenBuffers<cr>
  endif
  "}}} _close-buffers.vim
+
  "chromatica {{{
  if PM('arakashic/chromatica.nvim')
      let test#strategy = "neovim"
  endif
  "}}} _chromatica
+
  " vim-autoswap {{{
 
    call PM( 'gioele/vim-autoswap' )
 
  "}}} _vim-autoswap
+
  " vim-scriptease {{{
 
  call PM( 'tpope/vim-scriptease', {
@@ -763,15 +808,20 @@ endif
        \ } )
 
  "}}} _vim-scriptease
+
  "greprtpscr {{{
+ " Grep vim runtimepath and grep Scriptnames
  if PM('jyscao/vim-greprtpscr', {'on_cmd': ['GrepRtp', 'GrepScr']})
  endif
  "}}}
+
  " vim-debugger {{{
  call PM('haya14busa/vim-debugger',
        \ {'on_cmd': ['DebugOn', 'Debugger', 'Debug', 'StackTrace', 'CallStack', 'CallStackReport']})
  " }}} _vim-debugger
+
  " vim-scripts/Decho {{{
+ " Debug vim scripts with ease using the echo of Decho and more
  call PM('vim-scripts/Decho', {
        \ 'on_cmd': ['Decho', 'DechoOn'],
        \ 'on_func': ['Decho', 'Dfunc', 'Dredir', 'DechoMsgOn', 'DechoRemOn', 'DechoTabOn', 'DechoVarOn'  ],
@@ -780,9 +830,11 @@ endif
     " call Dfunc("YourFunctionName([arg1<".a:arg1."> arg2<".a:arg2.">])")
     " call Dret("YourFunctionName [returnvalue]")
  "}}} _vim-scripts/Decho
+
  "vCoolor.vim {{{
- call PM( 'KabbAmine/vCoolor.vim')
+ call PM( 'KabbAmine/vCoolor.vim', {'on_cmd': ['VCoolor', 'VCoolIns']})
  "}}} _vCoolor.vim
+
  " investigate.vim {{{
 
  if PM( 'keith/investigate.vim', {'on_map': ['gK']} )
@@ -792,13 +844,15 @@ endif
  endif
 
  "}}} _investigate.vim
+
  "vim-highlightedyank {{{
  if PM('machakann/vim-highlightedyank')
    map y <Plug>(highlightedyank)
-   let g:highlightedyank_highlight_duration = 750
+   let g:highlightedyank_highlight_duration = 300
    highlight link HighlightedyankRegion Visual
  endif
  "}}} _vim-highlightedyank
+
  "}}}
 
  " languages {{{
@@ -866,10 +920,16 @@ endif
  endif
  " }}} _ nvim-lsp
 
- if PM('fatih/vim-go', { 'build': 'GoUpdateBinaries' })
+ "vim-go {{{
+ if PM('fatih/vim-go', {'on_ft': 'go'})
+     ", { 'build': 'GoUpdateBinaries' }
  endif
+ "}}} _ vim-go
+
  " Vue
+ " vim-vue {{{
  call PM('posva/vim-vue')
+ "}}} _ vim-vue
 
  " Advanced Syntax Highlighting
  "vim-polyglot {{{
@@ -1023,7 +1083,9 @@ call PM('sheerun/vim-polyglot')
  "}}} _vim-markdown
 
  " CSV
+ " csv.vim {{{
  call PM( 'chrisbra/csv.vim', {'on_ft': ['csv']} )
+ "}}} _ csv.vim
 
  " PHP
  "vdebug {{{
@@ -1172,6 +1234,7 @@ endif
  endif
  "}}} _pdv
 
+ " vim-phpfmt {{{
  if PM('beanworks/vim-phpfmt')
    " A standard type: PEAR, PHPCS, PSR1, PSR2, Squiz and Zend
    let g:phpfmt_standard = 'PSR2'
@@ -1182,6 +1245,7 @@ endif
    " let g:phpfmt_command = '/path/to/phpcbf'
    " let g:phpfmt_tmp_dir = '/path/to/tmp/folder'
  endif
+ "}}} _ vim-phpfmt
 
  " phpcd.vim {{{
 
@@ -1389,8 +1453,8 @@ endif
    let g:ale_sign_error = '●' " Less aggressive than the default '>>'
    let g:ale_sign_warning = '●'
    let g:ale_lint_on_enter = 0 " Less distracting when opening a new file
-   let g:ale_set_loclist = 1
-   let g:ale_set_quickfix = 1
+   let g:ale_set_loclist = 0
+   let g:ale_set_quickfix = 0
    let g:ale_virtualtext_cursor = 1
    let g:ale_virtualtext_prefix = ' '
    let g:ale_list_window_size = 5
@@ -1780,6 +1844,7 @@ if PM('ncm2/ncm2')
 call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
 "}}} _LanguageServer-php-neovim
 
+ " LanguageClient-neovim {{{
  if PM('autozimu/LanguageClient-neovim',
        \ {
        \ 'rev': 'next',
@@ -1805,6 +1870,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
    nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
    nnoremap <silent> gR :call LanguageClient_textDocument_rename()<CR>
  endif
+ "}}} _ LanguageClient-neovim
 
  " Command line
  " ambicmd {{{
@@ -2405,8 +2471,16 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
        cc
    endfunction
 
+   function! s:build_location_list(lines)
+       call setloclist(0, map(copy(a:lines), '{ "filename": v:val }'))
+       lopen
+       ll
+   endfunction
+
+
    let g:fzf_action = {
          \ 'ctrl-q': function('s:build_quickfix_list'),
+         \ 'ctrl-l': function('s:build_location_list'),
          \ 'ctrl-m': 'e!',
          \ 'ctrl-t': 'tabedit!',
          \ 'ctrl-s': 'split',
@@ -2655,7 +2729,7 @@ endfunction
 
 
         let g:clap_layout = { 'relative': 'editor', 'width': '78%', 'height': '35%', 'row': '20%', 'col': '11%' }
-        let g:clap_open_action = {'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit' }
+        let g:clap_open_action = {'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit', 'ctrl-o': 'edit' }
         let g:clap_selected_sign = {'text': ' >', 'texthl': "ClapSelectedSign", "linehl": "ClapSelected"}
         let g:clap_current_selection_sign = {'text': '>>', 'texthl': "ClapCurrentSelectionSign", "linehl": "ClapCurrentSelection"}
         let g:clap_popup_input_delay = 0
@@ -2730,6 +2804,53 @@ endfunction
                     \ 'sink': { selected -> execute(selected, '')},
                     \ }
 
+
+        function! s:laravel_sink(selected)
+            if has_key(g:clap, 'open_action')
+                execute g:clap.open_action
+            endif
+            " call execute('edit ' .  g:clap_laravel_entries[a:selected])
+            call execute('Clap files ' .  g:clap_laravel_entries[a:selected])
+        endfunction
+
+        let g:clap_laravel_entries =  {
+                    \ 'App':             'app',
+                    \ 'Assets':          'resources/assets/js',
+                    \ 'Breads':          'resources/bread',
+                    \ 'Controllers':     'app/Http/Controllers',
+                    \ 'Factories':       'database/factories',
+                    \ 'Helpers (PHP)':   'app/Helpers',
+                    \ 'JS':              'public/js',
+                    \ 'Migrations':      'database/migrations',
+                    \ 'Models (JS)':     'resources/assets/js/models/',
+                    \ 'Models (PHP)':    'app',
+                    \ 'Observers':       'app/Observers',
+                    \ 'Providers':       'app/Providers',
+                    \ 'Public':          'public',
+                    \ 'Requests':        'app/Http/Requests',
+                    \ 'Resources':       'resources',
+                    \ 'Router (JS)':     'resources/assets/js/router.js',
+                    \ 'Router (Web)':    'routes/web',
+                    \ 'Seeds':           'database/seeds',
+                    \ 'Tests (Feature)': 'tests/Feature',
+                    \ 'Tests (Unit)':    'tests/Unit',
+                    \ 'Tests':           'tests',
+                    \ 'Traits':          'app/traits',
+                    \ 'Views (JS)':      'resources/assets/js/views',
+                    \ 'Views (PHP)':     'resources/views',
+                    \ 'components (JS)': 'resources/assets/js/components',
+                    \ 'database (JS)':   'resources/assets/js/database',
+                    \ 'models (JS)':     'resources/assets/js/models',
+                    \ }
+
+        "'sink': { selected -> execute('edit ' . FindGitDirOrRoot() . '/' . g:clap_laravel_entries[selected])},
+        let g:clap_provider_laravel = {
+                    \ 'source': sort(keys(g:clap_laravel_entries)),
+                    \ 'sink': function('s:laravel_sink'),
+                    \ 'support_open_action': v:true,
+                    \ }
+
+
     endif
  " }}} _ vim-clap
 
@@ -2760,9 +2881,9 @@ endfunction
         " Start nnn in the current file's directory
         nnoremap <silent> <leader>- :NnnPicker '%:p:h'<CR>
 
-        let g:nnn#replace_netrw = 1
+        " let g:nnn#replace_netrw = 1
 
-         let g:nnn#command = "NNN_COLORS='34567' nnn -d"
+         let g:nnn#command = "NNN_COLORS='4321' nnn -d"
 
          function! CopyLinestoRegister(lines)
              let joined_lines = join(a:lines, "\n")
@@ -2811,6 +2932,7 @@ endfunction
 
         function! s:init_fern() abort
             nmap <buffer> - <Plug>(fern-action-leave)
+            nmap <buffer> % <Plug>(fern-action-leave)
             " nnoremap <buffer> q :<C-u>quit<CR>
             nnoremap <buffer><silent> q :<C-u>bwipeout %<CR>
             nnoremap <buffer> <c-l> <c-w>l
@@ -2825,22 +2947,22 @@ endfunction
             autocmd FileType fern call s:init_fern()
         augroup END
 
-         " augroup my-fern-hijack
-         "     autocmd!
-         "     autocmd BufEnter * ++nested call s:hijack_directory()
-         " augroup END
+         augroup my-fern-hijack
+             autocmd!
+             autocmd BufEnter * ++nested call s:hijack_directory()
+         augroup END
 
-         " function! s:hijack_directory() abort
-         "     if !isdirectory(expand('%'))
-         "         return
-         "     endif
-         "     let path = expand('%:p')
-         "     bwipeout %
-         "     " execute 'Fern ' path
-         "     execute "NnnPicker " path
-         "     " execute "FloatermNew lf " path
-         "     " execute "LfToggle " path
-         " endfunction
+         function! s:hijack_directory() abort
+             if !isdirectory(expand('%'))
+                 return
+             endif
+             let path = expand('%:p')
+             bwipeout %
+             execute 'Fern ' path
+             " execute "NnnPicker " path
+             " execute "FloatermNew lf " path
+             " execute "LfToggle " path
+         endfunction
     endif
  " }}} _ fern.vim
 
@@ -3383,11 +3505,6 @@ endif
 
  "}}}
 
-"codi {{{ The interactve scratchpad soulver alternative
-    if PM('metakirby5/codi.vim', {'on_cmd':['Codi']})
-    endif
-"}}}
-
  " Terminal {{{
 
  "vim-floaterm {{{
@@ -3406,6 +3523,8 @@ endif
 
  " lightline {{{
  if PM( 'itchyny/lightline.vim' )
+
+     let g:qf_disable_statusline = 1
 
    call PM( 'NovaDev94/lightline-onedark' )
 
@@ -3543,8 +3662,8 @@ endif
      autocmd BufWritePost *.c,*.cpp call s:syntastic()
    augroup END
    function! s:syntastic()
-     " SyntasticCheck
-     call lightline#update()
+     SyntasticCheck
+     " call lightline#update()
    endfunction
 
    let g:unite_force_overwrite_statusline = 0
@@ -3701,6 +3820,7 @@ endif
  "vim-devicons {{{
  call PM( 'ryanoasis/vim-devicons' )
  "}}} _vim-devicons
+
  "vim-thematic {{{
  call PM( 'reedes/vim-thematic' )
  "}}} _vim-thematic
@@ -3732,6 +3852,7 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
+ call PM('haishanh/night-owl.vim')
  call PM('liuchengxu/space-vim-dark')
  call PM('owickstrom/vim-colors-paramount')
  call PM('jacoborus/tender.vim')

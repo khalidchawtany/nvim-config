@@ -215,7 +215,7 @@ function! CreateFoldableCommentFunction() range"{{{
     let line = getline(lineno)
 
     "Find the line contains the Plug as it's first word
-    if ( get(split(line, " "), 0, 'Default') !=# 'call')
+    if get(split(line, " "), 0, 'Default') !=# 'call' && get(split(line, " "), 0, 'Default') !=# 'if'
       continue
     endif
 
@@ -225,10 +225,10 @@ function! CreateFoldableCommentFunction() range"{{{
     let name = strpart(line, name_start, name_length)
 
     let res = append(a:firstline - 1, " \" " . name . " {{{")
-    let res = append(a:firstline, "")
+    " let res = append(a:firstline, "")
 
-    let res = append(a:lastline + 2, "")
-    let res = append(a:lastline + 3, " \"}}} _" . name)
+    " let res = append(a:lastline + 2, "")
+    let res = append(a:lastline + 1, " \"}}} _ " . name)
 
     " let cleanLine = substitute(lifirstlinene, '\(\s\| \)\+$', '', 'e')
     " call setline(lineno, cleanLine)
