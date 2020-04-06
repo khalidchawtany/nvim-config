@@ -269,6 +269,14 @@ endfunction"}}}
 
 function! FindGitDirOrRoot()"{{{
   let curdir = expand('%:p:h')
+  let bufname = bufname()
+  if stridx(bufname, 'fern:' != 0)
+    let start = stridx(bufname, 'file:')
+    let end = stridx(bufname, ';')
+    let curdir = strcharpart(bufname, start+7, end-start-7)
+  else
+    curdir = expand('%:p:h')
+  endif
   let gitdir = finddir('.git', curdir . ';')
   if gitdir == '.git'
     return '.'
