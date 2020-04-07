@@ -1,3 +1,5 @@
+set regexpengine=1
+
 set updatetime=500
 
 "Keep diffme function state

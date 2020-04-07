@@ -857,61 +857,6 @@ endif
 
  " languages {{{
 
- " any-jump {{{
- " if PM('khalidchawtany/any-jump.nvim')
-  if PM('pechorin/any-jump.nvim')
-
-    let g:any_jump_disable_default_keybindings = v:true
-    " Jump to definition under cursore
-    nnoremap gjj :AnyJump<CR>
-
-    " open previous opened file (after jump)
-    nnoremap gjb :AnyJumpBack<CR>
-    nnoremap gjk :AnyJumpBack<CR>
-
-    " open last closed search window again
-    nnoremap gjl :AnyJumpLastResults<CR>
-
-    au FileType any-jump nnoremap <buffer> o :call g:AnyJumpHandleOpen()<cr>
-    au FileType any-jump nnoremap <buffer><CR> :call g:AnyJumpHandleOpen()<cr>
-    au FileType any-jump nnoremap <buffer> p :call g:AnyJumpHandlePreview()<cr>
-    au FileType any-jump nnoremap <buffer> <tab> :call g:AnyJumpHandlePreview()<cr>
-    au FileType any-jump nnoremap <buffer> q :call g:AnyJumpHandleClose()<cr>
-    au FileType any-jump nnoremap <buffer> <esc> :call g:AnyJumpHandleClose()<cr>
-    au FileType any-jump nnoremap <buffer> u :call g:AnyJumpHandleUsages()<cr>
-    au FileType any-jump nnoremap <buffer> U :call g:AnyJumpHandleUsages()<cr>
-    au FileType any-jump nnoremap <buffer> b :call g:AnyJumpToFirstLink()<cr>
-    au FileType any-jump nnoremap <buffer> T :call g:AnyJumpToggleGrouping()<cr>
-    au FileType any-jump nnoremap <buffer> a :call g:AnyJumpToggleAllResults()<cr>
-    au FileType any-jump nnoremap <buffer> A :call g:AnyJumpToggleAllResults()<cr>
-
-    " Show line numbers in search rusults
-    let g:any_jump_list_numbers = v:true
-
-    " Auto search usages
-    let g:any_jump_usages_enabled = v:false
-
-    " Auto group results by filename
-    let g:any_jump_grouping_enabled = v:false
-
-    " Amount of preview lines for each search result
-    let g:any_jump_preview_lines_count = 5
-
-    " Max search results, other results can be opened via [a]
-    let g:any_jump_max_search_results = 7
-
-    let g:any_jump_window_width_ratio = 0.8
-
-    " Prefered search engine: rg or ag
-    let g:any_jump_search_prefered_engine = 'rg'
-    " Ungrouped results ui variants:
-    " - 'filename_first'
-    " - 'filename_last'
-
-    let g:any_jump_results_ui_style = 'filename_first' "
- endif
- " }}} _ any-jump
-
  " nvim-lsp {{{
  if PM('neovim/nvim-lsp')
 " lua << EOF
@@ -983,12 +928,6 @@ call PM('sheerun/vim-polyglot')
      "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
      setlocal omnifunc=OmniSharp#Complete
-
-     if exists(":DeopleteEnable")
-       DeopleteEnable
-       let g:deoplete#omni_patterns.cs='.*[^=\);]'
-       let g:deoplete#sources.cs=['omni', 'buffer', 'member', 'tag', 'file']
-     endif
 
      " Builds can also run asynchronously with vim-dispatch installed
      nnoremap <localleader>b :wa!<cr>:OmniSharpBuildAsync<cr>
@@ -1260,12 +1199,6 @@ endif
    "call PM( 'vim-scripts/progressbar-widget', {'on_source': 'phpcd.vim'} ) " used for showing the index progress
    call PM( 'vim-scripts/progressbar-widget' )
 
-   if PM_ISS('deoplete.nvim')
-     let g:deoplete#ignore_sources = get(g:, 'deoplete#ignore_sources', {})
-     let g:deoplete#ignore_sources.php = ['phpactor','omni', 'javacomplete2', 'look']
-     let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
-     let g:deoplete#omni#input_patterns.php =  '\w+|[^. \t]->\w*|\w+::\w*'
-   endif
    "Set PHP Completion options;
    "autocmd FileType php setlocal completeopt+=preview | setlocal omnifunc=phpcd#CompletePHP;
    "autocmd FileType php setlocal completeopt-=preview | setlocal omnifunc=phpcd#CompletePHP
@@ -1611,8 +1544,6 @@ endif
    ""augroup END
 
    let g:UltiSnipsEnableSnipMate = 0
-
-   " this is handles by ncm2-snippet
    let g:UltiSnipsExpandTrigger = "<c-cr>"            "ctrl+enter
    let g:UltiSnipsJumpForwardTrigger = "<c-cr>"       "ctrl+enter
    let g:UltiSnipsJumpBackwardTrigger = "<M-cr>"      "alt+enter
@@ -1777,67 +1708,6 @@ endif
      xmap ag <Plug>(coc-git-chunk-outer)
  endif
  "}}} _coc.nvim
-
- "deoplete {{{
- if PM('Shougo/deoplete.nvim')
-     let g:deoplete#enable_at_startup = 1
-     call PM('kristijanhusak/deoplete-phpactor')
-     let g:deoplete#sources = {}
-     let g:deoplete#sources.php = ['omni', 'phpactor', 'ultisnips', 'buffer']
- endif
- "}}} _deoplete
-
- "ncm2 {{{
-if PM('ncm2/ncm2')
-
-    call PM('roxma/nvim-yarp')
-    call PM('ncm2/ncm2-bufword')
-    call PM('ncm2/ncm2-tmux')
-    call PM('ncm2/ncm2-path')
-    call PM('ncm2/ncm2-ultisnips')
-    inoremap <silent> <expr> <C-CR> ncm2_ultisnips#expand_or("\<Plug>ExpandUltisnips", 'n')
-    inoremap <silent> <Plug>ExpandUltisnips :<C-R>=UltiSnips#ExpandSnippetOrJump()<CR>
-    call PM('phpactor/ncm2-phpactor')
-    " call PM('khalidchawtany/ncm2-phpactor')
-    call PM('ncm2/ncm2-go')
-    call PM('ncm2/ncm2-tern', {'build': 'npm install'})
-    call PM('ncm2/ncm2-cssomni')
-    call PM('fgrsnau/ncm2-otherbuf', { 'rev': 'ncm2' })
-    call PM('ncm2/ncm2-vim')
-    call PM('Shougo/neco-vim')
-    call PM('ncm2/ncm2-syntax')
-    call PM('Shougo/neco-syntax')
-
-
-    call PM('ncm2/ncm2-html-subscope')
-    " enable ncm2 for all buffers
-    autocmd BufEnter * call ncm2#enable_for_buffer()
-
-    " IMPORTANTE: :help Ncm2PopupOpen for more information
-    set completeopt=noinsert,menuone,noselect
-
-    " CTRL-C doesn't trigger the InsertLeave autocmd . map to <ESC> instead.
-    inoremap <c-c> <ESC>
-
-    " NOTE: you need to install completion sources to get completions. Check
-    " our wiki page for a list of sources: https://github.com/ncm2/ncm2/wiki
-
-    " call ncm2#override_source('LC', {'scope_blacklist': ["php"]})
-    "echo keys(ncm2#_s('sources'))
-    ":call ncm2#override_source('LanguageClient_python', {'enable': 0})
-    ":echo ncm2#_s('sources')['LanguageClient_python']
-     call ncm2#override_source('LanguageClient_php', {'priority': 0})
-
-     let g:ncm2#matcher = 'abbrfuzzy'
-
-     " use a sorter that's more friendly for fuzzy match
-     " let g:ncm2#sorter = 'abbrfuzzy'
-     let g:ncm2#matcher = 'substrfuzzy'
-
-     au User Ncm2PopupOpen set completeopt=noinsert,menuone,noselect
-     au User Ncm2PopupClose set completeopt=menuone
- endif
- "}}} _ncm2
 
 "LanguageServer-php-neovim {{{
  let $PHPLS_ALLOW_XDEBUG=0
@@ -2231,6 +2101,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
  " Navigation {{{
 
+ "Windows, Buffers, Tabs
  "{{{ vim-CtrlSpace
  if PM('vim-ctrlspace/vim-ctrlspace', {'on_cmd': ['CtrlSpace']})
 
@@ -2693,7 +2564,6 @@ endfunction
      call PM('Shougo/neomru.vim')
  endif
  " }}} _fzf-preview
- "
  " neovim-fuzzy {{{
  " cloudhead/neovim-fuzzy
  if PM('bosr/fzy.vim', { 'rev': 'dev', 'on_cmd': ['FuzzyOpen', 'FuzzyOpenFiles']})
@@ -2723,7 +2593,6 @@ endfunction
     let g:picker_custom_find_flags = '--color never --files'
  endif
  " }}}
-
  " vim-clap {{{
     if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
 
@@ -2874,7 +2743,6 @@ endfunction
         " let g:floatLf_horizontal_border = "?"
     endif
  "}}} _ floatLf-nvim
-
  "nnn.vim {{{
     if PM('mcchrish/nnn.vim')
 
@@ -2924,9 +2792,13 @@ endfunction
         let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug', 'border': 'rounded' } }
     endif
  "}}} _ nnn.vim
+
  " fern.vim {{{
     if PM('lambdalisue/fern.vim')
-        nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -reveal=% \| endif \| <cr>
+        if PM('khalidchawtany/fern-renderer-plain.vim')
+            let g:fern#renderer = "plain"
+        endif
+        nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -width=33 -keep -reveal=%:t \| endif \| <cr>
         " nnoremap <silent> - :Fern %:h:p -drawer -reveal=% -width=33 -wait<cr>
         " nnoremap <leader>- :Fern %:p:h -toggle -reveal=% -drawer -width=33<cr>
 
@@ -2939,6 +2811,12 @@ endfunction
             setlocal norelativenumber
             setlocal nonumber
             setlocal foldcolumn=0
+
+            if &background == 'light'
+                hi FernRoot guifg=gray
+                " hi FernBranch guifg=#0087af
+                hi FernLeaf   guifg=#444444
+            endif
         endfunction
 
         " use forn to browse dirs
@@ -2958,7 +2836,7 @@ endfunction
              endif
              let path = expand('%:p')
              bwipeout %
-             execute 'Fern ' path
+             execute 'Fern ' path ' -drawer -width=33 -keep -reveal=%:t'
              " execute "NnnPicker " path
              " execute "FloatermNew lf " path
              " execute "LfToggle " path
@@ -3037,6 +2915,60 @@ endfunction
  "}}} _vim-dotenv
 
  " Content
+ " any-jump {{{
+ " if PM('khalidchawtany/any-jump.nvim')
+  if PM('pechorin/any-jump.nvim')
+
+    let g:any_jump_disable_default_keybindings = v:true
+    " Jump to definition under cursore
+    nnoremap gjj :AnyJump<CR>
+
+    " open previous opened file (after jump)
+    nnoremap gjb :AnyJumpBack<CR>
+    nnoremap gjk :AnyJumpBack<CR>
+
+    " open last closed search window again
+    nnoremap gjl :AnyJumpLastResults<CR>
+
+    au FileType any-jump nnoremap <buffer> o :call g:AnyJumpHandleOpen()<cr>
+    au FileType any-jump nnoremap <buffer><CR> :call g:AnyJumpHandleOpen()<cr>
+    au FileType any-jump nnoremap <buffer> p :call g:AnyJumpHandlePreview()<cr>
+    au FileType any-jump nnoremap <buffer> <tab> :call g:AnyJumpHandlePreview()<cr>
+    au FileType any-jump nnoremap <buffer> q :call g:AnyJumpHandleClose()<cr>
+    au FileType any-jump nnoremap <buffer> <esc> :call g:AnyJumpHandleClose()<cr>
+    au FileType any-jump nnoremap <buffer> u :call g:AnyJumpHandleUsages()<cr>
+    au FileType any-jump nnoremap <buffer> U :call g:AnyJumpHandleUsages()<cr>
+    au FileType any-jump nnoremap <buffer> b :call g:AnyJumpToFirstLink()<cr>
+    au FileType any-jump nnoremap <buffer> T :call g:AnyJumpToggleGrouping()<cr>
+    au FileType any-jump nnoremap <buffer> a :call g:AnyJumpToggleAllResults()<cr>
+    au FileType any-jump nnoremap <buffer> A :call g:AnyJumpToggleAllResults()<cr>
+
+    " Show line numbers in search rusults
+    let g:any_jump_list_numbers = v:true
+
+    " Auto search usages
+    let g:any_jump_usages_enabled = v:false
+
+    " Auto group results by filename
+    let g:any_jump_grouping_enabled = v:false
+
+    " Amount of preview lines for each search result
+    let g:any_jump_preview_lines_count = 5
+
+    " Max search results, other results can be opened via [a]
+    let g:any_jump_max_search_results = 7
+
+    let g:any_jump_window_width_ratio = 0.8
+
+    " Prefered search engine: rg or ag
+    let g:any_jump_search_prefered_engine = 'rg'
+    " Ungrouped results ui variants:
+    " - 'filename_first'
+    " - 'filename_last'
+
+    let g:any_jump_results_ui_style = 'filename_first' "
+ endif
+ " }}} _ any-jump
  " vim-stay {{{
     "Restore cursor when reopoening files
     call PM('kopischke/vim-stay')
@@ -3358,6 +3290,11 @@ endif
  "}}} _history-traverse
 
  "Batch rename
+ "fze {{{ manage files using FZF
+    if PM('khalidchawtany/fze')
+        nnoremap <c-p><c-x> <cmd>Fze<cr>
+    endif
+ "}}} _fxe
  "vim-renamer {{{
  call PM('qpkorr/vim-renamer')
  "}}} _vim-renamer
@@ -3467,12 +3404,6 @@ endif
      inoremap <C-;>ft <Esc>:CtrlSFToggle<CR>
  endif
  "}}} _ctrlsf.vim
-
- "fze {{{ manage files using FZF
-    if PM('khalidchawtany/fze')
-        nnoremap <c-p><c-x> <cmd>Fze<cr>
-    endif
- "}}} _fxe
 
  " }}} _Navigation
 
@@ -3766,20 +3697,19 @@ endif
  endif
  "}}} _colortuner
 
- " vim-css-color {{{
+ " nvim-colorizer.lua {{{
+ if PM('norcalli/nvim-colorizer.lua')
+     lua require'colorizer'.setup()
+ endif
+ "}}} _ nvim-colorizer.lua
 
-   if PM( 'ap/vim-css-color', { 'on_ft':['css','scss','sass','less','styl', 'php', 'blade', 'html']} )
-     "au BufWinEnter *.vim call css_color#init('hex', '', 'vimHiGuiRgb,vimComment,vimLineComment,vimString')
-     "au BufWinEnter *.blade.php call css_color#init('css', 'extended', 'htmlString,htmlCommentPart,phpStringSingle')
-   endif
-
- "}}} _vim-css-color
  "vim-stylus {{{
   "call PM('wavded/vim-stylus', {'on_ft': 'stylus'})
   if PM('wavded/vim-stylus')
     autocmd BufNewFile,BufRead *.styl setlocal filetype=stylus
   endif
  "}}}_vim-stylus
+
  " vim-better-whitespace {{{
 
  if PM( 'ntpeters/vim-better-whitespace' )
@@ -3845,9 +3775,9 @@ endif
  "vim-colorscheme-switcher {{{
  if PM('xolox/vim-colorscheme-switcher')
    call PM('xolox/vim-misc')
-   nnoremap c]c :<c-u>NextColorScheme<cr>
-   nnoremap c[c :<c-u>PrevColorScheme<cr>
-   nnoremap c\c :<c-u>RandomColorScheme<cr>
+   nnoremap c]c :<c-u>hi clear \| NextColorScheme<cr>
+   nnoremap c[c :<c-u>hi clear \| PrevColorScheme<cr>
+   nnoremap c\c :<c-u>hi clear \| RandomColorScheme<cr>
  endif
  "}}} _vim-colorscheme-switcher
 

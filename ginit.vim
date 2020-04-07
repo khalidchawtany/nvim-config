@@ -2,6 +2,7 @@
 
 "GuiFont! Source Code Pro for PowerLine:h18
 set guifont=Operator\ Mono\ Lig:h17
+" set guifont=RobotoMono\ Nerd\ Font:h18
 
 " Support ligature
 call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)
@@ -10,6 +11,7 @@ nnoremap cO<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 0)<cr>
 
 let g:gui_fonts = [
       \ 'Operator Mono Lig:h17',
+      \ 'RobotoMono Nerd Font:h18',
       \ 'Monaco:h17',
       \ 'Source Code Pro for PowerLine:h17',
       \ 'PT Mono:17',
@@ -28,7 +30,7 @@ command! PrevFont call ToggleFont(-1)
 nnoremap c]f :<c-u>NextFont<cr>
 nnoremap c[f :<c-u>PrevFont<cr>
 
-let g:linespace = 10
+let g:linespace = 6
 call rpcnotify(0, 'Gui', 'Linespace', g:linespace)
 
 "command! Bigger :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', ''))

@@ -6,12 +6,8 @@ endif
 
 "BlackList {{{
 let s:PM_BL = [
-\'lldb.nvim',
 \'vim-which-key',
-\'deoplete.nvim',
-\'phpcd.vim',
-\'ncm2',
-\'vim-floaterm',
+\'phpcd.vim'
 \ ]
 " \'coc.nvim',
 "}}}}
