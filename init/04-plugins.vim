@@ -121,8 +121,7 @@ let g:_did_vimrc_plugins = 1
  endif
  " }}}
  " diffconflicts {{{
- if PM('whiteinge/diffconflicts')
- endif
+ call PM('whiteinge/diffconflicts', {'on_cmd': ['DiffConflicts']})
  " }}} _ diffconflicts
 
  "}}}
@@ -3415,7 +3414,7 @@ endif
 
    nnoremap zF :call FoldFocus('vnew')<CR>
    nnoremap <leader>z<cr> :call FoldFocus('vnew')<CR>
-   nnoremap <leader>zz<cr>  :call FoldFocus('e')<CR>
+   nnoremap <leader>zz  :call FoldFocus('e')<CR>
  endif
 
  "}}}} _vim-foldfocus
