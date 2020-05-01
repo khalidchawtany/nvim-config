@@ -24,3 +24,6 @@ nnoremap co<bs> :Cclear<cr>
 
 command! -range CreateFoldableComment <line1>,<line2>call CreateFoldableCommentFunction()
 
+
+command! ProfileMe :profile start ~/Desktop/profile.log <bar> profile func * <bar> profile file *
+command! ProfileStop :profile pause

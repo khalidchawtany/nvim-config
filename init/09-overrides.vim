@@ -1,3 +1,5 @@
+ let g:vim_jsx_pretty_disable_tsx = 1
+
 function! SetProjectPath(path)"{{{
   execute "tcd "  a:path
   pwd
@@ -11,6 +13,7 @@ let g:projects = [
       \ "~/Projects/go/bfmysql/",
       \ "~/Projects/PHP/AssetManager/",
       \ "~/Projects/PHP/ERP/",
+      \ "~/Projects/PHP/Warehouse/",
       \ "~/Projects/React/DebtManager",
       \ "/Volumes/Dev/ERP/",
       \ "~/Projects/PHP/karaba/",

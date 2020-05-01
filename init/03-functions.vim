@@ -110,7 +110,12 @@ function! CharsNeeded(char)
   while s:pos == -1
     let s:i += 1
     let s:line = getline(s:cur_line - s:i)
-    let s:pos  = stridx(s:line, a:char, s:cur_col)
+    if (a:char == ' ' || a:char == '')
+        let s:char_to_find = strpart(trim(s:line), 0)
+    else
+        let s:char_to_find  = a:char
+    endif
+        let s:pos  = stridx(s:line, s:char_to_find, s:cur_col)
     if s:i == s:cur_line
       return -1
     endif
@@ -128,6 +133,7 @@ function! InsertSpaces()
 endfunction
 
  inoremap <silent> <C-g><c-space> <C-[>:call InsertSpaces()<CR>A
+ inoremap <silent> <C-g><space> <C-[>:call InsertSpaces()<CR>A
 
 "}}}
 
@@ -552,53 +558,6 @@ function! Reg() "{{{
   redraw
 endfunction "}}}
 
-function! CreateLaravelGeneratorFunction()"{{{
-  "Generate laravel generator command
-
-  "alias g:m="php artisan generate:model"
-  "alias g:c="php artisan generate:controller"
-  "alias g:v="php artisan generate:view"
-  "alias g:se="php artisan generate:seed"
-  "alias g:mi="php artisan generate:migration"
-  "alias g:r="php artisan generate:resource"
-  "alias g:p="php artisan generate:pivot"
-  "alias g:s="php artisan generate:scaffold"
-
-  "php artisan generate:migration create_posts_table --fields="title:string, body:text"
-
-  let command =  input('!g:')
-
-  "if --fields is NOT already provided
-  if stridx(command, '--fields') ==? "-1"
-
-    "Get the command part
-    let cmd_shortform = strpart(command, 0,stridx(command, " "))
-    "The list of commands that require --fields
-    let cmd_require_fields = ['mi', 'r', 's' ]
-
-    "if the command is NOT one of the above
-    if index(cmd_require_fields, cmd_shortform) !=? "-1"
-      let fields = input( "!g:" . command . ' --fields= ')
-      let command = command . ' --fields="' . fields . '"'
-    endif "Command requires --fields
-
-  endif " --fields is not provided
-
-  if strlen(command) !=? "0"
-    "Prepend cmd with required stuff
-    let command = "g:" . command
-  endif
-
-  return command
-
-endfunction"}}}
-
-function! ExecuteLaravelGeneratorCMD()"{{{
-  let cmd = CreateLaravelGeneratorFunction()
-  call VimuxRunCommand(cmd)
-  call VimuxZoomRunner()
-endfunction"}}}
-
 function! BufOnly(buffer, bang) "{{{
   if a:buffer == ''
     " No buffer provided, use the current buffer.
@@ -676,10 +635,6 @@ function! ToggleFoldMarker() "{{{
   endif
 endfunction "}}}
 
-
-
-
-
 "{{{ miniyank-fzf
  function! FZFYankList() abort
   function! KeyValue(key, val)
@@ -715,7 +670,6 @@ command! FzfYanksBefore call fzf#run(fzf#wrap('FzfYanksBefore', {
 nnoremap <c-p><c-y> :FzfYanksAfter<cr>
 nnoremap <c-p><c-y> :FzfYanksBefore<cr>
 "}}}
-
 
 "{{{ fzf-registers
  function! s:get_registers() abort

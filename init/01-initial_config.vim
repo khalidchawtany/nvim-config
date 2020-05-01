@@ -1,9 +1,8 @@
 
+
+
 set runtimepath+=~/Projects/vim-plugins/vim-floaterm
 let g:floaterm_position = 'center'
-
-set runtimepath+=~/Desktop/fern.vim
-nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -width=37 -keep -reveal=%:t \| endif \| <cr>
 
 let g:statusline = &statusline
 let g:tabline = &tabline

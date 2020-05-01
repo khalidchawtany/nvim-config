@@ -226,32 +226,35 @@ let g:_did_vimrc_plugins = 1
  "}}}
  " vim-esearch {{{
  if PM('eugen0329/vim-esearch')
-     " Start esearch prompt autofilled with one of g:esearch.use initial patterns
-     call esearch#map('<leader>ff', 'esearch')
-     " Start esearch autofilled with a word under the cursor
-     call esearch#map('<leader>fw', 'esearch-word-under-cursor')
+     au VimEnter * call SetEsearchMaps()
+     function! SetEsearchMaps()
+        " Start esearch prompt autofilled with one of g:esearch.use initial patterns
+        call esearch#map('<leader>ff', 'esearch')
+        " Start esearch autofilled with a word under the cursor
+        call esearch#map('<leader>fw', 'esearch-word-under-cursor')
 
-     call esearch#out#win#map('t',       'tab')
-     call esearch#out#win#map('i',       'split')
-     call esearch#out#win#map('s',       'vsplit')
-     call esearch#out#win#map('<Enter>', 'open')
-     call esearch#out#win#map('o',       'open')
+        call esearch#out#win#map('t',       'tab')
+        call esearch#out#win#map('i',       'split')
+        call esearch#out#win#map('s',       'vsplit')
+        call esearch#out#win#map('<Enter>', 'open')
+        call esearch#out#win#map('o',       'open')
 
-     "    Open silently (keep focus on the results window)
-     call esearch#out#win#map('T', 'tab-silent')
-     call esearch#out#win#map('I', 'split-silent')
-     call esearch#out#win#map('S', 'vsplit-silent')
+        "    Open silently (keep focus on the results window)
+        call esearch#out#win#map('T', 'tab-silent')
+        call esearch#out#win#map('I', 'split-silent')
+        call esearch#out#win#map('S', 'vsplit-silent')
 
-     "    Move cursor with snapping
-     call esearch#out#win#map('<C-n>', 'next')
-     call esearch#out#win#map('<C-j>', 'next-file')
-     call esearch#out#win#map('<C-p>', 'prev')
-     call esearch#out#win#map('<C-k>', 'prev-file')
+        "    Move cursor with snapping
+        call esearch#out#win#map('<C-n>', 'next')
+        call esearch#out#win#map('<C-j>', 'next-file')
+        call esearch#out#win#map('<C-p>', 'prev')
+        call esearch#out#win#map('<C-k>', 'prev-file')
 
-     call esearch#cmdline#map('<C-o><C-r>', 'toggle-regex')
-     call esearch#cmdline#map('<C-o><C-s>', 'toggle-case')
-     call esearch#cmdline#map('<C-o><C-w>', 'toggle-word')
-     call esearch#cmdline#map('<C-o><C-h>', 'cmdline-help')
+        call esearch#cmdline#map('<C-o><C-r>', 'toggle-regex')
+        call esearch#cmdline#map('<C-o><C-s>', 'toggle-case')
+        call esearch#cmdline#map('<C-o><C-w>', 'toggle-word')
+        call esearch#cmdline#map('<C-o><C-h>', 'cmdline-help')
+     endfunction
  endif
  "}}} _vim-esearch
  " vim-enmasse {{{
@@ -621,17 +624,24 @@ endif
    if PM( 'khalidchawtany/vim-submode' )
    let g:submode_timeout=0
 
+   function WindowResized()
+       if &ft == 'fern'
+           let g:fern#drawer_width =  winwidth(0)
+       endif
+   endfunction
+
    au VimEnter * call BindSubModes()
    function! BindSubModes()
      " Window resize {{{
-       call submode#enter_with('h/l', 'n', '', '<C-w>h', '<C-w><')
-       call submode#enter_with('h/l', 'n', '', '<C-w>l', '<C-w>>')
-       call submode#map('h/l', 'n', '', 'h', '<C-w><')
-       call submode#map('h/l', 'n', '', 'l', '<C-w>>')
-       call submode#enter_with('j/k', 'n', '', '<C-w>j', '<C-w>-')
-       call submode#enter_with('j/k', 'n', '', '<C-w>k', '<C-w>+')
-       call submode#map('j/k', 'n', '', 'j', '<C-w>-')
-       call submode#map('j/k', 'n', '', 'k', '<C-w>+')
+       call submode#enter_with('h/l', 'n', '', '<C-w>h', '<C-w><:call WindowResized()<cr>')
+       call submode#enter_with('h/l', 'n', '', '<C-w>l', '<C-w>>:call WindowResized()<cr>')
+       call submode#map('h/l', 'n', '', 'h', '<C-w><:call WindowResized()<cr>')
+       " call submode#map('h/l', 'n', '', 'l', '<C-w>>')
+       call submode#map('h/l', 'n', '', 'l', '<C-w>>:call WindowResized()<cr>')
+       call submode#enter_with('j/k', 'n', '', '<C-w>j', '<C-w>-:call WindowResized()<cr>')
+       call submode#enter_with('j/k', 'n', '', '<C-w>k', '<C-w>+:call WindowResized()<cr>')
+       call submode#map('j/k', 'n', '', 'j', '<C-w>-:call WindowResized()<cr>')
+       call submode#map('j/k', 'n', '', 'k', '<C-w>+:call WindowResized()<cr>')
      "}}} _Window resize
      " horizontal navigation {{{
        call submode#enter_with('H-Scroll', 'n', '', 'zl', 'zl')
@@ -781,8 +791,8 @@ endif
 
  "close-buffers.vim {{{
  if PM('Asheq/close-buffers.vim')
-     nnoremap <c-;>wh <cmd>CloseHiddenBuffers<cr>
-     nnoremap <c-;><c-w><c-h> <cmd>CloseHiddenBuffers<cr>
+     nnoremap <c-;>wh <cmd>Bdelete hidden<cr>
+     nnoremap <c-;><c-w><c-h> <cmd>Bdelete hidden<cr>
  endif
  "}}} _close-buffers.vim
 
@@ -877,8 +887,15 @@ endif
 
  " Advanced Syntax Highlighting
  "vim-polyglot {{{
-call PM('sheerun/vim-polyglot')
+if PM('sheerun/vim-polyglot')
+  let g:polyglot_disabled =  ['typescript']
+  autocmd BufNewFile,BufRead *.tsx setlocal filetype=typescript
+ endif
 "}}} _vim-polyglot
+"
+ " yats.vim {{{
+    " call PM('HerringtonDarkholme/yats.vim')
+ "}}} _ yats.vim
 
  "GoDot
  "vim-gdscript {{{
@@ -1568,7 +1585,8 @@ endif
  au filetype php set iskeyword+=$
 
  "coc.nvim {{{
- if PM('neoclide/coc.nvim', {'build': 'npm install'})
+ if PM('neoclide/coc.nvim')
+     " {'build': 'npm install'}
      " Use tab for trigger completion with characters ahead and navigate.
      " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
      inoremap <silent><expr> <TAB>
@@ -2593,8 +2611,11 @@ endfunction
  endif
  " }}}
  " vim-clap {{{
-    if PM('liuchengxu/vim-clap', { 'build': function('clap#helper#build_all') })
+    if PM('liuchengxu/vim-clap')
 
+        ", { 'build': ':Clap install-binary' }
+
+        let g:clap_popup_border = 'rounded'
 
         let g:clap_layout = { 'relative': 'editor', 'width': '78%', 'height': '35%', 'row': '20%', 'col': '11%' }
         let g:clap_open_action = {'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit', 'ctrl-o': 'edit' }
@@ -2602,6 +2623,29 @@ endfunction
         let g:clap_current_selection_sign = {'text': '>>', 'texthl': "ClapCurrentSelectionSign", "linehl": "ClapCurrentSelection"}
         let g:clap_popup_input_delay = 0
 
+
+        " hi ClapPreview guibg=#fefefe
+        " hi ClapDisplay guibg=#f9f9f9
+
+        " hi ClapPreview guibg=#FCF4ED
+        " hi ClapSpinner guibg=#f2ebe3 guifg=#333333
+        " hi ClapDisplay guibg=#f2ebe3
+        " hi ClapPopupCursor guibg=#f2ebe3
+        " hi ClapInput guibg=#f2ebe3
+        " hi ClapSearchText guibg=#f2ebe3 guifg=#2753B3
+        " hi ClapCurrentSelection guibg=#f2fbe7 guifg=#2753B3
+        " hi ClapFuzzyMatches1 guifg=#E703A3
+        " hi ClapFuzzyMatches2 guifg=#CB0291
+        " hi ClapFuzzyMatches3 guifg=#B80282
+        " hi ClapFuzzyMatches4 guifg=#AC017A
+        " hi ClapFuzzyMatches5 guifg=#A20173
+        " hi ClapFuzzyMatches6 guifg=#95016A
+        " hi ClapFuzzyMatches7 guifg=#86015F
+        " hi ClapFuzzyMatches8 guifg=#7A0157
+        " hi ClapFuzzyMatches9 guifg=#6C004D
+        " hi ClapFuzzyMatches10 guifg=#600044
+        " hi ClapFuzzyMatches11 guifg=#480033
+        " hi ClapFuzzyMatches12 guifg=#380028
         let g:clap_theme = {
                     \ }
                     " \ 'input': {'guifg': 'red', 'ctermfg': 'red', 'guibg': 'red'},
@@ -2644,6 +2688,7 @@ endfunction
         nnoremap <c-s>w        :Clap windows<cr>
         nnoremap <c-s>w        :Clap loclist<cr>
 
+
          " hi default link ClapInput   Visual
          " hi default link ClapDisplay Pmenu
          " hi default link ClapPreview PmenuSel
@@ -2664,6 +2709,7 @@ endfunction
          "     autocmd User ClapOnEnter   call ClapOnEnter()
          "     autocmd User ClapOnExit    call ClapOnExit()
          " augroup END
+         "
 
          au filetype clap_input inoremap <buffer> <c-space> <cmd>call g:clap.preview.hide()()<cr>
 
@@ -2746,7 +2792,7 @@ endfunction
     if PM('mcchrish/nnn.vim')
 
         " Start nnn in the current file's directory
-        nnoremap <silent> <leader>- :NnnPicker '%:p:h'<CR>
+        nnoremap <silent> <leader>_ :NnnPicker '%:p:h'<CR>
 
         " let g:nnn#replace_netrw = 1
 
@@ -2788,24 +2834,28 @@ endfunction
             call nvim_open_win(buf, v:true, opts)
         endfunction
         " let g:nnn#layout = 'call NNNlayout()'
-        let g:nnn#layout = { 'window': { 'width': 0.9, 'height': 0.6, 'highlight': 'Debug', 'border': 'rounded' } }
+        let g:nnn#layout = { 'window': { 'width': 0.8, 'height': 0.6, 'highlight': 'Debug', 'border': 'rounded' } }
     endif
  "}}} _ nnn.vim
 
  " fern.vim {{{
     if PM('lambdalisue/fern.vim')
+        let g:fern#drawer_width = 33
+
         if PM('khalidchawtany/fern-renderer-plain.vim')
             let g:fern#renderer = "plain"
         endif
-        nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -width=33 -keep -reveal=%:t \| endif \| <cr>
+        nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -keep -reveal=%:t \| endif \| <cr>
+        nnoremap <silent> <leader>- :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -wait -stay -reveal=%:t \| endif \| <cr>
         " nnoremap <silent> - :Fern %:h:p -drawer -reveal=% -width=33 -wait<cr>
         " nnoremap <leader>- :Fern %:p:h -toggle -reveal=% -drawer -width=33<cr>
 
         function! s:init_fern() abort
             nmap <buffer> - <Plug>(fern-action-leave)
             nmap <buffer> % <Plug>(fern-action-leave)
-            " nnoremap <buffer> q :<C-u>quit<CR>
+            nnoremap <buffer> q :<C-u>quit<CR>
             nnoremap <buffer><silent> q :<C-u>bwipeout %<CR>
+            " nnoremap <buffer><silent> q <c-o>
             nnoremap <buffer> <c-l> <c-w>l
             setlocal norelativenumber
             setlocal nonumber
@@ -2829,14 +2879,24 @@ endfunction
              autocmd BufEnter * ++nested call s:hijack_directory()
          augroup END
 
+         let g:file_browser = 'fern'
+         nnoremap <leader><BS> :if g:file_browser == 'nnn' \| let g:file_browser='fern' \| else \| let g:file_browser='nnn' \| endif<cr>
+
          function! s:hijack_directory() abort
              if !isdirectory(expand('%'))
                  return
              endif
              let path = expand('%:p')
-             bwipeout %
-             execute 'Fern ' path ' -drawer -width=33 -keep -reveal=%:t'
-             " execute "NnnPicker " path
+             " bwipeout %
+             b#
+             bd#
+
+             if (g:file_browser == 'nnn')
+                 execute "NnnPicker " path
+             else
+                 execute 'Fern ' path ' -drawer -keep -reveal=%:t'
+             endif
+
              " execute "FloatermNew lf " path
              " execute "LfToggle " path
          endfunction
@@ -2914,9 +2974,23 @@ endfunction
  "}}} _vim-dotenv
 
  " Content
+
+ " aerojump.nvim {{{
+ if PM('ripxorip/aerojump.nvim', { 'build': ':UpdateRemotePlugins' })
+     " aerojump mappings
+     " g:aerojump_keymaps
+
+     " Create mappings (with leader)
+     nmap gj<space> <Plug>(AerojumpSpace)
+     nmap gjg <Plug>(AerojumpBolt)
+     nmap gja <Plug>(AerojumpFromCursorBolt)
+     nmap gjd <Plug>(AerojumpDefault)
+
+ endif
+ "}}} _ aerojump.nvim
  " any-jump {{{
- " if PM('khalidchawtany/any-jump.nvim')
-  if PM('pechorin/any-jump.nvim')
+  if PM('khalidchawtany/any-jump.nvim')
+  " if PM('pechorin/any-jump.nvim')
 
     let g:any_jump_disable_default_keybindings = v:true
     " Jump to definition under cursore
@@ -2966,6 +3040,8 @@ endfunction
     " - 'filename_last'
 
     let g:any_jump_results_ui_style = 'filename_first' "
+
+    autocmd FileType any-jump  setlocal nonumber | setlocal norelativenumber | setlocal foldcolumn=0
  endif
  " }}} _ any-jump
  " vim-stay {{{
@@ -3698,7 +3774,8 @@ endif
 
  " nvim-colorizer.lua {{{
  if PM('norcalli/nvim-colorizer.lua')
-     lua require'colorizer'.setup()
+     " au vimenter lua require'colorizer'.setup()
+     au VimEnter * lua require'colorizer'.setup()
  endif
  "}}} _ nvim-colorizer.lua
 
