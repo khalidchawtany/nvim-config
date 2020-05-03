@@ -216,6 +216,7 @@ nnoremap <c-g>si `[v`]
 " Writting and Quitting {{{
 "===============================================================================
 
+LMap N <leader>q<space>    <SID>QuitTab  :tabclose<cr>
 LMap N <leader>qq    <SID>Quit           :q<cr>
 LMap N <leader>qa    <SID>quit-all       :qall<cr>
 LMap N <leader>qQ    <SID>quit-all-force :qall!<cr>

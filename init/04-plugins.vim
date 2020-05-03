@@ -1677,24 +1677,29 @@ endif
                  \ }
 
 
+     if PM('antoinemadec/coc-fzf')
+         ":CocFzfList	Equivalent to :CocList
+         ":CocFzfList actions	Equivalent to :CocList actions
+         ":CocFzfList commands	Equivalent to :CocList commands
+         ":CocFzfList diagnostics	Equivalent to :CocList diagnostics. Toggle preview: '?'
+         ":CocFzfList diagnostics --current-buf	Equivalent to :CocList diagnostics in the current buffer only
+         ":CocFzfList extensions	Equivalent to :CocList extensions
+         ":CocFzfList location	Equivalent to :CocList location. Toggle preview: '?'. Requires fzf.vim
+         ":CocFzfList outline	Equivalent to :CocList outline, with colors. Requires ctags
+         ":CocFzfList symbols	Equivalent to :CocList symbols
+         ":CocFzfList symbols --kind {kind}	Equivalent to :CocList symbols -kind {kind}
+         ":CocFzfList services	Equivalent to :CocList services
+         ":CocFzfListResume	Equivalent to :CocListResume
+         nnoremap <silent> <c-p><c--> :CocFzfList outline<cr>
+         nnoremap <silent> <c-p>-     :CocFzfList location<cr>
+         nnoremap <silent> <c-p>=     :CocFzfList diagnostic<cr>
+         nnoremap <silent> <c-p><c-=> :CocFzfList diagnostic --current-buf<cr>
+         nnoremap <silent> <c-p><c-0> :CocFzfList symbols<cr>
+         nnoremap <silent> <c-p>0     :CocFzfList commands<cr>
+         nnoremap <silent> <c-p><bs>  :CocFzfListResume<cr>
 
-     " Shortcuts for denite interface
-     " Show extension list
-     nnoremap <silent> <space>e  :<C-u>Denite coc-extension<cr>
-     " Show symbols of current buffer
-     nnoremap <silent> <space>o  :<C-u>Denite coc-symbols<cr>
-     " Search symbols of current workspace
-     nnoremap <silent> <space>t  :<C-u>Denite coc-workspace<cr>
-     " Show diagnostics of current workspace
-     nnoremap <silent> <space>a  :<C-u>Denite coc-diagnostic<cr>
-     " Show available commands
-     nnoremap <silent> <space>c  :<C-u>Denite coc-command<cr>
-     " Show available services
-     nnoremap <silent> <space>s  :<C-u>Denite coc-service<cr>
-     " Show links of current buffer
-     nnoremap <silent> <space>l  :<C-u>Denite coc-link<cr>
+     endif
 
-     nnoremap <silent> <c-p><c-s>  :CocList outline<cr>
 
      " git gutter
      " navigate chunks of current buffer
