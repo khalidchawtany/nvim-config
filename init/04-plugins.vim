@@ -2204,7 +2204,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
 
        "Show FZF in a floating window
        let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7 } }
-       "let $FZF_DEFAULT_OPTS='--layout=reverse'
+       " let $FZF_DEFAULT_OPTS='--layout=reverse'
        "let g:fzf_layout = { 'window': 'execute (tabpagenr()-1)."tabnew"' }
        "let g:fzf_layout = { 'window': '-tabnew' }
 
@@ -2223,11 +2223,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
    nnoremap silent! <c-p><c-a> <cmd>Rg<cr>
    nnoremap silent! <c-p>a <cmd>Rg <c-r><c-w><cr>
 
-                " \  --color=bg+:#ff0000,bg:#002b36,spinner:#000000,hl:#ff00ff
-                " \  --color=fg:#839496,header:#586e75,info:#cb4b16,pointer:#719e07
-                " \  --color=marker:#719e07,fg+:#839496,prompt:#719e07,hl+:#719e07
     if has('mac')
-        " let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --reverse --bind '::jump,;:jump-accept,ctrl-space:select-all'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44"
         let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --pointer=' ▶' --marker='◉' --reverse --bind 'ctrl-space:select-all,ctrl-l:jump'  --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44,gutter:#eeeeee,marker:#ff0000"
         let s:null = 'null'
     elseif has('win64')
@@ -2236,7 +2232,6 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     endif
 
 
-    "let $FZF_DEFAULT_COMMAND='ag -l -g ""'
     let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
 
     command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/'.s:null, 1, <bang>0)
@@ -3852,7 +3847,7 @@ endif
  " vim-better-whitespace {{{
 
  if PM( 'ntpeters/vim-better-whitespace' )
-   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'leaderGuide', 'any-jump']
+   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'any-jump']
    autocmd FileType unite DisableWhitespace
    autocmd FileType vimfiler DisableWhitespace
    autocmd FileType any-jump DisableWhitespace
@@ -3978,7 +3973,8 @@ endif
 
  " vim-which-key {{{
  if PM('liuchengxu/vim-which-key', {
-             \     'hook_post_source': 'call which_key#register("<Space>", "g:which_key_map")'
+             \     'hook_post_source': 'call which_key#register("<Space>", "g:which_key_map")',
+             \     'on_cmd': ['WhichKey', 'WhichKey!']
              \})
         let g:mapleader = "\<Space>"
         let g:maplocalleader = ','
@@ -4040,12 +4036,6 @@ endif
          nnoremap <silent> <leader> :<c-u>WhichKey '<Space>'<CR>
          vnoremap <silent> <leader> :<c-u>WhichKeyVisual '<Space>'<CR>
 
-         "Hide statusline
-         autocmd! FileType which_key
-         " autocmd  FileType which_key set laststatus=0 noshowmode noruler
-         "             \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-
-
          let g:which_key_map_fzf = {}
          let g:which_key_map_fzf['<c-p>'] = {
                      \ 'name' : '+buffer' ,
@@ -4059,71 +4049,13 @@ endif
                      \ 'p' : ['bprevious' , 'previous-buffer'] ,
                      \ '?' : ['Buffers'   , 'fzf-buffer']      ,
                      \ }
-         " call which_key#register('<c-p>', "g:which_key_map_fzf")
+          " call which_key#register('<c-p>', "g:which_key_map_fzf")
          nnoremap <silent> <c-p> :<c-u>WhichKey '<c-p>'<CR>
          vnoremap <silent> <c-p> :<c-u>WhichKeyVisual '<c-p>'<CR>
 
     endif
  " }}}vim-which-key
 
- " vim-leader-guide {{{
-    if PM('hecal3/vim-leader-guide', {
-       \     'hook_post_source': 'call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")'
-       \ })
-
-      "nnoremap <silent> <leader> :<c-u>LeaderGuide '<Space>'<CR>
-      nnoremap <leader> <cmd>LeaderGuide '<Space>'<CR>
-      vnoremap <silent> <leader> :<c-u>LeaderGuideVisual '<Space>'<CR>
-
-
-      let g:leaderGuide_max_size = 10
-      let g:leaderGuide_submode_mappings = { '<C-C>': 'win_close', '<C-F>': 'page_down', '<C-B>': 'page_up'}
-      au FileType leaderGuide set norelativenumber
-
-      " let g:leaderGuide_run_map_on_popup = 0
-      let g:leaderGuide_flatten=1
-
-      let g:lmap =  {}
-      let g:lmap.a   = { 'name' : 'Tabularize' }
-      let g:lmap.b   = { 'name' : 'Buffer' }
-      let g:lmap.c = { 'name' : 'Comments' }
-      let g:lmap.c   = { 'name' : 'Comment' }
-      let g:lmap.e   = { 'name' : 'Edit' }
-      let g:lmap.g   = { 'name' : 'Git' }
-      let g:lmap.h   = { 'name' : 'Help' }
-      let g:lmap.g.d = { 'name' : 'Diff' }
-      let g:lmap.s   = { 'name' : 'Search' }
-      let g:lmap.f   = { 'name' : 'File' }
-      let g:lmap.o   = { 'name' : 'Open' }
-      let g:lmap.t   = { 'name' : 'Tab' }
-      let g:lmap.q   = { 'name' : 'Quit' }
-      let g:lmap.r   = { 'name' : 'Replace' }
-      let g:lmap.w   = { 'name' : 'Write' }
-
-      let g:leaderGuide_sort_horizontal=0
-
-      " If you use NERDCommenter:
-      " Define some descriptions
-      let g:lmap.c.c = ['call feedkeys("\<Plug>NERDCommenterComment")','Comment']
-      let g:lmap.c[' '] = ['call feedkeys("\<Plug>NERDCommenterToggle")','Toggle']
-      " The Descriptions for other mappings defined by NerdCommenter, will default
-      " to their respective commands.
-
-      function! s:my_displayfunc()
-        let g:leaderGuide#displayname =
-              \ substitute(g:leaderGuide#displayname, '\c<cr>$', '', '')
-        let g:leaderGuide#displayname =
-              \ substitute(g:leaderGuide#displayname, '^<Plug>', '', '')
-        let g:leaderGuide#displayname =
-              \ substitute(g:leaderGuide#displayname, '^<SID>', '', '')
-      endfunction
-      let g:leaderGuide_displayfunc = [function("s:my_displayfunc")]
-
-      " Moved this hook_post
-      " call leaderGuide#register_prefix_descriptions("<Space>", "g:lmap")
-
-    endif
- " _vim-leader-guide }}}
 
  "}}}
 
