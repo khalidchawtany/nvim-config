@@ -139,7 +139,7 @@ nnoremap <c-w>M <C-w>_<C-w><Bar>
 
 " Buffer deletion commands {{{
 
-nnoremap <c-w>O            :BufOnly<cr>
+nnoremap <c-w>O            :tabonly \| BufOnly<cr>
 nnoremap <c-;>wa           :BufOnly -1<cr>
 nmap     <c-;>ww           <Plug>BW
 nnoremap <silent> <c-;>wu  :silent! WipeoutUnmodified<cr>
@@ -216,6 +216,7 @@ nnoremap <c-g>si `[v`]
 " Writting and Quitting {{{
 "===============================================================================
 
+LMap N <leader>t<space>    <SID>TabOnly  :tabonly<cr>
 LMap N <leader>q<space>    <SID>QuitTab  :tabclose<cr>
 LMap N <leader>qq    <SID>Quit           :q<cr>
 LMap N <leader>qa    <SID>quit-all       :qall<cr>

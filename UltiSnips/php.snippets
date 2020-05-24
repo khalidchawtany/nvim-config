@@ -1,27 +1,15 @@
 extends html
 
-global !p
-def insert_method_call(name):
-	vim.command('normal G')
-	snip.expand_anon(name + '($1)\n')
-endglobal
-
-post_jump "if snip.tabstop == 0: insert_method_call(snip.tabstops[1].current_text)"
-snippet dd "method declaration" b
-def $1():
-	$2
+snippet dd
+dd(${1:${VISUAL}}${2:->toArray()});
 endsnippet
 
-post_expand "snip.buffer[snip.snippet_end[0]+1:snip.snippet_end[0]+1] = ['']"
-snippet d "Description" b
-def $1():
-	$2
+snippet du
+dump(${1:${VISUAL}}${2:->toArray()});
 endsnippet
 
-pre_expand "del snip.buffer[snip.line]; snip.cursor.set(len(snip.buffer)-1, 0)"
-snippet x
-def $1():
-	${2:${VISUAL}}
+snippet ta
+${1:${VISUAL}}->toArray()
 endsnippet
 
 snippet hcv "html comment"
@@ -57,7 +45,6 @@ function ($query) {
 }
 endsnippet
 
-
 snippet psfun "Function"
 private static function $1()
 {
@@ -72,7 +59,7 @@ public function $1()
 }
 endsnippet
 
-snippet if "Iff"
+snippet if "If"
 if ($1) {
 	$0
 }
@@ -113,6 +100,7 @@ public function ${1:model}s ()
 }
 $0
 endsnippet
+
 snippet null "migration nullable" i
 ->nullable()$0
 endsnippet
@@ -521,3 +509,4 @@ snip.rv = snip.basename or "untitled"`} extends TestCase
 	}
 }
 endsnippet
+

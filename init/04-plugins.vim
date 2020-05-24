@@ -612,7 +612,12 @@ endif
 
    "Pipe !command output to vim
    call PM( 'NLKNguyen/pipe.vim' )
+   let g:pipe_no_mappings = 1
 
+   " " Use your key
+   " nmap _<bar>     <Plug>PipePrompt
+   " nmap <bar><bar> <Plug>PipeLast
+   " nmap __         <Plug>PipeToggle
  "}}} _pipe.vim
 
  "vim-signature {{{
@@ -730,6 +735,51 @@ endif
    endfunction
  endif "PM()
  "}}}
+
+ " vim-hydra {{{
+ if PM('brenopacheco/vim-hydra')
+ let s:example_hydra =
+            \ {
+            \   'name':        'example',
+            \   'title':       'Example hydra',
+            \   'show':        'popup',
+            \   'exit_key':    "q",
+            \   'feed_key':    v:true,
+            \   'foreign_key': v:true,
+            \   'keymap': [
+            \     {
+            \       'name': 'Window',
+            \       'keys': [
+            \         ['s', 'split',                    'split'],
+            \         ['v', 'vsplit',                   'vsplit'],
+            \         ['d', 'close',                    'close'],
+            \         ['o', 'only',                     'only'],
+            \       ]
+            \     },
+            \     {
+            \       'name': 'Move to',
+            \       'keys': [
+            \         ['h', "norm \<C-w>h", '?'],
+            \         ['j', "norm \<C-w>j", '?'],
+            \         ['k', "norm \<C-w>k", '?'],
+            \         ['l', "norm \<C-w>l", '?'],
+            \       ]
+            \     },
+            \     {
+            \       'name': 'Buffers',
+            \       'keys': [
+            \         ['b', 'Buffers', "Buffers", 'interactive'],
+            \         ['n', "bn",       "next"],
+            \         ['p', "bp",       "prev"],
+            \         ['e', "enew!",    "empty"],
+            \       ]
+            \     },
+            \   ]
+            \ }
+ endif
+ silent call hydra#hydras#register(s:example_hydra)
+ nnoremap <Leader>w :Hydra example<CR>
+ "}}} _ vim-hydra
 
  " vim-unimpaired {{{
  call PM( 'tpope/vim-unimpaired')
@@ -2192,8 +2242,10 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/'.s:null, 1, <bang>0)
 
 
-    command! -bang -nargs=* Rg call fzf#vim#grep( 'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
-    nnoremap <c-p>A :Rg<cr>
+    command! -bang -nargs=* Rg2 call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+    nnoremap <silent> <c-p><c-a> :Rg2 <CR>
+    nnoremap <silent> <c-p>a :Rg2 <C-R><C-W><CR>
+
 
   if PM( 'junegunn/fzf.vim',
           \ {
@@ -2287,7 +2339,7 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  call Map_FZF  ( "FZF "     , "d"     , " --reverse %:p:h "                                                              , 0  )
  call Map_FZF  ( "FZF "     , "r"     , " --reverse <c-r>=FindGitDirOrRoot()<cr>"                                        , 0  )
  call Map_FZF  ( "FzfFiles "    , "p"   , ''                                                                               , 2  )
- call Map_FZF  ( "FzfAg"       , "a"     , ""                                                                               , 3  )
+ " call Map_FZF  ( "FzfAg"       , "a"     , ""                                                                               , 3  )
  call Map_FZF  ( "FzfLines"    , "L"     , ""                                                                               , 2  )
  call Map_FZF  ( "FzfBLines"   , "l"     , ""                                                                               , 2  )
  call Map_FZF  ( "FzfBTags"    , "t"     , ""                                                                               , 0  )
@@ -2856,6 +2908,9 @@ endfunction
         " nnoremap <leader>- :Fern %:p:h -toggle -reveal=% -drawer -width=33<cr>
 
         function! s:init_fern() abort
+            nmap <buffer>  <c-j> <c-w><c-j>
+            nmap <buffer>  <c-k> <c-w><c-k>
+            nmap <buffer><nowait> <c-space> <Plug>(fern-action-mark-toggle)j
             nmap <buffer> - <Plug>(fern-action-leave)
             nmap <buffer> % <Plug>(fern-action-leave)
             nnoremap <buffer> q :<C-u>quit<CR>
@@ -2885,7 +2940,7 @@ endfunction
          augroup END
 
          let g:file_browser = 'fern'
-         nnoremap <leader><BS> :if g:file_browser == 'nnn' \| let g:file_browser='fern' \| else \| let g:file_browser='nnn' \| endif<cr>
+         nnoremap <silent> <leader><BS> <cmd>if g:file_browser == 'nnn' \| let g:file_browser='fern' \| else \| let g:file_browser='nnn' \| endif \| echom g:file_browser "is the default file browser"<cr>
 
          function! s:hijack_directory() abort
              if !isdirectory(expand('%'))
@@ -3399,13 +3454,16 @@ endif
          \["asset", "\.[js|css|scss|sass|less|stylus]$"],
          \["org", "\.[org]$"],
          \["config", "config\/"],
-         \["route", "route\/"],
+         \["route", "routes\/"],
          \["v-cmd", "vendor\/\.\*\/Commands\/\.\*.php"],
          \["v-bread", "vendor\/\.\*\/bread\/\.\*.php"],
-         \["term", "term"]
+         \["bread", "bread\/"],
+         \["term", "term"],
+         \["other", ""],
          \]
  "let g:vim_drawer_spaces = [ ["controller", "Controller\.php"], ["model", "app\/"], ["view", "\.blade\.php$"], ["asset", "\.[js|css|scss|sass|less|stylus]$"], ["org", "\.[org]$"], ["config", "config\/"], ["term", "term"] ]
    nnoremap <C-w><Space> :VimDrawer<CR>
+   nnoremap <C-w><c-Space> :VimDrawerAutoClassificationToggle<CR>
  endif
  "}}} _vim-drawer
  " zoomwintab.vim {{{

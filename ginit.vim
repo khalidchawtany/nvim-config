@@ -22,8 +22,8 @@ let g:current_gui_font_index = 0
 function! ToggleFont(dir)
   let g:current_gui_font_index += a:dir
   let g:current_gui_font_index = g:current_gui_font_index % len(g:gui_fonts)
-  execute 'GuiFont! ' g:gui_fonts[g:current_gui_font_index]
-  echo g:gui_fonts[g:current_gui_font_index].":".substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', '')
+  execute 'set guifont='. fnameescape(g:gui_fonts[g:current_gui_font_index])
+  echo g:gui_fonts[g:current_gui_font_index]
 endfunction
 command! NextFont call ToggleFont(1)
 command! PrevFont call ToggleFont(-1)
@@ -32,9 +32,6 @@ nnoremap c[f :<c-u>PrevFont<cr>
 
 let g:linespace = 6
 call rpcnotify(0, 'Gui', 'Linespace', g:linespace)
-
-"command! Bigger :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)+1', ''))
-"command! Smaller :call rpcnotify(0, 'Gui', 'Font',  substitute(g:GuiFont, '\d\+$', '\=submatch(0)-1', ''))
 
 command! Bigger :let g:gui_fonts[g:current_gui_font_index]=substitute(g:gui_fonts[g:current_gui_font_index], '\d\+$', '\=submatch(0)+1', '') | call rpcnotify(0, 'Gui', 'Font', g:gui_fonts[g:current_gui_font_index])
 command! Smaller :let g:gui_fonts[g:current_gui_font_index]=substitute(g:gui_fonts[g:current_gui_font_index], '\d\+$', '\=submatch(0)-1', '') | call rpcnotify(0, 'Gui', 'Font', g:gui_fonts[g:current_gui_font_index])
@@ -61,7 +58,7 @@ endif
 
 "Don't use gui tabline and Popup menu
 " call rpcnotify(0, "Gui", "Option", "Tabline", "false")
-" call rpcnotify(0, 'Gui', 'Option', 'Popupmenu', 0) 
+" call rpcnotify(0, 'Gui', 'Option', 'Popupmenu', 0)
 
 if ! exists('g:fvim_loaded')
     GuiTabline 0
@@ -116,18 +113,33 @@ if has('mac')
     let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
 endif
 
- if exists('g:fvim_loaded')
-    " good old 'set guifont' compatibility
-    " Ctrl-ScrollWheel for zooming in/out
+
+
+if exists('g:fvim_loaded')
     nnoremap <silent> <C-ScrollWheelUp> :set guifont=+<CR>
     nnoremap <silent> <C-ScrollWheelDown> :set guifont=-<CR>
-    nnoremap <A-CR> :FVimToggleFullScreen<CR>
-    " FVimCursorSmoothMove v:true
-    " FVimCursorSmoothBlink v:true
+    nnoremap <M-CR> :FVimToggleFullScreen<CR>
+
+    nnoremap <silent> <D-=> :set guifont=+<cr>
+    nnoremap <silent> <D--> :set guifont=-<cr>
+
+    " Title bar tweaks
+    FVimCustomTitleBar v:true
+
+    " Font tweaks
+    " FVimFontAntialias v:true
+    " FVimFontAutohint v:true
+    " FVimFontHintLevel 'full'
+    " FVimFontLigature v:true
+    FVimFontLineHeight "+5"
+    " FVimFontSubpixel v:true
+    " FVimFontNoBuiltInSymbols v:true
+
+
+    FVimToggleFullScreen
+    finish
+else
+    "***************MUST BE LAST LINE*******
+    "Start neovim-qt as maximized borderless.
+    call GuiWindowMaximized(2)
 endif
-
-
-
-"***************MUST BE LAST LINE*******
-"Start neovim-qt as maximized borderless.
-call GuiWindowMaximized(2)
