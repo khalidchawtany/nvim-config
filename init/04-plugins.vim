@@ -904,14 +904,6 @@ endif
 
  "}}} _investigate.vim
 
- "vim-highlightedyank {{{
- if PM('machakann/vim-highlightedyank')
-   map y <Plug>(highlightedyank)
-   let g:highlightedyank_highlight_duration = 300
-   highlight link HighlightedyankRegion Visual
- endif
- "}}} _vim-highlightedyank
-
  "}}}
 
  " languages {{{
@@ -3916,6 +3908,7 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
+ call PM('romgrk/github-light.vim')
  call PM('haishanh/night-owl.vim')
  call PM('liuchengxu/space-vim-dark')
  call PM('owickstrom/vim-colors-paramount')

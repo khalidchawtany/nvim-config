@@ -186,7 +186,7 @@ set shiftwidth=4
 set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
 
 set textwidth=80
-set wrap                              " Wrap long lines
+set nowrap                              " don't Wrap long lines
 set breakindent                       " proper indenting for long lines
 
 set linebreak                         "Don't linebreak in the middle of words
@@ -271,8 +271,6 @@ function! MyFoldText()
   endif
   return  sub . info
 endfunction
-
-set wrap
 
 set timeout timeoutlen=750
 "NeoVim handles ESC keys as alt+key set this to solve the problem

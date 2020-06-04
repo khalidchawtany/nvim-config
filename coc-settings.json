@@ -18,6 +18,48 @@
     "diagnostic.warningSign": "»",
     "diagnostic.infoSign": "›",
     "diagnostic.hintSign": "º°",
+    "tailwindCSS.htmlLanguages": [
+        "blade",
+        "edge",
+        "eelixir",
+        "ejs",
+        "elixir",
+        "elm",
+        "erb",
+        "eruby",
+        "haml",
+        "handlebars",
+        "html",
+        "HTML (EEx)",
+        "HTML (Eex)",
+        "html.twig",
+        "jade",
+        "leaf",
+        "markdown",
+        "njk",
+        "nunjucks",
+        "php",
+        "razor",
+        "slim",
+        "svelte",
+        "twig",
+        "vue"
+    ],
+    "tailwindCSS.jsLanguages": [
+        "javascript",
+        "javascriptreact",
+        "reason",
+        "typescriptreact"
+    ],
+    "tailwindCSS.cssLanguages": [
+        "css",
+        "less",
+        "postcss",
+        "sass",
+        "scss",
+        "stylus",
+        "vue"
+    ],
 
     "vetur.validation.template": true,
 
