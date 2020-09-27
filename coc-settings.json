@@ -18,6 +18,9 @@
     "diagnostic.warningSign": "»",
     "diagnostic.infoSign": "›",
     "diagnostic.hintSign": "º°",
+    "stylelint.enable": "false",
+     "python.jediEnabled": false,
+
     "tailwindCSS.htmlLanguages": [
         "blade",
         "edge",
@@ -65,32 +68,32 @@
 
     "suggest.languageSourcePriority": 1,
     "coc.source.syntax.priority":     2,
-    "snippets.priority":              1,
+    "snippets.priority":              3,
 
     "coc.source.around.enable": true,
-    "coc.source.around.priority": 3,
+    "coc.source.around.priority": 4,
     "coc.source.around.shortcut": "A",
 
     "coc.source.buffer.enable": true,
     "coc.source.buffer.shortcut": "B",
-    "coc.source.buffer.priority": 4,
+    "coc.source.buffer.priority": 5,
 
     "coc.source.dictionary.enable": true,
     "coc.source.dictionary.shortcut": "D",
-    "coc.source.dictionary.priority": 5,
+    "coc.source.dictionary.priority": 6,
 
     "coc.source.word.enable": false,
     "coc.source.word.shortcut": "10k",
-    "coc.source.word.priority": 99,
+    "coc.source.word.priority": 1,
 
 
     "coc.source.ultisnips.enable": true,
-    "coc.source.ultisnips.priority": 1,
+    "coc.source.ultisnips.priority": 2,
     "coc.source.ultisnips.shortcut": "US",
 
     "coc.source.file.enable": true,
     "coc.source.file.shortcut": "F",
-    "coc.source.file.priority": 1,
+    "coc.source.file.priority": 2,
     "coc.source.file.triggerCharacters": ["/"],
     "coc.source.file.trimSameExts": [".ts", ".js"],
     "coc.source.file.ignoreHidden": true,

@@ -91,19 +91,20 @@ set autoindent
 set cindent
 set wrap
 
+" Always use spaces instead of tab characters
+set expandtab
+
 " Set the width of the tab to 4 wide
 " This gets overridden by vim-sleuth, so that's nice
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=2
+set shiftwidth=2
+set softtabstop=2
+set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
 
 " Make it so that long lines wrap smartly
 set breakindent
 let &showbreak=repeat(' ', 3)
 set linebreak
-
-" Always use spaces instead of tab characters
-set expandtab
 
 " Folding
 set foldmethod=manual

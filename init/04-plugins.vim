@@ -605,7 +605,7 @@ endif
  "}}} _vim-xkbswitch
 
  " vim-fetch {{{
-   call PM( 'kopischke/vim-fetch', {'merged': 1} )              "Fixes how vim handles FN(LN:CN)
+   call PM( 'kopischke/vim-fetch')              "Fixes how vim handles FN(LN:CN)
  "}}} _vim-fetch
 
  " pipe.vim {{{
@@ -846,6 +846,82 @@ endif
  endif
  "}}} _close-buffers.vim
 
+ " nvim-treesitter {{{
+if PM('nvim-treesitter/nvim-treesitter', { 'merged': 0 })
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+    highlight = {
+      enable = true,                    -- false will disable the whole extension
+      disable = { },                    -- list of language that will be disabled
+      custom_captures = {               -- mapping of user defined captures to highlight groups
+        -- ["foo.bar"] = "Identifier"   -- highlight own capture @foo.bar with highlight group "Identifier", see :h nvim-treesitter-query-extensions
+      },
+    },
+    incremental_selection = {
+      enable = true,
+      disable = {  },
+      keymaps = {                       -- mappings for incremental selection (visual mappings)
+        init_selection = "gnn",         -- maps in normal mode to init the node/scope selection
+        node_incremental = "grn",       -- increment to the upper named parent
+        scope_incremental = "grc",      -- increment to the upper scope (as defined in locals.scm)
+        node_decremental = "grm",       -- decrement to the previous node
+      }
+    },
+    refactor = {
+      highlight_definitions = {
+        enable = false
+      },
+      highlight_current_scope = {
+        enable = false
+      },
+      smart_rename = {
+        enable = true,
+        keymaps = {
+          smart_rename = "grr"          -- mapping to rename reference under cursor
+        }
+      },
+      navigation = {
+        enable = true,
+        keymaps = {
+          goto_definition = "gnd",      -- mapping to go to definition of symbol under cursor
+          list_definitions = "gnD"      -- mapping to list all definitions in current file
+        }
+      }
+    },
+    textobjects = { -- syntax-aware textobjects
+    enable = true,
+    disable = {},
+    keymaps = {
+        ["iL"] = { -- you can define your own textobjects directly here
+          python = "(function_definition) @function",
+          cpp = "(function_definition) @function",
+          c = "(function_definition) @function",
+          java = "(method_declaration) @function"
+        },
+        -- or you use the queries from supported languages with textobjects.scm
+        ["af"] = "@function.outer",
+        ["if"] = "@function.inner",
+        ["aC"] = "@class.outer",
+        ["iC"] = "@class.inner",
+        ["ac"] = "@conditional.outer",
+        ["ic"] = "@conditional.inner",
+        ["ae"] = "@block.outer",
+        ["ie"] = "@block.inner",
+        ["al"] = "@loop.outer",
+        ["il"] = "@loop.inner",
+        ["is"] = "@statement.inner",
+        ["as"] = "@statement.outer",
+        ["ad"] = "@comment.outer",
+        ["am"] = "@call.outer",
+        ["im"] = "@call.inner"
+      }
+    },
+    -- ensure_installed = "all" -- one of "all", "language", or a list of languages
+}
+EOF
+endif
+ "}}} _ nvim-treesitter
+
  "chromatica {{{
  if PM('arakashic/chromatica.nvim')
      let test#strategy = "neovim"
@@ -904,17 +980,22 @@ endif
 
  "}}} _investigate.vim
 
+ if PM('akiyosi/gonvim-fuzzy')
+ endif
+
  "}}}
 
  " languages {{{
+ "
+ " Pythn
+ "
+if PM('relastle/vim-nayvy', {'on_ft': 'python'})
 
- " nvim-lsp {{{
- if PM('neovim/nvim-lsp')
-" lua << EOF
-"     require'nvim_lsp'.intelephense.setup{}
-" EOF
+endif
+
+ "SQL
+ if PM('tpope/vim-dadbod')
  endif
- " }}} _ nvim-lsp
 
  "vim-go {{{
  if PM('fatih/vim-go', {'on_ft': 'go'})
@@ -1355,12 +1436,27 @@ endif
 
    "let g:user_emmet_mode='a'         "enable all function in all mode.
    let g:user_emmet_mode='i'         "enable all function in insert mode
-   let g:user_emmet_leader_key="<c-;><c-;>"
+   let g:user_emmet_leader_key="<c-y>"
    let g:user_emmet_settings = {
          \  'javascript.jsx' : {
          \      'extends' : 'jsx',
          \  },
          \}
+  imap   <C-y>,   <plug>(emmet-expand-abbr)
+  imap   <C-y>;   <plug>(emmet-expand-word)
+  imap   <C-y>u   <plug>(emmet-update-tag)
+  imap   <C-y>d   <plug>(emmet-balance-tag-inward)
+  imap   <C-y>D   <plug>(emmet-balance-tag-outward)
+  imap   <C-y>n   <plug>(emmet-move-next)
+  imap   <C-y>N   <plug>(emmet-move-prev)
+  imap   <C-y>i   <plug>(emmet-image-size)
+  imap   <C-y>/   <plug>(emmet-toggle-comment)
+  imap   <C-y>j   <plug>(emmet-split-join-tag)
+  imap   <C-y>k   <plug>(emmet-remove-tag)
+  imap   <C-y>a   <plug>(emmet-anchorize-url)
+  imap   <C-y>A   <plug>(emmet-anchorize-summary)
+  imap   <C-y>m   <plug>(emmet-merge-lines)
+  imap   <C-y>c   <plug>(emmet-code-pretty)
  endif
 
  "}}}
@@ -1380,22 +1476,7 @@ endif
  "Ctrl+_ to close next unimpared tag
  call PM( 'vim-scripts/closetag.vim' , {'on_ft':['html','xml','xsl','xslt','xsd', 'blade', 'php', 'blade.php']} )
  "}}}
- " MatchTagAlways {{{
- if PM( 'Valloric/MatchTagAlways' , {'on_if': 0, 'on_ft':['html', 'php','xhtml','xml','blade', 'js', 'vim']} )
-   let g:mta_filetypes = {
-         \ 'html' : 1,
-         \ 'xhtml' : 1,
-         \ 'xml' : 1,
-         \ 'jinja' : 1,
-         \ 'blade' : 1,
-         \ 'php' : 1,
-         \ 'js' : 1,
-         \ 'vim' : 1,
-         \}
-   nnoremap <leader>% :MtaJumpToOtherTag<cr>
- endif
 
- "}}}"Always match html tag
  "{{{ tagalong
   if PM('AndrewRadev/tagalong.vim')
     let g:tagalong_mappings = []
@@ -1627,7 +1708,8 @@ endif
  au filetype php set iskeyword+=$
 
  "coc.nvim {{{
- if PM('neoclide/coc.nvim')
+ " if PM('neoclide/coc.nvim', {'rev': 'release', 'build': 'call coc#util#install()'})
+ if PM('neoclide/coc.nvim', {'rev': 'master','build': 'yarn install --frozen-lockfile'})
      " {'build': 'npm install'}
      " Use tab for trigger completion with characters ahead and navigate.
      " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -1700,10 +1782,32 @@ endif
      nmap <leader>qf  <Plug>(coc-fix-current)
 
      " Use `:Format` for format current buffer
-     command! -nargs=0 Format :call CocAction('format')
+     command! -nargs=0 Format :call FormatFile()
+     nnoremap <c-k><c-f> :call FormatFile()<cr>
+
+     function! FormatFile()
+         execute "write"
+       if &filetype == 'blade'
+         normal mz
+         execute ":%!blade-formatter --indent-size=2 %"
+         normal `z
+         return
+       endif
+       if &filetype == 'json'
+         normal mz
+         execute ":%!jq ."
+         normal `z
+         return
+       endif
+
+       call CocAction('format')
+     endfunction
 
      " Use `:Fold` for fold current buffer
      command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+     " Add `:OR` command for organize imports of the current buffer.
+     command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 
      " Add diagnostic info for https://github.com/itchyny/lightline.vim
@@ -1773,11 +1877,6 @@ endif
  endif
  "}}} _coc.nvim
 
-"LanguageServer-php-neovim {{{
- let $PHPLS_ALLOW_XDEBUG=0
-call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
-"}}} _LanguageServer-php-neovim
-
  " LanguageClient-neovim {{{
  if PM('autozimu/LanguageClient-neovim',
        \ {
@@ -1799,12 +1898,17 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
    " Automatically start language servers.
    let g:LanguageClient_autoStart = 1
 
-   nnoremap <silent> gk :call LanguageClient_textDocument_hover()<CR>
-   nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-   nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
-   nnoremap <silent> gR :call LanguageClient_textDocument_rename()<CR>
+   " nnoremap <silent> gk :call LanguageClient_textDocument_hover()<CR>
+   " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+   " nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
+   " nnoremap <silent> gR :call LanguageClient_textDocument_rename()<CR>
  endif
  "}}} _ LanguageClient-neovim
+
+"LanguageServer-php-neovim {{{
+ let $PHPLS_ALLOW_XDEBUG=0
+call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
+"}}} _LanguageServer-php-neovim
 
  " Command line
  " ambicmd {{{
@@ -2181,6 +2285,28 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
  "}}} _vim-CtrlSpace
 
  " File
+ " Telescope {{{
+    if PM('nvim-lua/telescope.nvim')
+        call PM('nvim-lua/popup.nvim')
+        call PM('nvim-lua/plenary.nvim')
+         " -- Fuzzy find over git files in your directory
+        " require('telescope.builtin').git_files()
+
+        " -- Grep files as you type (requires rg currently)
+        " require('telescope.builtin').live_grep()
+
+        " -- Use builtin LSP to request references under cursor. Fuzzy find over results.
+        " require('telescope.builtin').lsp_references()
+
+        " -- Convert currently quickfixlist to telescope
+        " require('telescope.builtin').quickfix()
+
+        " -- Convert currently loclist to telescope
+        " require('telescope.builtin').loclist()
+
+    endif
+ " }}} _Telescopt
+
  "cpsm {{{
     call PM('nixprime/cpsm')
  "}}} _cpsm
@@ -2232,6 +2358,8 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     command! -bang -nargs=* Rg2 call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
     nnoremap <silent> <c-p><c-a> :Rg2 <CR>
     nnoremap <silent> <c-p>a :Rg2 <C-R><C-W><CR>
+    nnoremap <silent> <c-p><c-j> :FzfAg <CR>
+    nnoremap <silent> <c-p>j :FzfAg <C-R><C-W><CR>
 
 
   if PM( 'junegunn/fzf.vim',
@@ -2887,7 +3015,7 @@ endfunction
         let g:fern#drawer_width = 33
 
         if PM('khalidchawtany/fern-renderer-plain.vim')
-            let g:fern#renderer = "plain"
+            " let g:fern#renderer = "plain"
         endif
         nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -keep -reveal=%:t \| endif \| <cr>
         nnoremap <silent> <leader>- :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -wait -stay -reveal=%:t \| endif \| <cr>
@@ -2897,7 +3025,7 @@ endfunction
         function! s:init_fern() abort
             nmap <buffer>  <c-j> <c-w><c-j>
             nmap <buffer>  <c-k> <c-w><c-k>
-            nmap <buffer><nowait> <c-space> <Plug>(fern-action-mark-toggle)j
+            nmap <buffer><nowait> <c-space> <Plug>(fern-action-mark:toggle)j
             nmap <buffer> - <Plug>(fern-action-leave)
             nmap <buffer> % <Plug>(fern-action-leave)
             nnoremap <buffer> q :<C-u>quit<CR>
@@ -3023,7 +3151,8 @@ endfunction
  " Content
 
  " aerojump.nvim {{{
- if PM('ripxorip/aerojump.nvim', { 'build': ':UpdateRemotePlugins' })
+ " if PM('ripxorip/aerojump.nvim')
+ if PM('khalidchawtany/aerojump.nvim')
      " aerojump mappings
      " g:aerojump_keymaps
 
@@ -3036,8 +3165,8 @@ endfunction
  endif
  "}}} _ aerojump.nvim
  " any-jump {{{
-  if PM('khalidchawtany/any-jump.nvim')
-  " if PM('pechorin/any-jump.nvim')
+  " if PM('khalidchawtany/any-jump.nvim')
+  if PM('pechorin/any-jump.nvim')
 
     let g:any_jump_disable_default_keybindings = v:true
     " Jump to definition under cursore
@@ -3088,7 +3217,10 @@ endfunction
 
     let g:any_jump_results_ui_style = 'filename_first' "
 
-    autocmd FileType any-jump  setlocal nonumber | setlocal norelativenumber | setlocal foldcolumn=0
+    autocmd FileType any-jump  setlocal nonumber
+                \| setlocal norelativenumber
+                \| setlocal foldcolumn=0
+                \| nmap <c-c> <esc>
  endif
  " }}} _ any-jump
  " vim-stay {{{
@@ -3113,34 +3245,6 @@ if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
 endif
 
  "}}} _nvim-miniyank
- " vim-pseudocl {{{
-   call PM( 'junegunn/vim-pseudocl' ) "Required by oblique & fnr
- "}}} _vim-pseudocl
- " vim-oblique {{{
-if PM( 'junegunn/vim-oblique', {'on_map': [ '<Plug>(Oblique-' ]} )
-
-  let g:oblique#enable_cmap=0
-  "let g:oblique#clear_highlight=0
-
-  Map nx  #  <Plug>(Oblique-#)
-  Map nx  *  <Plug>(Oblique-*)
-  Map nox /  <Plug>(Oblique-/)
-  Map nox ?  <Plug>(Oblique-?)
-  Map n   g# <Plug>(Oblique-g#)
-  Map n   g* <Plug>(Oblique-g*)
-  Map nox z/ <Plug>(Oblique-F/)
-  Map nox z? <Plug>(Oblique-F?)
-
-  nmap <expr>n ['<Plug>(Oblique-N)','<Plug>(Oblique-n)'][v:searchforward]
-  nmap <expr>N ['<Plug>(Oblique-n)','<Plug>(Oblique-N)'][v:searchforward]
-
-  autocmd! User Oblique       normal! zz
-  autocmd! User ObliqueStar   normal! zz
-  autocmd! User ObliqueRepeat normal! zz
-
- endif
-
- "}}}
  "scalpel {{{
   if PM('wincent/scalpel', {'on_cmd': ['Scalpel'], 'on_map': ['<Plug>(Scalpel)']})
    nmap  g;r <Plug>(Scalpel)
@@ -3565,11 +3669,13 @@ endif
 
  "vim-floaterm {{{
     if PM('voldikss/vim-floaterm')
-        " let g:floaterm_keymap_new    = '<F7>'
+        let g:floaterm_keymap_new    = '<F7>'
         let g:floaterm_keymap_prev   = '<C-BS>'
-        " let g:floaterm_keymap_next   = '<F9>'
+        let g:floaterm_keymap_next   = '<F9>'
         let g:floaterm_keymap_toggle = '<C-CR>'
-        let g:floaterm_position = 'center'
+        let g:floaterm_position      = 'center'
+        let g:floaterm_width         = 0.75
+        let g:floaterm_height         = 0.8
     endif
  "}}}
 
@@ -3839,7 +3945,7 @@ endif
  " vim-better-whitespace {{{
 
  if PM( 'ntpeters/vim-better-whitespace' )
-   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'any-jump']
+   let g:better_whitespace_filetypes_blacklist=['diff', 'nofile', 'qf', 'gitcommit', 'unite', 'vimfiler', 'help', 'any-jump', 'minimap']
    autocmd FileType unite DisableWhitespace
    autocmd FileType vimfiler DisableWhitespace
    autocmd FileType any-jump DisableWhitespace
@@ -3847,11 +3953,52 @@ endif
 
  "}}}
 
+
+ " minimap.vim {{{
+ if PM('wfxr/minimap.vim')
+     "Minimap
+     "MinimapClose
+     "MinimapToggle
+     "MinimapRefresh
+     "MinimapUpdateHighlight
+     "g:minimap_left	= 0
+     "g:minimap_width	 = 10
+     "g:minimap_highlight = Title
+     "g:minimap_auto_start	= 0
+ endif
+ "}}} _ minimap.vim
+
+ " scrollbar.nvim {{{
+ if PM('Xuyuanp/scrollbar.nvim')
+     let g:scrollbar_max_size = 6
+
+     let g:scrollbar_right_offset = 1
+
+     let g:scrollbar_excluded_filetypes = ['nerdtree', 'tagbar']
+
+     augroup your_config_scrollbar_nvim
+         autocmd!
+
+         autocmd CursorHold * silent! lua require('scrollbar').clear()
+
+         autocmd BufEnter    * silent! lua require('scrollbar').show()
+         autocmd BufLeave    * silent! lua require('scrollbar').clear()
+
+         autocmd CursorMoved * silent! lua require('scrollbar').show()
+         autocmd VimResized  * silent! lua require('scrollbar').show()
+
+         autocmd FocusGained * silent! lua require('scrollbar').show()
+         autocmd FocusLost   * silent! lua require('scrollbar').clear()
+     augroup end
+ endif
+ "}}} _ scrollbar.nvim
+
  " vim-noscrollbar {{{
 
  call PM('gcavallanti/vim-noscrollbar')
 
  "}}} _vim-noscrollbar
+
  " vim-indentLine {{{
 
  if PM( 'Yggdroot/indentLine', {'lazy': 1} )
@@ -3867,6 +4014,7 @@ endif
  endif
 
  "}}}
+
  " vim-indent-guides {{{
 
  call PM('nathanaelkane/vim-indent-guides', {'lazy' : 1})

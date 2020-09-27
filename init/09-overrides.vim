@@ -9,6 +9,9 @@ endfunction
 
 
 let g:projects = [
+      \ "~/Projects/python/",
+      \ "~/Projects/js/nestjs",
+      \ "~/Projects/PHP",
       \ "~/Development/Applications/Oni",
       \ "~/Projects/go/bfmysql/",
       \ "~/Projects/PHP/AssetManager/",

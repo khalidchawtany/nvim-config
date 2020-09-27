@@ -8,6 +8,10 @@ snippet du
 dump(${1:${VISUAL}}${2:->toArray()});
 endsnippet
 
+snippet dr
+dump($request->toArray());
+endsnippet
+
 snippet ta
 ${1:${VISUAL}}->toArray()
 endsnippet
@@ -514,7 +518,7 @@ snippet ljoin "left join"
 ->join('${1}', '$1.id', '=', '${2}', 'LEFT OUTER')
 endsnippet
 
-snippet ljoin "join"
+snippet join "join"
 ->join('${1}', '$1.id', '${2}')
 endsnippet
 

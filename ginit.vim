@@ -1,7 +1,8 @@
 " let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-set guifont=Operator\ Mono\ Lig:h17
+" set guifont=Operator\ Mono\ Lig:h17
+set guifont=PT\ Mono:h20
 " set guifont=RobotoMono\ Nerd\ Font:h18
 
 " Support ligature
@@ -10,12 +11,12 @@ nnoremap co<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)<cr>
 nnoremap cO<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 0)<cr>
 
 let g:gui_fonts = [
-      \ 'Operator Mono Lig:h17',
-      \ 'RobotoMono Nerd Font:h18',
+      \ 'PT\ Mono:17',
+      \ 'Operator\ Mono\ Lig:h17',
+      \ 'RobotoMono\ Nerd\ Font:h18',
       \ 'Monaco:h17',
-      \ 'Source Code Pro for PowerLine:h17',
-      \ 'PT Mono:17',
-      \ 'Fura Mono Nerd Font:17'
+      \ 'Source\ Code\ Pro\ for\ PowerLine:h17',
+      \ 'Fura\ Mono\ Nerd\ Font:17'
       \ ]
 
 let g:current_gui_font_index = 0
@@ -25,22 +26,27 @@ function! ToggleFont(dir)
   execute 'set guifont='. fnameescape(g:gui_fonts[g:current_gui_font_index])
   echo g:gui_fonts[g:current_gui_font_index]
 endfunction
+
 command! NextFont call ToggleFont(1)
 command! PrevFont call ToggleFont(-1)
 nnoremap c]f :<c-u>NextFont<cr>
 nnoremap c[f :<c-u>PrevFont<cr>
 
-let g:linespace = 6
-call rpcnotify(0, 'Gui', 'Linespace', g:linespace)
 
-command! Bigger :let g:gui_fonts[g:current_gui_font_index]=substitute(g:gui_fonts[g:current_gui_font_index], '\d\+$', '\=submatch(0)+1', '') | call rpcnotify(0, 'Gui', 'Font', g:gui_fonts[g:current_gui_font_index])
-command! Smaller :let g:gui_fonts[g:current_gui_font_index]=substitute(g:gui_fonts[g:current_gui_font_index], '\d\+$', '\=submatch(0)-1', '') | call rpcnotify(0, 'Gui', 'Font', g:gui_fonts[g:current_gui_font_index])
+function! SetLineSpace(inc)
+  let linespace = &linespace + a:inc
+  exec 'set linespace='. linespace
+  call rpcnotify(0, 'Gui', 'Linespace', linespace)
+endfunction
+set linespace=6
+call SetLineSpace(0)
 
-nnoremap <silent> <D-=> :silent! Bigger<cr>
-nnoremap <silent> <D--> :silent! Smaller<cr>
 
-nnoremap <silent> <M-D--> :let g:linespace=g:linespace-1<cr>:call rpcnotify(0, 'Gui', 'Linespace', g:linespace)<cr>:redraw!<cr>
-nnoremap <silent> <M-D-=> :let g:linespace=g:linespace+1<cr>:call rpcnotify(0, 'Gui', 'Linespace', g:linespace)<cr>:redraw!<cr>
+nnoremap <silent> <D-=> :exec 'GuiFont' substitute(fnameescape(&guifont), '\d\+$', '\=submatch(0)+1', '')<cr>
+nnoremap <silent> <D--> :exec 'GuiFont' substitute(fnameescape(&guifont), '\d\+$', '\=submatch(0)-1', '')<cr>
+
+nnoremap <silent> <M-D--> :call SetLineSpace(-1)<cr>
+nnoremap <silent> <M-D-=> :call SetLineSpace(1)<cr>
 
 nnoremap <silent> <c-w>m :call GuiWindowMaximized((g:GuiWindowMaximized + 1) % 2)<cr>
 nnoremap <silent> <c-w>f :call GuiWindowFullScreen((g:GuiWindowFullScreen + 1) % 2)<cr>
@@ -113,9 +119,10 @@ if has('mac')
     let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
 endif
 
-
-
-if exists('g:fvim_loaded')
+if exists('g:gonvim_running')
+  set guifont=Roboto\ Mono\ for\ PowerLine:h18
+  set linespace=1
+else if exists('g:fvim_loaded')
     nnoremap <silent> <C-ScrollWheelUp> :set guifont=+<CR>
     nnoremap <silent> <C-ScrollWheelDown> :set guifont=-<CR>
     nnoremap <M-CR> :FVimToggleFullScreen<CR>
@@ -124,7 +131,8 @@ if exists('g:fvim_loaded')
     nnoremap <silent> <D--> :set guifont=-<cr>
 
     " Title bar tweaks
-    FVimCustomTitleBar v:true
+    " FVimCustomTitleBar v:true
+    " FVimCustomTitleBar v:false
 
     " Font tweaks
     " FVimFontAntialias v:true
@@ -136,7 +144,7 @@ if exists('g:fvim_loaded')
     " FVimFontNoBuiltInSymbols v:true
 
 
-    FVimToggleFullScreen
+    " FVimToggleFullScreen
     finish
 else
     "***************MUST BE LAST LINE*******

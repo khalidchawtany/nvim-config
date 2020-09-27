@@ -29,8 +29,7 @@ set formatoptions-=t                  " Stop autowrapping my code
 " set ambiwidth=double                " DON'T THIS FUCKS airline
 
 "don't autoselect first item in omnicomplete,show if only one item(for preview)
-"set completeopt=longest,menuone,preview
-set completeopt=noinsert,menuone
+set completeopt=menuone,noinsert,noselect
 
 set pumheight=15                      " limit completion menu height
 
@@ -159,11 +158,6 @@ set noswapfile
 "Dont warn me about swap files existence
 "set shortmess+=A
 
-"set shortmess=atI                    " Don’t show the intro message when starting Vim
-
-"prevent completion message flickers
-set shortmess+=c
-
 " Respect modeline in files
 set modeline
 set modelines=4
@@ -182,8 +176,6 @@ set expandtab
 "TODO: tpope sets smarttab
 set nosmarttab
 
-set shiftwidth=4
-set shiftround                        " when at 3 spaces I hit >> go to 4 not 5
 
 set textwidth=80
 set nowrap                              " don't Wrap long lines
@@ -292,6 +284,7 @@ set nostartofline                     " Don’t reset cursor to start of line wh
 set ruler                             " Show the cursor position
 set showmode                          " Show the current mode
 set shortmess=atI                     " Don’t show the intro message when starting Vim
+set shortmess+=c                      "prevent completion message flickers
 set inccommand=nosplit                " preview changes in the window not a split
 
 if !&scrolloff
