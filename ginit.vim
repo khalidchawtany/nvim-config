@@ -1,14 +1,21 @@
 " let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-" set guifont=Operator\ Mono\ Lig:h17
-set guifont=PT\ Mono:h20
-" set guifont=RobotoMono\ Nerd\ Font:h18
+"set guifont=Operator\ Mono\ Lig:h18
+" set guifont=OperatorMonoLig\ Nerd\ Font:h18
+" GuiFont! OperatorMonoLig Nerd Font:h18
+"GuiFont! Fira Code:h20
+ GuiFont! FiraCode Nerd Font:h20
+" set guifont=OperatorMono\ Nerd\ Font:h18
+"set guifont=PT\ Mono:h20
+"set guifont=RobotoMono\ Nerd\ Font:h19
+
+hi Title guibg=#afd7ff
 
 " Support ligature
-call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)
-nnoremap co<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)<cr>
-nnoremap cO<cr> :call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 0)<cr>
+call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 0)
+let g:render_ligatures = 0
+nnoremap <silent> <leader>o<cr> :let g:render_ligatures =  (g:render_ligatures + 1) % 2 \| call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', g:render_ligatures)<cr>
 
 let g:gui_fonts = [
       \ 'PT\ Mono:17',
@@ -38,7 +45,7 @@ function! SetLineSpace(inc)
   exec 'set linespace='. linespace
   call rpcnotify(0, 'Gui', 'Linespace', linespace)
 endfunction
-set linespace=6
+set linespace=18
 call SetLineSpace(0)
 
 
@@ -61,17 +68,6 @@ if &background == "light"
 else
     hi PmenuSel guibg=darkorange guifg=#B34826
 endif
-
-"Don't use gui tabline and Popup menu
-" call rpcnotify(0, "Gui", "Option", "Tabline", "false")
-" call rpcnotify(0, 'Gui', 'Option', 'Popupmenu', 0)
-
-if ! exists('g:fvim_loaded')
-    GuiTabline 0
-    GuiPopupmenu 0
-endif
-
-
 
 "Make c-^ consitent between terminal and GUI
 map <c-6> <c-^>
@@ -119,35 +115,11 @@ if has('mac')
     let $PYTHONPATH="/usr/local/Cellar/llvm/HEAD-f63894b/lib/python2.7/site-packages/lldb:$PYTHONPATH"
 endif
 
-if exists('g:gonvim_running')
-  set guifont=Roboto\ Mono\ for\ PowerLine:h18
-  set linespace=1
-else if exists('g:fvim_loaded')
-    nnoremap <silent> <C-ScrollWheelUp> :set guifont=+<CR>
-    nnoremap <silent> <C-ScrollWheelDown> :set guifont=-<CR>
-    nnoremap <M-CR> :FVimToggleFullScreen<CR>
 
-    nnoremap <silent> <D-=> :set guifont=+<cr>
-    nnoremap <silent> <D--> :set guifont=-<cr>
-
-    " Title bar tweaks
-    " FVimCustomTitleBar v:true
-    " FVimCustomTitleBar v:false
-
-    " Font tweaks
-    " FVimFontAntialias v:true
-    " FVimFontAutohint v:true
-    " FVimFontHintLevel 'full'
-    " FVimFontLigature v:true
-    FVimFontLineHeight "+5"
-    " FVimFontSubpixel v:true
-    " FVimFontNoBuiltInSymbols v:true
-
-
-    " FVimToggleFullScreen
-    finish
-else
-    "***************MUST BE LAST LINE*******
-    "Start neovim-qt as maximized borderless.
+if $NVIM_LISTEN_ADDRESS == '/tmp/nvimsocket'
+  "***************MUST BE LAST LINE*******
+  "Start neovim-qt as maximized borderless.
+    GuiTabline 0
+    GuiPopupmenu 0
     call GuiWindowMaximized(2)
 endif

@@ -9,6 +9,7 @@ endfunction
 
 
 let g:projects = [
+      \ "~/Projects/go/",
       \ "~/Projects/python/",
       \ "~/Projects/js/nestjs",
       \ "~/Projects/PHP",
@@ -46,11 +47,20 @@ function! RegenerateHelpTags()
     helptags /Users/juju/.config/nvim/dein/.cache/init.vim/.dein/doc/
 endfunction
 
-"hi FoldColumn ctermfg=4 ctermbg=248 guifg=#00008B guibg=#e0e0e0
-hi FoldColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
-hi SignColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
-hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
-hi IncSearch guifg=orange
+
+function! OverrideHilight() abort
+  hi FoldColumn ctermfg=4 ctermbg=248 guifg=#EDD6C4 guibg=NONE
+  hi SignColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
+  hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
+  hi IncSearch guifg=orange
+  hi VertSplit guibg=#EDD6C4 guifg=#EDD6C4
+endfunction
+
+if v:vim_did_enter
+  call OverrideHilight()
+else
+  au VimEnter * call OverrideHilight()
+endif
 
 command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
@@ -129,6 +139,12 @@ function! FoldFunction()
         execute "g/protected function/normal 0maf{%zf'a"
         execute "g/private function/normal 0maf{%zf'a"
         execute "g/\\/\\*\\*/normal mazf%'a"
+        normal zM
+    endif
+    if &ft == 'go'
+        execute "g/func/normal 0maf{%zf'a"
+        execute "g/type/normal 0maf{%zf'a"
+        execute "g/import/normal 0maf{%zf'a"
         normal zM
     endif
 endfunction

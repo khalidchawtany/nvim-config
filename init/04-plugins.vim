@@ -3965,6 +3965,8 @@ endif
      "g:minimap_width	 = 10
      "g:minimap_highlight = Title
      "g:minimap_auto_start	= 0
+
+     let g:minimap_width = 5
  endif
  "}}} _ minimap.vim
 
@@ -3974,7 +3976,7 @@ endif
 
      let g:scrollbar_right_offset = 1
 
-     let g:scrollbar_excluded_filetypes = ['nerdtree', 'tagbar']
+     let g:scrollbar_excluded_filetypes = ['nerdtree', 'tagbar', 'fern']
 
      augroup your_config_scrollbar_nvim
          autocmd!
