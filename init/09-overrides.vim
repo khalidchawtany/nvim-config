@@ -173,8 +173,6 @@ if has('win64')
     nnoremap <silent> <c-p><c-[> :CocList outline<cr>
 endif
 
-set linespace=20
-set guifont=Operator\ Mono\ Lig:h20
 
 
 

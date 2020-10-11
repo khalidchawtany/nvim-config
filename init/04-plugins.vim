@@ -847,7 +847,7 @@ endif
  "}}} _close-buffers.vim
 
  " nvim-treesitter {{{
-if PM('nvim-treesitter/nvim-treesitter', { 'merged': 0 })
+if PM('nvim-treesitter/nvim-treesitter', { 'merged': 0, 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/* /Users/juju/.config/nvim/lua/' })
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
     highlight = {
@@ -2289,6 +2289,26 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
     if PM('nvim-lua/telescope.nvim')
         call PM('nvim-lua/popup.nvim')
         call PM('nvim-lua/plenary.nvim')
+
+lua <<EOF
+local actions = require('telescope.actions')
+
+require('telescope').setup {
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+        ["<esc>"] = actions.close,
+      },
+      n = {
+      },
+    },
+  }
+}
+EOF
+
+
          " -- Fuzzy find over git files in your directory
         " require('telescope.builtin').git_files()
 

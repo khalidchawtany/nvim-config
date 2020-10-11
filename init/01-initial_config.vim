@@ -1,6 +1,4 @@
 
-
-
 set runtimepath+=~/Projects/vim-plugins/vim-floaterm
 let g:floaterm_position = 'center'
 
@@ -39,8 +37,9 @@ endif
 
 " Set important paths
 if has('mac')
-    let g:python2_host_prog='/usr/local/bin/python'
-    let g:python3_host_prog='/usr/local/bin/python3'
+  let g:python_host_prog = '/Users/juju/.pyenv/versions/neovim2/bin/python'
+  let g:python2_host_prog = '/Users/juju/.pyenv/versions/neovim2/bin/python'
+  let g:python3_host_prog = '/Users/juju/.pyenv/versions/neovim3/bin/python'
     "First Run >> brew unlink python
     "second let g:python2_host_prog='/Volumes/Home/Development/Applications/neovim/system_python_lldb_loader'
     " UpdateRemotePlugins

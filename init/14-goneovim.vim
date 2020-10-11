@@ -3,4 +3,5 @@ if !exists('g:gonvim_running')
 endif
 
 set guifont=Roboto\ Mono\ for\ PowerLine:h18
-set linespace=1
+set linespace=20
+cmap <D-�> <tab>
