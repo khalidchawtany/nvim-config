@@ -446,6 +446,7 @@ endif
 
    if PM( 'tommcdo/vim-exchange', {'on_cmd':  ['ExchangeClear'] , 'on_map': ['<Plug>(Exchange']} )
     xmap c<bs> <Plug>(Exchange)
+    xmap X <Plug>(Exchange)
     nmap c<bs> <Plug>(Exchange)
     nmap c<bs>l    <Plug>(ExchangeLine)
     nmap c<bs><bs> <Plug>(ExchangeClear)
