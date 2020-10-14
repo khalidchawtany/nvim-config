@@ -444,12 +444,12 @@ endif
  "}}} _switch.vim
  " vim-exchange {{{
 
-   call PM( 'tommcdo/vim-exchange', {'on_cmd':  ['ExchangeClear'] , 'on_map': ['<Plug>(Exchange']} )
-   xmap c<cr><cr> <Plug>(Exchange)
-   nmap c<cr>l    <Plug>(ExchangeLine)
-   nmap c<cr>c    <Plug>(ExchangeClear)
-   nmap c<cr><bs> <Plug>(ExchangeClear)
-   nmap c<cr><cr> <Plug>(Exchange)
+   if PM( 'tommcdo/vim-exchange', {'on_cmd':  ['ExchangeClear'] , 'on_map': ['<Plug>(Exchange']} )
+    xmap c<bs> <Plug>(Exchange)
+    nmap c<bs> <Plug>(Exchange)
+    nmap c<bs>l    <Plug>(ExchangeLine)
+    nmap c<bs><bs> <Plug>(ExchangeClear)
+   endif
 
  "}}} _vim-exchange
 
