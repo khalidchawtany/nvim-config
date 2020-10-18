@@ -7,7 +7,8 @@ endif
 "BlackList {{{
 let s:PM_BL = [
 \'phpcd.vim',
-\'vim-nayvy'
+\'vim-nayvy',
+\'vim-polyglot',
 \ ]
 "}}}}
 "WhiteList {{{

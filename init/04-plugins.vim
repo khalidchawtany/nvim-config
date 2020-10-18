@@ -848,7 +848,7 @@ endif
  "}}} _close-buffers.vim
 
  " nvim-treesitter {{{
-if PM('nvim-treesitter/nvim-treesitter', { 'merged': 0, 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/* /Users/juju/.config/nvim/lua/' })
+if PM('nvim-treesitter/nvim-treesitter', { 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/ /Users/juju/.config/nvim/lua/' })
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
     highlight = {
@@ -2089,7 +2089,6 @@ call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && compos
   " vim-textobj-any {{{
   "ia, aa          for (, {, [, ', ", <
   call PlugTextObj( 'rhysd/vim-textobj-anyblock', '<cr>', 0 )
-  call PM('rhysd/vim-textobj-anyblock')
   let g:textobj_anyblock_no_default_key_mappings =1
   "}}}
   "vim-textobj-blockwise {{{
@@ -4084,11 +4083,9 @@ endif
  call PM('liuchengxu/space-vim-dark')
  call PM('owickstrom/vim-colors-paramount')
  call PM('jacoborus/tender.vim')
- call PM('rakr/vim-one')
  call PM('nightsense/snow')
  call PM('NLKNguyen/papercolor-theme')
  call PM('trevordmiller/nova-vim')
- call PM('nightsense/snow')
  call PM('kristijanhusak/vim-hybrid-material')
  call PM('jdkanani/vim-material-theme')
  call PM('khalidchawtany/vim-materialtheme')
@@ -4097,7 +4094,6 @@ endif
  call PM('lifepillar/vim-wwdc17-theme')
  call PM('sonobre/briofita_vim')
  call PM('jakwings/vim-colors')
- call PM('aunsira/macvim-light')
  call PM('endel/vim-github-colorscheme')
  call PM('rakr/vim-colors-rakr')
  call PM('mswift42/vim-themes')
