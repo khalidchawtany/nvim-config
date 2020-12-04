@@ -1,20 +1,20 @@
 " let NVIM_QT_RUNTIME_PATH="./Contents/Resources/runtime"
 
 "GuiFont! Source Code Pro for PowerLine:h18
-"set guifont=Operator\ Mono\ Lig:h18
-" set guifont=OperatorMonoLig\ Nerd\ Font:h18
-" GuiFont! OperatorMonoLig Nerd Font:h18
-"GuiFont! Fira Code:h20
+ " set guifont=Operator\ Mono\ Lig:h18
+ " set guifont=OperatorMonoLig\ Nerd\ Font:h18
+ " GuiFont! OperatorMonoLig Nerd Font:h18
+ " GuiFont! Fira Code:h20
  GuiFont! FiraCode Nerd Font:h20
 " set guifont=OperatorMono\ Nerd\ Font:h18
-"set guifont=PT\ Mono:h20
-"set guifont=RobotoMono\ Nerd\ Font:h19
+" set guifont=PT\ Mono:h20
+" set guifont=RobotoMono\ Nerd\ Font:h19
 
 hi Title guibg=#afd7ff
 
 " Support ligature
-call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 0)
-let g:render_ligatures = 0
+call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', 1)
+let g:render_ligatures = 1
 nnoremap <silent> <leader>o<cr> :let g:render_ligatures =  (g:render_ligatures + 1) % 2 \| call rpcnotify(0, 'Gui', 'Option', 'RenderLigatures', g:render_ligatures)<cr>
 
 let g:gui_fonts = [

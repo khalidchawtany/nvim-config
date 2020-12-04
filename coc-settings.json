@@ -119,7 +119,7 @@
       "<C-t>": "action:tabe",
       "<C-w>": "command:wincmd k"
     },
- "explorer.keyMappings": {
+ "explorer.keyMappings.global": {
     "k": "nodePrev",
     "j": "nodeNext",
 

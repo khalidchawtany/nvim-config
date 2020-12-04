@@ -367,7 +367,7 @@ call PM('terryma/vim-expand-region')
        \ 'on_map': ['<Plug>NrrwrgnDo']
        \ })
 
-    LMap NVX <leader>rn <Plug>narrow-region <Plug>NrrwrgnDo
+    LMap NVX <leader>nr <Plug>narrow-region <Plug>NrrwrgnDo
 
  endif
 
@@ -848,7 +848,8 @@ endif
  "}}} _close-buffers.vim
 
  " nvim-treesitter {{{
-if PM('nvim-treesitter/nvim-treesitter', { 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/ /Users/juju/.config/nvim/lua/' })
+if PM('nvim-treesitter/nvim-treesitter', {'merged': 0, 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/ /Users/juju/.config/nvim/lua/' })
+function! SetupTreeSiter() abort
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
     highlight = {
@@ -920,6 +921,77 @@ require'nvim-treesitter.configs'.setup {
     -- ensure_installed = "all" -- one of "all", "language", or a list of languages
 }
 EOF
+endfunction
+
+au VimEnter * call  SetupTreeSiter()
+
+if PM('romgrk/nvim-treesitter-context')
+  "TSContextEnable
+  "TSContextDisable
+endif
+
+if PM('nvim-treesitter/nvim-treesitter-refactor')
+
+function SetupTreeSiterRefactor() abort
+" Highlights definition and usages of the current symbol under the cursor.
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   refactor = {
+"     highlight_definitions = { enable = true },
+"   },
+" }
+" EOF
+
+"Highlights the block from the current scope where the cursor is.
+" lua <<EOF
+" require'nvim-treesitter.configs'.setup {
+"   refactor = {
+"     highlight_current_scope = { enable = true },
+"   },
+" }
+" EOF
+
+"Renames the symbol under the cursor within the current scope (and current file).
+
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  refactor = {
+    smart_rename = {
+      enable = true,
+      keymaps = {
+        smart_rename = "gtr",
+      },
+    },
+  },
+}
+EOF
+
+"Navigation
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  refactor = {
+    navigation = {
+      enable = true,
+      keymaps = {
+        goto_definition = "gnd",
+        list_definitions = "gnD",
+        list_definitions_toc = "gO",
+        goto_next_usage = "<a-*>",
+        goto_previous_usage = "<a-#>",
+      },
+    },
+  },
+}
+EOF
+
+
+endfunction
+
+au VimEnter * call  SetupTreeSiterRefactor()
+
+endif
+
+
 endif
  "}}} _ nvim-treesitter
 
@@ -1844,7 +1916,7 @@ endif
          nnoremap <silent> <c-p><c-0> :CocFzfList symbols<cr>
          nnoremap <silent> <c-p>0     :CocFzfList commands<cr>
          nnoremap <silent> <c-p><bs>  :CocFzfListResume<cr>
-
+         nnoremap <silent> <c-p><c-bs>  :CocFzfList files<cr>
      endif
 
 
@@ -2327,6 +2399,15 @@ EOF
     endif
  " }}} _Telescopt
 
+if PM('LoricAndre/fzterm.nvim')
+ let g:fzterm_disable_com = 1
+  command! FFiles lua require'fzterm'.files()
+  command! FGFiles lua require'fzterm'.gitFiles()
+  command! FBuffers lua require'fzterm'.buffers()
+  command! FBranch lua require'fzterm'.branch()
+  command! FAg lua require'fzterm'.ag()
+endif
+
  "cpsm {{{
     call PM('nixprime/cpsm')
  "}}} _cpsm
@@ -2524,11 +2605,11 @@ EOF
    nnoremap <silent> <c-p><c-space> <cmd>FzfHistory!<cr>
 
    function! s:get_directories()
-     call fzf#run({"source":"ag -l --nocolor -g \"\" | gawk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq" , "sink":"Defx"})
+     call fzf#run({"source":"ag -l --nocolor -g \"\" | gawk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq" , "sink":"Fern"})
     "find . -type d   -not -iwholename \"./.phpcd*\" -not -iwholename \"./node_modules*\" -not -iwholename \".\" -not -iwholename \"./vendor*\" -not -iwholename \"./.git*\"
     "ag -l --nocolor -g "" | awk 'NF{NF-=1};1' FS=/ OFS=/ | sort -u | uniq
    endfunction
-   nnoremap <silent> <c-p>[ :call fzf#run({"source":"find . -type d", "sink":"Defx"})<cr>
+   nnoremap <silent> <c-p>[ :call fzf#run({"source":"find . -type d", "sink":"Fern"})<cr>
    nnoremap <silent> <c-p><c-[> :cal <SID>get_directories()<cr>
 
    " Replace the default dictionary completion with fzf-based fuzzy completion
@@ -2807,7 +2888,7 @@ endfunction
 
         ", { 'build': ':Clap install-binary' }
 
-        let g:clap_popup_border = 'rounded'
+        " let g:clap_popup_border = 'rounded'
 
         let g:clap_layout = { 'relative': 'editor', 'width': '78%', 'height': '35%', 'row': '20%', 'col': '11%' }
         let g:clap_open_action = {'ctrl-t': 'tab split', 'ctrl-x': 'split', 'ctrl-v': 'vsplit', 'ctrl-o': 'edit' }
@@ -2826,18 +2907,18 @@ endfunction
         " hi ClapInput guibg=#f2ebe3
         " hi ClapSearchText guibg=#f2ebe3 guifg=#2753B3
         " hi ClapCurrentSelection guibg=#f2fbe7 guifg=#2753B3
-        " hi ClapFuzzyMatches1 guifg=#E703A3
-        " hi ClapFuzzyMatches2 guifg=#CB0291
-        " hi ClapFuzzyMatches3 guifg=#B80282
-        " hi ClapFuzzyMatches4 guifg=#AC017A
-        " hi ClapFuzzyMatches5 guifg=#A20173
-        " hi ClapFuzzyMatches6 guifg=#95016A
-        " hi ClapFuzzyMatches7 guifg=#86015F
-        " hi ClapFuzzyMatches8 guifg=#7A0157
-        " hi ClapFuzzyMatches9 guifg=#6C004D
-        " hi ClapFuzzyMatches10 guifg=#600044
-        " hi ClapFuzzyMatches11 guifg=#480033
-        " hi ClapFuzzyMatches12 guifg=#380028
+         hi ClapFuzzyMatches1 guifg=#E703A3
+         hi ClapFuzzyMatches2 guifg=#CB0291
+         hi ClapFuzzyMatches3 guifg=#B80282
+         hi ClapFuzzyMatches4 guifg=#AC017A
+         hi ClapFuzzyMatches5 guifg=#A20173
+         hi ClapFuzzyMatches6 guifg=#95016A
+         hi ClapFuzzyMatches7 guifg=#86015F
+         hi ClapFuzzyMatches8 guifg=#7A0157
+         hi ClapFuzzyMatches9 guifg=#6C004D
+         hi ClapFuzzyMatches10 guifg=#600044
+         hi ClapFuzzyMatches11 guifg=#480033
+         hi ClapFuzzyMatches12 guifg=#380028
         let g:clap_theme = {
                     \ }
                     " \ 'input': {'guifg': 'red', 'ctermfg': 'red', 'guibg': 'red'},
@@ -2851,6 +2932,8 @@ endfunction
                     " \ 'preview': {'guifg': 'green', 'ctermfg': 'green'}
                     "
         " let g:clap_theme = 'material_design_dark'
+        " let g:clap_theme = 'solarized_light'
+        let g:clap_theme = 'nord'
         nnoremap <c-s>f        :Clap files<cr>
         nnoremap <c-s><c-s>f    :Clap files ++query=<cword><cr>
         nnoremap <c-s>-    :exec "Clap files " expand('%:h:p')<cr>
@@ -4053,7 +4136,7 @@ endif
 
  " golden-ratio {{{
 
- if PM( 'roman/golden-ratio' )
+ if PM('roman/golden-ratio')
    nnoremap cog :<c-u>GoldenRatioToggle<cr>
   let g:golden_ratio_exclude_nonmodifiable = 1
   let g:golden_ratio_autocommand = 0
@@ -4078,6 +4161,15 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
+
+ call PM('cocopon/iceberg.vim')
+ call PM('cormacrelf/vim-colors-github')
+ call PM('sonph/onehalf')
+ call PM('sainnhe/gruvbox-material')
+ call PM('junegunn/seoul256.vim')
+ call PM('noahfrederick/vim-hemisu')
+ call PM('jsit/toast.vim')
+
  call PM('romgrk/github-light.vim')
  call PM('haishanh/night-owl.vim')
  call PM('liuchengxu/space-vim-dark')
@@ -4106,6 +4198,8 @@ endif
  let ayucolor="dark"   " for dark version of theme
  " let ayucolor="mirage" " for mirage version of theme
  " let ayucolor="light"  " for light version of theme
+
+ call PM('humanoid-colors/vim-humanoid-colorscheme')
 
 
  call PM('drewtempelmeyer/palenight.vim')

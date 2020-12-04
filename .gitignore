@@ -9,3 +9,4 @@ shada
 test.vim
 .netrwhist
 installer.sh
+./lua/*
