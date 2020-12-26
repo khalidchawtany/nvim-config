@@ -84,10 +84,17 @@ set background=light
 
 
 let g:colorschemes = {
-            \ 'light': {'togglebg': 'dark','colorscheme': 'PaperColor', 'lightline': 'one'},
-            \ 'dark':  {'togglebg': 'light','colorscheme': 'palenight',  'lightline': 'onedark'}
-            \ }
-
+      \ 'light': {
+      \ 'togglebg': 'dark',
+      \ 'colorscheme': 'PaperColor',
+      \ 'lightline': 'one'
+      \ },
+      \ 'dark':  {
+      \ 'togglebg': 'light',
+      \ 'colorscheme': 'palenight',
+      \ 'lightline': 'onedark'
+      \ }
+      \ }
 command! ToggleDarkAndLight
             \  exe 'set background='.g:colorschemes[&background].togglebg
             \| exe 'colorscheme' g:colorschemes[&background].colorscheme
@@ -113,8 +120,17 @@ command! ToggleDarkAndLight
      hi ClapFuzzyMatches12 cterm=bold ctermfg=195 gui=bold guifg=#d7ffff
 
      if &background == 'dark'
-         hi NormalFloat guibg=#697098
+       hi NormalFloat guibg=#697098
+       let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --pointer=' ▶'"
+             \." --marker='◉ ' --reverse --bind 'ctrl-space:select-all,ctrl-l:jump'"
+             \." --color=bg:#292D3E,bg+:#494D5E,fg+:#44aa44,hl:#22aa44,hl+:#44ff44,gutter:#292D3E,marker:#494D5E"
+     else
+       let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --pointer=' ▶'"
+             \." --marker='◉ ' --reverse --bind 'ctrl-space:select-all,ctrl-l:jump'"
+             \." --color=bg+:#cccccc,fg+:#444444,hl:#22aa44,hl+:#44ff44,gutter:#eeeeee,marker:#ff0000"
      endif
+
+
  endfunction
 
  function! s:term_gf()

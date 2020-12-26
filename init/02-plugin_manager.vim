@@ -9,6 +9,7 @@ let s:PM_BL = [
 \'phpcd.vim',
 \'vim-nayvy',
 \'vim-polyglot',
+\'scrollbar.nvim',
 \ ]
 "}}}}
 "WhiteList {{{

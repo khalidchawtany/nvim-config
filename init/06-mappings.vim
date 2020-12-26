@@ -366,13 +366,18 @@ autocmd Filetype netrw nnoremap q :quit<cr>
 
   LMap N <leader>jr <Plug>laravel-edit-js-router      :e <c-r>=FindFile('/resources/assets/js/router.js')<cr><cr>
   LMap N <leader>jn <Plug>laravel-edit-js-navbar      :e <c-r>=FindFile('/resources/assets/js/components/navbar.vue')<cr><cr>
-  LMap N <leader>jj <Plug>laravel-edit-assets-js      :FzfFiles <c-r>=FindFile('/resources/assets/js/')<cr><cr>
   LMap N <leader>jv <Plug>laravel-edit-js-views       :FzfFiles <c-r>=FindFile('/resources/assets/js/views/')<cr><cr>
   LMap N <leader>js <Plug>laravel-edit-js-store       :FzfFiles <c-r>=FindFile('/resources/assets/js/store/')<cr><cr>
-  LMap N <leader>jc <Plug>laravel-edit-js-components  :FzfFiles <c-r>=FindFile('/resources/assets/js/components/')<cr><cr>
   LMap N <leader>jd <Plug>laravel-edit-js-database    :FzfFiles <c-r>=FindFile('/resources/assets/js/database/')<cr><cr>
   LMap N <leader>jm <Plug>laravel-edit-js-models      :FzfFiles <c-r>=FindFile('/resources/assets/js/models/')<cr><cr>
   LMap N <leader>ja <Plug>laravel-edit-js-models      :FzfFiles <c-r>=FindFile('/resources/assets/js/models/')<cr><cr>
+
+  LMap N <leader>jj <Plug>laravel-edit-assets-js      :FzfFiles <c-r>=FindFile('/resources/assets/js/')<cr><cr>
+  LMap N <leader>jc <Plug>laravel-edit-js-components  :FzfFiles <c-r>=FindFile('/resources/assets/js/Components/')<cr><cr>
+  LMap N <leader>jp <Plug>laravel-edit-js-pages      :FzfFiles <c-r>=FindFile('/resources/assets/js/Pages/')<cr><cr>
+  LMap N <leader>jP <Plug>laravel-edit-js-plugins      :FzfFiles <c-r>=FindFile('/resources/assets/js/Plugins/')<cr><cr>
+  LMap N <leader>ju <Plug>laravel-edit-js-utils      :FzfFiles <c-r>=FindFile('/resources/assets/js/Utils/')<cr><cr>
+  LMap N <leader>jl <Plug>laravel-edit-js-layouts      :FzfFiles <c-r>=FindFile('/resources/assets/js/Layouts/')<cr><cr>
 
   LMap N <leader>Jr <Plug>laravel-tabedit-js-router      :tabe <c-r>=FindFile('/resources/assets/js/router.js')<cr><cr>
   LMap N <leader>Jn <Plug>laravel-edit-js-navbar         :tabe <c-r>=FindFile('/resources/assets/js/components/navbar.vue')<cr><cr>

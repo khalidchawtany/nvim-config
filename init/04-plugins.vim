@@ -522,34 +522,18 @@ endif
  "}}} _vim-sort-motion
 
  " Comments
- " vim-commentary {{{
- call PM ('tpope/vim-commentary',
-       \ {
-       \ 'on_map':
-       \ [
-       \  '<Plug>Commentary',
-       \  '<Plug>CommentaryLine',
-       \  '<Plug>ChangeCommentary'
-       \ ],
-       \ 'on_cmd': [ 'Commentary' ]
-       \ })
- vmap <leader>cc  <Plug>Commentary
- xmap <leader>cc  <Plug>Commentary
- nmap <leader>cc  <Plug>Commentary
- omap <leader>cc  <Plug>Commentary
- nmap <leader>cc <Plug>CommentaryLine
- nmap <leader>ce <Plug>ChangeCommentary
- nmap <leader>cu <Plug>Commentary<Plug>Commentary
- " }}} _vim-commentary
- " vim-tag-comment {{{
-   " Comment out HTML properly
-   call PM( 'mvolkmann/vim-tag-comment', {'on_cmd': ['ElementComment', 'ElementUncomment', 'TagComment', 'TagUncomment']} )
-   nmap <leader>tc :ElementComment<cr>
-   nmap <leader>tu :ElementUncomment<cr>
-   nmap <leader>tC :TagComment<cr>
-   nmap <leader>tU :TagUncomment<cr>
+ " tcomment_vim {{{
+ if PM('tomtom/tcomment_vim')
+   let g:tcomment_opleader1 = "<leader>c"
+ endif
+ "}}} _ tcomment_vim
 
- "}}} _vim-tag-comment
+ " caw.vim {{{
+ if PM('tyru/caw.vim')
+   nmap <Leader>c<Leader> <Plug>(caw:zeropos:toggle)
+   vmap <Leader>c<Leader> <Plug>(caw:zeropos:toggle)
+ endif
+ "}}} _ caw.vim
 
  "}}}
 
@@ -1079,6 +1063,7 @@ endif
  " Vue
  " vim-vue {{{
  call PM('posva/vim-vue')
+ call PM('leafOfTree/vim-vue-plugin')
  "}}} _ vim-vue
 
  " Advanced Syntax Highlighting
@@ -3624,6 +3609,13 @@ endif
         nnoremap <c-p><c-x> <cmd>Fze<cr>
     endif
  "}}} _fxe
+ " replacer.nvim {{{
+ if PM('gabrielpoca/replacer.nvim')
+   " api.nvim_set_keymap('n', '<Leader>h', ':lua require("replacer").run()<cr>', { nowait = true, noremap = true, silent = true })
+   " nnoremap <c-p><c-e> :lua require("replacer").run()<cr>
+   nnoremap <c-p>x :lua require("replacer").run()<cr>
+ endif
+ "}}} _ replacer.nvim
  "vim-renamer {{{
  call PM('qpkorr/vim-renamer')
  "}}} _vim-renamer
