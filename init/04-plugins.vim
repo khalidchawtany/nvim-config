@@ -1935,38 +1935,6 @@ endif
  endif
  "}}} _coc.nvim
 
- " LanguageClient-neovim {{{
- if PM('autozimu/LanguageClient-neovim',
-       \ {
-       \ 'rev': 'next',
-       \ 'build': 'bash install.sh',
-       \ })
-       "\ 'build': ':UpdateRemotePlugins'
-   let g:LanguageClient_serverCommands = {
-         \ 'rust':           ['rustup', 'run', 'nightly', 'rls'],
-         \ 'python':         ['pyls'],
-          \ 'go': ['/Users/juju/go/bin/gopls']
-         \ }
-         " \ 'javascript':     ['javascript-typescript-stdio'],
-         " \ 'javascript.jsx': ['javascript-typescript-stdio'],
-         " \ 'typescript':     ['javascript-typescript-stdio'],
-         "
-         autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
-
-   " Automatically start language servers.
-   let g:LanguageClient_autoStart = 1
-
-   " nnoremap <silent> gk :call LanguageClient_textDocument_hover()<CR>
-   " nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-   " nnoremap <silent> gm :call LanguageClient_contextMenu()<CR>
-   " nnoremap <silent> gR :call LanguageClient_textDocument_rename()<CR>
- endif
- "}}} _ LanguageClient-neovim
-
-"LanguageServer-php-neovim {{{
- let $PHPLS_ALLOW_XDEBUG=0
-call PM('roxma/LanguageServer-php-neovim', {'build': 'composer install && composer run-script parse-stubs'})
-"}}} _LanguageServer-php-neovim
 
  " Command line
  " ambicmd {{{
@@ -4025,10 +3993,16 @@ endif
 
  " nvim-colorizer.lua {{{
  if PM('norcalli/nvim-colorizer.lua')
-     " au vimenter lua require'colorizer'.setup()
-     au VimEnter * lua require'colorizer'.setup()
+     " au VimEnter * lua require'colorizer'.setup({"*"})
+
  endif
  "}}} _ nvim-colorizer.lua
+ "
+ " vim-hexokinase {{{
+ if PM('rrethy/vim-hexokinase', { 'build': 'make hexokinase' })
+   let g:Hexokinase_highlighters = ['backgroundfull']
+ endif
+ "}}} _ vim-hexokinase
 
  "vim-stylus {{{
   "call PM('wavded/vim-stylus', {'on_ft': 'stylus'})
@@ -4153,6 +4127,19 @@ endif
  "}}} _vim-colorscheme-switcher
 
  "colorschemes {{{
+
+ if PM('ntk148v/vim-horizon')
+   " lightline
+   " let g:lightline = {}
+   " let g:lightline.colorscheme = 'horizon'
+
+   " or this line
+   " let g:lightline = {'colorscheme' : 'horizon'}
+   "
+"  let g:lightline.colorscheme = 'horizon'
+"  call lightline#init()
+"  call lightline#colorscheme()
+ endif
 
  call PM('cocopon/iceberg.vim')
  call PM('cormacrelf/vim-colors-github')

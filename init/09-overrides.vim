@@ -92,7 +92,7 @@ let g:colorschemes = {
       \ 'dark':  {
       \ 'togglebg': 'light',
       \ 'colorscheme': 'palenight',
-      \ 'lightline': 'onedark'
+      \ 'lightline': 'nova'
       \ }
       \ }
 command! ToggleDarkAndLight
@@ -123,7 +123,7 @@ command! ToggleDarkAndLight
        hi NormalFloat guibg=#697098
        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --pointer=' ▶'"
              \." --marker='◉ ' --reverse --bind 'ctrl-space:select-all,ctrl-l:jump'"
-             \." --color=bg:#292D3E,bg+:#494D5E,fg+:#44aa44,hl:#22aa44,hl+:#44ff44,gutter:#292D3E,marker:#494D5E"
+             \." --color=bg:#393D4E,bg+:#393D4E,fg+:#44aa44,hl:#22aa44,hl+:#44ff44,gutter:#393D4E,marker:#00ffff"
      else
        let $FZF_DEFAULT_OPTS=" --history=/Users/JuJu/.fzf_history --pointer=' ▶'"
              \." --marker='◉ ' --reverse --bind 'ctrl-space:select-all,ctrl-l:jump'"

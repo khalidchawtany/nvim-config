@@ -14,6 +14,9 @@ if has('unix')
 else
     let g:plugin_path = expand('$HOME') . '\nvim_plug'
 endif
+if exists('g:vscode')
+  exit
+endif
 
 " Source all scripts in a directory
 " They around found in `g:_vimrc_plugins`
