@@ -10,3 +10,5 @@ test.vim
 .netrwhist
 installer.sh
 ./lua/*
+/lua/nvim-treesitter*
+/lua/nvim-treesitter/**
