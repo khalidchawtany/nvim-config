@@ -1590,7 +1590,7 @@ endif
    let g:ale_list_window_size = 5
    let g:ale_warn_about_trailing_blank_lines = 1
    let g:ale_warn_about_trailing_whitespace = 1
-   let g:ale_statusline_format = ['E¥%d', 'W¥%d', 'OK']
+   let g:ale_statusline_format = ['E?%d', 'W?%d', 'OK']
    let g:ale_echo_msg_format = '[%linter%] %code% %s'
    let g:ale_javascript_prettier_use_local_config = 1
    let g:ale_javascript_prettier_options = '--config-precedence prefer-file --single-quote --no-bracket-spacing --no-editorconfig --print-width ' . &textwidth . ' --prose-wrap always --trailing-comma all --no-semi --end-of-line  lf'
@@ -3065,6 +3065,12 @@ endfunction
         let g:nnn#layout = { 'window': { 'width': 0.8, 'height': 0.6, 'highlight': 'Debug', 'border': 'rounded' } }
     endif
  "}}} _ nnn.vim
+
+ " chadtree {{{
+ if PM('ms-jpq/chadtree', {'rev': 'chad', 'do': 'python3 -m chadtree deps'})
+" :CHADdeps
+ endif
+ "}}} _ chadtree
 
  " fern.vim {{{
     if PM('lambdalisue/fern.vim')
