@@ -37,6 +37,9 @@ endif
 
 " Set important paths
 if has('mac')
+
+  let $LC_CTYPE="en_US.UTF-8"
+  let $LANG="en_US.UTF-8"
   let g:python_host_prog = '/Users/juju/.pyenv/versions/neovim2/bin/python'
   let g:python2_host_prog = '/Users/juju/.pyenv/versions/neovim2/bin/python'
   let g:python3_host_prog = '/Users/juju/.pyenv/versions/neovim3/bin/python'
