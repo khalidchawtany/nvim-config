@@ -44,11 +44,10 @@ autocmd BufEnter *.php :syntax sync fromstart
 
 " Enable file type detection
 filetype on
-" Treat .json files as .js
 autocmd BufNewFile,BufRead *.json setfiletype json syntax=javascript
-" Treat .md files as Markdown
 autocmd BufNewFile,BufRead *.md setlocal filetype=markdown
-" au BufNewFile,BufRead *.blade.php
+autocmd BufNewFile,BufRead *.php setlocal filetype=php
+au BufNewFile,BufRead *.blade.php setlocal filetype=blade
 
 au filetype blade
       \ let b:match_words ='<:>,<\@<=[ou]l\>[^>]*\%(>\|$\):<\@<=li\>:<\@<=/[ou]l>,<\@<=dl\>[^>]*\%(>\|$\):<\@<=d[td]\>:<\@<=/dl>,<\@<=\([^/][^ \t>]*\)[^>]*\%(>\|$\):<\@<=/\1>'

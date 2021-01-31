@@ -528,6 +528,15 @@ endif
  endif
  "}}} _ tcomment_vim
 
+ " kommentary {{{
+ if PM('b3nj5m1n/kommentary')
+
+lua <<EOF
+require('kommentary.config').config["rust"] = {"//", {"/*", "*/"}}
+EOF
+ endif
+ "}}} _ kommentary
+
  " caw.vim {{{
  if PM('tyru/caw.vim')
    nmap <Leader>c<Leader> <Plug>(caw:zeropos:toggle)
