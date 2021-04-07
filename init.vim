@@ -2,6 +2,9 @@
 
 " Thanks to @tweekmonster for thinking of this.
 " I've provided some modifications.
+if exists('g:vscode')
+  finish
+endif
 
 let g:_vimrc_base = expand('<sfile>:p:h')
 let g:_vimrc_plugins = g:_vimrc_base.'/plugins'
@@ -13,9 +16,6 @@ if has('unix')
     let g:plugin_path = '~/.config/nvim/vim_plug'
 else
     let g:plugin_path = expand('$HOME') . '\nvim_plug'
-endif
-if exists('g:vscode')
-  exit
 endif
 
 " Source all scripts in a directory

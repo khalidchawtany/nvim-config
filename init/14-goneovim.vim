@@ -2,8 +2,9 @@ if !exists('g:gonvim_running')
   finish
 endif
 
-set guifont=Roboto\ Mono\ for\ PowerLine:h18
-set linespace=20
+" set guifont=Roboto\ Mono\ for\ PowerLine:h18
+set guifont=OperatorMonoLig\ Nerd\ Font:h20
+set linespace=18
 cnoremap <D-�><space> <c-i>
 
 

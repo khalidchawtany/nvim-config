@@ -12,6 +12,7 @@ Map iovxnct  ◊Ú  <C-'><C-;>
 
 LMap N <leader>tl <Plug>tab-list :tabs<cr>
 LMap N <leader>tn <Plug>tab-new :tabnew<cr>
+LMap N <leader>td <Plug>tab-split :tab split<cr>
 LMap N <leader>tt <Plug>tab-terminal :tabnew \| e term://zsh<cr>
 LMap N <leader>th <Plug>tab-help :tab help<space>
 LMap N <leader>tm0 <Plug>tab-move-first :tabmove 0<cr>
@@ -33,6 +34,8 @@ nnoremap [] []zz
 nnoremap c* *Ncgn
 
 nnoremap <Leader><Leader> <c-^>
+
+vnoremap <c-d> "dyo<esc>"dp
 
 "Shift-Enter is like ]<space>
 inoremap <silent> <s-cr> <esc>m`o<esc>``a
@@ -143,7 +146,9 @@ nnoremap <c-w>M <C-w>_<C-w><Bar>
 
 " Buffer deletion commands {{{
 
-nnoremap <c-w>O            :tabonly \| BufOnly<cr>
+nnoremap <c-w>O            :wincmd o\|tabonly\|BufOnly<cr>
+nnoremap <c-;>wo           :tabonly \| BufOnly<cr>
+
 nnoremap <c-;>wa           :BufOnly -1<cr>
 nmap     <c-;>ww           <Plug>BW
 nnoremap <silent> <c-;>wu  :silent! WipeoutUnmodified<cr>
@@ -252,6 +257,22 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   "CD into:
   "current buffer file dir
   nnoremap cdf :lcd %:p:h<cr>:pwd<cr>
+  nnoremap cd. :lcd <c-r>=fnamemodify(expand('%:h'), ':h')<cr><cr>:pwd<cr>
+
+  nnoremap cdp :lcd <c-r>=GetPluginPath()<cr><cr>:pwd<cr>
+
+  fun! GetPluginPath()
+    let dirs = split(expand('%:p'), '/')
+    let idx = index(dirs, 'plugins')
+  "  filter(split(expand('%:h'), '/'), 'v:val == "plugins"')
+    if(idx == -1)
+      return '.'
+    endif
+
+    let path = '/'.join(dirs[:idx + 2], '/')
+    return path
+  endf
+
   "current working dir
   nnoremap cdc :lcd <c-r>=expand("%:h")<cr>/
   "git dir ROOT
@@ -346,13 +367,33 @@ autocmd Filetype netrw nnoremap q :quit<cr>
       endif
   endfunction
 
-  function! FindFile(path)
-      let path = FindGitDirOrRoot() . a:path
-      if empty(glob(path))
-          return substitute(path, '\/assets', '', 'g')
+function! FindFile(path, ...)
+
+  let root = FindGitDirOrRoot()
+
+  let isOctober = isdirectory(root. '/plugins')
+  let path = a:path
+
+  if isOctober
+    let currentFilePath = expand('%:.:h')
+
+    if (stridx(expand('%:.:h'), 'plugins') >= 0)
+      let firstPathSep = stridx(currentFilePath, '/', 8)
+      let pluginPathSep = stridx(currentFilePath, '/', firstPathSep + 1)
+      let pluginPath =  currentFilePath[:pluginPathSep]
+      if (a:0 == 1)
+        let path = pluginPath . a:1
+      else
+        let path = pluginPath . path
       endif
-      return path
-  endfunction
+    else
+      let path = root . '/plugins/'
+    endif
+
+  endif
+
+  return path
+endfunction
 
 
   "in test dd response
@@ -389,17 +430,19 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N <leader>Jm <Plug>laravel-tabedit-js-models      :tabe <c-r>=FindFile('/resources/assets/js/models/')<cr><cr>
   LMap N <leader>Ja <Plug>laravel-tabedit-js-models      :tabe <c-r>=FindFile('/resources/assets/js/models/')<cr><cr>
 
-  LMap N <leader>lw <Plug>laravel-edit-public-web      :e <c-r>=FindFile('/routes/web.php')<cr><cr>
+  LMap N <leader>lw <Plug>laravel-edit-public-web      :e <c-r>=FindFile('/routes/')<cr><cr>
   LMap N <leader>lu <Plug>laravel-edit-public          :e <c-r>=FindFile('/public/')<cr><cr>
   LMap N <leader>lj <Plug>laravel-edit-public-js       :FzfFiles <c-r>=FindFile('/public/js/')<cr><cr>
   LMap N <leader>lR <Plug>laravel-edit-resources       :FzfFiles <c-r>=FindFile('/resources/')<cr><cr>
-  LMap N <leader>la <Plug>laravel-edit-app             :FzfFiles <c-r>=FindFile('/app/')<cr><cr>
-  LMap N <leader>lc <Plug>laravel-edit-controllers     :FzfFiles <c-r>=FindFile('/app/Http/Controllers')<cr><cr>
+  LMap N <leader>la <Plug>laravel-edit-app             :FzfFiles <c-r>=FindFile('/app/', 'models')<cr><cr>
+  LMap N <leader>ll <Plug>laravel-edit-lang             :tabe <c-r>=FindFile('/lan/', 'lang')<cr><cr>
+  LMap N <leader>le <Plug>laravel-edit-event             :tabe <c-r>=FindFile('/app/events/', 'classes/collection/event')<cr><cr>
+  LMap N <leader>lc <Plug>laravel-edit-controllers     :FzfFiles <c-r>=FindFile('/app/Http/Controllers', 'controllers')<cr><cr>
   LMap N <leader>lf <Plug>laravel-edit-factories       :FzfFiles <c-r>=FindFile('/database/factories/')<cr><cr>
   LMap N <leader>lh <Plug>laravel-edit-helpers         :FzfFiles <c-r>=FindFile('/app/Helpers/')<cr><cr>
-  LMap N <leader>lm <Plug>laravel-edit-migrations      :FzfFiles <c-r>=FindFile('/database/migrations/')<cr><cr>
+  LMap N <leader>lm <Plug>laravel-edit-migrations      :FzfFiles <c-r>=FindFile('/database/migrations/', 'updates')<cr><cr>
   LMap N <leader>lo <Plug>laravel-edit-observes        :FzfFiles <c-r>=FindFile('/app/Observers/')<cr><cr>
-  LMap N <leader>lp <Plug>laravel-edit-providers       :FzfFiles <c-r>=FindFile('/app/Providers/')<cr><cr>
+  LMap N <leader>lp <Plug>laravel-edit-providers       :FzfFiles <c-r>=FindFile('/app/Providers/', '/')<cr><cr>
   LMap N <leader>lr <Plug>laravel-edit-requests        :FzfFiles <c-r>=FindFile('/app/Http/Requests/')<cr><cr>
   LMap N <leader>ls <Plug>laravel-edit-seeds           :FzfFiles <c-r>=FindFile('/database/seeds/')<cr><cr>
   LMap N <leader>lT <Plug>laravel-edit-traits          :FzfFiles <c-r>=FindFile('/app/traits/')<cr><cr>
@@ -413,14 +456,16 @@ autocmd Filetype netrw nnoremap q :quit<cr>
   LMap N <leader>Lu <Plug>laravel-tabedit-public          :tabe <c-r>=FindFile('/public/')<cr><cr>
   LMap N <leader>Lj <Plug>laravel-tabedit-public-js       :tabe <c-r>=FindFile('/public/js/')<cr><cr>
   LMap N <leader>LR <Plug>laravel-tabedit-resources       :tabe <c-r>=FindFile('/resources/')<cr><cr>
-  LMap N <leader>Lw <Plug>laravel-tabedit-public-web      :tabe <c-r>=FindFile('/routes/web.php')<cr><cr>
-  LMap N <leader>La <Plug>laravel-tabedit-app             :tabe <c-r>=FindFile('/app/')<cr><cr>
-  LMap N <leader>Lc <Plug>laravel-tabedit-controllers     :tabe <c-r>=FindFile('/app/Http/Controllers')<cr><cr>
+  LMap N <leader>Lw <Plug>laravel-tabedit-public-web      :tabe <c-r>=FindFile('/routes/')<cr><cr>
+  LMap N <leader>La <Plug>laravel-tabedit-app             :tabe <c-r>=FindFile('/app/', 'models')<cr><cr>
+  LMap N <leader>Ll <Plug>laravel-tabedit-lang             :tabe <c-r>=FindFile('/lan/', 'lang')<cr><cr>
+  LMap N <leader>Le <Plug>laravel-tabedit-event             :tabe <c-r>=FindFile('/app/events/', 'classes/collection/event')<cr><cr>
+  LMap N <leader>Lc <Plug>laravel-tabedit-controllers     :tabe <c-r>=FindFile('/app/Http/Controllers', 'controllers')<cr><cr>
   LMap N <leader>Lf <Plug>laravel-tabedit-factories       :tabe <c-r>=FindFile('/database/factories/')<cr><cr>
   LMap N <leader>Lh <Plug>laravel-tabedit-helpers         :tabe <c-r>=FindFile('/app/Helpers/')<cr><cr>
-  LMap N <leader>Lm <Plug>laravel-tabedit-migrations      :tabe <c-r>=FindFile('/database/migrations/')<cr><cr>
+  LMap N <leader>Lm <Plug>laravel-tabedit-migrations      :tabe <c-r>=FindFile('/database/migrations/', 'updates')<cr><cr>
   LMap N <leader>Lo <Plug>laravel-tabedit-observes        :tabe <c-r>=FindFile('/app/Observers/')<cr><cr>
-  LMap N <leader>Lp <Plug>laravel-tabedit-providers       :tabe <c-r>=FindFile('/app/Providers/')<cr><cr>
+  LMap N <leader>Lp <Plug>laravel-tabedit-providers       :tabe <c-r>=FindFile('/app/Providers/', '/plugins')<cr><cr>
   LMap N <leader>Lr <Plug>laravel-tabedit-requests        :tabe <c-r>=FindFile('/app/Http/Requests/')<cr><cr>
   LMap N <leader>Ls <Plug>laravel-tabedit-seeds           :tabe <c-r>=FindFile('/database/seeds/')<cr><cr>
   LMap N <leader>LT <Plug>laravel-tabedit-traits          :tabe <c-r>=FindFile('/app/traits/')<cr><cr>

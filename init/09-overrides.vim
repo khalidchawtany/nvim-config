@@ -9,8 +9,13 @@ endfunction
 
 
 let g:projects = [
+      \ "~/Projects/PHP/tic/",
       \ "~/Projects/PHP/Knights/",
+      \ "~/Projects/PHP/coc/",
       \ "~/Projects/PHP/ERP/",
+      \ "~/Projects/PHP/ERPNew/",
+      \ "~/Projects/PHP/HR/",
+      \ "~/Projects/PHP/myoctober/",
       \ "~/Projects/PHP/SRA/",
       \ "~/Development/Applications/Oni",
       \ "~/Projects/PHP",
@@ -206,3 +211,4 @@ endif
 " let g:nnn#command = "TERM=screen-256color  NNN_COLORS='0' nnn -d"
 " let g:terminal_color_background="blue"
 " let g:terminal_color_foreground ="green"
+"

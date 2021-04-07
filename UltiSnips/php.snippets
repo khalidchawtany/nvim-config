@@ -12,19 +12,25 @@ snippet dr
 dump($request->toArray());
 endsnippet
 
-snippet ta
+snippet tad "toArray"
+dd(${1:${VISUAL}}->toArray());
+endsnippet
+
+snippet ta "toArray" i
 ${1:${VISUAL}}->toArray()
 endsnippet
+
 
 snippet hcv "html comment"
 <!-- ${VISUAL} -->
 endsnippet
 
-snippet php "expand p to full php"
+snippet pl "expand p to full php"
 <?php $1 ?>
 endsnippet
 
-snippet p "expand p to full php"
+
+snippet php "expand p to full php"
 <?php
 $0
 endsnippet

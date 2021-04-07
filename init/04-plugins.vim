@@ -3,6 +3,7 @@ if exists('g:_did_vimrc_plugins')
     finish
 endif
 
+
 let g:_did_vimrc_plugins = 1
  "}}} _ prevent_vimrc_double_source
 
@@ -45,9 +46,9 @@ let g:_did_vimrc_plugins = 1
    " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
     LMap N <leader>gs <SID>Status  :call FugitiveDetect(expand('%:p')) \| :Gstatus<cr>
     LMap N <leader>g<leader> <SID>TabStatus  :call FugitiveDetect(getcwd()) \| :Gtabedit :<cr>
-    LMap N <leader>gc <SID>Commit  :call FugitiveDetect(getcwd()) \| execute ":Gcommit"<cr>
-    LMap N <leader>gp <SID>Pull    :call FugitiveDetect(getcwd()) \| execute ":Gpull"<cr>
-    LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Gpush" \| echo "Pushed :)"<cr>
+    LMap N <leader>gc <SID>Commit  :call FugitiveDetect(getcwd()) \| execute ":Gut commit"<cr>
+    LMap N <leader>gp <SID>Pull    :call FugitiveDetect(getcwd()) \| execute ":Git pull"<cr>
+    LMap N <leader>gu <SID>Push    :call FugitiveDetect(getcwd()) \| execute ":Git push" \| echo "Pushed :)"<cr>
     LMap N <leader>gr <SID>Read    :call FugitiveDetect(getcwd()) \| execute ":Gread"<cr>
     LMap N <leader>gw <SID>Write   :call FugitiveDetect(getcwd()) \| execute ":Gwrite"<cr>
     LMap N <leader>gdv <SID>V-Diff :call FugitiveDetect(getcwd()) \| execute ":Gvdiff"<cr>
@@ -533,6 +534,7 @@ endif
 
 lua <<EOF
 require('kommentary.config').config["rust"] = {"//", {"/*", "*/"}}
+require('kommentary.config').config["twig"] = {"{#", {"{#", "#}"}}
 EOF
  endif
  "}}} _ kommentary
@@ -1057,6 +1059,11 @@ endif
  "
 if PM('relastle/vim-nayvy', {'on_ft': 'python'})
 
+endif
+
+"twig
+if PM('lumiliet/vim-twig')
+ au BufEnter,BufNew *.htm set filetype=php
 endif
 
  "SQL
@@ -2413,12 +2420,14 @@ endif
     endif
 
 
-    let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
+    " let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
+    " let $FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!{.git,node_modules,vendor}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
+    let $FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!{.git,node_modules}/*" --glob "!*{.jpg,png}" 2> /dev/'.s:null
 
-    command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/'.s:null, 1, <bang>0)
+    command! -bang -nargs=* FZFAg call fzf#vim#grep('rg --column --no-ignore --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!{.git,node_modules,vendor}/*" --color "always" '.shellescape(<q-args>) . ' 2> /dev/'.s:null, 1, <bang>0)
 
 
-    command! -bang -nargs=* Rg2 call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+    command! -bang -nargs=* Rg2 call fzf#vim#grep("rg --column --no-ignore --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
     nnoremap <silent> <c-p><c-a> :Rg2 <CR>
     nnoremap <silent> <c-p>a :Rg2 <C-R><C-W><CR>
     nnoremap <silent> <c-p><c-j> :FzfAg <CR>
@@ -3029,7 +3038,8 @@ endfunction
     if PM('mcchrish/nnn.vim')
 
         " Start nnn in the current file's directory
-        nnoremap <silent> <leader>_ :NnnPicker '%:p:h'<CR>
+        " nnoremap <silent> <leader>_ :NnnPicker '%:p:h'<CR>
+        nnoremap <silent> <leader>_ :NnnPicker<CR>
 
         " let g:nnn#replace_netrw = 1
 
@@ -3077,6 +3087,10 @@ endfunction
 
  " chadtree {{{
  if PM('ms-jpq/chadtree', {'rev': 'chad', 'do': 'python3 -m chadtree deps'})
+   " nnoremap - <cmd>CHADopen --always-focus<cr>
+
+   " lua vim.api.nvim_set_var("chadtree_settings", { keymap = { smaller = {"_"}, bigger = {'+'} } })
+
 " :CHADdeps
  endif
  "}}} _ chadtree
@@ -3088,7 +3102,20 @@ endfunction
         if PM('khalidchawtany/fern-renderer-plain.vim')
             " let g:fern#renderer = "plain"
         endif
-        nnoremap <silent> - :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -keep -reveal=%:t \| endif \| <cr>
+
+        function! DefaultFileBrowser()
+          if g:file_browser == 'nnn'
+            NnnPicker
+          else
+            if bufname() == ''
+              Fern .
+            else
+              Fern %:h:p -drawer -keep -reveal=%:t
+            endif
+          endif
+        endfunction
+        " nnoremap <silent> - :if g:file_browser == 'nnn' \| if bufname() == '' \| Fern .  \| else \| Fern %:h:p -drawer -keep -reveal=%:t \| endif \| <cr>
+        nnoremap <silent> - :call DefaultFileBrowser()<cr>
         nnoremap <silent> <leader>- :if bufname() == '' \| Fern .  \| else \| Fern %:h:p -wait -stay -reveal=%:t \| endif \| <cr>
         " nnoremap <silent> - :Fern %:h:p -drawer -reveal=% -width=33 -wait<cr>
         " nnoremap <leader>- :Fern %:p:h -toggle -reveal=% -drawer -width=33<cr>
@@ -3649,9 +3676,9 @@ endif
  if PM('szw/vim-maximizer', {'on_cmd': ['MaximizerToggle']})
      let g:maximizer_set_default_mapping = 0
 
-     nnoremap <silent> <c-w><c-o> :ZoomWinTabToggle<cr>
-     inoremap <silent> <c-w><c-o> <c-\><c-n>:ZoomWinTabToggle<cr>a
-     vnoremap <silent> <c-w><c-o> <c-\><c-n>:ZoomWinTabToggle<cr>gv
+     nnoremap <silent> <c-w>z :ZoomWinTabToggle<cr>
+     inoremap <silent> <c-w>z <c-\><c-n>:ZoomWinTabToggle<cr>a
+     vnoremap <silent> <c-w>z <c-\><c-n>:ZoomWinTabToggle<cr>gv
  endif
  "}}} _vim-maximizer
 
@@ -4049,8 +4076,8 @@ endif
      "g:minimap_width	 = 10
      "g:minimap_highlight = Title
      "g:minimap_auto_start	= 0
-
-     let g:minimap_width = 5
+     let g:minimap_auto_start	= 0
+     let g:minimap_width = 10
  endif
  "}}} _ minimap.vim
 
@@ -4085,27 +4112,14 @@ endif
 
  "}}} _vim-noscrollbar
 
- " vim-indentLine {{{
 
- if PM( 'Yggdroot/indentLine', {'lazy': 1} )
-     let g:indentLine_first_char = '?'
-     let g:indentLine_showFirstIndentLevel = 1
-     let g:indentLine_setColors = 0
-     let g:indentLine_char = ''
-     " let g:indentLine_color_term=""
-     " let g:indentLine_color_gui=""
-     let g:indentLine_fileType=[] "Means all filetypes
-     let g:indentLine_fileTypeExclude=[]
-     let g:indentLine_bufNameExclude=[]
+ " indent-blankline.nvim {{{
+ if PM('lukas-reineke/indent-blankline.nvim', {'rev': 'lua'})
+   " let g:indent_blankline_char_list = ['|', '¦', '┆', '┊']
+   " let g:indent_blankline_char_highlight_list = ['Error', 'Function']
  endif
+ "}}} _ indent-blankline.nvim
 
- "}}}
-
- " vim-indent-guides {{{
-
- call PM('nathanaelkane/vim-indent-guides', {'lazy' : 1})
-
- "}}} _vim-indent-guides
 
  "vim-devicons {{{
  call PM( 'ryanoasis/vim-devicons' )
