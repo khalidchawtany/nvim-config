@@ -692,3 +692,31 @@ endfunction
 command! -bang FzfRegisters call s:registers('<bang>' ==# '!')
 nnoremap <c-p><c-"> <cmd>FzfRegisters<cr>
 "}}}
+
+
+" Split teminal on right side
+set splitright
+" send paragraph under curso to terminal
+function! Exec_on_term(cmd)
+  if a:cmd=="normal"
+    exec "normal mk\"vyip"
+  else
+    exec "normal gv\"vy"
+  endif
+  if !exists("g:last_terminal_chan_id")
+    vs
+    terminal
+    let g:last_terminal_chan_id = b:terminal_job_id
+    wincmd p
+  endif
+
+  if getreg('"v') =~ "^\n"
+    call chansend(g:last_terminal_chan_id, expand("%:p")."\n")
+  else
+    call chansend(g:last_terminal_chan_id, @v)
+  endif
+  exec "normal `k"
+endfunction
+
+nnoremap <F6> :call Exec_on_term("normal")<CR>
+vnoremap <F6> :<c-u>call Exec_on_term("visual")<CR>

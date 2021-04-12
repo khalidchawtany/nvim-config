@@ -110,6 +110,55 @@ let g:_did_vimrc_plugins = 1
 
   endif
  "}}} git-messenger.vim
+
+ " gitsigns.nvim {{{
+ if PM('lewis6991/gitsigns.nvim')
+
+   " require('gitsigns').setup()
+lua <<EOF
+require('gitsigns').setup {
+  signs = {
+    add          = {hl = 'GitSignsAdd'   , text = '│', numhl='GitSignsAddNr'   , linehl='GitSignsAddLn'},
+    change       = {hl = 'GitSignsChange', text = '│', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+    delete       = {hl = 'GitSignsDelete', text = '_', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    topdelete    = {hl = 'GitSignsDelete', text = '‾', numhl='GitSignsDeleteNr', linehl='GitSignsDeleteLn'},
+    changedelete = {hl = 'GitSignsChange', text = '~', numhl='GitSignsChangeNr', linehl='GitSignsChangeLn'},
+  },
+  numhl = false,
+  linehl = false,
+  keymaps = {
+    -- Default keymap options
+    noremap = true,
+    buffer = true,
+
+    ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
+    ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+
+    ['n <leader>hs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+    ['n <leader>hu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+    ['n <leader>hr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+    ['n <leader>hR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+    ['n <leader>hp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+    ['n <leader>hb'] = '<cmd>lua require"gitsigns".blame_line()<CR>',
+
+    -- Text objects
+    ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
+    ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
+  },
+  watch_index = {
+    interval = 1000
+  },
+  current_line_blame = false,
+  sign_priority = 6,
+  update_debounce = 100,
+  status_formatter = nil, -- Use default
+  use_decoration_api = true,
+  use_internal_diff = true,  -- If luajit is present
+}
+EOF
+ endif
+ "}}} _ gitsigns.nvim
+
  " vim-conflicted {{{
  if PM('christoomey/vim-conflicted',  {'on_cmd': ['Conflicted', 'Merger', 'GitNextConflict']})
      set stl+=%{ConflictedVersion()}
@@ -326,7 +375,10 @@ let g:_did_vimrc_plugins = 1
  " }}}
  " vim-abolish {{{
 
-   call PM( 'tpope/vim-abolish',           { 'on_cmd': ['S','Subvert', 'Abolish']} )
+ call PM( 'tpope/vim-abolish', {
+       \'on_cmd': ['S','Subvert', 'Abolish'],
+       \'on_map': ['<Plug>(abolish_coerce_word)', '<Plug>(abolish-coerce)', 'crs', 'crm', 'crc', 'cru', 'cr-', 'cr.', 'cr<space>' ]
+       \} )
 
  "}}} _vim-abolish
  " vim-rengbang {{{
@@ -571,7 +623,7 @@ EOF
 
  " dein-ui.vim {{{
  " Provies DeinUpdate command
- call PM('wsdjeg/dein-ui.vim', {'on_cmd': 'DeinUpdate'})
+"  call PM('wsdjeg/dein-ui.vim', {'on_cmd': 'DeinUpdate'})
  "}}} _ dein-ui.vim
 
  " replay {{{
@@ -784,7 +836,7 @@ EOF
  "vim-sleuth {{{
  " Sets buffer options heuristically
  if PM('tpope/vim-sleuth')
-   let g:sleuth_automatic = 0
+   let g:sleuth_automatic = 1
  endif
  "}}} _vim-sleuth
 
@@ -843,7 +895,8 @@ EOF
  "}}} _close-buffers.vim
 
  " nvim-treesitter {{{
-if PM('nvim-treesitter/nvim-treesitter', {'merged': 0, 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/ /Users/juju/.config/nvim/lua/' })
+" if PM('nvim-treesitter/nvim-treesitter', {'merged': 0, 'build': '\cp -fr /Users/juju/.config/nvim/dein/repos/github.com/nvim-treesitter/nvim-treesitter/lua/ /Users/juju/.config/nvim/lua/' })
+if PM('nvim-treesitter/nvim-treesitter', {'merged': 0})
 function! SetupTreeSiter() abort
 lua <<EOF
 require'nvim-treesitter.configs'.setup {
@@ -1063,7 +1116,7 @@ endif
 
 "twig
 if PM('lumiliet/vim-twig')
- au BufEnter,BufNew *.htm set filetype=php
+"  au BufEnter,BufNew *.htm set filetype=php
 endif
 
  "SQL
@@ -1084,147 +1137,21 @@ endif
 
  " Advanced Syntax Highlighting
  "vim-polyglot {{{
-if PM('sheerun/vim-polyglot')
-  let g:polyglot_disabled =  ['typescript']
-  autocmd BufNewFile,BufRead *.tsx setlocal filetype=typescript
- endif
+" if PM('sheerun/vim-polyglot')
+"   let g:polyglot_disabled =  ['typescript']
+"   autocmd BufNewFile,BufRead *.tsx setlocal filetype=typescript
+"  endif
 "}}} _vim-polyglot
 "
  " yats.vim {{{
     " call PM('HerringtonDarkholme/yats.vim')
  "}}} _ yats.vim
 
- "GoDot
- "vim-gdscript {{{
- if PM('quabug/vim-gdscript', {'on_ft': ['gdscript']})
-   au BufRead,BufNewFile *.gd	set filetype=gdscript
- endif
- "}}} _vim-gdscript
-
  "Python
  "braceless.vim {{{
  call PM( 'tweekmonster/braceless.vim', {'on_ft': ['python']} )
  "}}} _braceless.vim
 
- "C#
- " omnisharp {{{
-
-  if PM( 'nosami/Omnisharp', {'on_ft': ['cs']} )
-   let g:OmniSharp_server_path = "/Volumes/Home/.config/nvim/plugged/Omnisharp/server/Omnisharp/bin/Debug/OmniSharp.exe"
-   " let g:OmniSharp_server_type = 'roslyn'
-
-   " Plug 'khalidchawtany/omnisharp-vim', {'branch': 'nUnitQuickFix'}
-
-   let g:OmniSharp_selecter_ui = 'ctrlp'
-
-   let g:syntastic_cs_checkers = ['syntax', 'semantic', 'issues']
-
-   "let g:OmniSharp_server_type = 'roslyn'
-   autocmd Filetype cs,cshtml.html call SetOmniSharpOptions()
-
-   function! SetOmniSharpOptions()
-
-     if exists("g:SetOmniSharpOptionsIsSet")
-       return
-     endif
-
-     source ~/.config/nvim/scripts/make_cs_solution.vim
-     autocmd BufWritePost *.cs BuildCSharpSolution
-
-     nnoremap <leader>oo :BuildCSharpSolution<cr>
-
-     let g:SetOmniSharpOptionsIsSet = 1
-     "can set preview here also but i found it causes flicker
-     "set completeopt=longest,menuone
-
-     "makes enter work like C-y, confirming a popup selection
-     "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-     setlocal omnifunc=OmniSharp#Complete
-
-     " Builds can also run asynchronously with vim-dispatch installed
-     nnoremap <localleader>b :wa!<cr>:OmniSharpBuildAsync<cr>
-     nnoremap <localleader>tt :OmniSharpRunTests<cr>
-     nnoremap <localleader>tf :OmniSharpRunTestFixture<cr>
-     nnoremap <localleader>ta :OmniSharpRunAllTests<cr>
-     nnoremap <localleader>tl :OmniSharpRunLastTests<cr>
-
-     nnoremap <localleader>gd :OmniSharpGotoDefinition<cr>
-     nnoremap <localleader>gi :OmniSharpFindImplementations<cr>
-     nnoremap <localleader>gt :OmniSharpFindType<cr>
-     nnoremap <localleader>gs :OmniSharpFindSymbol<cr>
-     nnoremap <localleader>gu :OmniSharpFindUsages<cr>
-     nnoremap <localleader>gm :OmniSharpFindMembers<cr>
-
-     " cursor can be anywhere on the line containing an issue
-     nnoremap <localleader>fi  :OmniSharpFixIssue<cr>
-     nnoremap <localleader>fu :OmniSharpFixUsings<cr>
-
-     nnoremap <localleader>tl :OmniSharpTypeLookup<cr>
-     " Add syntax highlighting for types and interfaces
-     nnoremap <localleader>ht :OmniSharpHighlightTypes<cr>
-
-     nnoremap <localleader>d :OmniSharpDocumentation<cr>
-     "navigate up by method/property/field
-     nnoremap <localleader>nk :OmniSharpNavigateUp<cr>
-     "navigate down by method/property/field
-     nnoremap <localleader>nj :OmniSharpNavigateDown<cr>
-
-     " Contextual code actions (requires CtrlP or unite.vim)
-     nnoremap <localleader>a :OmniSharpGetCodeActions<cr>
-     " Run code actions with text selected in visual mode to extract method
-     vnoremap <localleader>a :call OmniSharp#GetCodeActions('visual')<cr>
-
-     " rename with dialog
-     nnoremap <localleader>rn :OmniSharpRename<cr>
-     " rename without dialog - with cursor on the symbol to rename... ':Rename newname'
-
-     " Force OmniSharp to reload the solution. Useful when switching branches etc.
-     nnoremap <localleader>rs :OmniSharpReloadSolution<cr>
-     nnoremap <localleader>= :OmniSharpCodeFormat<cr>
-     " Load the current .cs file to the nearest project
-     nnoremap <localleader>i :OmniSharpAddToProject<cr>
-
-     " (Experimental - uses vim-dispatch or vimproc plugin) - Start the omnisharp server for the current solution
-     nnoremap <localleader>ss :OmniSharpStartServer<cr>
-     nnoremap <localleader>st :OmniSharpStopServer<cr>
-
-   augroup omnisharp_commands
-     autocmd!
-
-     command! -nargs=1 RenameOmnisharp :call OmniSharp#RenameTo("<args>")
-
-     " automatic syntax check on events (TextChanged requires Vim 7.4)
-     autocmd BufEnter,TextChanged,InsertLeave *.cs,*.cshtml SyntasticCheck
-
-     " Automatically add new cs files to the nearest project on save
-     autocmd BufWritePost *.cs,*.cshtml call OmniSharp#AddToProject()
-
-     "show type information automatically when the cursor stops moving
-     "autocmd CursorHold *.cs,*.cshtml call OmniSharp#TypeLookupWithoutDocumentation()
-   augroup END
-
-   "set updatetime=500
-   " Remove 'Press Enter to continue' message when type information is longer than one line.
-   "set cmdheight=2
-   endfunction
-
- endif
- "}}}
-
- " vim-csharp {{{
-
-   call PM( 'OrangeT/vim-csharp', {'on_ft': ['cs']} )
-
- "}}} _vim-csharp
-
- " applescript
- " applescript {{{
-
-   "call PM( 'vim-scripts/applescript.vim' ,     {'on_ft': ['applescript']} )
-   call PM( 'vim-scripts/applescript.vim' )
-
- "}}} _applescript
 
  " markdown
  " vim-markdown {{{
@@ -1381,6 +1308,7 @@ endif
  if PM('tobyS/pdv', {'on_ft': 'php'})
      call PM('tobyS/vmustache')
      nnoremap <leader>doc <cmd>call pdv#DocumentWithSnip()<cr>
+     nnoremap <leader>doa <cmd>call PhpDocAll()<cr>
      nnoremap <buffer>dos <C-p> :call pdv#DocumentWithSnip()<CR>
      let g:pdv_template_dir = $HOME ."/.config/nvim/dein/repos/github.com/tobyS/pdv/templates_snip"
  endif
@@ -2325,11 +2253,12 @@ endif
  endif
  "}}} _vim-CtrlSpace
 
+ call PM('nvim-lua/plenary.nvim')
+
  " File
  " Telescope {{{
     if PM('nvim-lua/telescope.nvim')
         call PM('nvim-lua/popup.nvim')
-        call PM('nvim-lua/plenary.nvim')
 
 lua <<EOF
 local actions = require('telescope.actions')
@@ -3038,8 +2967,8 @@ endfunction
     if PM('mcchrish/nnn.vim')
 
         " Start nnn in the current file's directory
-        " nnoremap <silent> <leader>_ :NnnPicker '%:p:h'<CR>
-        nnoremap <silent> <leader>_ :NnnPicker<CR>
+        nnoremap <silent> =- :exec 'NnnPicker ' . expand('%:p:h')<CR>
+        nnoremap <silent> =0 :NnnPicker<CR>
 
         " let g:nnn#replace_netrw = 1
 
@@ -3335,9 +3264,9 @@ if PM('bfredl/nvim-miniyank', {'if': 'has("nvim")'})
     map ]p <Plug>(miniyank-startput)
     map ]P <Plug>(miniyank-startPut)
 
-    map <Leader><Leader>c <Plug>(miniyank-tochar)
-    map <Leader><Leader>l <Plug>(miniyank-toline)
-    map <Leader><Leader>b <Plug>(miniyank-toblock)
+    map <Leader>mc <Plug>(miniyank-tochar)
+    map <Leader>ml <Plug>(miniyank-toline)
+    map <Leader>mb <Plug>(miniyank-toblock)
 
     let g:miniyank_maxitems = 1000
 endif
@@ -4117,6 +4046,7 @@ endif
  if PM('lukas-reineke/indent-blankline.nvim', {'rev': 'lua'})
    " let g:indent_blankline_char_list = ['|', '¦', '┆', '┊']
    " let g:indent_blankline_char_highlight_list = ['Error', 'Function']
+   let g:indent_blankline_filetype_exclude = ['help', 'startify']
  endif
  "}}} _ indent-blankline.nvim
 

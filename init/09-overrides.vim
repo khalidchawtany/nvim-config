@@ -50,8 +50,10 @@ LMap N! <leader>ed <Plug>EditDevDrive <cmd>e /Volumes/Dev<cr>
 function! RegenerateHelpTags()
     silent! !rm ~/.config/nvim/dein/.dein/doc/webdevicons.txt
     silent! !rm ~/.config/nvim/dein/.dein/doc/hyperstyle.txt
+    silent! !rm ~/.config/nvim/dein/.dein/doc/nnn.txt
+    silent! !rm ~/.config/nvim/dein/.cache/init.vim/.dein/doc/nnn.txt
     silent! helptags ~/.config/nvim/dein/.dein/doc/
-    helptags /Users/juju/.config/nvim/dein/.cache/init.vim/.dein/doc/
+    helptags ~/.config/nvim/dein/.cache/init.vim/.dein/doc/
 endfunction
 
 

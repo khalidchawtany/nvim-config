@@ -33,7 +33,7 @@ nnoremap [] []zz
 
 nnoremap c* *Ncgn
 
-nnoremap <Leader><Leader> <c-^>
+nnoremap <nowait> <Leader><Leader> <c-^>
 
 vnoremap <c-d> "dyo<esc>"dp
 
@@ -390,9 +390,11 @@ function! FindFile(path, ...)
       let path = root . '/plugins/'
     endif
 
+  else
+    return root . path
   endif
-
   return path
+
 endfunction
 
 
@@ -436,7 +438,7 @@ endfunction
   LMap N <leader>lR <Plug>laravel-edit-resources       :FzfFiles <c-r>=FindFile('/resources/')<cr><cr>
   LMap N <leader>la <Plug>laravel-edit-app             :FzfFiles <c-r>=FindFile('/app/', 'models')<cr><cr>
   LMap N <leader>ll <Plug>laravel-edit-lang             :tabe <c-r>=FindFile('/lan/', 'lang')<cr><cr>
-  LMap N <leader>le <Plug>laravel-edit-event             :tabe <c-r>=FindFile('/app/events/', 'classes/collection/event')<cr><cr>
+  LMap N <leader>le <Plug>laravel-edit-event            :FzfFiles <c-r>=FindFile('/app/events/', 'classes/event')<cr><cr>
   LMap N <leader>lc <Plug>laravel-edit-controllers     :FzfFiles <c-r>=FindFile('/app/Http/Controllers', 'controllers')<cr><cr>
   LMap N <leader>lf <Plug>laravel-edit-factories       :FzfFiles <c-r>=FindFile('/database/factories/')<cr><cr>
   LMap N <leader>lh <Plug>laravel-edit-helpers         :FzfFiles <c-r>=FindFile('/app/Helpers/')<cr><cr>
