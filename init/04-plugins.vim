@@ -149,7 +149,7 @@ require('gitsigns').setup {
     interval = 1000
   },
   current_line_blame = false,
-  sign_priority = 6,
+  sign_priority = 100,
   update_debounce = 100,
   status_formatter = nil, -- Use default
   use_decoration_api = true,
@@ -717,11 +717,14 @@ EOF
        call submode#map(       'toggle-fold', 'n', 's', 'f', ':<C-U>exe "call ToggleFoldMethod()"<cr>')
        call submode#map(       'toggle-fold', 'n', 's', 'n', ':<C-U>exe "call ToggleFoldMethod()"<cr>')
        call submode#map(       'toggle-fold', 'n', 's', 'p', ':<C-U>exe "call ToggleFoldMethod(1)"<cr>')
+       call submode#map(       'toggle-fold', 'n', 's', 'j', ':<C-U>exe "call ToggleFoldMethod()"<cr>')
+       call submode#map(       'toggle-fold', 'n', 's', 'k', ':<C-U>exe "call ToggleFoldMethod(1)"<cr>')
+       call submode#map(       'toggle-fold', 'n', 's', 'o', ':<C-U>set foldmethod=off<cr>')
        call submode#map(       'toggle-fold', 'n', 's', 's', ':<C-U>set foldmethod=syntax<cr>')
        call submode#map(       'toggle-fold', 'n', 's', 'i', ':<C-U>set foldmethod=indent<cr>')
        call submode#map(       'toggle-fold', 'n', 's', 'm', ':<C-U>set foldmethod=manual<cr>')
        call submode#map(       'toggle-fold', 'n', 's', '{', ':<C-U>set foldmethod=manual<cr>')
-     "}}} _Toogles FOLD
+       call submode#map(       'toggle-fold', 'n', 's', 'e', ':<C-U>set foldmethod=expr<cr>') "}}} _Toogles FOLD
 
      ""Toggles FoleMarker {{{
        "call submode#enter_with('toggle-marker', 'n', '', 'com', ':<C-U>exe "call ToggleFoldMarker()"<cr>')
@@ -1849,33 +1852,33 @@ endif
      endif
 
 
-     " git gutter
-     " navigate chunks of current buffer
-     nmap [c <Plug>(coc-git-prevchunk)zz
-     nmap ]c <Plug>(coc-git-nextchunk)zz
-
-
-     " Show chunk info under cursor.
-     nmap <leader>gi <Plug>(coc-git-chunkinfo)
-
-     " Show commit contains current position
-     nmap <leader>gh <Plug>(coc-git-commit)
-
-     nnoremap <leader>hu :CocCommand git.chunkUndo<cr>
-     nnoremap <leader>hw :CocCommand git.chunkStage<cr>
-     nnoremap <leader>hs :CocCommand git.chunkStage<cr>
-
-     " " show chunk diff at current position
-     " nmap gs <Plug>(coc-git-chunkinfo)
-     " " show commit contains current position
-     " nmap gc <Plug>(coc-git-commit)
-
-
-     " create text object for git chunks
-     omap ig <Plug>(coc-git-chunk-inner)
-     xmap ig <Plug>(coc-git-chunk-inner)
-     omap ag <Plug>(coc-git-chunk-outer)
-     xmap ag <Plug>(coc-git-chunk-outer)
+     " " git gutter
+     " " navigate chunks of current buffer
+     " nmap [c <Plug>(coc-git-prevchunk)zz
+     " nmap ]c <Plug>(coc-git-nextchunk)zz
+     "
+     "
+     " " Show chunk info under cursor.
+     " nmap <leader>gi <Plug>(coc-git-chunkinfo)
+     "
+     " " Show commit contains current position
+     " nmap <leader>gh <Plug>(coc-git-commit)
+     "
+     " nnoremap <leader>hu :CocCommand git.chunkUndo<cr>
+     " nnoremap <leader>hw :CocCommand git.chunkStage<cr>
+     " nnoremap <leader>hs :CocCommand git.chunkStage<cr>
+     "
+     " " " show chunk diff at current position
+     " " nmap gs <Plug>(coc-git-chunkinfo)
+     " " " show commit contains current position
+     " " nmap gc <Plug>(coc-git-commit)
+     "
+     "
+     " " create text object for git chunks
+     " omap ig <Plug>(coc-git-chunk-inner)
+     " xmap ig <Plug>(coc-git-chunk-inner)
+     " omap ag <Plug>(coc-git-chunk-outer)
+     " xmap ag <Plug>(coc-git-chunk-outer)
  endif
  "}}} _coc.nvim
 
@@ -3781,11 +3784,11 @@ endif
    endfunction
 
    " let g:lightline.colorscheme = 'onedark'
-   let g:lightline.colorscheme = 'one'
+   " let g:lightline.colorscheme = 'one'
    " let g:lightline.colorscheme = 'material'
    " let g:lightline.colorscheme = 'gruvbox'
    " let g:lightline.colorscheme = 'wombat'
-   " let g:lightline.colorscheme = 'nova'
+   let g:lightline.colorscheme = 'nova'
 
    function! LightLineModified()
      return &ft =~ 'help' ? '' : &modified ? '+' : &modifiable ? '' : '-'

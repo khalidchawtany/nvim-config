@@ -58,6 +58,12 @@ endfunction
 
 
 function! OverrideHilight() abort
+
+  if &background == 'dark'
+      hi Folded guibg=#292d3e
+    return
+  endif
+
   hi FoldColumn ctermfg=4 ctermbg=248 guifg=#EDD6C4 guibg=NONE
   hi SignColumn ctermfg=4 ctermbg=248 guifg=#0087af guibg=NONE
   hi LineNr ctermfg=130 guifg=lightgray guibg=NONE
@@ -73,11 +79,11 @@ endif
 
 command! -nargs=1 LightLineColorScheme :let g:lightline.colorscheme = '<args>'  |  call lightline#init() | call lightline#update()
 
- " colorscheme palenight
  " hi NormalFloat guibg=#697098
  " hi Visual guibg=#ff5370
-colorscheme Papercolor
-set background=light
+" colorscheme Papercolor
+colorscheme palenight
+set background=dark
 
 " hi SignatureMarkText guibg=white guifg=lightgray
 " hi EndOfBuffer guibg=white
@@ -139,6 +145,8 @@ command! ToggleDarkAndLight
 
 
  endfunction
+
+ call CorrectColorsAfterColorschemeChange()
 
  function! s:term_gf()
     let procid = matchstr(bufname(""), '\(://.*/\)\@<=\(\d\+\)')

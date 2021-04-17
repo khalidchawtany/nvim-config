@@ -605,9 +605,10 @@ function! BufOnly(buffer, bang) "{{{
   endif
 
 endfunction "}}}
+"  set foldmethod=expr |set foldexpr=nvim_treesitter#foldexpr() | hi Folded guibg=#292d3e
 
 function! ToggleFoldMethod(...) "{{{
-  let l:fm = ['syntax', 'manual', 'marker', 'indent', 'off']
+  let l:fm = ['syntax', 'expr',  'manual', 'marker', 'indent', 'off']
   let l:index = &foldenable>0 ? index(l:fm, &foldmethod) : 0
   let l:next_fm = l:fm[ l:index + 1 * ( len(a:000)>0?-1:1) ]
   if l:next_fm=="off"
@@ -615,6 +616,12 @@ function! ToggleFoldMethod(...) "{{{
   else
     set foldenable
     execute "set foldmethod=".l:next_fm
+    if next_fm =='expr'
+      set foldexpr=nvim_treesitter#foldexpr()
+    endif
+    if next_fm =='off'
+      set nofoldenable
+    endif
   endif
   let g:submode_toggle_fold = &foldenable==0? "Off": &foldmethod
 endfunction "}}}
