@@ -333,7 +333,7 @@ snip.rv = wrap_with_comment(snip.v.text)
 `
 endsnippet
 
-snippet fnc "file Name Camel" !w
+snippet fnc "file Name Controller" w
 `!p
 fileName = snip.fn[13:-4]
 parts = fileName.split('_')
@@ -342,14 +342,18 @@ snip.rv=fileName
 `
 endsnippet
 
-snippet fnt "file Name Lower" !w
+snippet fnt "file Name Test" w
 `!p
 fileName = snip.fn[25:-10]
 snip.rv=fileName
 `
 endsnippet
 
-snippet fn "test Python" !b
+snippet fn "File Name" w
+`!p snip.rv=snip.basename`
+endsnippet
+
+snippet fne "File Name With extension"
 `!p snip.rv=snip.fn`
 endsnippet
 

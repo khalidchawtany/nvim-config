@@ -52,6 +52,10 @@ function! RegenerateHelpTags()
     silent! !rm ~/.config/nvim/dein/.dein/doc/hyperstyle.txt
     silent! !rm ~/.config/nvim/dein/.dein/doc/nnn.txt
     silent! !rm ~/.config/nvim/dein/.cache/init.vim/.dein/doc/nnn.txt
+    silent! !rm ~/.config/nvim/dein/.cache/init.vim/.dein/doc/targets.txt
+    silent! !rm ~/.config/nvim/dein/.cache/init.vim/.dein/doc/fzf-vim.txt
+    silent! !rm ~/.config/nvim/dein/.cache/init.vim/.dein/doc/textobj-function.txt
+    silent! !rm ~/.config/nvim/dein/.cache/init.vim/.dein/doc/orgguide.txt
     silent! helptags ~/.config/nvim/dein/.dein/doc/
     helptags ~/.config/nvim/dein/.cache/init.vim/.dein/doc/
 endfunction
@@ -61,6 +65,12 @@ function! OverrideHilight() abort
 
   if &background == 'dark'
       hi Folded guibg=#292d3e
+
+
+      hi GitSignsAdd guifg=green
+      hi GitSignsChange guifg=orange
+      hi GitSignsChange guifg=red
+      " hi GitSignsAddLn guifg=#2E3E47
     return
   endif
 

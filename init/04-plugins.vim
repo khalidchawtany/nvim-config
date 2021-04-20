@@ -922,10 +922,10 @@ require'nvim-treesitter.configs'.setup {
     },
     refactor = {
       highlight_definitions = {
-        enable = false
+        enable = true                  -- highlight definition and its usage
       },
       highlight_current_scope = {
-        enable = false
+        enable = false                  -- highlight current scope
       },
       smart_rename = {
         enable = true,
@@ -985,22 +985,20 @@ if PM('nvim-treesitter/nvim-treesitter-refactor')
 
 function SetupTreeSiterRefactor() abort
 " Highlights definition and usages of the current symbol under the cursor.
-" lua <<EOF
-" require'nvim-treesitter.configs'.setup {
-"   refactor = {
-"     highlight_definitions = { enable = true },
-"   },
-" }
-" EOF
-
 "Highlights the block from the current scope where the cursor is.
-" lua <<EOF
-" require'nvim-treesitter.configs'.setup {
-"   refactor = {
-"     highlight_current_scope = { enable = true },
-"   },
-" }
-" EOF
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  refactor = {
+    highlight_definitions = { enable = true },
+    highlight_current_scope = { enable = false },
+  },
+}
+EOF
+
+hi TSDefinition guibg=#393d6e
+hi TSDefinitionUsage guibg=#393d6e
+hi CursorLine guibg=#2E3347
+
 
 "Renames the symbol under the cursor within the current scope (and current file).
 
@@ -2277,6 +2275,9 @@ require('telescope').setup {
       n = {
       },
     },
+    layout_strategy = "horizontal",
+    width = 0.75,
+    results_width = 0.8,
   }
 }
 EOF
@@ -4102,6 +4103,8 @@ endif
 "  call lightline#init()
 "  call lightline#colorscheme()
  endif
+
+ call PM('folke/tokyonight.nvim')
 
  call PM('cocopon/iceberg.vim')
  call PM('cormacrelf/vim-colors-github')

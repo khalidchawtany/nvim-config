@@ -203,7 +203,8 @@ set fillchars=stlnc:\-
 " Add ignorance of whitespace to diff
 set diffopt+=iwhite
 syntax on
-set nocursorline "Use iTerm cursorline instead
+set nocursorline
+
 
 set hlsearch
 set ignorecase

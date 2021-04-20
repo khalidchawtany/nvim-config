@@ -66,34 +66,36 @@
 
     "vetur.validation.template": true,
 
-    "suggest.languageSourcePriority": 1,
-    "coc.source.syntax.priority":     2,
-    "snippets.priority":              3,
+    "suggest.languageSourcePriority": 99,
+    "snippets.priority":              98,
+
+
+    "coc.source.syntax.priority":     94,
 
     "coc.source.around.enable": true,
-    "coc.source.around.priority": 4,
+    "coc.source.around.priority": 97,
     "coc.source.around.shortcut": "A",
 
     "coc.source.buffer.enable": true,
     "coc.source.buffer.shortcut": "B",
-    "coc.source.buffer.priority": 5,
+    "coc.source.buffer.priority": 96,
 
     "coc.source.dictionary.enable": true,
     "coc.source.dictionary.shortcut": "D",
-    "coc.source.dictionary.priority": 6,
+    "coc.source.dictionary.priority": 80,
 
-    "coc.source.word.enable": false,
+    "coc.source.word.enable": true,
     "coc.source.word.shortcut": "10k",
-    "coc.source.word.priority": 1,
+    "coc.source.word.priority": 70,
 
 
     "coc.source.ultisnips.enable": true,
-    "coc.source.ultisnips.priority": 2,
+    "coc.source.ultisnips.priority": 95,
     "coc.source.ultisnips.shortcut": "US",
 
     "coc.source.file.enable": true,
     "coc.source.file.shortcut": "F",
-    "coc.source.file.priority": 2,
+    "coc.source.file.priority": 97,
     "coc.source.file.triggerCharacters": ["/"],
     "coc.source.file.trimSameExts": [".ts", ".js"],
     "coc.source.file.ignoreHidden": true,
@@ -105,7 +107,7 @@
 
    "tailwind.enable": true,
    "tailwind.shortcut": "TWCSS",
-   "tailwind.priority": 2,
+   "tailwind.priority": 85,
 
     "python.formatting.provider": "autopep8",
 
